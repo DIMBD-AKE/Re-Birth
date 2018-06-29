@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -168,6 +168,7 @@
     <ClInclude Include="Framework\Macro.h" />
     <ClInclude Include="Framework\Manager\ModelManager.h" />
     <ClInclude Include="MainGame\Map.h" />
+    <ClInclude Include="MainGame\NewFolder1\test.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Framework\Manager\SceneManager.h" />
     <ClInclude Include="MainGame\Scene\SC_Test.h" />
@@ -175,6 +176,7 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Framework\Manager\TextureManager.h" />
     <ClInclude Include="Framework\Manager\TimeManager.h" />
+    <ClInclude Include="MainGame\NewFolder1\ttttt.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework\Manager\CameraManager.cpp" />
@@ -190,6 +192,7 @@
     <ClCompile Include="Framework\Manager\SceneManager.cpp" />
     <ClCompile Include="Framework\Manager\ModelManager.cpp" />
     <ClCompile Include="MainGame\Map.cpp" />
+    <ClCompile Include="MainGame\NewFolder1\test.cpp" />
     <ClCompile Include="MainGame\Scene\SC_Test.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -199,6 +202,7 @@
     </ClCompile>
     <ClCompile Include="Framework\Manager\TextureManager.cpp" />
     <ClCompile Include="Framework\Manager\TimeManager.cpp" />
+    <ClCompile Include="MainGame\NewFolder1\ttttt.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="D3DX.rc" />
