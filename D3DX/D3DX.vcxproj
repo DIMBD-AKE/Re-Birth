@@ -29,7 +29,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>NotSet</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -42,7 +42,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -169,8 +169,8 @@
     <ClInclude Include="Framework\Macro.h" />
     <ClInclude Include="Framework\Manager\ModelManager.h" />
     <ClInclude Include="MainGame\Map.h" />
-    <ClInclude Include="MainGame\monster\MonsterParent.h" />
-    <ClInclude Include="MainGame\monster\MonsterManager.h" />
+    <ClInclude Include="MainGame\Monster\MonsterParent.h" />
+    <ClInclude Include="MainGame\Monster\MonsterManager.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Framework\Manager\SceneManager.h" />
     <ClInclude Include="MainGame\Scene\SC_Test.h" />
@@ -194,8 +194,8 @@
     <ClCompile Include="Framework\Manager\ModelManager.cpp" />
     <ClCompile Include="MainGame\Map.cpp" />
     <ClCompile Include="MainGame\Scene\SC_Test.cpp" />
-    <ClCompile Include="MainGame\monster\MonsterParent.cpp" />
-    <ClCompile Include="MainGame\monster\MonsterManager.cpp" />
+    <ClCompile Include="MainGame\Monster\MonsterParent.cpp" />
+    <ClCompile Include="MainGame\Monster\MonsterManager.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
