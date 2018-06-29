@@ -142,7 +142,7 @@ void Map::Load(string mapPath)
 	fclose(fp);
 
 	LPDIRECT3DTEXTURE9 heightMap;
-	wstring bmp = Util::StringToWString(mapPath);
+	string bmp = mapPath;
 	bmp[bmp.size() - 3] = 'b';
 	bmp[bmp.size() - 2] = 'm';
 	bmp[bmp.size() - 1] = 'p';

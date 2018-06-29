@@ -17,14 +17,11 @@ LPDIRECT3DTEXTURE9 TextureManager::AddTexture(string keyName, string path)
 	if (m_mTexture.find(keyName) != m_mTexture.end())
 		return m_mTexture.find(keyName)->second.texture;
 
-	wstring wPath;
-	wPath.assign(path.begin(), path.end());
-
 	ST_TEXTUREINFO info;
 	HRESULT hr;
 	hr = D3DXCreateTextureFromFileEx(
 		DEVICE,
-		wPath.c_str(),
+		path.c_str(),
 		D3DX_DEFAULT_NONPOW2,
 		D3DX_DEFAULT_NONPOW2,
 		D3DX_FROM_FILE,
