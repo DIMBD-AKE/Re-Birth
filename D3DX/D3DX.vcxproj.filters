@@ -93,10 +93,10 @@
     <ClInclude Include="Framework\Manager\CameraManager.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="MainGame\NewFolder1\test.h">
+    <ClInclude Include="MainGame\monster\MonsterParent.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="MainGame\NewFolder1\ttttt.h">
+    <ClInclude Include="MainGame\monster\MonsterManager.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
@@ -152,10 +152,10 @@
     <ClCompile Include="Framework\Manager\CameraManager.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="MainGame\NewFolder1\test.cpp">
+    <ClCompile Include="MainGame\monster\MonsterParent.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="MainGame\NewFolder1\ttttt.cpp">
+    <ClCompile Include="MainGame\monster\MonsterManager.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
