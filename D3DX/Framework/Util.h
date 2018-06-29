@@ -58,20 +58,6 @@ public:
 		return D3DXVECTOR2(v.x, v.y);
 	}
 
-	static string WStringToString(wstring s)
-	{
-		string ret;
-		ret.assign(s.begin(), s.end());
-		return ret;
-	}
-
-	static wstring StringToWString(string s)
-	{
-		wstring ret;
-		ret.assign(s.begin(), s.end());
-		return ret;
-	}
-
 	static D3DXVECTOR3 ConvertGridPos(D3DXVECTOR3 pos, float cellSize)
 	{
 		D3DXVECTOR3 grid;

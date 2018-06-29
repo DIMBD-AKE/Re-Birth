@@ -18,8 +18,8 @@ private:
 	struct TextInfo
 	{
 		FONTTYPE ft;
-		wstring text;
-		wstring font;
+		string text;
+		string font;
 		RECT rect;
 		DWORD color;
 		int size;
@@ -30,7 +30,7 @@ private:
 	vector<TextInfo>	m_vecText;
 
 public:
-	void Add(wstring text, float x, float y, int size, wstring fontName = L"굴림", 
+	void Add(string text, float x, float y, int size, string fontName = "굴림", 
 		DWORD color = 0xFF000000, bool center = false, const RECT* rc = NULL);
 	FONT GetFont(FONTTYPE type, float x, float y);
 	void Render();

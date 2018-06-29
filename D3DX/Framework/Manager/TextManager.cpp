@@ -1,7 +1,7 @@
 #include "../../stdafx.h"
 #include "TextManager.h"
 
-void TextManager::Add(wstring text, float x, float y, int size, wstring fontName, DWORD color, bool center, const RECT * rc)
+void TextManager::Add(string text, float x, float y, int size, string fontName, DWORD color, bool center, const RECT * rc)
 {
 	TextInfo info = TextInfo();
 	RECT _rc = { x, y, x + size * text.length(), y + size };
@@ -80,7 +80,7 @@ TextManager::TextManager()
 		OUT_DEFAULT_PRECIS, // 글자 크기와 상관없이 출력
 		ANTIALIASED_QUALITY,
 		FF_DONTCARE,
-		L"굴림",
+		"굴림",
 		&m_pFont);
 }
 

@@ -122,7 +122,7 @@ void SkinnedMesh::Setup(string szFolder, string szFile)
 	AllocatedHierachy ah;
 	ah.SetFolder(szFolder);
 
-	D3DXLoadMeshHierarchyFromX(Util::StringToWString(szFolder + szFile).c_str(),
+	D3DXLoadMeshHierarchyFromX((szFolder + szFile).c_str(),
 		D3DXMESH_32BIT | D3DXMESH_MANAGED,
 		DEVICE,
 		&ah,
