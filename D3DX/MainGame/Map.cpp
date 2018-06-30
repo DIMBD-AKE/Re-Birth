@@ -13,6 +13,7 @@ Map::~Map()
 	for (int i = 0; i < m_vecModel.size(); i++)
 		SAFE_DELETE(m_vecModel[i]);
 	SAFE_RELEASE(m_pTerrainMesh);
+	SAFE_RELEASE(m_pSkyboxMesh);
 }
 
 void Map::Setup()
@@ -57,6 +58,172 @@ void Map::Setup()
 
 	DEVICE->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 	DEVICE->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+
+	// 스카이박스
+	TEXTUREMANAGER->AddTexture("Skybox", "Map/Skybox.png");
+	D3DXIMAGE_INFO info = TEXTUREMANAGER->GetInfo("Skybox");
+	m_pSkyboxTex = TEXTUREMANAGER->GetTexture("Skybox");
+
+	float w = info.Width;
+	float h = info.Height;
+	float cw = info.Width / 4.0f;
+	float ch = info.Height / 3.0f;
+
+	float a = cw * 2;
+
+	vector<ST_PT_VERTEX> vecVertex;
+	ST_PT_VERTEX v;
+	// 11
+	v.p = D3DXVECTOR3(-1, -1, 1);
+	v.t = D3DXVECTOR2(cw * 1 / w, ch * 2 / h);
+	vecVertex.push_back(v);
+	v.p = D3DXVECTOR3(-1, 1, 1);
+	v.t = D3DXVECTOR2(cw * 1 / w, ch * 1 / h);
+	vecVertex.push_back(v);
+	v.p = D3DXVECTOR3(1, 1, 1);
+	v.t = D3DXVECTOR2(cw * 2 / w, ch * 1 / h);
+	vecVertex.push_back(v);
+	v.p = D3DXVECTOR3(-1, -1, 1);
+	v.t = D3DXVECTOR2(cw * 1 / w, ch * 2 / h);
+	vecVertex.push_back(v);
+	v.p = D3DXVECTOR3(1, 1, 1);
+	v.t = D3DXVECTOR2(cw * 2 / w, ch * 1 / h);
+	vecVertex.push_back(v);
+	v.p = D3DXVECTOR3(1, -1, 1);
+	v.t = D3DXVECTOR2(cw * 2 / w, ch * 2 / h);
+	vecVertex.push_back(v);
+
+	// 01
+	v.p = D3DXVECTOR3(-1, -1, -1);
+	v.t = D3DXVECTOR2(cw * 0 / w, ch * 2 / h);
+	vecVertex.push_back(v);
+	v.p = D3DXVECTOR3(-1, 1, -1);
+	v.t = D3DXVECTOR2(cw * 0 / w, ch * 1 / h);
+	vecVertex.push_back(v);
+	v.p = D3DXVECTOR3(-1, 1, 1);
+	v.t = D3DXVECTOR2(cw * 1 / w, ch * 1 / h);
+	vecVertex.push_back(v);
+	v.p = D3DXVECTOR3(-1, -1, -1);
+	v.t = D3DXVECTOR2(cw * 0 / w, ch * 2 / h);
+	vecVertex.push_back(v);
+	v.p = D3DXVECTOR3(-1, 1, 1);
+	v.t = D3DXVECTOR2(cw * 1 / w, ch * 1 / h);
+	vecVertex.push_back(v);
+	v.p = D3DXVECTOR3(-1, -1, 1);
+	v.t = D3DXVECTOR2(cw * 1 / w, ch * 2 / h);
+	vecVertex.push_back(v);
+
+	// 21
+	v.p = D3DXVECTOR3(1, -1, 1);
+	v.t = D3DXVECTOR2(cw * 2 / w, ch * 2 / h);
+	vecVertex.push_back(v);
+	v.p = D3DXVECTOR3(1, 1, 1);
+	v.t = D3DXVECTOR2(cw * 2 / w, ch * 1 / h);
+	vecVertex.push_back(v);
+	v.p = D3DXVECTOR3(1, 1, -1);
+	v.t = D3DXVECTOR2(cw * 3 / w, ch * 1 / h);
+	vecVertex.push_back(v);
+	v.p = D3DXVECTOR3(1, -1, 1);
+	v.t = D3DXVECTOR2(cw * 2 / w, ch * 2 / h);
+	vecVertex.push_back(v);
+	v.p = D3DXVECTOR3(1, 1, -1);
+	v.t = D3DXVECTOR2(cw * 3 / w, ch * 1 / h);
+	vecVertex.push_back(v);
+	v.p = D3DXVECTOR3(1, -1, -1);
+	v.t = D3DXVECTOR2(cw * 3 / w, ch * 2 / h);
+	vecVertex.push_back(v);
+
+	// 31
+	v.p = D3DXVECTOR3(1, -1, -1);
+	v.t = D3DXVECTOR2(cw * 3 / w, ch * 2 / h);
+	vecVertex.push_back(v);
+	v.p = D3DXVECTOR3(1, 1, -1);
+	v.t = D3DXVECTOR2(cw * 3 / w, ch * 1 / h);
+	vecVertex.push_back(v);
+	v.p = D3DXVECTOR3(-1, 1, -1);
+	v.t = D3DXVECTOR2(cw * 4 / w, ch * 1 / h);
+	vecVertex.push_back(v);
+	v.p = D3DXVECTOR3(1, -1, -1);
+	v.t = D3DXVECTOR2(cw * 3 / w, ch * 2 / h);
+	vecVertex.push_back(v);
+	v.p = D3DXVECTOR3(-1, 1, -1);
+	v.t = D3DXVECTOR2(cw * 4 / w, ch * 1 / h);
+	vecVertex.push_back(v);
+	v.p = D3DXVECTOR3(-1, -1, -1);
+	v.t = D3DXVECTOR2(cw * 4 / w, ch * 2 / h);
+	vecVertex.push_back(v);
+
+	// 10
+	v.p = D3DXVECTOR3(-1, 1, 1);
+	v.t = D3DXVECTOR2(cw * 1 / w, ch * 1 / h);
+	vecVertex.push_back(v);
+	v.p = D3DXVECTOR3(-1, 1, -1);
+	v.t = D3DXVECTOR2(cw * 1 / w, ch * 0 / h);
+	vecVertex.push_back(v);
+	v.p = D3DXVECTOR3(1, 1, -1);
+	v.t = D3DXVECTOR2(cw * 2 / w, ch * 0 / h);
+	vecVertex.push_back(v);
+	v.p = D3DXVECTOR3(-1, 1, 1);
+	v.t = D3DXVECTOR2(cw * 1 / w, ch * 1 / h);
+	vecVertex.push_back(v);
+	v.p = D3DXVECTOR3(1, 1, -1);
+	v.t = D3DXVECTOR2(cw * 2 / w, ch * 0 / h);
+	vecVertex.push_back(v);
+	v.p = D3DXVECTOR3(1, 1, 1);
+	v.t = D3DXVECTOR2(cw * 2 / w, ch * 1 / h);
+	vecVertex.push_back(v);
+
+	// 12
+	v.p = D3DXVECTOR3(-1, -1, -1);
+	v.t = D3DXVECTOR2(cw * 1 / w, ch * 3 / h);
+	vecVertex.push_back(v);
+	v.p = D3DXVECTOR3(-1, -1, 1);
+	v.t = D3DXVECTOR2(cw * 1 / w, ch * 2 / h);
+	vecVertex.push_back(v);
+	v.p = D3DXVECTOR3(1, -1, 1);
+	v.t = D3DXVECTOR2(cw * 2 / w, ch * 2 / h);
+	vecVertex.push_back(v);
+	v.p = D3DXVECTOR3(-1, -1, -1);
+	v.t = D3DXVECTOR2(cw * 1 / w, ch * 3 / h);
+	vecVertex.push_back(v);
+	v.p = D3DXVECTOR3(1, -1, 1);
+	v.t = D3DXVECTOR2(cw * 2 / w, ch * 2 / h);
+	vecVertex.push_back(v);
+	v.p = D3DXVECTOR3(1, -1, -1);
+	v.t = D3DXVECTOR2(cw * 2 / w, ch * 3 / h);
+	vecVertex.push_back(v);
+
+	D3DXCreateMeshFVF(vecVertex.size() / 3, vecVertex.size(), D3DXMESH_MANAGED,
+		ST_PT_VERTEX::FVF, DEVICE, &m_pSkyboxMesh);
+
+	ST_PT_VERTEX * vtx = NULL;
+	m_pSkyboxMesh->LockVertexBuffer(0, (void**)&vtx);
+	memcpy(vtx, &vecVertex[0], sizeof(ST_PT_VERTEX) * vecVertex.size());
+	m_pSkyboxMesh->UnlockVertexBuffer();
+
+	WORD * idx = NULL;
+	m_pSkyboxMesh->LockIndexBuffer(0, (void**)&idx);
+	vector<WORD> vecIndex;
+	for (int i = 0; i < vecVertex.size(); i++)
+		vecIndex.push_back(i);
+	memcpy(idx, &vecIndex[0], sizeof(WORD) * vecIndex.size());
+	m_pSkyboxMesh->UnlockIndexBuffer();
+
+	DWORD * adj = NULL;
+	m_pSkyboxMesh->LockAttributeBuffer(0, &adj);
+	ZeroMemory(adj, sizeof(DWORD) * vecIndex.size() / 3);
+	m_pSkyboxMesh->UnlockAttributeBuffer();
+
+	vector<DWORD> adjBuffer(vecIndex.size() * sizeof(DWORD));
+	m_pSkyboxMesh->GenerateAdjacency(0.0f, &adjBuffer[0]);
+	m_pSkyboxMesh->OptimizeInplace(
+		D3DXMESHOPT_ATTRSORT |
+		D3DXMESHOPT_COMPACT |
+		D3DXMESHOPT_VERTEXCACHE,
+		&adjBuffer[0],
+		NULL, NULL, NULL);
+
+	D3DXMatrixScaling(&m_matSkybox, MAPSIZE * 4, MAPSIZE * 4, MAPSIZE * 4);
 }
 
 void Map::Load(string mapPath)
@@ -222,6 +389,11 @@ void Map::Render()
 	DEVICE->SetTexture(0, m_pTexture);
 	DEVICE->SetMaterial(&m_mtl);
 	m_pTerrainMesh->DrawSubset(0);
+
+	DEVICE->SetRenderState(D3DRS_LIGHTING, false);
+	DEVICE->SetTransform(D3DTS_WORLD, &m_matSkybox);
+	DEVICE->SetTexture(0, m_pSkyboxTex);
+	m_pSkyboxMesh->DrawSubset(0);
 
 	for (int i = 0; i < m_vecModel.size(); i++)
 		m_vecModel[i]->Render();

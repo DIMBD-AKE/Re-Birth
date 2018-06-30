@@ -35,7 +35,7 @@ void CameraManager::Setup()
 		D3DX_PI / 4.0f,
 		rc.right / (float)rc.bottom,
 		1.0f,
-		1000.0f);
+		10000.0f);
 
 	DEVICE->SetTransform(D3DTS_PROJECTION, &matProj);
 }
@@ -101,7 +101,7 @@ void CameraManager::Update()
 
 			vLookAt = *m_pTargetPos + m_vTargetOffset;
 			D3DXVec3TransformCoord(&vEye, &vEye, &matR);
-			D3DXVec3TransformCoord(&vEye, &vEye, &matR);
+			D3DXVec3TransformCoord(&vCamOffset, &vCamOffset, &matR);
 			vEye = *m_pTargetPos + m_vCamOffset + m_vTargetOffset + vEye;
 		}
 	}
