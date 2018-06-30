@@ -36,9 +36,7 @@ void ModelManager::AddModel(string keyName, string folderPath, string fileName, 
 		if (m_mX.find(keyName) != m_mX.end())
 			return;
 
-		SkinnedMesh* loader = new SkinnedMesh;
-		loader->Setup(folderPath, fileName);
-		m_mX.insert(make_pair(keyName, loader));
+		m_mX.insert(make_pair(keyName, folderPath + fileName));
 	}
 }
 
@@ -61,7 +59,8 @@ Model * ModelManager::GetModel(string keyName, MODELTYPE type)
 		if (m_mAse.find(keyName) != m_mAse.end())
 		{
 			ModelASE * ase = new ModelASE();
-			ST_ASE * data = m_mAse.find(keyName)->second;
+			ST_ASE * data = new ST_ASE;
+			data = m_mAse.find(keyName)->second;
 			ase->Setup(data);
 			ase->CreateBound(data->size);
 			ase->SetKeyName(keyName);
@@ -73,9 +72,15 @@ Model * ModelManager::GetModel(string keyName, MODELTYPE type)
 		if (m_mX.find(keyName) != m_mX.end())
 		{
 			ModelX * x = new ModelX();
-			SkinnedMesh * data = m_mX.find(keyName)->second;
+			SkinnedMesh * data = new SkinnedMesh;
+			string fullPath = m_mX[keyName].c_str();
+			string folder = Util::GetFileFolder((char*)fullPath.c_str());
+			fullPath = (char*)m_mX[keyName].c_str();
+			string file = Util::GetFileName((char*)fullPath.c_str());
+			data->Setup(folder, file);
 			x->Setup(data);
 			x->SetKeyName(keyName);
+			x->SetFullPath(m_mX[keyName]);
 			return x;
 		}
 	}
@@ -92,9 +97,7 @@ void ModelManager::Release()
 	for (; aseIter != m_mAse.end(); aseIter++)
 		SAFE_RELEASE(aseIter->second);
 
-	auto xIter = m_mX.begin();
-	for (; xIter != m_mX.end(); xIter++)
-		SAFE_DELETE(xIter->second);
+	m_mX.clear();
 }
 
 ModelOBJ * ModelOBJ::Clone() const
@@ -333,12 +336,22 @@ void ModelASE::Render()
 
 ModelX * ModelX::Clone() const
 {
-	return new ModelX(*this);
+	ModelX * clone = new ModelX;
+	SkinnedMesh * data = new SkinnedMesh;
+	string fullPath = m_fullPath;
+	string folder = Util::GetFileFolder((char*)fullPath.c_str());
+	fullPath = m_fullPath;
+	string file = Util::GetFileName((char*)fullPath.c_str());
+
+	data->Setup(folder, file);
+	*clone = *this;
+	clone->Setup(data);
+	return clone;
 }
 
 ModelX::~ModelX()
 {
-	m_pSMesh = NULL;
+	SAFE_DELETE(m_pSMesh);
 }
 
 void ModelX::World()

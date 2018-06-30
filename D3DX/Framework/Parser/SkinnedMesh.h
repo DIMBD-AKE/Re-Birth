@@ -45,7 +45,6 @@ class SkinnedMesh
 private:
 	LPD3DXFRAME					m_pRoot;
 	LPD3DXANIMATIONCONTROLLER	m_pAnimController;
-	SYNTHESIZE(D3DXMATRIX, m_matWorld, World);
 	bool						m_isBlend;
 	float						m_fBlendTime;
 	float						m_fPassedTime;
