@@ -1,7 +1,7 @@
 #include "../../stdafx.h"
 #include "SC_Test.h"
 #include "../Map.h"
-
+#include "../Character/Inventory.h"
 
 SC_Test::SC_Test()
 {
@@ -35,6 +35,9 @@ void SC_Test::Init()
 	CAMERA->SetCamOffset(D3DXVECTOR3(0, 5, 0));
 	CAMERA->SetTargetOffset(D3DXVECTOR3(0, 5, 0));
 	CAMERA->SetTarget(m_pTestModel->GetPosition(), m_pTestModel->GetRotation());
+
+	Inventory inv;
+	inv.CreateInventory(3, 5);
 }
 
 void SC_Test::Update()
