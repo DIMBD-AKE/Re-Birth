@@ -163,6 +163,7 @@
     <ClInclude Include="Framework\Struct.h" />
     <ClInclude Include="Framework\Util.h" />
     <ClInclude Include="Framework\Vertex.h" />
+    <ClInclude Include="MainGame\Character\Inventory.h" />
     <ClInclude Include="MainGame\MainGame.h" />
     <ClInclude Include="D3DX.h" />
     <ClInclude Include="Framework\Manager\DeviceManager.h" />
@@ -187,6 +188,7 @@
     <ClCompile Include="Framework\Parser\AseLoader.cpp" />
     <ClCompile Include="Framework\Parser\ObjLoader.cpp" />
     <ClCompile Include="Framework\Parser\SkinnedMesh.cpp" />
+    <ClCompile Include="MainGame\Character\Inventory.cpp" />
     <ClCompile Include="MainGame\MainGame.cpp" />
     <ClCompile Include="D3DX.cpp" />
     <ClCompile Include="Framework\Manager\DeviceManager.cpp" />
