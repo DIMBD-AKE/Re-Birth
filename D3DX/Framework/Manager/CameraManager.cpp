@@ -45,6 +45,7 @@ void CameraManager::Update()
 	D3DXMATRIX matView, matR;
 	D3DXVECTOR3 vEye = m_vEye;
 	D3DXVECTOR3 vLookAt = m_vLookAt;
+	D3DXVECTOR3 vCamOffset = m_vCamOffset;
 	D3DXMatrixRotationYawPitchRoll(&matR, m_vRotation.y, m_vRotation.x, m_vRotation.z);
 
 	if (m_eMode == CAMERA_FREE)
@@ -83,7 +84,8 @@ void CameraManager::Update()
 
 			vLookAt = *m_pTargetPos + m_vTargetOffset;
 			D3DXVec3TransformCoord(&vEye, &vEye, &matR);
-			vEye = *m_pTargetPos + m_vCamOffset + m_vTargetOffset + vEye;
+			D3DXVec3TransformCoord(&vCamOffset, &vCamOffset, &matR);
+			vEye = *m_pTargetPos + vCamOffset + m_vTargetOffset + vEye;
 		}
 	}
 
@@ -98,6 +100,7 @@ void CameraManager::Update()
 			m_ptPrevMouse = MOUSE_POS;
 
 			vLookAt = *m_pTargetPos + m_vTargetOffset;
+			D3DXVec3TransformCoord(&vEye, &vEye, &matR);
 			D3DXVec3TransformCoord(&vEye, &vEye, &matR);
 			vEye = *m_pTargetPos + m_vCamOffset + m_vTargetOffset + vEye;
 		}
