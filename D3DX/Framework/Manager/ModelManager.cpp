@@ -198,36 +198,46 @@ void Model::Update()
 void Model::Debug()
 {
 	if (!g_isDebug) return;
-	if (m_stColBox.vecVertex.empty()) return;
+	if (m_stBoundBox.vecVertex.empty()) return;
 
 	DWORD prevFillMode;
 	D3DXMATRIX matS, matR, matT;
 	D3DMATERIAL9 mat;
 	LPD3DXMESH meshSphere;
 
-	// BoundBox
-	D3DXMatrixScaling(&matS, m_stColBox.scale.x * m_vScale.x, m_stColBox.scale.y * m_vScale.y,
-		m_stColBox.scale.z * m_vScale.z);
-	D3DXMatrixRotationYawPitchRoll(&matR, m_vRotation.y, m_vRotation.x, m_vRotation.z);
-	D3DXMatrixTranslation(&matT, m_stColBox.pos.x + m_vPosition.x,
-		m_stColBox.pos.y + m_vPosition.y, m_stColBox.pos.z + m_vPosition.z);
-	DEVICE->SetTransform(D3DTS_WORLD, &(matS * matR * matT));
-	DEVICE->SetFVF(ST_PC_VERTEX::FVF);
+	DEVICE->GetRenderState(D3DRS_FILLMODE, &prevFillMode);
 	DEVICE->SetTexture(0, NULL);
 	DEVICE->SetRenderState(D3DRS_LIGHTING, false);
-	DEVICE->GetRenderState(D3DRS_FILLMODE, &prevFillMode);
 	DEVICE->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
-	DEVICE->DrawPrimitiveUP(D3DPT_TRIANGLELIST, m_stColBox.vecVertex.size() / 3,
-		&m_stColBox.vecVertex[0], sizeof(ST_PC_VERTEX));
+
+	// BoundBox
+	D3DXMatrixScaling(&matS, m_stBoundBox.scale.x * m_vScale.x, m_stBoundBox.scale.y * m_vScale.y,
+		m_stBoundBox.scale.z * m_vScale.z);
+	D3DXMatrixRotationYawPitchRoll(&matR, m_vRotation.y, m_vRotation.x, m_vRotation.z);
+	D3DXMatrixTranslation(&matT, m_stBoundBox.pos.x + m_vPosition.x,
+		m_stBoundBox.pos.y + m_vPosition.y, m_stBoundBox.pos.z + m_vPosition.z);
+	DEVICE->SetTransform(D3DTS_WORLD, &(matS * matR * matT));
+	DEVICE->SetFVF(ST_PC_VERTEX::FVF);
+	DEVICE->DrawPrimitiveUP(D3DPT_TRIANGLELIST, m_stBoundBox.vecVertex.size() / 3,
+		&m_stBoundBox.vecVertex[0], sizeof(ST_PC_VERTEX));
+
+	// BoundSphere
+	LPD3DXMESH mesh;
+	ST_SPHERE sphere = GetBoundSphere();
+	D3DXCreateSphere(DEVICE, sphere.radius, 8, 8, &mesh, NULL);
+	D3DXMatrixTranslation(&matT, sphere.center.x, sphere.center.y, sphere.center.z);
+	DEVICE->SetTransform(D3DTS_WORLD, &matT);
+	mesh->DrawSubset(0);
+	SAFE_RELEASE(mesh);
 
 	DEVICE->SetRenderState(D3DRS_FILLMODE, prevFillMode);
 }
 
 void Model::CreateBound(ST_SIZEBOX box)
 {
-	if(!m_stColBox.vecVertex.empty()) return;
+	if(!m_stBoundBox.vecVertex.empty()) return;
 
-	// BoundBox Set
+	// 바운드박스
 	ST_PC_VERTEX v;
 	vector<ST_PC_VERTEX> vecVertex;
 	v.c = D3DCOLOR_XRGB(255, 255, 255);
@@ -260,20 +270,32 @@ void Model::CreateBound(ST_SIZEBOX box)
 	vecIndex.push_back(1);	vecIndex.push_back(6);	vecIndex.push_back(2);
 
 	for (int i = 0; i < vecIndex.size(); i++)
-		m_stColBox.vecVertex.push_back(vecVertex[vecIndex[i]]);
+		m_stBoundBox.vecVertex.push_back(vecVertex[vecIndex[i]]);
 
-	m_stColBox.scale = D3DXVECTOR3(1, 1, 1);
+	m_stBoundBox.scale = D3DXVECTOR3(1, 1, 1);
+
+	// 바운드스페어
+	float centerX = (box.lowX + box.highX) / 2.0f;
+	float centerY = (box.lowY + box.highY) / 2.0f;
+	float centerZ = (box.lowZ + box.highZ) / 2.0f;
+	m_stBoundSphere.center = D3DXVECTOR3(centerX, centerY, centerZ);
+	float maxX = (fabs(box.lowX) >= box.highX) ? fabs(box.lowX) : box.highX;
+	float maxY = (fabs(box.lowY) >= box.highY) ? fabs(box.lowY) : box.highY;
+	float maxZ = (fabs(box.lowZ) >= box.highZ) ? fabs(box.lowZ) : box.highZ;
+	m_stBoundSphere.radius = maxX;
+	if (m_stBoundSphere.radius < maxY) m_stBoundSphere.radius = maxY;
+	if (m_stBoundSphere.radius < maxZ) m_stBoundSphere.radius = maxZ;
 }
 
 void Model::SetBoundBox(D3DXVECTOR3 pos, D3DXVECTOR3 scale)
 {
-	m_stColBox.pos = pos;
-	m_stColBox.scale = scale;
+	m_stBoundBox.pos = pos;
+	m_stBoundBox.scale = scale;
 }
 
 ST_BOUNDBOX Model::GetBoundBox()
 {
-	ST_BOUNDBOX box = m_stColBox;
+	ST_BOUNDBOX box = m_stBoundBox;
 	D3DXMATRIX matS, matR, matT;
 
 	D3DXMatrixScaling(&matS, box.scale.x * m_vScale.x, box.scale.y * m_vScale.y,
@@ -288,19 +310,49 @@ ST_BOUNDBOX Model::GetBoundBox()
 	return box;
 }
 
-bool Model::PickedBoundBox(Ray ray)
+void Model::SetBoundSphere(D3DXVECTOR3 center, float radius)
 {
-	for (int i = 0; i < m_stColBox.vecVertex.size(); i += 3)
+	m_stBoundSphere.center = center;
+	m_stBoundSphere.radius = radius;
+}
+
+ST_SPHERE Model::GetBoundSphere()
+{
+	ST_SPHERE sphere = m_stBoundSphere;
+	D3DXMATRIX matS, matR, matT;
+
+	D3DXMatrixScaling(&matS, m_vScale.x, m_vScale.y, m_vScale.z);
+	D3DXMatrixRotationYawPitchRoll(&matR, m_vRotation.y, m_vRotation.x, m_vRotation.z);
+	D3DXMatrixTranslation(&matT, m_vPosition.x,	m_vPosition.y, m_vPosition.z);
+	D3DXVec3TransformCoord(&sphere.center, &sphere.center, &(matS * matR * matT));
+
+	sphere.radius *= (m_vScale.x + m_vScale.y + m_vScale.z) / 3.0f;
+
+	return sphere;
+}
+
+bool Model::IsPickBoundBox(Ray ray, float * dist)
+{
+	ST_BOUNDBOX box = GetBoundBox();
+	for (int i = 0; i < box.vecVertex.size(); i += 3)
 	{
 		D3DXVECTOR3 v0, v1, v2;
-		v0 = m_stColBox.vecVertex[i].p;
-		v1 = m_stColBox.vecVertex[i + 1].p;
-		v2 = m_stColBox.vecVertex[i + 2].p;
+		v0 = box.vecVertex[i].p;
+		v1 = box.vecVertex[i + 1].p;
+		v2 = box.vecVertex[i + 2].p;
 
-		if (D3DXIntersectTri(&v0, &v1, &v2, &ray.orig, &ray.dir, NULL, NULL, NULL))
+		if (D3DXIntersectTri(&v0, &v1, &v2, &ray.orig, &ray.dir, NULL, NULL, dist))
 			return true;
 	}
 	return false;
+}
+
+bool Model::IsPickBoundSphere(Ray ray, float * dist)
+{
+	ST_SPHERE sphere = GetBoundSphere();
+	bool ret = Util::IntersectSphere(sphere, ray);
+	if (ret && dist) *dist = D3DXVec3Length(&(ray.orig - sphere.center));
+	return ret;
 }
 
 ModelASE * ModelASE::Clone() const

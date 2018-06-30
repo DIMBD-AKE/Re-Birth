@@ -39,7 +39,8 @@ class Model
 	virtual bool SetBlendAnimation(int index) { return false; }
 
 private:
-	ST_BOUNDBOX m_stColBox;
+	ST_BOUNDBOX	m_stBoundBox;
+	ST_SPHERE	m_stBoundSphere;
 
 public:
 	void Debug();
@@ -49,8 +50,11 @@ public:
 
 	void SetBoundBox(D3DXVECTOR3 pos, D3DXVECTOR3 scale);
 	ST_BOUNDBOX GetBoundBox();
+	void SetBoundSphere(D3DXVECTOR3 center, float radius);
+	ST_SPHERE GetBoundSphere();
 
-	bool PickedBoundBox(Ray ray);
+	bool IsPickBoundBox(Ray ray, float * dist);
+	bool IsPickBoundSphere(Ray ray, float * dist);
 };
 
 class ModelOBJ : public Model

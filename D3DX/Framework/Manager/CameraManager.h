@@ -12,6 +12,12 @@ class CameraManager
 	SINGLETONE(CameraManager);
 
 private:
+	SYNTHESIZE(D3DXVECTOR3, m_vPosition, Position);
+	SYNTHESIZE(D3DXVECTOR3, m_vRotation, Rotation);
+	SYNTHESIZE(D3DXVECTOR3, m_vCamOffset, CamOffset);
+	SYNTHESIZE(D3DXVECTOR3, m_vTargetOffset, TargetOffset);
+
+private:
 	D3DXVECTOR3		m_vEye;
 	D3DXVECTOR3		m_vUp;
 	D3DXVECTOR3		m_vLookAt;
@@ -19,10 +25,6 @@ private:
 	D3DXVECTOR3*	m_pTargetPos;
 	D3DXVECTOR3*	m_pTargetRot;
 
-	SYNTHESIZE(D3DXVECTOR3, m_vPosition, Position);
-	SYNTHESIZE(D3DXVECTOR3, m_vRotation, Rotation);
-	SYNTHESIZE(D3DXVECTOR3, m_vCamOffset, CamOffset);
-	SYNTHESIZE(D3DXVECTOR3, m_vTargetOffset, TargetOffset);
 
 	CAMERAMODE		m_eMode;
 
