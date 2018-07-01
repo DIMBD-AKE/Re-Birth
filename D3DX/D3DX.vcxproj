@@ -176,6 +176,7 @@
     <ClInclude Include="MainGame\Map.h" />
     <ClInclude Include="MainGame\Monster\MonsterParent.h" />
     <ClInclude Include="MainGame\Monster\MonsterManager.h" />
+    <ClInclude Include="MainGame\Stat\Status.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Framework\Manager\SceneManager.h" />
     <ClInclude Include="MainGame\Scene\SC_Test.h" />
@@ -206,6 +207,7 @@
     <ClCompile Include="MainGame\Scene\SC_Test.cpp" />
     <ClCompile Include="MainGame\Monster\MonsterParent.cpp" />
     <ClCompile Include="MainGame\Monster\MonsterManager.cpp" />
+    <ClCompile Include="MainGame\Stat\Status.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
