@@ -1,40 +1,44 @@
 #pragma once
 
-//struct ST_CHA_HP
-//{
-//	int m_nCurrentHP;
-//	int m_nMaxHp;
-//};
-//
-//union UN_HP
-//{
-//	ST_CHA_HP m_stCharHP;
-//
-//	int m_nItemHP;
-//};
-
-class Status
+union STATUS
 {
-public:
+	struct ST_STATUS_CHARACTER
+	{
+		// 아이템 스텟 + 캐릭터 스텟 = 능력치
+		int		nCurrentHP;		//캐릭터(적, 플레이어) 현재 피
+		int		nMaxHp;			//캐릭터(적, 플레이어) 최대 피
 
-	//UN_HP		m_unHP;
-	
+		int		nAtk;			//기본공격력
+		float	fPhyRate;		//물리계수
+		float	fMagicRate;		//마법계수
+		float	fCheRate;		//화학계수
+		float	fAtkSpeed;		//공격속도 (장비속도에 * 연산)
 
-	int		m_nCurrentHP;	//캐릭터(적, 플레이어) 현재 피
-	int		m_nMaxHp;		//캐릭터(적, 플레이어) 최대 피
+		int		nDef;			//방어력
+		float	fAgi;			//회피력
+		float	fHit;			//명중률
+		float	fSpeed;			//이동속도
+	} chr;
 
-	int		m_nItemHP;		//아이템 효과로 주는 피
+	struct ST_STATUS_ITEM
+	{
+		float	fAtkSpeed;		//공격속도
+		float	fCoolTime1;		//스킬1 쿨타임
+		float	fCoolTime2;		//스킬2 쿨타임
 
-	int		m_nAtk;			//공격력 (물,마,원 공통으로 연산통해서 값 바꾸면 될듯 싶습니다.)
-	int		m_nDef;			//방어력
+		int		nAtk;			//공격력 증가량
+		int		nDef;			//방어력 증가량
+		int		nHp;			//체력 증가량
+		float	fAgi;			//회피력 증가량
+		float	fHit;			//명중률 증가량
+		float	fSpeed;			//이동속도 증가량
+	} item;
+};
 
-	float	m_fAgi;			//회피력
-	float	m_fHit;			//명중률
-	float	m_fSpeed;		//이동속도
-
-	
-
-public:
-	Status();
-	~Status();
+struct ST_DAMAGE
+{
+	int		nDamage;
+	float	fPhyRate;
+	float	fMagicRate;
+	float	fCheRate;
 };
