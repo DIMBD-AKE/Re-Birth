@@ -102,20 +102,7 @@
     <ClInclude Include="MainGame\Character\Inventory.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-<<<<<<< HEAD
     <ClInclude Include="MainGame\Stat\Status.h">
-=======
-    <ClInclude Include="MainGame\Character\Character_Gun.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="MainGame\Character\Character_Magic.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="MainGame\Character\Character_Sword.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="MainGame\Character\CharacterParant.h">
->>>>>>> 387bdb025c0167aa846e36924c57408fa0583168
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
@@ -180,20 +167,7 @@
     <ClCompile Include="MainGame\Character\Inventory.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-<<<<<<< HEAD
     <ClCompile Include="MainGame\Stat\Status.cpp">
-=======
-    <ClCompile Include="MainGame\Character\Character_Gun.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="MainGame\Character\Character_Magic.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="MainGame\Character\Character_Sword.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="MainGame\Character\CharacterParant.cpp">
->>>>>>> 387bdb025c0167aa846e36924c57408fa0583168
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

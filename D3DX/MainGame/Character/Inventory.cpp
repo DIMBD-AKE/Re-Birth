@@ -1,6 +1,6 @@
 #include "../../stdafx.h"
 #include "Inventory.h"
-#include "CharacterParant.h"
+
 
 
 void Inventory::InitPos()
@@ -38,20 +38,10 @@ void Inventory::CreateInventory(int col, int row)
 		m_pEquip[i] = NULL;
 }
 
-void Inventory::Update()
+void Inventory::OpenInventory()
 {
 }
 
-void Inventory::Render()
+void Inventory::OpenEquip()
 {
-}
-
-TestItem * Inventory::GetFirstItem()
-{
-	return nullptr;
-}
-
-ST_CHR_STAT Inventory::GetEquipStat()
-{
-	return ST_CHR_STAT();
 }
