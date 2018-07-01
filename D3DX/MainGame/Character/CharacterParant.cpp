@@ -30,8 +30,8 @@ void CharacterParant::Move()
 	D3DXVec3TransformNormal(&m_vfront, &m_vfront, &matAngle);
 
 	if (INPUT->KeyPress('W'))
-	{
-		m_pCharacter->SetPosition(pos - m_vfront*0.1f);
+	{											  //요 값을 무브스피드로
+		m_pCharacter->SetPosition(pos - m_vfront * 0.1f);
 	}
 	if (INPUT->KeyPress('S'))
 	{
@@ -44,6 +44,16 @@ void CharacterParant::Move()
 	if (INPUT->KeyPress('D'))
 	{
 		m_pCharacter->GetRotation()->y += 0.05f;
+	}
+
+	if (INPUT->KeyDown('I'))
+	{
+		m_pInventory->OpenInventory();
+	}
+
+	if (INPUT->KeyDown('P'))
+	{
+		m_pInventory->OpenEquip();
 	}
 
 
@@ -69,13 +79,17 @@ CharacterParant::~CharacterParant()
 	SAFE_DELETE(m_pCharacter);
 }
 
-void CharacterParant::Init()
+void CharacterParant::Init(Map* map)
 {
-
+	m_pSampleMap = map;
+	
 	m_pCharacter->SetScale(D3DXVECTOR3(0.02, 0.02, 0.02));
 	D3DXVECTOR3 startPos = m_pSampleMap->GetSpawnPlayer();
 	startPos.y = 300.0f;
 	m_pCharacter->SetPosition(D3DXVECTOR3(startPos.x, m_pSampleMap->GetHeight(startPos), startPos.z));
+
+	
+	m_pInventory->CreateInventory(5,3);
 
 
 	CAMERA->SetMode(CAMERA_FOLLOW_HOLD);
@@ -87,9 +101,4 @@ void CharacterParant::Init()
 
 void CharacterParant::Render()
 {
-}
-
-void CharacterParant::SetMap(Map * map)
-{
-	m_pSampleMap = map;
 }
