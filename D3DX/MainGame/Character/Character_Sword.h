@@ -8,7 +8,7 @@ public:
 	virtual ~Character_Sword();
 
 
-	virtual void Init();
+	virtual void Init(Map* map);
 	virtual void Update();
 	virtual void Render();
 };
