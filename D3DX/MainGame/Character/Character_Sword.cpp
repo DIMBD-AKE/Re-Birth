@@ -1,6 +1,7 @@
 #include "../../stdafx.h"
 #include "Character_Sword.h"
 #include "../Map.h"
+#include "Inventory.h"
 
 
 Character_Sword::Character_Sword()
@@ -27,6 +28,8 @@ void Character_Sword::Update()
 		m_pCharacter->World();
 		m_pCharacter->Update();
 		Move();
+		ChangeAnimation();
+		m_pInventory->Update();
 	}
 	
 }
@@ -34,5 +37,16 @@ void Character_Sword::Update()
 void Character_Sword::Render()
 {
 	if (m_pCharacter)
+	{
 		m_pCharacter->Render();
+		m_pInventory->Render();
+	}
+}
+
+void Character_Sword::ChangeAnimation()
+{
+	if (m_bIsPressW)
+	{
+		m_pCharacter->SetAnimation("RUN");
+	}
 }

@@ -11,5 +11,6 @@ public:
 	virtual void Init(Map* map);
 	virtual void Update();
 	virtual void Render();
+	virtual void ChangeAnimation();
 };
 

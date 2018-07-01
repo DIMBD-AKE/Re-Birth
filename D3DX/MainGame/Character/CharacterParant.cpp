@@ -32,7 +32,9 @@ void CharacterParant::Move()
 	if (INPUT->KeyPress('W'))
 	{											  //요 값을 무브스피드로
 		m_pCharacter->SetPosition(pos - m_vfront * 0.1f);
+		m_bIsPressW = true;
 	}
+	
 	if (INPUT->KeyPress('S'))
 	{
 		m_pCharacter->SetPosition(pos + m_vfront * 0.1f);
@@ -47,14 +49,21 @@ void CharacterParant::Move()
 	}
 
 	//===============기능키 제어=====================//
-	if (INPUT->KeyDown('I'))
+	/*if (INPUT->KeyDown('I'))
 	{
 		m_pInventory->OpenInventory();
-	}
+	}*/
 	if (INPUT->KeyDown('P'))
 	{
 		m_pInventory->OpenEquip();
 	}
+	//==============임시 애니메이션 제어===================//
+	if (INPUT->KeyDown(VK_LBUTTON))
+	{
+		m_temp++;
+		m_pCharacter->SetAnimation(m_temp);
+	}
+
 
 
 	pos.y = 300.0f;
@@ -64,13 +73,23 @@ void CharacterParant::Move()
 	pos = *m_pCharacter->GetPosition();
 	m_pCharacter->SetPosition(D3DXVECTOR3(pos.x, temp, pos.z));
 
+
 }
+
+
 
 
 CharacterParant::CharacterParant()
 {
 	MODELMANAGER->AddModel("아린", "Model/Character/Arin/", "Arin.x", MODELTYPE_X);
-	MODELMANAGER->AddModel("아리토", "Model/Character/Arito/", "Arito.x", MODELTYPE_X);
+	MODELMANAGER->AddModel("아카날", "Model/Character/Aknal/", "Aknal.x", MODELTYPE_X);
+	//MODELMANAGER->AddModel("아리토", "Model/Character/Arito/", "Arito.x", MODELTYPE_X);
+	//MODELMANAGER->AddModel("에스타", "Model/Character/Esta/", "Esta.x", MODELTYPE_X);
+	MODELMANAGER->AddModel("헤스티아", "Model/Character/Hestia/", "Hestia.x", MODELTYPE_X);
+	MODELMANAGER->AddModel("메그너스", "Model/Character/Meguns/", "Meguns.x", MODELTYPE_X);
+	MODELMANAGER->AddModel("리아", "Model/Character/Riah/", "Riah.x", MODELTYPE_X);
+	MODELMANAGER->AddModel("스카디", "Model/Character/Skadi/", "Skadi.x", MODELTYPE_X);
+	//MODELMANAGER->AddModel("자일로", "Model/Character/Xylo/", "Xylo.x", MODELTYPE_X);
 }
 
 
@@ -88,6 +107,7 @@ void CharacterParant::Init(Map* map)
 	startPos.y = 300.0f;
 	m_pCharacter->SetPosition(D3DXVECTOR3(startPos.x, m_pSampleMap->GetHeight(startPos), startPos.z));
 
+	m_pInventory = new Inventory;
 	
 	m_pInventory->CreateInventory(5,3);
 
@@ -96,9 +116,17 @@ void CharacterParant::Init(Map* map)
 	CAMERA->SetCamOffset(D3DXVECTOR3(0, 5, 20));
 	CAMERA->SetTargetOffset(D3DXVECTOR3(0, 5, 0));
 	CAMERA->SetTarget(m_pCharacter->GetPosition(), m_pCharacter->GetRotation());
+
+	m_bIsPressW = false;
+	m_temp = 0;
 }
 
 
+
 void CharacterParant::Render()
+{
+}
+
+void CharacterParant::ChangeAnimation()
 {
 }
