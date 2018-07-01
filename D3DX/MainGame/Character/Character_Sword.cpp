@@ -12,11 +12,11 @@ Character_Sword::~Character_Sword()
 {
 }
 
-void Character_Sword::Init()
+void Character_Sword::Init(Map* map)
 {
 	m_pCharacter = MODELMANAGER->GetModel("¾Æ¸°", MODELTYPE_X);
 	
-	CharacterParant::Init();
+	CharacterParant::Init(map);
 
 }
 

@@ -2,6 +2,7 @@
 
 class TestItem;
 class Map;
+class Inventory;
 
 //캐릭터의 원형 클래스
 
@@ -19,7 +20,8 @@ enum ANIMATIONTYPE
 	ANI_SKILL,				//스킬공격
 	ANI_ATTACK,				//일반공격
 	ANI_DIE,				//죽음
-	ANI_HIT					//피격상태
+	ANI_HIT,				//피격상태
+	ANI_BATTLEREADY			//선택되었을때.
 };
 
 struct ST_CHR_STAT  //기본 캐릭터 스텟
@@ -48,6 +50,7 @@ protected:
 
 	Model*					m_pCharacter;		//캐릭터 맴버 변수 
 	Map*					m_pSampleMap;		//맵정보 받는 맴버 변수
+	Inventory *				m_pInventory;		//인벤토리용 변수
 
 	D3DXVECTOR3				m_vfront;			//이동을 위한 프론트벡터
 
@@ -56,12 +59,15 @@ protected:
 	void Move();
 	
 
+
+
+
 public:
 	CharacterParant();
 	virtual ~CharacterParant();
 
-	virtual void Init();
+	virtual void Init(Map* map);
 	virtual void Update() = 0;
 	virtual void Render();
-	void SetMap(Map* map);
+	
 };
