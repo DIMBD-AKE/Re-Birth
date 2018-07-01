@@ -100,9 +100,9 @@ void CameraManager::Update()
 			m_ptPrevMouse = MOUSE_POS;
 
 			vLookAt = *m_pTargetPos + m_vTargetOffset;
-			D3DXVec3TransformCoord(&vEye, &vEye, &matR);
-			D3DXVec3TransformCoord(&vCamOffset, &vCamOffset, &matR);
-			vEye = *m_pTargetPos + m_vCamOffset + m_vTargetOffset + vEye;
+			vCamOffset.y = 0;
+			D3DXVec3TransformCoord(&vEye, &(vEye + vCamOffset), &matR);
+			vEye = *m_pTargetPos + m_vTargetOffset + vEye;
 		}
 	}
 
