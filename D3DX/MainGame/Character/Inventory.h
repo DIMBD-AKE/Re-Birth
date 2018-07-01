@@ -29,21 +29,22 @@ enum EQUIPTYPE
 	EQUIP_END
 };
 
-struct ST_CHR_STAT;
-
 class Inventory
 {
 private:
 	typedef vector<TestItem*> InvRow;
 
 private:
+	LPDIRECT3DTEXTURE9	m_pSlotTex;
+
 	TestItem *		m_pHoldItem;
 
 	// 인벤토리
 	vector<InvRow>	m_vecInventory;
 	D3DXVECTOR2		m_vInvPos;
-	POINT			m_ptSlotSize;
-	int				m_nSlotSpacing;
+	POINT			m_ptInvSize;
+	float			m_fSlotSize;
+	float			m_fSlotSpacing;
 	bool			m_isInvShow;
 
 	// 장비
@@ -54,6 +55,7 @@ private:
 
 private:
 	void InitPos();
+	TestItem * PickItem();
 
 public:
 	Inventory();
@@ -69,6 +71,6 @@ public:
 	void Render();
 
 	TestItem * GetFirstItem();
-	ST_CHR_STAT GetEquipStat();
+	void GetEquipStat();
 };
 
