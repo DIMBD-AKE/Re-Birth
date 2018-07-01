@@ -191,9 +191,6 @@
     <ClCompile Include="MainGame\Character\CharacterParant.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="MainGame\Status.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="D3DX.rc">

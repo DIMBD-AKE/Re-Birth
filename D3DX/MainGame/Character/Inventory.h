@@ -29,6 +29,8 @@ enum EQUIPTYPE
 	EQUIP_END
 };
 
+union STATUS;
+
 class Inventory
 {
 private:
@@ -71,6 +73,6 @@ public:
 	void Render();
 
 	TestItem * GetFirstItem();
-	void GetEquipStat();
+	STATUS GetEquipStat();
 };
 

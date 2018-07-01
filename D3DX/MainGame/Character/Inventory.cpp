@@ -1,7 +1,7 @@
 #include "../../stdafx.h"
 #include "Inventory.h"
 #include "CharacterParant.h"
-
+#include "../Status.h"
 
 void Inventory::InitPos()
 {
@@ -56,7 +56,7 @@ void Inventory::CreateInventory(int col, int row)
 	for (int i = 0; i < EQUIP_END; i++)
 		m_pEquip[i] = NULL;
 
-	//m_pSlotTex = TEXTUREMANAGER->AddTexture("UI Inventory Slot", "UI/Inventory Slot.png");
+	m_pSlotTex = TEXTUREMANAGER->AddTexture("UI Inventory Slot", "UI/Inventory Slot.png");
 }
 
 void Inventory::Update()
@@ -71,6 +71,7 @@ void Inventory::Update()
 
 void Inventory::Render()
 {
+	SPRITE->Begin(D3DXSPRITE_ALPHABLEND);
 	if (m_isEquipShow)
 	{
 		
@@ -90,6 +91,7 @@ void Inventory::Render()
 			}
 		}
 	}
+	SPRITE->End();
 }
 
 TestItem * Inventory::GetFirstItem()
@@ -97,7 +99,7 @@ TestItem * Inventory::GetFirstItem()
 	return nullptr;
 }
 
-void Inventory::GetEquipStat()
+STATUS Inventory::GetEquipStat()
 {
-	
+	return STATUS();
 }
