@@ -50,7 +50,7 @@ protected:
 
 	Model*					m_pCharacter;		//캐릭터 맴버 변수 
 	Map*					m_pSampleMap;		//맵정보 받는 맴버 변수
-	Inventory*				m_pInventory;		//인벤토리용 변수
+	Inventory *				m_pInventory;		//인벤토리용 변수
 
 	D3DXVECTOR3				m_vfront;			//이동을 위한 프론트벡터
 
@@ -58,6 +58,9 @@ protected:
 	void SKill();
 	void Move();
 	
+
+
+
 
 public:
 	CharacterParant();

@@ -28,7 +28,7 @@ void CharacterParant::Move()
 
 	m_vfront = D3DXVECTOR3(0, 0, 1);
 	D3DXVec3TransformNormal(&m_vfront, &m_vfront, &matAngle);
-
+	//================움직임 제어===================//
 	if (INPUT->KeyPress('W'))
 	{											  //요 값을 무브스피드로
 		m_pCharacter->SetPosition(pos - m_vfront * 0.1f);
@@ -46,16 +46,15 @@ void CharacterParant::Move()
 		m_pCharacter->GetRotation()->y += 0.05f;
 	}
 
+	//===============기능키 제어=====================//
 	if (INPUT->KeyDown('I'))
 	{
 		m_pInventory->OpenInventory();
 	}
-
 	if (INPUT->KeyDown('P'))
 	{
 		m_pInventory->OpenEquip();
 	}
-
 
 
 	pos.y = 300.0f;
@@ -66,6 +65,7 @@ void CharacterParant::Move()
 	m_pCharacter->SetPosition(D3DXVECTOR3(pos.x, temp, pos.z));
 
 }
+
 
 CharacterParant::CharacterParant()
 {
