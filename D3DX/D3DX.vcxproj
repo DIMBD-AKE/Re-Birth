@@ -163,6 +163,10 @@
     <ClInclude Include="Framework\Struct.h" />
     <ClInclude Include="Framework\Util.h" />
     <ClInclude Include="Framework\Vertex.h" />
+    <ClInclude Include="MainGame\Character\CharacterParant.h" />
+    <ClInclude Include="MainGame\Character\Character_Gun.h" />
+    <ClInclude Include="MainGame\Character\Character_Magic.h" />
+    <ClInclude Include="MainGame\Character\Character_Sword.h" />
     <ClInclude Include="MainGame\Character\Inventory.h" />
     <ClInclude Include="MainGame\MainGame.h" />
     <ClInclude Include="D3DX.h" />
@@ -188,6 +192,10 @@
     <ClCompile Include="Framework\Parser\AseLoader.cpp" />
     <ClCompile Include="Framework\Parser\ObjLoader.cpp" />
     <ClCompile Include="Framework\Parser\SkinnedMesh.cpp" />
+    <ClCompile Include="MainGame\Character\CharacterParant.cpp" />
+    <ClCompile Include="MainGame\Character\Character_Gun.cpp" />
+    <ClCompile Include="MainGame\Character\Character_Magic.cpp" />
+    <ClCompile Include="MainGame\Character\Character_Sword.cpp" />
     <ClCompile Include="MainGame\Character\Inventory.cpp" />
     <ClCompile Include="MainGame\MainGame.cpp" />
     <ClCompile Include="D3DX.cpp" />
