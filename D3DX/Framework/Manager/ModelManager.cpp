@@ -310,9 +310,8 @@ ST_BOUNDBOX Model::GetBoundBox()
 	return box;
 }
 
-void Model::SetBoundSphere(D3DXVECTOR3 center, float radius)
+void Model::SetBoundSphere(float radius)
 {
-	m_stBoundSphere.center = center;
 	m_stBoundSphere.radius = radius;
 }
 
