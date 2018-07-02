@@ -66,10 +66,12 @@ void PathFind::Setup(vector<D3DXVECTOR3>& Vertex)
 	//이웃 만들어주기
 	for (int i = 0; i < m_vNaviCell.size(); i++)
 	{
-		MakeNeighborCell(m_vNaviCell[i].vertexCenter[0],i,m_vNaviCell[i].neighborCell[0]);
-		MakeNeighborCell(m_vNaviCell[i].vertexCenter[1], i, m_vNaviCell[i].neighborCell[1]);
-		MakeNeighborCell(m_vNaviCell[i].vertexCenter[2], i, m_vNaviCell[i].neighborCell[2]);
+		m_vNaviCell[i].neighborCell[0] = MakeNeighborCell(m_vNaviCell[i].vertexCenter[0],i);
+		m_vNaviCell[i].neighborCell[1] = MakeNeighborCell(m_vNaviCell[i].vertexCenter[1], i);
+		m_vNaviCell[i].neighborCell[2] = MakeNeighborCell(m_vNaviCell[i].vertexCenter[2], i);
 	}
+
+	int a = 10;
 	
 }
 
@@ -126,7 +128,7 @@ void PathFind::Render()
 	
 }
 
-void PathFind::MakeNeighborCell(D3DXVECTOR3 rayPos, int index,  OUT ST_CELL* neighborCell)
+ST_CELL* PathFind::MakeNeighborCell(D3DXVECTOR3 rayPos, int index)
 {
 	for (int i = 0; i < m_vNaviCell.size(); i++)
 	{
@@ -140,12 +142,12 @@ void PathFind::MakeNeighborCell(D3DXVECTOR3 rayPos, int index,  OUT ST_CELL* nei
 			&D3DXVECTOR3(0, -1, 0),
 			NULL, NULL, NULL))
 		{
-			neighborCell = &m_vNaviCell[i];
+			return &m_vNaviCell[i];
 
-			return;
+			//return;
 		}
 	}
 
-//	neighborCell = NULL;
+	return NULL;
 
 }

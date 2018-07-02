@@ -7,7 +7,7 @@ class MonsterParent;
 class MonsterManager
 {
 
-	GET(vector<MonsterParent>, m_vMM, MonsterManager);
+	GET(vector<MonsterParent*>, m_vMM, MonsterManager);
 	//vector<MonsterParent> m_vMM;
 
 public:
