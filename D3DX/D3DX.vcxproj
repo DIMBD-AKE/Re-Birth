@@ -163,7 +163,6 @@
     <ClInclude Include="Framework\Struct.h" />
     <ClInclude Include="Framework\Util.h" />
     <ClInclude Include="Framework\Vertex.h" />
-    <ClInclude Include="MainGame\Item\GunParent.h" />
     <ClInclude Include="MainGame\Item\ItemParent.h" />
     <ClInclude Include="MainGame\Character\CharacterParant.h" />
     <ClInclude Include="MainGame\Character\Character_Gun.h" />
@@ -184,11 +183,9 @@
     <ClInclude Include="Framework\Manager\SceneManager.h" />
     <ClInclude Include="MainGame\Scene\SC_Test.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="MainGame\Item\SwordParent.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Framework\Manager\TextureManager.h" />
     <ClInclude Include="Framework\Manager\TimeManager.h" />
-    <ClInclude Include="MainGame\Item\WandParent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework\Manager\CameraManager.cpp" />
@@ -198,7 +195,6 @@
     <ClCompile Include="Framework\Parser\AseLoader.cpp" />
     <ClCompile Include="Framework\Parser\ObjLoader.cpp" />
     <ClCompile Include="Framework\Parser\SkinnedMesh.cpp" />
-    <ClCompile Include="MainGame\Item\GunParent.cpp" />
     <ClCompile Include="MainGame\Item\ItemParent.cpp" />
     <ClCompile Include="MainGame\Character\CharacterParant.cpp" />
     <ClCompile Include="MainGame\Character\Character_Gun.cpp" />
@@ -223,8 +219,6 @@
     </ClCompile>
     <ClCompile Include="Framework\Manager\TextureManager.cpp" />
     <ClCompile Include="Framework\Manager\TimeManager.cpp" />
-    <ClCompile Include="MainGame\Item\SwordParent.cpp" />
-    <ClCompile Include="MainGame\Item\WandParent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="D3DX.rc" />
