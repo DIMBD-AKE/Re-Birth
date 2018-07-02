@@ -37,7 +37,7 @@ union STATUS
 
 struct ST_DAMAGE
 {
-	int		nDamage;
+	float	fDamage;
 	float	fPhyRate;
 	float	fMagicRate;
 	float	fCheRate;

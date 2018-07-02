@@ -29,6 +29,7 @@ class Model
 	virtual void Render() = 0;
 
 	// OBJ 파일 전용
+	SYNTHESIZE(bool, m_isAlpha, Alpha);
 	virtual bool IsDetailPick(Ray ray) { return false; }
 
 	// X 파일 전용
@@ -50,8 +51,10 @@ public:
 
 	void SetBoundBox(D3DXVECTOR3 pos, D3DXVECTOR3 scale);
 	ST_BOUNDBOX GetBoundBox();
+	ST_BOUNDBOX GetOrigBoundBox() { return m_stBoundBox; }
 	void SetBoundSphere(D3DXVECTOR3 center, float radius);
 	ST_SPHERE GetBoundSphere();
+	ST_SPHERE GetOrigBoundSphere() { return m_stBoundSphere; }
 
 	bool IsPickBoundBox(Ray ray, float * dist);
 	bool IsPickBoundSphere(Ray ray, float * dist);

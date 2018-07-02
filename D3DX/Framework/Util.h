@@ -46,6 +46,45 @@ public:
 		return ret;
 	}
 
+	static float Clamp(float min, float max, float value)
+	{
+		if (value < min) value = min;
+		if (value > max) value = max;
+		return value;
+	}
+
+	static float Overflow(float min, float max, float value)
+	{
+		if (value > max)
+			value -= (int)(value / max) * max;
+		if (value < min)
+			value += (int)(value / max) * max;
+		return value;
+	}
+
+	static D3DXVECTOR3 Linear(D3DXVECTOR3 v0, D3DXVECTOR3 v1, float t)
+	{
+		t = Clamp(0, 1, t);
+		return (1 - t) * v0 + t * v1;
+	}
+
+	static D3DXVECTOR3 Bezier2(D3DXVECTOR3 v0, D3DXVECTOR3 v1, D3DXVECTOR3 v2, float t)
+	{
+		t = Clamp(0, 1, t);
+		return pow(1 - t, 2) * v0 +
+			2 * t *(1 - t) * v1 +
+			pow(t, 2) * v2;
+	}
+
+	static D3DXVECTOR3 Bezier3(D3DXVECTOR3 v0, D3DXVECTOR3 v1, D3DXVECTOR3 v2, D3DXVECTOR3 v3, float t)
+	{
+		t = Clamp(0, 1, t);
+		return v0 * pow(1 - t, 3) +
+			3 * v1 * t * pow(1 - t, 2) +
+			3 * v2 * pow(t, 2) * (1 - t) +
+			v3 * pow(t, 3);
+	}
+
 	static D3DXVECTOR2 Convert3DTo2D(D3DXVECTOR3 v)
 	{
 		D3DXMATRIX proj, view, world;

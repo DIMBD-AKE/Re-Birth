@@ -38,12 +38,13 @@ private:
 
 private:
 	LPDIRECT3DTEXTURE9	m_pSlotTex;
-
 	TestItem *		m_pHoldItem;
+	POINT			m_ptPrevMouse;
+	POINT			m_ptStartPos;
 
 	// 인벤토리
 	vector<InvRow>	m_vecInventory;
-	D3DXVECTOR2		m_vInvPos;
+	POINT			m_vInvPos;
 	POINT			m_ptInvSize;
 	POINT			m_ptSlotSize;
 	float			m_fSlotSpacing;
@@ -51,9 +52,8 @@ private:
 
 	// 장비
 	TestItem *		m_pEquip[EQUIP_END];
-	D3DXVECTOR2		m_vEquipPos;
+	POINT			m_vEquipPos;
 	bool			m_isEquipShow;
-
 
 private:
 	void InitPos();

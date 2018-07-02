@@ -49,8 +49,27 @@ void PathFind::Setup(vector<D3DXVECTOR3>& Vertex)
 			m_vNaviCell[index].arrivalCost[j] = D3DXVec3Length(&m_vNaviCell[index].vertexCenter[j]);
 		}										 
 
+		index++;
 	}
 
+	
+
+	//인접한 삼각형 기본 NULL 초기화
+	for (int i = 0; i < m_vNaviCell.size(); i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			m_vNaviCell[i].neighborCell[j] = NULL;
+		}
+	}
+
+	//이웃 만들어주기
+	for (int i = 0; i < m_vNaviCell.size(); i++)
+	{
+		MakeNeighborCell(m_vNaviCell[i].vertexCenter[0],i,m_vNaviCell[i].neighborCell[0]);
+		MakeNeighborCell(m_vNaviCell[i].vertexCenter[1], i, m_vNaviCell[i].neighborCell[1]);
+		MakeNeighborCell(m_vNaviCell[i].vertexCenter[2], i, m_vNaviCell[i].neighborCell[2]);
+	}
 	
 }
 
@@ -105,4 +124,28 @@ void PathFind::Render()
 	TEXT->Render();
 	//넣을 문자열, 좌표, 글자 크기
 	
+}
+
+void PathFind::MakeNeighborCell(D3DXVECTOR3 rayPos, int index,  OUT ST_CELL* neighborCell)
+{
+	for (int i = 0; i < m_vNaviCell.size(); i++)
+	{
+		if (i == index) continue;
+
+		if (D3DXIntersectTri(
+			&m_vNaviCell[i].vertex[0],
+			&m_vNaviCell[i].vertex[1],
+			&m_vNaviCell[i].vertex[2],
+			&D3DXVECTOR3(rayPos.x, 10000, rayPos.z),
+			&D3DXVECTOR3(0, -1, 0),
+			NULL, NULL, NULL))
+		{
+			neighborCell = &m_vNaviCell[i];
+
+			return;
+		}
+	}
+
+//	neighborCell = NULL;
+
 }

@@ -51,6 +51,7 @@ Model * ModelManager::GetModel(string keyName, MODELTYPE type)
 			obj->Setup(data);
 			obj->CreateBound(data->size);
 			obj->SetKeyName(keyName);
+			obj->SetAlpha(data->alpha);
 			return obj;
 		}
 	}

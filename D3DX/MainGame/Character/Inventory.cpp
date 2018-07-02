@@ -7,8 +7,8 @@ void Inventory::InitPos()
 {
 	m_fSlotSpacing = 5;
 
-	m_vInvPos = D3DXVECTOR2(0, 0);
-	m_vEquipPos = D3DXVECTOR2(0, 0);
+	m_vInvPos.x = m_vInvPos.y = 0;
+	m_vEquipPos.x = m_vEquipPos.y = 0;
 }
 
 TestItem * Inventory::PickItem()
@@ -63,9 +63,25 @@ void Inventory::CreateInventory(int col, int row)
 
 void Inventory::Update()
 {
-	if (INPUT->KeyDown(VK_LBUTTON))
+	if (INPUT->KeyDown(VK_RBUTTON))
 	{
+		m_ptPrevMouse = MOUSE_POS;
+		m_ptStartPos = m_vInvPos;
+	}
 
+	if (INPUT->KeyPress(VK_RBUTTON))
+	{
+		RECT rc;
+		rc.left = m_vInvPos.x;
+		rc.top = m_vInvPos.y;
+		rc.right = rc.left + m_fSlotSpacing + (m_ptSlotSize.x + m_fSlotSpacing) * m_ptInvSize.x;
+		rc.bottom = rc.top + m_fSlotSpacing + (m_ptSlotSize.y + m_fSlotSpacing) * m_ptInvSize.y;
+		// 인벤토리 움직임
+		if (PtInRect(&rc, MOUSE_POS))
+		{
+			m_vInvPos.x = m_ptStartPos.x + MOUSE_POS.x - m_ptPrevMouse.x;
+			m_vInvPos.y = m_ptStartPos.y + MOUSE_POS.y - m_ptPrevMouse.y;
+		}
 	}
 }
 
