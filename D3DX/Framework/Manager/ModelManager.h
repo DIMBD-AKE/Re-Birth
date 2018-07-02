@@ -50,8 +50,10 @@ public:
 
 	void SetBoundBox(D3DXVECTOR3 pos, D3DXVECTOR3 scale);
 	ST_BOUNDBOX GetBoundBox();
-	void SetBoundSphere(float radius);
+	ST_BOUNDBOX GetOrigBoundBox() { return m_stBoundBox; }
+	void SetBoundSphere(D3DXVECTOR3 center, float radius);
 	ST_SPHERE GetBoundSphere();
+	ST_SPHERE GetOrigBoundSphere() { return m_stBoundSphere; }
 
 	bool IsPickBoundBox(Ray ray, float * dist);
 	bool IsPickBoundSphere(Ray ray, float * dist);
