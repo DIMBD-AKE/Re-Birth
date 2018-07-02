@@ -63,8 +63,6 @@ void Inventory::CreateInventory(int col, int row)
 
 void Inventory::Update()
 {
-	if (INPUT->KeyDown('I'))
-		OpenInventory();
 	if (INPUT->KeyDown(VK_LBUTTON))
 	{
 
