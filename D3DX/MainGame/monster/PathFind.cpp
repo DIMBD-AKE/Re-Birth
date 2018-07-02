@@ -49,8 +49,22 @@ void PathFind::Setup(vector<D3DXVECTOR3>& Vertex)
 			m_vNaviCell[index].arrivalCost[j] = D3DXVec3Length(&m_vNaviCell[index].vertexCenter[j]);
 		}										 
 
+		index++;
 	}
 
+	
+
+	//인접한 삼각형 기본 NULL 초기화
+	for (int i = 0; i < m_vNaviCell.size(); i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			m_vNaviCell[i].neighborCell[j] = NULL;
+		}
+	}
+
+	//이웃 만들어주기
+	MakeNeighborCell();
 	
 }
 
@@ -105,4 +119,12 @@ void PathFind::Render()
 	TEXT->Render();
 	//넣을 문자열, 좌표, 글자 크기
 	
+}
+
+void PathFind::MakeNeighborCell()
+{
+	for (int i = 0; i < m_vNaviCell.size(); i++)
+	{
+
+	}
 }

@@ -6,8 +6,9 @@ struct ST_CELL
 	D3DXVECTOR3 center;			//삼각형의 센터
 	D3DXVECTOR3 vertexCenter[3]; //사이드 라인의 중점
 
-	float arrivalCost[3];
+	float arrivalCost[3];		//중점 - 사이드간 거리
 
+	ST_CELL* neighborCell[3];	//나랑 이웃한 삼각형의 포인터
 };
 
 class PathFind
@@ -21,5 +22,7 @@ public:
 	void Setup(vector<D3DXVECTOR3>& Vertex);
 	void Update();
 	void Render();
+
+	void MakeNeighborCell();
 };
 
