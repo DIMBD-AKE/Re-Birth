@@ -4,6 +4,10 @@
 
 MonsterManager::MonsterManager()
 {
+	MonsterParent* test;
+	test = new MonsterParent;
+
+	m_vMM.push_back(test);
 }
 
 
