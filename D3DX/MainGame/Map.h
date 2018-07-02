@@ -8,6 +8,7 @@ private:
 	GET(D3DXVECTOR3, m_vSpawnPlayer, SpawnPlayer);
 	GET(D3DXVECTOR3, m_vSpawnBoss, SpawnBoss);
 	GET(vector<D3DXVECTOR3>, m_vecSpawnEnemy, SpawnEnemy);
+	GET(vector<D3DXVECTOR3>, m_vecSurface, NavMesh);
 
 	vector<ST_PNT_VERTEX>	m_vecTerrain;
 	vector<DWORD>			m_vecIndex;
@@ -16,7 +17,6 @@ private:
 	LPD3DXMESH				m_pSkyboxMesh;
 	LPDIRECT3DTEXTURE9		m_pSkyboxTex;
 
-	vector<D3DXVECTOR3>		m_vecSurface;
 	LPDIRECT3DTEXTURE9		m_pTexture;
 	D3DMATERIAL9			m_mtl;
 

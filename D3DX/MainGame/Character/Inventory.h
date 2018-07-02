@@ -45,7 +45,7 @@ private:
 	vector<InvRow>	m_vecInventory;
 	D3DXVECTOR2		m_vInvPos;
 	POINT			m_ptInvSize;
-	float			m_fSlotSize;
+	POINT			m_ptSlotSize;
 	float			m_fSlotSpacing;
 	bool			m_isInvShow;
 

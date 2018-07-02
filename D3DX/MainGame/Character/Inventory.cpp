@@ -5,7 +5,6 @@
 
 void Inventory::InitPos()
 {
-	m_fSlotSize = 50;
 	m_fSlotSpacing = 5;
 
 	m_vInvPos = D3DXVECTOR2(0, 0);
@@ -19,10 +18,10 @@ TestItem * Inventory::PickItem()
 		for (int j = 0; j < m_ptInvSize.x; j++)
 		{
 			RECT rc;
-			rc.left = m_vInvPos.x + (m_fSlotSize + m_fSlotSize) * j;
-			rc.top = m_vInvPos.y + (m_fSlotSize + m_fSlotSize) * i;
-			rc.right = rc.left + m_fSlotSize;
-			rc.bottom = rc.top + m_fSlotSize;
+			rc.left = m_fSlotSpacing + m_vInvPos.x + (m_ptSlotSize.x + m_fSlotSpacing) * j;
+			rc.top = m_fSlotSpacing + m_vInvPos.y + (m_ptSlotSize.y + m_fSlotSpacing) * i;
+			rc.right = rc.left + m_ptSlotSize.x;
+			rc.bottom = rc.top + m_ptSlotSize.y;
 			if (PtInRect(&rc, MOUSE_POS))
 			{
 				return m_vecInventory[i][j];
@@ -57,6 +56,9 @@ void Inventory::CreateInventory(int col, int row)
 		m_pEquip[i] = NULL;
 
 	m_pSlotTex = TEXTUREMANAGER->AddTexture("UI Inventory Slot", "UI/Inventory Slot.png");
+	D3DXIMAGE_INFO info = TEXTUREMANAGER->GetInfo("UI Inventory Slot");
+	m_ptSlotSize.x = info.Width;
+	m_ptSlotSize.y = info.Height;
 }
 
 void Inventory::Update()
@@ -83,10 +85,9 @@ void Inventory::Render()
 		{
 			for (int j = 0; j < m_ptInvSize.x; j++)
 			{
-				D3DXVECTOR3 pos;
-				pos.x = m_vInvPos.x + (m_fSlotSize + m_fSlotSize) * j;
-				pos.y = m_vInvPos.y + (m_fSlotSize + m_fSlotSize) * i;
-				pos.z = 0;
+				D3DXVECTOR3 pos = D3DXVECTOR3(0, 0, 0);
+				pos.x = m_fSlotSpacing + m_vInvPos.x + (m_ptSlotSize.x + m_fSlotSpacing) * j;
+				pos.y = m_fSlotSpacing + m_vInvPos.y + (m_ptSlotSize.y + m_fSlotSpacing) * i;
 				SPRITE->Draw(m_pSlotTex, NULL, NULL, &pos, 0xFFFFFFFF);
 			}
 		}
