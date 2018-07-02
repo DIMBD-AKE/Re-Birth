@@ -23,6 +23,7 @@ public:
 	void Update();
 	void Render();
 
-	void MakeNeighborCell();
+							//사이드의 중점		자기자신	집어넣을 그릇
+	void MakeNeighborCell(D3DXVECTOR3 rayPos, int index, OUT ST_CELL* neighborCell);
 };
 
