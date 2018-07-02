@@ -4,6 +4,7 @@ struct ST_MATERIAL
 {
 	D3DMATERIAL9 m;
 	LPDIRECT3DTEXTURE9 t;
+	bool a;
 };
 
 struct ST_OBJECT

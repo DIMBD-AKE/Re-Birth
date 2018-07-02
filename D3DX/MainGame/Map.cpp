@@ -235,6 +235,7 @@ void Map::Load(string mapPath)
 		Setup();
 
 	char line[256];
+	vector<Model*> vecModel;
 	while (true)
 	{
 		fgets(line, 256, fp);
@@ -262,7 +263,7 @@ void Map::Load(string mapPath)
 			model->SetScale(s);
 			model->SetBlend(b);
 			model->World();
-			m_vecModel.push_back(model);
+			vecModel.push_back(model);
 		}
 
 		if (tok[0] == 't')
@@ -377,6 +378,14 @@ void Map::Load(string mapPath)
 		D3DXMESHOPT_VERTEXCACHE,
 		&adjBuffer[0],
 		NULL, NULL, NULL);
+
+	for (int i = 0; i < vecModel.size(); i++)
+		if (!vecModel[i]->GetAlpha())
+			m_vecModel.push_back(vecModel[i]);
+
+	for (int i = 0; i < vecModel.size(); i++)
+		if (vecModel[i]->GetAlpha())
+			m_vecModel.push_back(vecModel[i]);
 }
 
 void Map::Render()

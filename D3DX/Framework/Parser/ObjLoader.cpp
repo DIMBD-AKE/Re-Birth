@@ -199,7 +199,11 @@ ST_OBJECT* ObjLoader::Load(string path, string fileName)
 
 	auto iter = m_mMat.begin();
 	for (; iter != m_mMat.end(); iter++)
+	{
 		obj->mat.push_back(iter->second);
+		if (iter->second.a)
+			obj->alpha = true;
+	}
 
 	return obj;
 }
@@ -254,6 +258,7 @@ map<string, ST_MATERIAL> ObjLoader::LoadMtlLib(string path, string fileName)
 			string t = path + mapT;
 			if (strcmp(mapT, "") != 0)
 				m.t = TEXTUREMANAGER->AddTexture(mapT, t);
+			m.a = TEXTUREMANAGER->GetInfo(mapT).Format == D3DFMT_A8R8G8B8;
 			ret.insert(make_pair(name, m));
 			ZeroMemory(&mat, sizeof(D3DMATERIAL9));
 		}

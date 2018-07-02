@@ -29,6 +29,7 @@ class Model
 	virtual void Render() = 0;
 
 	// OBJ 파일 전용
+	SYNTHESIZE(bool, m_isAlpha, Alpha);
 	virtual bool IsDetailPick(Ray ray) { return false; }
 
 	// X 파일 전용
