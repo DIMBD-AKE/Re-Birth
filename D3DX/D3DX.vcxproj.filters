@@ -126,6 +126,15 @@
     <ClInclude Include="MainGame\Item\PotionParent.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="MainGame\Item\SwordParent.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="MainGame\Item\WandParent.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="MainGame\Item\GunParent.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -207,6 +216,15 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="MainGame\Item\PotionParent.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="MainGame\Item\SwordParent.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="MainGame\Item\WandParent.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="MainGame\Item\GunParent.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
