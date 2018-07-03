@@ -125,7 +125,7 @@ void CharacterParant::Init(Map* map, CHARSELECT order)
 	box.lowY = 10.0f;
 	box.lowZ = -50.0f;
 
-
+	/* Model*					m_pCharacter;	 */
 	
 
 
