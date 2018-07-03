@@ -40,24 +40,22 @@ void CharacterParant::Move()
 	}
 	//달리는모션
 	if (m_eCondition == CHAR_RUN)
-	{												//이동속도
-		m_pCharacter->SetPosition(pos - m_vfront *	0.7f);
-	}
-
-	/*if (m_pSampleMap)
-	{
-		if (m_pSampleMap->GetHeight(pos))
+	{		
+		if (m_pSampleMap->GetHeight(pos.x, pos.z) - m_vfront.y *0.7 >= 0)
 		{
-			m_pCharacter->SetPosition(pos);
+			m_pCharacter->SetPosition(pos - m_vfront * 0.7f);
+		}
+		else
+		{
+
 		}
 	}
 
-	*/
-	pos = *m_pCharacter->GetPosition();
-	pos.y = 300.0f;
+	//pos = *m_pCharacter->GetPosition();
+	//pos.y = 300.0f;
 
-	float temp = m_pSampleMap->GetHeight(pos.x, pos.z);
-	m_pCharacter->SetPosition(D3DXVECTOR3(pos.x, temp, pos.z));
+	/*float temp = m_pSampleMap->GetHeight(pos.x, pos.z);
+	m_pCharacter->SetPosition(D3DXVECTOR3(pos.x, temp, pos.z));*/
 }
 
 void CharacterParant::Controller()
