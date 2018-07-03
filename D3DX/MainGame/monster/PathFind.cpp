@@ -200,10 +200,6 @@ ST_CELL* PathFind::SubMakeNeighborCell(int myCellIndex, int linkCellIndex)
 	//0.1배화
 	dir = dir * 0.1f;
 
-	//D3DXMATRIX matT;
-	//D3DXMatrixTranslation(&matT,dir.x, dir.y, dir.z);
-
-	//D3DXVec3TransformCoord(&rayPos, &rayPos, &matT);
 	//레이의 위치에서 아주 약간 앞으로 이동
 	rayPos = rayPos + dir;
 	rayPos.y = 10000;
