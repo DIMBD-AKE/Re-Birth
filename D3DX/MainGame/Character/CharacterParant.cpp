@@ -56,7 +56,7 @@ void CharacterParant::Move()
 	pos = *m_pCharacter->GetPosition();
 	pos.y = 300.0f;
 
-	float temp = m_pSampleMap->GetHeight(pos);
+	float temp = m_pSampleMap->GetHeight(pos.x, pos.z);
 	m_pCharacter->SetPosition(D3DXVECTOR3(pos.x, temp, pos.z));
 }
 
@@ -118,7 +118,7 @@ void CharacterParant::Init(Map* map, CHARSELECT order)
 	m_pCharacter->SetScale(D3DXVECTOR3(0.02, 0.02, 0.02));
 	D3DXVECTOR3 startPos = m_pSampleMap->GetSpawnPlayer();
 	startPos.y = 300.0f;
-	m_pCharacter->SetPosition(D3DXVECTOR3(startPos.x, m_pSampleMap->GetHeight(startPos), startPos.z));
+	m_pCharacter->SetPosition(D3DXVECTOR3(startPos.x, m_pSampleMap->GetHeight(startPos.x, startPos.z), startPos.z));
 
 	//인벤토리
 	m_pInventory = new Inventory;

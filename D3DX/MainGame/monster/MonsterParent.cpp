@@ -86,7 +86,7 @@ void MonsterParent::Respawn(D3DXVECTOR3 spawnPos)
 	m_eState = MS_IDLE;
 	ChangeAni();
 
-	spawnPos.y = 300.f;
+	
 
-	m_pModel->SetPosition(D3DXVECTOR3(spawnPos.x, m_pMap->GetHeight(spawnPos), spawnPos.z));
+	m_pModel->SetPosition(D3DXVECTOR3(spawnPos.x, m_pMap->GetHeight(spawnPos.x, spawnPos.z), spawnPos.z));
 }

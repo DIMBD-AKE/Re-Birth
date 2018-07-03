@@ -43,7 +43,7 @@ void SC_Test::Init()
 	
 	
 	D3DXVECTOR3 startPos = m_pSampleMap->GetSpawnPlayer();
-	float y = m_pSampleMap->GetHeight(D3DXVECTOR3(startPos.x, 256, startPos.z));
+	float y = m_pSampleMap->GetHeight(startPos.x, startPos.z);
 	
 
 	

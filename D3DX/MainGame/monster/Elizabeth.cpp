@@ -37,9 +37,9 @@ void Elizabeth::Setup(Map* map, D3DXVECTOR3 spawnPos)
 	//스캐일링 먹이면 안나오는건지 이상한곳에 나오는건지 몰라서 일단 주석처리
 	m_pModel->SetScale(D3DXVECTOR3(0.02f, 0.02f, 0.02f));
 
-	spawnPos.y = 300.f;
+	
 
-	m_pModel->SetPosition(D3DXVECTOR3(spawnPos.x, m_pMap->GetHeight(spawnPos), spawnPos.z));
+	m_pModel->SetPosition(D3DXVECTOR3(spawnPos.x, m_pMap->GetHeight(spawnPos.x, spawnPos.z), spawnPos.z));
 
 	m_pModel->CreateBound(box);
 	m_pModel->SetBoundSphere(m_pModel->GetOrigBoundSphere().center, 100.0f);
