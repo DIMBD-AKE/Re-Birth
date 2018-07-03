@@ -1,22 +1,6 @@
 #pragma once
 
-class TestItem
-{
-public:
-	TestItem() {}
-	~TestItem() {}
-	string sName;
-	string sDesc;
-	int nId;
-	float fPower;
-	float fSpeed;
-	float fDelay;
-
-	void Attack() {}
-	void Skill1() {}
-	void Skill2() {}
-	void Render() {}
-};
+class ItemParent;
 
 enum EQUIPTYPE
 {
@@ -34,11 +18,17 @@ union STATUS;
 class Inventory
 {
 private:
-	typedef vector<TestItem*> InvRow;
+	typedef vector<ItemParent*> InvRow;
 
 private:
 	LPDIRECT3DTEXTURE9	m_pSlotTex;
-	TestItem *		m_pHoldItem;
+	LPDIRECT3DTEXTURE9	m_pInvTex;
+
+	// 홀드 아이템 정보
+	ItemParent *		m_pHoldItem;
+	POINT			m_ptHIIndex;
+	EQUIPTYPE		m_eHIType;
+
 	POINT			m_ptPrevMouse;
 	POINT			m_ptStartPos;
 
@@ -46,18 +36,19 @@ private:
 	vector<InvRow>	m_vecInventory;
 	POINT			m_vInvPos;
 	POINT			m_ptInvSize;
-	POINT			m_ptSlotSize;
+	float			m_fSlotSize;
 	float			m_fSlotSpacing;
 	bool			m_isInvShow;
 
 	// 장비
-	TestItem *		m_pEquip[EQUIP_END];
+	ItemParent *		m_pEquip[EQUIP_END];
 	POINT			m_vEquipPos;
 	bool			m_isEquipShow;
 
 private:
 	void InitPos();
-	TestItem * PickItem();
+	void PickItem();
+	void ChangeItem();
 
 public:
 	Inventory();
@@ -72,7 +63,8 @@ public:
 	void Update();
 	void Render();
 
-	TestItem * GetFirstItem();
+	ItemParent * GetFirstItem();
 	STATUS GetEquipStat();
+	bool AddItem(ItemParent item);
 };
 
