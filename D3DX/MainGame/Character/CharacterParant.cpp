@@ -39,11 +39,15 @@ void CharacterParant::Move()
 		m_pCharacter->GetRotation()->y += 0.05f;
 	}
 	//달리는모션
+	D3DXVECTOR3 vPos = *m_pCharacter->GetPosition();
 	if (m_eCondition == CHAR_RUN)
-	{		
-		if (m_pSampleMap->GetHeight(pos.x, pos.z) - m_vfront.y *0.7 >= 0)
+	{
+
+		float height = m_pSampleMap->GetHeight(pos.x - m_vfront.x *0.7, pos.z - m_vfront.z *0.7);
+		if(height >=0)
 		{
-			m_pCharacter->SetPosition(pos - m_vfront * 0.7f);
+			pos.y = height;
+			m_pCharacter->SetPosition(pos - m_vfront * 0.7);
 		}
 		else
 		{
