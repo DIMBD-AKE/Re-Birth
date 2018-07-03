@@ -8,9 +8,9 @@ public:
 	virtual ~Character_Sword();
 
 
-	virtual void Init(Map* map);
+	virtual void Init(Map* map, CHARSELECT order);
 	virtual void Update();
 	virtual void Render();
-	virtual void ChangeAnimation();
+	virtual void CalActionFrame();
 };
 

@@ -2,6 +2,7 @@
 #include "CharacterParant.h"
 #include "Inventory.h"
 #include "../Map.h"
+#include "../Status.h"
 
 
 void CharacterParant::SKill()
@@ -16,10 +17,8 @@ void CharacterParant::Move()
 
 	D3DXVECTOR3 pos = *m_pCharacter->GetPosition();
 	D3DXVECTOR3 rot = *m_pCharacter->GetRotation();
-//	if (INPUT->KeyPress(VK_UP))		pos.z += 0.2;
-//	if (INPUT->KeyPress(VK_DOWN))	pos.z -= 0.2;
-	if (INPUT->KeyPress(VK_LEFT))	rot.y -= 0.05;
-	if (INPUT->KeyPress(VK_RIGHT))	rot.y += 0.05;
+	//if (INPUT->KeyPress(VK_LEFT))	rot.y -= 0.05;
+	//if (INPUT->KeyPress(VK_RIGHT))	rot.y += 0.05;
 
 
 
@@ -29,16 +28,19 @@ void CharacterParant::Move()
 	m_vfront = D3DXVECTOR3(0, 0, 1);
 	D3DXVec3TransformNormal(&m_vfront, &m_vfront, &matAngle);
 	//================움직임 제어===================//
-	if (INPUT->KeyPress('W'))
+	/*if (INPUT->KeyPress('W'))
 	{											  //요 값을 무브스피드로
 		m_pCharacter->SetPosition(pos - m_vfront * 0.1f);
-		m_bIsPressW = true;
+		m_bIsRun = true;
+		if (m_bIsRun)
+		{
+			m_eCondition = CHAR_RUN;
+		}
 	}
-	
 	if (INPUT->KeyPress('S'))
 	{
 		m_pCharacter->SetPosition(pos + m_vfront * 0.1f);
-	}
+	}*/
 	if (INPUT->KeyPress('A'))
 	{
 		m_pCharacter->GetRotation()->y -= 0.05f;
@@ -47,28 +49,24 @@ void CharacterParant::Move()
 	{
 		m_pCharacter->GetRotation()->y += 0.05f;
 	}
-
-	//===============기능키 제어=====================//
-	/*if (INPUT->KeyDown('I'))
+	if (m_eCondition == CHAR_RUN)
 	{
-		m_pInventory->OpenInventory();
-	}*/
-	if (INPUT->KeyDown('P'))
-	{
-		m_pInventory->OpenEquip();
-	}
-	//==============임시 애니메이션 제어===================//
-	if (INPUT->KeyDown(VK_LBUTTON))
-	{
-		m_temp++;
-		m_pCharacter->SetAnimation(m_temp);
+		m_pCharacter->SetPosition(pos - m_vfront * 0.1f);
 	}
 
-
+	////==============임시 애니메이션 제어===================//
+	//if (INPUT->KeyDown(VK_LBUTTON))
+	//{
+	//	m_temp++;
+	//	m_pCharacter->SetAnimation(m_temp);
+	//	if (m_temp > 5)
+	//	{
+	//		m_temp = 0;
+	//	}
+	//}
 
 	pos.y = 300.0f;
 	float temp = m_pSampleMap->GetHeight(pos);
-
 
 	pos = *m_pCharacter->GetPosition();
 	m_pCharacter->SetPosition(D3DXVECTOR3(pos.x, temp, pos.z));
@@ -76,20 +74,36 @@ void CharacterParant::Move()
 
 }
 
+void CharacterParant::Controller()
+{
+	//===============기능키 제어=====================//
+	if (INPUT->KeyDown('I'))
+	{
+		m_pInventory->OpenInventory();
+	}
+	if (INPUT->KeyDown('P'))
+	{
+		m_pInventory->OpenEquip();
+	}
+	
+}
 
+void CharacterParant::Debug()
+{
+}
 
 
 CharacterParant::CharacterParant()
 {
 	MODELMANAGER->AddModel("아린", "Model/Character/Arin/", "Arin.x", MODELTYPE_X);
 	MODELMANAGER->AddModel("아카날", "Model/Character/Aknal/", "Aknal.x", MODELTYPE_X);
-	//MODELMANAGER->AddModel("아리토", "Model/Character/Arito/", "Arito.x", MODELTYPE_X);
-	//MODELMANAGER->AddModel("에스타", "Model/Character/Esta/", "Esta.x", MODELTYPE_X);
 	MODELMANAGER->AddModel("헤스티아", "Model/Character/Hestia/", "Hestia.x", MODELTYPE_X);
 	MODELMANAGER->AddModel("메그너스", "Model/Character/Meguns/", "Meguns.x", MODELTYPE_X);
 	MODELMANAGER->AddModel("리아", "Model/Character/Riah/", "Riah.x", MODELTYPE_X);
 	MODELMANAGER->AddModel("스카디", "Model/Character/Skadi/", "Skadi.x", MODELTYPE_X);
 	//MODELMANAGER->AddModel("자일로", "Model/Character/Xylo/", "Xylo.x", MODELTYPE_X);
+	//MODELMANAGER->AddModel("아리토", "Model/Character/Arito/", "Arito.x", MODELTYPE_X);
+	//MODELMANAGER->AddModel("에스타", "Model/Character/Esta/", "Esta.x", MODELTYPE_X);
 }
 
 
@@ -98,27 +112,48 @@ CharacterParant::~CharacterParant()
 	SAFE_DELETE(m_pCharacter);
 }
 
-void CharacterParant::Init(Map* map)
+void CharacterParant::Init(Map* map, CHARSELECT order)
 {
 	m_pSampleMap = map;
 	
+	//TODO : 바운딩 박스 만들기 (캐릭터 크기마다 일일히 입력해주자
+	ST_SIZEBOX box;
+	box.highX = 50.0f;
+	box.highY = 180.0f;
+	box.highZ = 50.0f;
+	box.lowX = -50.0f;
+	box.lowY = 10.0f;
+	box.lowZ = -50.0f;
+
+
+	
+
+
 	m_pCharacter->SetScale(D3DXVECTOR3(0.02, 0.02, 0.02));
 	D3DXVECTOR3 startPos = m_pSampleMap->GetSpawnPlayer();
 	startPos.y = 300.0f;
 	m_pCharacter->SetPosition(D3DXVECTOR3(startPos.x, m_pSampleMap->GetHeight(startPos), startPos.z));
 
+	//인벤토리
 	m_pInventory = new Inventory;
-	
 	m_pInventory->CreateInventory(5,3);
 
+	//TODO : 바운딩 박스 만들기 (캐릭터 크기마다 일일히 입력해주자
+	m_pCharacter->CreateBound(box);
+	m_pCharacter->SetBoundSphere(m_pCharacter->GetOrigBoundSphere().center, 100.0f);
 
 	CAMERA->SetMode(CAMERA_FOLLOW_HOLD);
 	CAMERA->SetCamOffset(D3DXVECTOR3(0, 5, 20));
 	CAMERA->SetTargetOffset(D3DXVECTOR3(0, 5, 0));
 	CAMERA->SetTarget(m_pCharacter->GetPosition(), m_pCharacter->GetRotation());
 
-	m_bIsPressW = false;
+	
 	m_temp = 0;
+	m_nCalAction = 0;
+
+	//기본 상태세팅
+	m_eCondition = CHAR_IDLE;
+	ChangeAnimation();
 }
 
 
@@ -127,6 +162,62 @@ void CharacterParant::Render()
 {
 }
 
+void CharacterParant::KeyControl()
+{
+	if (INPUT->KeyDown('W'))
+	{
+		if (m_eCondition == CHAR_IDLE)
+		{
+			m_eCondition = CHAR_RUN;
+			ChangeAnimation();
+		}
+	}
+	else if (INPUT->KeyUp('W'))
+	{
+		if (m_eCondition == CHAR_RUN)
+		{
+			m_eCondition = CHAR_IDLE;
+			ChangeAnimation();
+		}
+	}
+
+	if (INPUT->KeyDown(VK_SPACE))
+	{
+		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_RUN)
+		{
+			m_eCondition = CHAR_ATTACK;
+			m_nCalAction = 0;
+			ChangeAnimation();
+		}
+	}
+	
+
+}
+
 void CharacterParant::ChangeAnimation()
 {
+	switch (m_eCondition)
+	{
+	case CHAR_IDLE:
+			m_pCharacter->SetAnimation("IDLE");
+		break;
+	case CHAR_RUN:
+			m_pCharacter->SetAnimation("RUN");
+		break;
+	case CHAR_SKILL:
+			m_pCharacter->SetAnimation("SKILL");
+		break;
+	case CHAR_ATTACK:
+			m_pCharacter->SetAnimation("ATTACK");
+		break;
+	case CHAR_DIE:
+		m_pCharacter->SetAnimation("DIE");
+		break;
+	case CHAR_HIT:
+			m_pCharacter->SetAnimation("HIT");
+		break;
+	case CHAR_BATTLEREADY:
+			m_pCharacter->SetAnimation("BATTLEREADY");
+		break;
+	}
 }

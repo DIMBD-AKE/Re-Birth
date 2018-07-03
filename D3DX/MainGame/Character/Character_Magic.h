@@ -7,9 +7,9 @@ public:
 	Character_Magic();
 	virtual ~Character_Magic();
 
-
-	virtual void Init();
+	virtual void Init(Map* map, CHARSELECT order);
 	virtual void Update();
 	virtual void Render();
+	virtual void ChangeAnimation();
 };
 
