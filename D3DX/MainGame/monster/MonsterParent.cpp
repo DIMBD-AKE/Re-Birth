@@ -10,8 +10,8 @@ MonsterParent::MonsterParent()
 
 MonsterParent::~MonsterParent()
 {
-	//SAFE_DELETE(m_pModel);
-	SAFE_DELETE(m_pDeathModel);
+	SAFE_DELETE(m_pModel);
+	//SAFE_DELETE(m_pDeathModel);
 }
 
 void MonsterParent::Setup(Map* map,  D3DXVECTOR3 spawnPos)
@@ -35,6 +35,15 @@ void MonsterParent::RespawnUpdate()
 	TEXT->Add(test, 10, 10, 20);
 
 	m_nResPawnCount++;
+
+	m_pModel->World();
+	m_pModel->Update();
+
+	if (m_pModel->IsAnimationEnd() && m_eState == MS_DIE)
+	{
+		m_eState = MS_NONE;
+		//ChangeAnimation();
+	}
 
 	if (m_nResPawnCount >= 300)
 	{

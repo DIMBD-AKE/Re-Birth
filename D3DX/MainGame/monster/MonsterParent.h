@@ -10,6 +10,7 @@ enum MON_STATE{
 	MS_SKILL,
 	MS_ATTACK,
 	MS_DIE,
+	MS_NONE,
 };
 
 class MonsterParent
@@ -27,7 +28,7 @@ protected:
 	int m_nResPawnCount;
 
 	Model* m_pModel;
-	Model* m_pDeathModel;
+	//Model* m_pDeathModel;
 	
 	MON_STATE m_eState;
 public:

@@ -85,7 +85,7 @@ void Elizabeth::Render()
 	TEXT->Render();
 
 	
-		if (m_pModel)
+		if (m_pModel && m_eState != MS_NONE )
 		{
 			m_pModel->Render();
 		}

@@ -44,6 +44,8 @@ void MonsterManager::Update()
 			//특정 위치에 재생성 시킨다.
 			if (!m_vMM[i]->GetIsResPawn())
 			{
+				m_vMM[i]->~MonsterParent();
+
 				int spotSize = m_vSpawnSpot.size();
 
 				srand(time(NULL));
@@ -53,6 +55,8 @@ void MonsterManager::Update()
 
 				//셋업 호출하여 다시 재생성한다.
 				m_vMM[i]->Setup(m_pMap, m_vSpawnSpot[spotIndex]);
+
+
 			}
 		}
 		{
