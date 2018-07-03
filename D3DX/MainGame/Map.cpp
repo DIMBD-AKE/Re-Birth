@@ -431,7 +431,7 @@ void Map::Debug()
 	DEVICE->DrawPrimitiveUP(D3DPT_TRIANGLELIST, vecVertex.size() / 3, &vecVertex[0], sizeof(ST_PC_VERTEX));
 }
 
-float Map::GetHeight(D3DXVECTOR3 rayPos)
+float Map::GetHeight(float x, float z)
 {
 	for (int i = 0; i < m_vecSurface.size(); i += 3)
 	{
@@ -440,10 +440,8 @@ float Map::GetHeight(D3DXVECTOR3 rayPos)
 		D3DXVECTOR3 v2 = m_vecSurface[i + 2];
 
 		float dist;
-		if (D3DXIntersectTri(&v0, &v1, &v2, &rayPos, &D3DXVECTOR3(0, -1, 0), NULL, NULL, &dist))
-		{
-			return rayPos.y - dist;
-		}
+		if (D3DXIntersectTri(&v0, &v1, &v2, &D3DXVECTOR3(x, 300, z), &D3DXVECTOR3(0, -1, 0), NULL, NULL, &dist))
+			return 300 - dist;
 	}
 	return -1;
 }

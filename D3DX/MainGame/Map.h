@@ -33,6 +33,6 @@ public:
 	void Render();
 
 
-	float GetHeight(D3DXVECTOR3 rayPos);
+	float GetHeight(float x, float z);
 };
 
