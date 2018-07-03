@@ -35,7 +35,7 @@ void Elizabeth::Setup(Map* map, D3DXVECTOR3 spawnPos)
 
 	//m_pModel = new Model;
 	//스캐일링 먹이면 안나오는건지 이상한곳에 나오는건지 몰라서 일단 주석처리
-	//m_pModel->SetScale(D3DXVECTOR3(0.02f, 0.02f, 0.02f));
+	m_pModel->SetScale(D3DXVECTOR3(0.02f, 0.02f, 0.02f));
 
 	spawnPos.y = 300.f;
 
@@ -44,7 +44,7 @@ void Elizabeth::Setup(Map* map, D3DXVECTOR3 spawnPos)
 	m_pModel->CreateBound(box);
 	m_pModel->SetBoundSphere(m_pModel->GetOrigBoundSphere().center, 100.0f);
 
-	m_pDeathModel = m_pModel;
+	//m_pDeathModel = m_pModel;
 	//m_pDeathModel->SetAnimation("DIE");
 
 
@@ -71,11 +71,11 @@ void Elizabeth::Update()
 		}
 		else
 		{
-			if (m_pDeathModel)
-			{
-				m_pDeathModel->World();
-				m_pDeathModel->Update();
-			}
+			//if (m_pDeathModel)
+			//{
+			//	m_pDeathModel->World();
+			//	m_pDeathModel->Update();
+			//}
 		}
 	
 }
@@ -84,19 +84,11 @@ void Elizabeth::Render()
 {
 	TEXT->Render();
 
-	if (!m_bIsRespawn)
-	{
+	
 		if (m_pModel)
 		{
 			m_pModel->Render();
 		}
-	}
-	else
-	{
-		if (m_pDeathModel)
-		{
-			m_pDeathModel->Render();
-		}
-	}
+	
 }
 

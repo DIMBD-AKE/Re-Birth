@@ -10,7 +10,8 @@ MonsterParent::MonsterParent()
 
 MonsterParent::~MonsterParent()
 {
-
+	//SAFE_DELETE(m_pModel);
+	SAFE_DELETE(m_pDeathModel);
 }
 
 void MonsterParent::Setup(Map* map,  D3DXVECTOR3 spawnPos)

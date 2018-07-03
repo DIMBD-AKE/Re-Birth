@@ -16,7 +16,11 @@ MonsterManager::MonsterManager()
 
 MonsterManager::~MonsterManager()
 {
-
+	//SAFE_DELETE(m_pMap);
+	for (int i = 0; i < m_vMM.size(); i++)
+	{
+		SAFE_DELETE(m_vMM[i]);
+	}
 }
 
 void MonsterManager::Setup(Map* map)
