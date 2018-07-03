@@ -160,7 +160,7 @@ void SkinnedMesh::Animate()
 		}
 		else
 		{
-			float fWeight = m_fPassedTime / m_fBlendTime;
+			float fWeight = m_fPassedTime / 1.0f;
 			m_pAnimController->SetTrackWeight(0, fWeight);
 			m_pAnimController->SetTrackWeight(1, m_fBlendTime - fWeight);
 		}
@@ -174,6 +174,7 @@ void SkinnedMesh::SetIndex(int index)
 	LPD3DXANIMATIONSET animSet = NULL;
 	m_pAnimController->GetAnimationSet(index, &animSet);
 	m_pAnimController->SetTrackAnimationSet(0, animSet);
+	m_pAnimController->SetTrackPosition(0, 0);
 	animSet->Release();
 }
 
@@ -203,6 +204,21 @@ void SkinnedMesh::SetBlendIndex(int index)
 
 	prevAnim->Release();
 	nextAnim->Release();
+}
+
+bool SkinnedMesh::IsAnimationEnd()
+{
+	LPD3DXANIMATIONSET anim = NULL;
+	D3DXTRACK_DESC desc;
+	m_pAnimController->GetTrackAnimationSet(0, &anim);
+	m_pAnimController->GetTrackDesc(0, &desc);
+
+	float period = anim->GetPeriod();
+	float current = fmod(desc.Position, period);
+
+	SAFE_RELEASE(anim);
+
+	return (current >= period - 0.1);
 }
 
 void SkinnedMesh::Update(LPD3DXFRAME pFrame, LPD3DXFRAME pParent)

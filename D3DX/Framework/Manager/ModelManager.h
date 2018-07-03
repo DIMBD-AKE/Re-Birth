@@ -38,6 +38,8 @@ class Model
 	virtual bool SetAnimation(int index) { return false; }
 	virtual bool SetBlendAnimation(string name) { return false; }
 	virtual bool SetBlendAnimation(int index) { return false; }
+	virtual void SetBlendTime(float time) {}
+	virtual bool IsAnimationEnd() { return false; }
 
 private:
 	ST_BOUNDBOX	m_stBoundBox;
@@ -112,6 +114,8 @@ public:
 	virtual bool SetAnimation(int index);
 	virtual bool SetBlendAnimation(string name);
 	virtual bool SetBlendAnimation(int index);
+	virtual void SetBlendTime(float time);
+	virtual bool IsAnimationEnd();
 };
 
 class ModelManager

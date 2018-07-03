@@ -471,3 +471,13 @@ bool ModelX::SetBlendAnimation(int index)
 	m_pSMesh->SetBlendIndex(index);
 	return true;
 }
+
+void ModelX::SetBlendTime(float time)
+{
+	m_pSMesh->SetBlendTime(time);
+}
+
+bool ModelX::IsAnimationEnd()
+{
+	return m_pSMesh->IsAnimationEnd();
+}
