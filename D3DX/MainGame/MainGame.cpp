@@ -28,8 +28,8 @@ void MainGame::Setup()
 
 void MainGame::Update()
 {
-	CAMERA->Update();
 	SCENE->Update();
+	CAMERA->Update();
 }
 
 void MainGame::Render()

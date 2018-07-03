@@ -63,6 +63,7 @@ public:
 	void SetIndex(int index);
 	void SetBlendIndex(int index);
 	void SetBlendTime(float time) { m_fBlendTime = time; }
+	void SetAnimationSpeed(float speed);
 	bool IsAnimationEnd();
 
 	void Update(LPD3DXFRAME pFrame, LPD3DXFRAME pParent);

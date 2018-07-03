@@ -206,6 +206,12 @@ void SkinnedMesh::SetBlendIndex(int index)
 	nextAnim->Release();
 }
 
+void SkinnedMesh::SetAnimationSpeed(float speed)
+{
+	m_pAnimController->SetTrackSpeed(0, speed);
+	m_pAnimController->SetTrackSpeed(1, speed);
+}
+
 bool SkinnedMesh::IsAnimationEnd()
 {
 	LPD3DXANIMATIONSET anim = NULL;

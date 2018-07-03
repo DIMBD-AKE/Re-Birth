@@ -39,6 +39,7 @@ class Model
 	virtual bool SetBlendAnimation(string name) { return false; }
 	virtual bool SetBlendAnimation(int index) { return false; }
 	virtual void SetBlendTime(float time) {}
+	virtual void SetAnimationSpeed(float speed) {}
 	virtual bool IsAnimationEnd() { return false; }
 
 private:
@@ -115,6 +116,7 @@ public:
 	virtual bool SetBlendAnimation(string name);
 	virtual bool SetBlendAnimation(int index);
 	virtual void SetBlendTime(float time);
+	virtual void SetAnimationSpeed(float speed);
 	virtual bool IsAnimationEnd();
 };
 

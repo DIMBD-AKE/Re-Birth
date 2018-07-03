@@ -477,6 +477,11 @@ void ModelX::SetBlendTime(float time)
 	m_pSMesh->SetBlendTime(time);
 }
 
+void ModelX::SetAnimationSpeed(float speed)
+{
+	m_pSMesh->SetAnimationSpeed(speed);
+}
+
 bool ModelX::IsAnimationEnd()
 {
 	return m_pSMesh->IsAnimationEnd();
