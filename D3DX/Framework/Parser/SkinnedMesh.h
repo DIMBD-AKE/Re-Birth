@@ -62,6 +62,8 @@ public:
 
 	void SetIndex(int index);
 	void SetBlendIndex(int index);
+	void SetBlendTime(float time) { m_fBlendTime = time; }
+	bool IsAnimationEnd();
 
 	void Update(LPD3DXFRAME pFrame, LPD3DXFRAME pParent);
 	void UpdateSkinnedMesh(LPD3DXFRAME pFrame);
