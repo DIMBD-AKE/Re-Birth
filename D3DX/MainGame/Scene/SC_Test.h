@@ -5,7 +5,8 @@ class CharacterParant;
 //Jae
 class PathFind;
 class MonsterManager;
-
+//Youn
+class ItemParent;
 
 class SC_Test : public Scene
 {
@@ -16,7 +17,8 @@ private:
 	//Jae
 	PathFind* m_pPathFind;
 	MonsterManager* m_pMM;
-
+	//youn
+	ItemParent* m_pItem;
 
 public:
 	SC_Test();

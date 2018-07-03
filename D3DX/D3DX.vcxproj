@@ -29,7 +29,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>NotSet</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -150,7 +150,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="MainGame\monster\Elizabeth.h" />
     <ClInclude Include="Framework\Manager\CameraManager.h" />
     <ClInclude Include="Framework\dirent.h" />
     <ClInclude Include="Framework\Framework.h" />
@@ -164,6 +163,9 @@
     <ClInclude Include="Framework\Struct.h" />
     <ClInclude Include="Framework\Util.h" />
     <ClInclude Include="Framework\Vertex.h" />
+    <ClInclude Include="MainGame\Item\HealthHighPotion.h" />
+    <ClInclude Include="MainGame\Item\HealthPotion.h" />
+    <ClInclude Include="MainGame\Item\ItemManager.h" />
     <ClInclude Include="MainGame\Item\GunParent.h" />
     <ClInclude Include="MainGame\Item\ItemParent.h" />
     <ClInclude Include="MainGame\Character\CharacterParant.h" />
@@ -179,6 +181,7 @@
     <ClInclude Include="Framework\Macro.h" />
     <ClInclude Include="Framework\Manager\ModelManager.h" />
     <ClInclude Include="MainGame\Map.h" />
+    <ClInclude Include="MainGame\monster\Elizabeth.h" />
     <ClInclude Include="MainGame\Monster\MonsterParent.h" />
     <ClInclude Include="MainGame\Monster\MonsterManager.h" />
     <ClInclude Include="MainGame\Status.h" />
@@ -193,7 +196,6 @@
     <ClInclude Include="Framework\Manager\TimeManager.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="MainGame\monster\Elizabeth.cpp" />
     <ClCompile Include="Framework\Manager\CameraManager.cpp" />
     <ClCompile Include="Framework\Manager\KeyboardManager.cpp" />
     <ClCompile Include="Framework\Manager\LightManager.cpp" />
@@ -201,6 +203,9 @@
     <ClCompile Include="Framework\Parser\AseLoader.cpp" />
     <ClCompile Include="Framework\Parser\ObjLoader.cpp" />
     <ClCompile Include="Framework\Parser\SkinnedMesh.cpp" />
+    <ClCompile Include="MainGame\Item\HealthHighPotion.cpp" />
+    <ClCompile Include="MainGame\Item\HealthPotion.cpp" />
+    <ClCompile Include="MainGame\Item\ItemManager.cpp" />
     <ClCompile Include="MainGame\Item\GunParent.cpp" />
     <ClCompile Include="MainGame\Item\ItemParent.cpp" />
     <ClCompile Include="MainGame\Character\CharacterParant.cpp" />
@@ -216,6 +221,7 @@
     <ClCompile Include="Framework\Manager\SceneManager.cpp" />
     <ClCompile Include="Framework\Manager\ModelManager.cpp" />
     <ClCompile Include="MainGame\Map.cpp" />
+    <ClCompile Include="MainGame\monster\Elizabeth.cpp" />
     <ClCompile Include="MainGame\Scene\SC_Test.cpp" />
     <ClCompile Include="MainGame\Monster\MonsterParent.cpp" />
     <ClCompile Include="MainGame\Monster\MonsterManager.cpp" />

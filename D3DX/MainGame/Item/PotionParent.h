@@ -5,6 +5,8 @@ class PotionParent : public ItemParent
 {
 public:
 	PotionParent();
-	~PotionParent();
+	virtual ~PotionParent();
+
+	virtual void Use(CharacterParant& pCharacter);
 };
 

@@ -123,9 +123,6 @@
     <ClInclude Include="MainGame\Item\ItemParent.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="MainGame\monster\Elizabeth.h">
-<Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="MainGame\Item\PotionParent.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -136,6 +133,18 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="MainGame\Item\GunParent.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="MainGame\Item\ItemManager.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="MainGame\Item\HealthHighPotion.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="MainGame\Item\HealthPotion.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="MainGame\monster\Elizabeth.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
@@ -218,9 +227,6 @@
     <ClCompile Include="MainGame\Item\ItemParent.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="MainGame\monster\Elizabeth.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="MainGame\Item\PotionParent.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
@@ -231,6 +237,18 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="MainGame\Item\GunParent.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="MainGame\Item\ItemManager.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="MainGame\Item\HealthHighPotion.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="MainGame\Item\HealthPotion.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="MainGame\monster\Elizabeth.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

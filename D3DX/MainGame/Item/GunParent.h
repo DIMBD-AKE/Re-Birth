@@ -5,7 +5,7 @@ class GunParent : public ItemParent
 {
 public:
 	GunParent();
-	~GunParent();
+	virtual ~GunParent();
 
 	virtual void Skill1(Model* pModel, ST_DAMAGE pStatus, MonsterManager* pMonsterManager) override;
 };

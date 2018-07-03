@@ -17,3 +17,4 @@ SwordParent::~SwordParent()
 void SwordParent::Skill1(Model* pModel, ST_DAMAGE pStatus, MonsterManager * pMonsterManager)
 {
 }
+

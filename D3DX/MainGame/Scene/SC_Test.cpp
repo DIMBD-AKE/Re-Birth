@@ -9,6 +9,8 @@
 #include "../monster/PathFind.h"
 #include "../monster/MonsterManager.h"
 
+#include "../Item/ItemParent.h"
+
 SC_Test::SC_Test()
 {
 }
@@ -24,7 +26,7 @@ void SC_Test::Release()
 	SAFE_DELETE(m_pSampleMap);
 	SAFE_DELETE(m_pPathFind);
 	SAFE_DELETE(m_pMM);
-
+	SAFE_DELETE(m_pItem);
 }
 
 void SC_Test::Init()
@@ -54,6 +56,9 @@ void SC_Test::Init()
 
 	m_pMM->SetSpawnSpat(m_pSampleMap->GetSpawnEnemy());
 	m_pMM->MakeMonster();
+
+	m_pItem = new ItemParent;
+	m_pItem->SetUp();
 
 
 }
@@ -88,4 +93,6 @@ void SC_Test::Render()
 		m_pSampleMap->Render();
 	//여기 한줄
 	if (m_pMM) m_pMM->Render();
+
+	if (m_pItem)m_pItem->Render(D3DXVECTOR3(0, 0, 0), 50);
 }
