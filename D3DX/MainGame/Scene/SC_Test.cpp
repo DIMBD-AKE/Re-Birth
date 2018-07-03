@@ -2,6 +2,12 @@
 #include "SC_Test.h"
 #include "../Map.h"
 #include "../Character/Inventory.h"
+#include "../Character/Character_Sword.h"
+#include "../Character/Character_Gun.h"
+#include "../Character/Character_Magic.h"
+
+#include "../monster/PathFind.h"
+#include "../monster/MonsterManager.h"
 
 SC_Test::SC_Test()
 {
@@ -16,46 +22,60 @@ void SC_Test::Release()
 {
 	SAFE_DELETE(m_pTestModel);
 	SAFE_DELETE(m_pSampleMap);
+	SAFE_DELETE(m_pPathFind);
+	SAFE_DELETE(m_pMM);
+
 }
 
 void SC_Test::Init()
 {
-	MODELMANAGER->AddModel("아린", "Model/Character/Arin/", "Arin.x", MODELTYPE_X);
-	m_pTestModel = MODELMANAGER->GetModel("아린", MODELTYPE_X);
 
 	m_pSampleMap = new Map;
 	m_pSampleMap->Load("Map/Sample.map");
 
-	m_pTestModel->SetScale(D3DXVECTOR3(0.03, 0.03, 0.03));
+
+	m_pTestModel = new Character_Sword;
+	m_pTestModel->Init(m_pSampleMap, CHAR_ONE);
+
+
+	
+	
 	D3DXVECTOR3 startPos = m_pSampleMap->GetSpawnPlayer();
 	float y = m_pSampleMap->GetHeight(D3DXVECTOR3(startPos.x, 256, startPos.z));
-	m_pTestModel->SetPosition(D3DXVECTOR3(startPos.x, y, startPos.z));
+	
 
-	CAMERA->SetMode(CAMERA_FOLLOW_FREE);
-	CAMERA->SetCamOffset(D3DXVECTOR3(0, 5, 0));
-	CAMERA->SetTargetOffset(D3DXVECTOR3(0, 5, 0));
-	CAMERA->SetTarget(m_pTestModel->GetPosition(), m_pTestModel->GetRotation());
-
+	
 	Inventory inv;
 	inv.CreateInventory(3, 5);
+
+
+	m_pMM = new MonsterManager;
+	m_pMM->Setup(m_pSampleMap);
+
+	m_pMM->SetSpawnSpat(m_pSampleMap->GetSpawnEnemy());
+	m_pMM->MakeMonster();
+
+
 }
 
 void SC_Test::Update()
 {
 	if (m_pTestModel)
 	{
-		m_pTestModel->World();
 		m_pTestModel->Update();
-	}
 
-	D3DXVECTOR3 pos = *m_pTestModel->GetPosition();
-	D3DXVECTOR3 rot = *m_pTestModel->GetRotation();
-	if (INPUT->KeyPress(VK_UP))		pos.z += 0.2;
-	if (INPUT->KeyPress(VK_DOWN))	pos.z -= 0.2;
-	if (INPUT->KeyPress(VK_LEFT))	rot.y -= 0.05;
-	if (INPUT->KeyPress(VK_RIGHT))	rot.y += 0.05;
-	m_pTestModel->SetPosition(pos);
-	m_pTestModel->SetRotation(rot);
+
+		if (INPUT->KeyPress('1'))
+		{
+			
+			SAFE_DELETE(m_pTestModel);
+			m_pTestModel = new Character_Sword;
+			m_pTestModel->Init(m_pSampleMap, CHAR_TWO);
+		}
+	}
+	
+	//여기 한줄
+	if (m_pMM) m_pMM->Update();
 }
 
 void SC_Test::Render()
@@ -63,6 +83,9 @@ void SC_Test::Render()
 	if (m_pTestModel)
 		m_pTestModel->Render();
 
+
 	if (m_pSampleMap)
 		m_pSampleMap->Render();
+	//여기 한줄
+	if (m_pMM) m_pMM->Render();
 }

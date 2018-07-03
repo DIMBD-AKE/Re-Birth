@@ -30,19 +30,18 @@ void Character_Sword::Init(Map* map, CHARSELECT order)
 
 void Character_Sword::Update()
 {
-	
 	if (m_pCharacter)
 	{
 		m_pCharacter->World();
 		m_pCharacter->Update();
+		
 		KeyControl();
 		Move();
 		m_pInventory->Update();
 
 
-		if(m_eCondition == CHAR_ATTACK) CalActionFrame();
+		//if(m_eCondition == CHAR_ATTACK) CalActionFrame();
 	}
-	
 }
 
 void Character_Sword::Render()
@@ -62,7 +61,6 @@ void Character_Sword::CalActionFrame()
 		m_nCalAction = 0;
 		m_eCondition = CHAR_IDLE;
 		ChangeAnimation();
-
 	}
 }
 

@@ -1,5 +1,5 @@
 #pragma once
-#include "C:\Users\woght\Documents\Github\Re-Birth\D3DX\MainGame\monster\MonsterParent.h"
+#include "MonsterParent.h"
 
 class Elizabeth :
 	public MonsterParent

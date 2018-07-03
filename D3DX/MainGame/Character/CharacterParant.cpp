@@ -31,11 +31,6 @@ void CharacterParant::Move()
 	/*if (INPUT->KeyPress('W'))
 	{											  //요 값을 무브스피드로
 		m_pCharacter->SetPosition(pos - m_vfront * 0.1f);
-		m_bIsRun = true;
-		if (m_bIsRun)
-		{
-			m_eCondition = CHAR_RUN;
-		}
 	}
 	if (INPUT->KeyPress('S'))
 	{
@@ -50,8 +45,8 @@ void CharacterParant::Move()
 		m_pCharacter->GetRotation()->y += 0.05f;
 	}
 	if (m_eCondition == CHAR_RUN)
-	{
-		m_pCharacter->SetPosition(pos - m_vfront * 0.1f);
+	{												//이동속도
+		m_pCharacter->SetPosition(pos - m_vfront *	0.7f);
 	}
 
 	////==============임시 애니메이션 제어===================//
@@ -186,9 +181,15 @@ void CharacterParant::KeyControl()
 		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_RUN)
 		{
 			m_eCondition = CHAR_ATTACK;
-			m_nCalAction = 0;
 			ChangeAnimation();
 		}
+	}
+
+
+	if (m_pCharacter->IsAnimationEnd()&& m_eCondition == CHAR_ATTACK)
+	{
+  		m_eCondition = CHAR_IDLE;
+		ChangeAnimation();
 	}
 	
 
@@ -199,7 +200,7 @@ void CharacterParant::ChangeAnimation()
 	switch (m_eCondition)
 	{
 	case CHAR_IDLE:
-			m_pCharacter->SetAnimation("IDLE");
+			m_pCharacter->SetBlendAnimation("IDLE");
 		break;
 	case CHAR_RUN:
 			m_pCharacter->SetAnimation("RUN");
@@ -208,7 +209,7 @@ void CharacterParant::ChangeAnimation()
 			m_pCharacter->SetAnimation("SKILL");
 		break;
 	case CHAR_ATTACK:
-			m_pCharacter->SetAnimation("ATTACK");
+			m_pCharacter->SetBlendAnimation("ATTACK");
 		break;
 	case CHAR_DIE:
 		m_pCharacter->SetAnimation("DIE");

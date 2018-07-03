@@ -1,12 +1,22 @@
 #pragma once
 
 class Map;
+class CharacterParant;
+//Jae
+class PathFind;
+class MonsterManager;
+
 
 class SC_Test : public Scene
 {
 private:
-	Model *		m_pTestModel;
+	CharacterParant*	m_pTestModel;
 	Map *		m_pSampleMap;
+
+	//Jae
+	PathFind* m_pPathFind;
+	MonsterManager* m_pMM;
+
 
 public:
 	SC_Test();
