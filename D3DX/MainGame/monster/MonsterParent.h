@@ -31,6 +31,7 @@ protected:
 	//Model* m_pDeathModel;
 	
 	MON_STATE m_eState;
+	Map* m_pMap;
 public:
 	MonsterParent();
 	~MonsterParent();
@@ -41,6 +42,8 @@ public:
 	virtual void Update();
 	virtual void RespawnUpdate();
 	virtual void Render();
+
 	void ChangeAni();
+	void Respawn(D3DXVECTOR3 spawnPos);
 };
 

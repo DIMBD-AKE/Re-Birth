@@ -1,6 +1,6 @@
 #include "../../stdafx.h"
 #include "MonsterParent.h"
-
+#include "../Map.h"
 
 MonsterParent::MonsterParent()
 : m_pModel(NULL)
@@ -18,6 +18,7 @@ void MonsterParent::Setup(Map* map,  D3DXVECTOR3 spawnPos)
 {
 	m_nResPawnCount = m_bIsRespawn = 0;
 	m_eState = MS_ATTACK;
+	m_pMap = map;
 
 	//ST_SIZEBOX box;
 }
@@ -78,4 +79,14 @@ void MonsterParent::ChangeAni()
 	default:
 		break;
 	}
+}
+void MonsterParent::Respawn(D3DXVECTOR3 spawnPos)
+{
+	m_nResPawnCount = m_bIsRespawn = 0;
+	m_eState = MS_IDLE;
+	ChangeAni();
+
+	spawnPos.y = 300.f;
+
+	m_pModel->SetPosition(D3DXVECTOR3(spawnPos.x, m_pMap->GetHeight(spawnPos), spawnPos.z));
 }

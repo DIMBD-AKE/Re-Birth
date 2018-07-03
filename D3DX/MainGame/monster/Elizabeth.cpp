@@ -39,7 +39,7 @@ void Elizabeth::Setup(Map* map, D3DXVECTOR3 spawnPos)
 
 	spawnPos.y = 300.f;
 
-	m_pModel->SetPosition(D3DXVECTOR3(spawnPos.x, map->GetHeight(spawnPos), spawnPos.z));
+	m_pModel->SetPosition(D3DXVECTOR3(spawnPos.x, m_pMap->GetHeight(spawnPos), spawnPos.z));
 
 	m_pModel->CreateBound(box);
 	m_pModel->SetBoundSphere(m_pModel->GetOrigBoundSphere().center, 100.0f);

@@ -44,7 +44,7 @@ void MonsterManager::Update()
 			//특정 위치에 재생성 시킨다.
 			if (!m_vMM[i]->GetIsResPawn())
 			{
-				m_vMM[i]->~MonsterParent();
+				//m_vMM[i]->~MonsterParent();
 
 				int spotSize = m_vSpawnSpot.size();
 
@@ -53,8 +53,9 @@ void MonsterManager::Update()
 				//벡터에서 랜덤 인덱스 추출
 				int spotIndex = rand() % spotSize;
 
+				m_vMM[i]->Respawn(m_vSpawnSpot[spotIndex]);
 				//셋업 호출하여 다시 재생성한다.
-				m_vMM[i]->Setup(m_pMap, m_vSpawnSpot[spotIndex]);
+				//m_vMM[i]->Setup(m_pMap, m_vSpawnSpot[spotIndex]);
 
 
 			}
