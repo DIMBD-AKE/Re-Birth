@@ -24,6 +24,12 @@ public:
 	void Render();
 
 							//사이드의 중점		자기자신	
-	ST_CELL* MakeNeighborCell(D3DXVECTOR3 rayPos, int index);
+	//ST_CELL* MakeNeighborCell(D3DXVECTOR3 rayPos, int index);
+
+	
+	void MakeNeighborCell(int index);
+
+	//실질적인 연결은 여기서		나의 인덱스			연결시켜줄 인덱스
+	ST_CELL* SubMakeNeighborCell(int myCellIndex, int linkCellIndex);
 };
 

@@ -37,14 +37,14 @@ void PathFind::Setup(vector<D3DXVECTOR3>& Vertex)
 
 		//중점좌표 
 		m_vNaviCell[index].center =
-			D3DXVECTOR3(plusV/3);
+			D3DXVECTOR3(plusV/3.0f);
 
 		//사이드라인 3개 연산을 위한 반복문
 		for (int j = 0; j < 3; j++)
 		{
 			//코드 길이가 길어지지만 좀더 알기 편하기 위해 미리 연산
 			D3DXVECTOR3 plusV2 = m_vNaviCell[index].vertex[j % 3] + m_vNaviCell[index].vertex[(j + 1) % 3];
-			m_vNaviCell[index].vertexCenter[j] = plusV2 / 2;
+			m_vNaviCell[index].vertexCenter[j] = plusV2 / 2.0f;
 
 			m_vNaviCell[index].arrivalCost[j] = D3DXVec3Length(&m_vNaviCell[index].vertexCenter[j]);
 		}										 
@@ -66,9 +66,11 @@ void PathFind::Setup(vector<D3DXVECTOR3>& Vertex)
 	//이웃 만들어주기
 	for (int i = 0; i < m_vNaviCell.size(); i++)
 	{
-		m_vNaviCell[i].neighborCell[0] = MakeNeighborCell(m_vNaviCell[i].vertexCenter[0],i);
-		m_vNaviCell[i].neighborCell[1] = MakeNeighborCell(m_vNaviCell[i].vertexCenter[1], i);
-		m_vNaviCell[i].neighborCell[2] = MakeNeighborCell(m_vNaviCell[i].vertexCenter[2], i);
+		MakeNeighborCell(i);
+		//i번쨰 삼각형들의 인접 삼각형은 이것이다!!
+		//m_vNaviCell[i].neighborCell[0] = MakeNeighborCell(m_vNaviCell[i].vertexCenter[0],i);
+		//m_vNaviCell[i].neighborCell[1] = MakeNeighborCell(m_vNaviCell[i].vertexCenter[1], i);
+		//m_vNaviCell[i].neighborCell[2] = MakeNeighborCell(m_vNaviCell[i].vertexCenter[2], i);
 	}
 
 	int a = 10;
@@ -128,26 +130,102 @@ void PathFind::Render()
 	
 }
 
-ST_CELL* PathFind::MakeNeighborCell(D3DXVECTOR3 rayPos, int index)
+//ST_CELL* PathFind::MakeNeighborCell(D3DXVECTOR3 rayPos, int index)
+//{
+//	for (int i = 0; i < m_vNaviCell.size(); i++)
+//	{
+//		//자기 자신이면 컨티뉴
+//		if (i == index) continue;
+//
+//		
+//		if (D3DXIntersectTri(
+//			&m_vNaviCell[i].vertex[0],
+//			&m_vNaviCell[i].vertex[1],
+//			&m_vNaviCell[i].vertex[2],
+//			&D3DXVECTOR3(rayPos.x+0.1f, 10000, rayPos.z+0.1f),
+//			&D3DXVECTOR3(0, -1, 0),
+//			NULL, NULL, NULL))
+//		{
+//			return &m_vNaviCell[i];
+//
+//			//return;
+//		}
+//	}
+//
+//	return NULL;
+//
+//}
+
+void PathFind::MakeNeighborCell(int index)
 {
+	m_vNaviCell[index].neighborCell[0] = SubMakeNeighborCell(index, 0);
+	m_vNaviCell[index].neighborCell[1] = SubMakeNeighborCell(index, 1);
+	m_vNaviCell[index].neighborCell[2] = SubMakeNeighborCell(index, 2);
+	//for (int i = 0; i < m_vNaviCell.size(); i++)
+		//	{
+		//		//자기 자신이면 컨티뉴
+		//		if (i == index) continue;
+		//
+		//		
+		//		if (D3DXIntersectTri(
+		//			&m_vNaviCell[i].vertex[0],
+		//			&m_vNaviCell[i].vertex[1],
+		//			&m_vNaviCell[i].vertex[2],
+		//			&D3DXVECTOR3(rayPos.x+0.1f, 10000, rayPos.z+0.1f),
+		//			&D3DXVECTOR3(0, -1, 0),
+		//			NULL, NULL, NULL))
+		//		{
+		//			return &m_vNaviCell[i];
+		//
+		//			//return;
+		//		}
+		//	}
+		//
+		//	return NULL;
+}
+
+ST_CELL* PathFind::SubMakeNeighborCell(int myCellIndex, int linkCellIndex)
+{
+	//초기 레이의 위치는 사이드라인의 중점
+	D3DXVECTOR3 rayPos = m_vNaviCell[myCellIndex].vertexCenter[linkCellIndex];
+	//rayPos.y = 1000;
+
+	//우선 다른 한점의 좌표를 저장
+	D3DXVECTOR3 otherV = m_vNaviCell[myCellIndex].vertex[(linkCellIndex + 2) % 3];
+
+	//다른 한점 - 사이드 중앙 을 통해 방향벡터 구하고
+	D3DXVECTOR3 dir = rayPos - otherV;
+	//노멀라이즈
+	D3DXVec3Normalize(&dir, &dir);
+	//0.1배화
+	dir = dir * 0.1f;
+
+	//D3DXMATRIX matT;
+	//D3DXMatrixTranslation(&matT,dir.x, dir.y, dir.z);
+
+	//D3DXVec3TransformCoord(&rayPos, &rayPos, &matT);
+	//레이의 위치에서 아주 약간 앞으로 이동
+	rayPos = rayPos + dir;
+	rayPos.y = 10000;
+
 	for (int i = 0; i < m_vNaviCell.size(); i++)
-	{
-		if (i == index) continue;
-
-		if (D3DXIntersectTri(
-			&m_vNaviCell[i].vertex[0],
-			&m_vNaviCell[i].vertex[1],
-			&m_vNaviCell[i].vertex[2],
-			&D3DXVECTOR3(rayPos.x, 10000, rayPos.z),
-			&D3DXVECTOR3(0, -1, 0),
-			NULL, NULL, NULL))
 		{
-			return &m_vNaviCell[i];
-
-			//return;
+			//자기 자신이면 컨티뉴
+		if (i == myCellIndex) continue;
+			
+			if (D3DXIntersectTri(
+				&m_vNaviCell[i].vertex[0],
+				&m_vNaviCell[i].vertex[1],
+				&m_vNaviCell[i].vertex[2],
+				&rayPos,
+				&D3DXVECTOR3(0, -1, 0),
+				NULL, NULL, NULL))
+			{
+				return &m_vNaviCell[i];
+	
+				//return;
+			}
 		}
-	}
-
-	return NULL;
-
+	
+		return NULL;
 }
