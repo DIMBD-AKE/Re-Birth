@@ -27,15 +27,9 @@ void CharacterParant::Move()
 
 	m_vfront = D3DXVECTOR3(0, 0, 1);
 	D3DXVec3TransformNormal(&m_vfront, &m_vfront, &matAngle);
-	//================움직임 제어===================//
-	/*if (INPUT->KeyPress('W'))
-	{											  //요 값을 무브스피드로
-		m_pCharacter->SetPosition(pos - m_vfront * 0.1f);
-	}
-	if (INPUT->KeyPress('S'))
-	{
-		m_pCharacter->SetPosition(pos + m_vfront * 0.1f);
-	}*/
+	
+
+
 	if (INPUT->KeyPress('A'))
 	{
 		m_pCharacter->GetRotation()->y -= 0.05f;
@@ -44,29 +38,26 @@ void CharacterParant::Move()
 	{
 		m_pCharacter->GetRotation()->y += 0.05f;
 	}
+	//달리는모션
 	if (m_eCondition == CHAR_RUN)
 	{												//이동속도
 		m_pCharacter->SetPosition(pos - m_vfront *	0.7f);
 	}
 
-	////==============임시 애니메이션 제어===================//
-	//if (INPUT->KeyDown(VK_LBUTTON))
-	//{
-	//	m_temp++;
-	//	m_pCharacter->SetAnimation(m_temp);
-	//	if (m_temp > 5)
-	//	{
-	//		m_temp = 0;
-	//	}
-	//}
+	/*if (m_pSampleMap)
+	{
+		if (m_pSampleMap->GetHeight(pos))
+		{
+			m_pCharacter->SetPosition(pos);
+		}
+	}
 
-	pos.y = 300.0f;
-	float temp = m_pSampleMap->GetHeight(pos);
-
+	*/
 	pos = *m_pCharacter->GetPosition();
+	pos.y = 300.0f;
+
+	float temp = m_pSampleMap->GetHeight(pos);
 	m_pCharacter->SetPosition(D3DXVECTOR3(pos.x, temp, pos.z));
-
-
 }
 
 void CharacterParant::Controller()

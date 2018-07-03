@@ -34,7 +34,7 @@ void Character_Sword::Update()
 	{
 		m_pCharacter->World();
 		m_pCharacter->Update();
-		
+		Controller();
 		KeyControl();
 		Move();
 		m_pInventory->Update();
