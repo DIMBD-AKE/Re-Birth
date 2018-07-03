@@ -30,7 +30,30 @@ void MonsterManager::Update()
 
 	for (int i = 0; i < m_vMM.size(); i++)
 	{
-		m_vMM[i]->Update();
+		if (m_vMM[i]->GetIsResPawn())
+		{
+
+			//리스폰 중이면 일정 시간동안 돌아간다.
+			m_vMM[i]->RespawnUpdate();
+
+			//리스폰 특정시간이 되면 이 부울값은 false가 되고 전환시키면 참이되므로
+			//특정 위치에 재생성 시킨다.
+			if (!m_vMM[i]->GetIsResPawn())
+			{
+				int spotSize = m_vSpawnSpot.size();
+
+				srand(time(NULL));
+
+				//벡터에서 랜덤 인덱스 추출
+				int spotIndex = rand() % spotSize;
+
+				//셋업 호출하여 다시 재생성한다.
+				m_vMM[i]->Setup(m_pMap, m_vSpawnSpot[spotIndex]);
+			}
+		}
+		{
+			m_vMM[i]->Update();
+		}
 	}
 }
 
