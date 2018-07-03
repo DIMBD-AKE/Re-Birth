@@ -13,23 +13,34 @@ Character_Sword::~Character_Sword()
 {
 }
 
-void Character_Sword::Init(Map* map)
+void Character_Sword::Init(Map* map, CHARSELECT order)
 {
-	m_pCharacter = MODELMANAGER->GetModel("아린", MODELTYPE_X);
-	
-	CharacterParant::Init(map);
+	if (order == CHAR_ONE)
+	{
+		m_pCharacter = MODELMANAGER->GetModel("아린", MODELTYPE_X);
+		CharacterParant::Init(map, order);
+	}
+	else if (order == CHAR_TWO)
+	{
+		m_pCharacter = MODELMANAGER->GetModel("리아", MODELTYPE_X);
+		CharacterParant::Init(map, order);
+	}
 
 }
 
 void Character_Sword::Update()
 {
+	
 	if (m_pCharacter)
 	{
 		m_pCharacter->World();
 		m_pCharacter->Update();
+		KeyControl();
 		Move();
-		ChangeAnimation();
 		m_pInventory->Update();
+
+
+		if(m_eCondition == CHAR_ATTACK) CalActionFrame();
 	}
 	
 }
@@ -43,10 +54,15 @@ void Character_Sword::Render()
 	}
 }
 
-void Character_Sword::ChangeAnimation()
+void Character_Sword::CalActionFrame()
 {
-	if (m_bIsPressW)
+	m_nCalAction++; 
+	if (m_nCalAction >= 50)
 	{
-		m_pCharacter->SetAnimation("RUN");
+		m_nCalAction = 0;
+		m_eCondition = CHAR_IDLE;
+		ChangeAnimation();
+
 	}
 }
+
