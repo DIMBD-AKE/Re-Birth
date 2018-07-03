@@ -97,6 +97,13 @@ public:
 		return D3DXVECTOR2(v.x, v.y);
 	}
 
+	static POINT MakePoint(float x, float y)
+	{
+		POINT pt;
+		pt.x = x; pt.y = y;
+		return pt;
+	}
+
 	static D3DXVECTOR3 ConvertGridPos(D3DXVECTOR3 pos, float cellSize)
 	{
 		D3DXVECTOR3 grid;

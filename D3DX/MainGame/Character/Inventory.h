@@ -17,20 +17,36 @@ union STATUS;
 
 class Inventory
 {
+public:
+	enum MOVETYPE
+	{
+		MOVETYPE_INVENTORY,
+		MOVETYPE_EQUIP,
+		MOVETYPE_END
+	};
+
 private:
 	typedef vector<ItemParent*> InvRow;
 
 private:
 	LPDIRECT3DTEXTURE9	m_pSlotTex;
+	LPDIRECT3DTEXTURE9	m_pSlotOverTex;
 	LPDIRECT3DTEXTURE9	m_pInvTex;
+	LPDIRECT3DTEXTURE9	m_pEquipTex;
 
-	// 홀드 아이템 정보
-	ItemParent *		m_pHoldItem;
-	POINT			m_ptHIIndex;
-	EQUIPTYPE		m_eHIType;
+	float			m_fSlotResize;
+	POINT			m_ptInvBGSize;
+	POINT			m_ptEquipSize;
 
+	// 창 이동
 	POINT			m_ptPrevMouse;
 	POINT			m_ptStartPos;
+	MOVETYPE		m_eMoveType;
+
+	// 홀드 아이템 정보
+	ItemParent *	m_pHoldItem;
+	POINT			m_ptHIIndex;
+	EQUIPTYPE		m_eHIType;
 
 	// 인벤토리
 	vector<InvRow>	m_vecInventory;
@@ -41,7 +57,8 @@ private:
 	bool			m_isInvShow;
 
 	// 장비
-	ItemParent *		m_pEquip[EQUIP_END];
+	ItemParent *	m_pEquip[EQUIP_END];
+	POINT			m_ptEquipSlot[EQUIP_END + 1];
 	POINT			m_vEquipPos;
 	bool			m_isEquipShow;
 
@@ -49,6 +66,7 @@ private:
 	void InitPos();
 	void PickItem();
 	void ChangeItem();
+	void Move();
 
 public:
 	Inventory();
