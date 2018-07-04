@@ -10,6 +10,7 @@
 #include "../monster/MonsterManager.h"
 
 #include "../Item/ItemParent.h"
+#include "../Item/HealthPotion.h"
 
 SC_Test::SC_Test()
 {
@@ -27,6 +28,7 @@ void SC_Test::Release()
 	SAFE_DELETE(m_pPathFind);
 	SAFE_DELETE(m_pMM);
 	SAFE_DELETE(m_pItem);
+	SAFE_DELETE(m_pPotion);
 }
 
 void SC_Test::Init()
@@ -51,8 +53,8 @@ void SC_Test::Init()
 	Inventory inv;
 	inv.CreateInventory(3, 5);
 
-	m_pPathFind = new PathFind;
-	m_pPathFind->Setup(m_pSampleMap->GetNavMesh());
+	//m_pPathFind = new PathFind;
+	//m_pPathFind->Setup(m_pSampleMap->GetNavMesh());
 
 	m_pMM = new MonsterManager;
 	m_pMM->Setup(m_pSampleMap);
@@ -63,6 +65,8 @@ void SC_Test::Init()
 	m_pItem = new ItemParent;
 	m_pItem->SetUp();
 
+	m_pPotion = new HealthPotion;
+	m_pPotion->SetUp();
 
 }
 
@@ -98,4 +102,5 @@ void SC_Test::Render()
 	if (m_pMM) m_pMM->Render();
 
 	if (m_pItem)m_pItem->Render(D3DXVECTOR3(0, 0, 0), 50);
+	if (m_pPotion)m_pPotion->Render(D3DXVECTOR3(0, 0, 0), 50);
 }

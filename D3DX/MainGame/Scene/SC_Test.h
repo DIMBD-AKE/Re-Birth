@@ -7,6 +7,7 @@ class PathFind;
 class MonsterManager;
 //Youn
 class ItemParent;
+class HealthPotion;
 
 class SC_Test : public Scene
 {
@@ -19,6 +20,7 @@ private:
 	MonsterManager* m_pMM;
 	//youn
 	ItemParent* m_pItem;
+	HealthPotion* m_pPotion;
 
 public:
 	SC_Test();
