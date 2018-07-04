@@ -37,6 +37,7 @@ public:
 	void Update();
 	void SetTarget(D3DXVECTOR3* targetPos, D3DXVECTOR3* targetRot);
 	void SetMode(CAMERAMODE cm) { m_eMode = cm; }
+	void SetFog(bool enable, float start, float end, DWORD color);
 };
 
 #define CAMERA CameraManager::GetInstance()

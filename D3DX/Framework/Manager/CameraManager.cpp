@@ -115,3 +115,16 @@ void CameraManager::SetTarget(D3DXVECTOR3 * targetPos, D3DXVECTOR3 * targetRot)
 	m_pTargetPos = targetPos;
 	m_pTargetRot = targetRot;
 }
+
+void CameraManager::SetFog(bool enable, float start, float end, DWORD color)
+{
+	DEVICE->SetRenderState(D3DRS_FOGENABLE, enable);
+	if (enable)
+	{
+		DEVICE->SetRenderState(D3DRS_FOGCOLOR, color);
+		DEVICE->SetRenderState(D3DRS_FOGVERTEXMODE, D3DFOG_LINEAR);
+		DEVICE->SetRenderState(D3DRS_FOGTABLEMODE, D3DFOG_LINEAR);
+		DEVICE->SetRenderState(D3DRS_FOGSTART, *(DWORD*)(&start));
+		DEVICE->SetRenderState(D3DRS_FOGEND, *(DWORD*)(&end));
+	}
+}
