@@ -3,8 +3,6 @@
 class Character_Gun :
 	public CharacterParant
 {
-protected:
-
 public:
 	Character_Gun();
 	virtual ~Character_Gun();
@@ -13,6 +11,6 @@ public:
 	virtual void Init(Map* map, CHARSELECT order);
 	virtual void Update();
 	virtual void Render();
-	virtual void ChangeAnimation();
+
 };
 

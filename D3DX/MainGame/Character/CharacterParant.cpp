@@ -20,7 +20,7 @@ void CharacterParant::Move()
 	//if (INPUT->KeyPress(VK_LEFT))	rot.y -= 0.05;
 	//if (INPUT->KeyPress(VK_RIGHT))	rot.y += 0.05;
 
-
+	
 
 	D3DXMATRIX matAngle;
 	D3DXMatrixRotationYawPitchRoll(&matAngle, m_pCharacter->GetRotation()->y, m_pCharacter->GetRotation()->x, m_pCharacter->GetRotation()->z);
@@ -40,26 +40,26 @@ void CharacterParant::Move()
 	}
 	//달리는모션
 	D3DXVECTOR3 vPos = *m_pCharacter->GetPosition();
-	if (m_eCondition == CHAR_RUN)
+	if (m_eCondition == CHAR_RUN_FRONT)
 	{
-
-		float height = m_pSampleMap->GetHeight(pos.x - m_vfront.x *0.7, pos.z - m_vfront.z *0.7);
-		if(height >=0)
+		float height = m_pSampleMap->GetHeight(pos.x - m_vfront.x *0.55, pos.z - m_vfront.z *0.55);
+		if (height >= 0)
 		{
 			pos.y = height;
-			m_pCharacter->SetPosition(pos - m_vfront * 0.7);
+			m_pCharacter->SetPosition(pos - m_vfront * 0.55f);
 		}
-		else
+	}
+	else if (m_eCondition == CHAR_RUN_BACK)
+	{
+		float height = m_pSampleMap->GetHeight(pos.x - m_vfront.x *0.21, pos.z - m_vfront.z *0.21);
+		if (height >= 0)
 		{
-
+			pos.y = height;
+			m_pCharacter->SetPosition(pos + m_vfront * 0.21f);
 		}
 	}
 
-	//pos = *m_pCharacter->GetPosition();
-	//pos.y = 300.0f;
 
-	/*float temp = m_pSampleMap->GetHeight(pos.x, pos.z);
-	m_pCharacter->SetPosition(D3DXVECTOR3(pos.x, temp, pos.z));*/
 }
 
 void CharacterParant::Controller()
@@ -89,6 +89,8 @@ CharacterParant::CharacterParant()
 	MODELMANAGER->AddModel("메그너스", "Model/Character/Meguns/", "Meguns.x", MODELTYPE_X);
 	MODELMANAGER->AddModel("리아", "Model/Character/Riah/", "Riah.x", MODELTYPE_X);
 	MODELMANAGER->AddModel("스카디", "Model/Character/Skadi/", "Skadi.x", MODELTYPE_X);
+	MODELMANAGER->AddModel("베카", "Model/Character/Beakah/", "Beakah.x", MODELTYPE_X);
+	MODELMANAGER->AddModel("벨벳", "Model/Character/Velvet/", "Velvet.x", MODELTYPE_X);
 	//MODELMANAGER->AddModel("자일로", "Model/Character/Xylo/", "Xylo.x", MODELTYPE_X);
 	//MODELMANAGER->AddModel("아리토", "Model/Character/Arito/", "Arito.x", MODELTYPE_X);
 	//MODELMANAGER->AddModel("에스타", "Model/Character/Esta/", "Esta.x", MODELTYPE_X);
@@ -125,6 +127,7 @@ void CharacterParant::Init(Map* map, CHARSELECT order)
 	//인벤토리
 	m_pInventory = new Inventory;
 	m_pInventory->CreateInventory(5,3);
+	m_pInventory->SetStatus(m_Status);
 
 	//TODO : 바운딩 박스 만들기 (캐릭터 크기마다 일일히 입력해주자
 	m_pCharacter->CreateBound(box);
@@ -142,6 +145,7 @@ void CharacterParant::Init(Map* map, CHARSELECT order)
 	//기본 상태세팅
 	m_eCondition = CHAR_IDLE;
 	ChangeAnimation();
+	m_bIsFront = false;
 }
 
 
@@ -156,32 +160,65 @@ void CharacterParant::KeyControl()
 	{
 		if (m_eCondition == CHAR_IDLE)
 		{
-			m_eCondition = CHAR_RUN;
+			m_eCondition = CHAR_RUN_FRONT;
 			ChangeAnimation();
 		}
 	}
 	else if (INPUT->KeyUp('W'))
 	{
-		if (m_eCondition == CHAR_RUN)
+		if (m_eCondition == CHAR_RUN_FRONT)
 		{
 			m_eCondition = CHAR_IDLE;
 			ChangeAnimation();
 		}
 	}
 
+	if (INPUT->KeyDown('S'))
+	{
+		if (m_eCondition == CHAR_IDLE)
+		{
+			m_eCondition = CHAR_RUN_BACK;
+			ChangeAnimation();
+		}
+	}
+	else if (INPUT->KeyUp('S'))
+	{
+		if (m_eCondition == CHAR_RUN_BACK)
+		{
+			m_eCondition = CHAR_IDLE;
+			ChangeAnimation();
+		}
+	}
+
+
 	if (INPUT->KeyDown(VK_SPACE))
 	{
-		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_RUN)
+		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_RUN_FRONT || m_eCondition == CHAR_RUN_BACK)
 		{
 			m_eCondition = CHAR_ATTACK;
 			ChangeAnimation();
 		}
 	}
 
+	if (INPUT->KeyDown('K'))
+	{
+		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_RUN_FRONT || m_eCondition == CHAR_RUN_BACK)
+		{
+			m_eCondition = CHAR_SKILL;
+			ChangeAnimation();
+		}
+	}
 
+	//공격상태에서 애니메이션 한바퀴 돌린후 대기상태로 돌려줌
 	if (m_pCharacter->IsAnimationEnd()&& m_eCondition == CHAR_ATTACK)
 	{
   		m_eCondition = CHAR_IDLE;
+		ChangeAnimation();
+	}
+	//스킬상태에서 애니메이션 한바퀴 돌린후 대기상태로 돌려줌
+	if (m_pCharacter->IsAnimationEnd() && m_eCondition == CHAR_SKILL)
+	{
+		m_eCondition = CHAR_IDLE;
 		ChangeAnimation();
 	}
 	
@@ -194,15 +231,19 @@ void CharacterParant::ChangeAnimation()
 	{
 	case CHAR_IDLE:
 			m_pCharacter->SetBlendAnimation("IDLE");
+			m_pCharacter->SetBlendTime(0.27f);
 		break;
-	case CHAR_RUN:
+	case CHAR_RUN_FRONT:
 			m_pCharacter->SetAnimation("RUN");
+		break;
+	case CHAR_RUN_BACK:
+		m_pCharacter->SetAnimation("RUN");
 		break;
 	case CHAR_SKILL:
 			m_pCharacter->SetAnimation("SKILL");
 		break;
 	case CHAR_ATTACK:
-			m_pCharacter->SetBlendAnimation("ATTACK");
+			m_pCharacter->SetAnimation("ATTACK");
 		break;
 	case CHAR_DIE:
 		m_pCharacter->SetAnimation("DIE");
