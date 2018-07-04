@@ -53,7 +53,7 @@ void Elizabeth::SetupStat()
 {
 	CURRENTHP(m_uMonsterStat) = MAXHP(m_uMonsterStat)  = 100;
 	ATK(m_uMonsterStat) = 10;
-	PHYRATE(m_uMonsterStat) = 
+	//PHYRATE(m_uMonsterStat) = 
 
 	//m_uMonsterStat.CURRENTHP = m_uMonsterStat.MAXHP = 100;
 
