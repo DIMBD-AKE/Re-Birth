@@ -1,4 +1,5 @@
 #pragma once
+#include "../GameEnum.h"
 
 union STATUS;
 struct ST_DAMAGE;
@@ -7,16 +8,6 @@ class CharacterParant;
 class MonsterManager;
 class Model;
 
-enum EQUIPTYPE
-{
-	EQUIP_FIRSTWEAPON,
-	EQUIP_HELMET,
-	EQUIP_CHEST,
-	EQUIP_GLOVES,
-	EQUIP_BOOTS,
-	EQUIP_POTION,
-	EQUIP_END
-};
 
 class ItemParent
 {
@@ -40,9 +31,9 @@ public:
 
 	virtual void SetUp();
 	virtual void Use(CharacterParant* & pCharacter);
-	virtual void Attack(Model* pModel, ST_DAMAGE pStatus, MonsterManager* pMonsterManager);
-	virtual void Skill1(Model* pModel, ST_DAMAGE pStatus, MonsterManager* pMonsterManager);
-	virtual void Skill2(Model* pModel, ST_DAMAGE pStatus, MonsterManager* pMonsterManager);
+	virtual void Attack(CharacterParant* pCharacter, ST_DAMAGE pStatus, MonsterManager* pMonsterManager);
+	virtual void Skill1(CharacterParant* pCharacter, ST_DAMAGE pStatus, MonsterManager* pMonsterManager);
+	virtual void Skill2(CharacterParant* pCharacter, ST_DAMAGE pStatus, MonsterManager* pMonsterManager);
 	//virtual void Drop();
 	void Render(D3DXVECTOR3 pos, float size);
 };

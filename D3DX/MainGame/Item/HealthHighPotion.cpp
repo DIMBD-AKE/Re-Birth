@@ -22,5 +22,5 @@ void HealthHighPotion::SetUp()
 
 void HealthHighPotion::Use(CharacterParant & pCharacter)
 {
-	pCharacter.m_Status->chr.fCurrentHP += pCharacter.m_Status->chr.fMaxHp*m_fHealAmount;
+	pCharacter.m_Status->chr.nCurrentHP += pCharacter.m_Status->chr.nMaxHp*m_fHealAmount;
 }

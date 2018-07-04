@@ -7,6 +7,7 @@
 
 ItemParent::ItemParent()
 {
+	m_fScale = 0;
 }
 
 
@@ -18,18 +19,31 @@ void ItemParent::SetUp()
 {
 	/*m_pTexture = TEXTUREMANAGER->AddTexture("장검", "Texture/Item/장검.jpg");
 	m_imageInfo = TEXTUREMANAGER->GetInfo("장검");*/
+	m_pItemStatus = new STATUS;
+	m_pItemStatus->item.fAgi = 0;
+	m_pItemStatus->item.fAtkSpeed = 0;
+	m_pItemStatus->item.fCheRate = 0;
+	m_pItemStatus->item.fCoolTime1 = 0;
+	m_pItemStatus->item.fCoolTime2 = 0;
+	m_pItemStatus->item.fHit = 0;
+	m_pItemStatus->item.fMagicRate = 0;
+	m_pItemStatus->item.fPhyRate = 0;
+	m_pItemStatus->item.fSpeed = 0;
+	m_pItemStatus->item.nAtk = 0;
+	m_pItemStatus->item.nDef = 0;
+	m_pItemStatus->item.nHp = 0;
 }
 
 void ItemParent::Use(CharacterParant *& pCharacter)
 {
 }
 
-void ItemParent::Attack(Model* pModel,ST_DAMAGE pStatus, MonsterManager* pMonsterManager)
+void ItemParent::Attack(CharacterParant* pCharacter,ST_DAMAGE pStatus, MonsterManager* pMonsterManager)
 {
 	for (int i = 0; i < pMonsterManager->GetMonsterManager().size(); ++i)
 	{
-		D3DXVECTOR3 pos = *(pModel->GetPosition());
-		D3DXVECTOR3 rot = *(pModel->GetRotation());
+		D3DXVECTOR3 pos = *(pCharacter->m_pCharacter->GetPosition());
+		D3DXVECTOR3 rot = *(pCharacter->m_pCharacter->GetRotation());
 		if (!pMonsterManager->GetMonsterManager()[i]->GetIsResPawn())continue;
 		else
 		{
@@ -40,17 +54,19 @@ void ItemParent::Attack(Model* pModel,ST_DAMAGE pStatus, MonsterManager* pMonste
 			else
 			{
 				D3DXVECTOR3 delta = mosPos - pos;
-				if(atan2(delta.x, delta.z)>m_fScale);
+				if(atan2(delta.x, delta.z)>m_fScale) continue;
+
+				pMonsterManager->GetMonsterManager()[i]->SetCurrentHP(0);
 			}
 		}
 	}
 }
 
-void ItemParent::Skill1(Model* pModel,ST_DAMAGE pStatus, MonsterManager* pMonsterManager)
+void ItemParent::Skill1(CharacterParant* pCharacter,ST_DAMAGE pStatus, MonsterManager* pMonsterManager)
 {
 }
 
-void ItemParent::Skill2(Model* pModel,ST_DAMAGE pStatus, MonsterManager* pMonsterManager)
+void ItemParent::Skill2(CharacterParant* pCharacter,ST_DAMAGE pStatus, MonsterManager* pMonsterManager)
 {
 }
 
