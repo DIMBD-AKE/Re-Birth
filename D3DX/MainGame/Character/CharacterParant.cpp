@@ -42,24 +42,58 @@ void CharacterParant::Move()
 	D3DXVECTOR3 vPos = *m_pCharacter->GetPosition();
 	if (m_eCondition == CHAR_RUN_FRONT)
 	{
-		float height = m_pSampleMap->GetHeight(pos.x - m_vfront.x *0.55, pos.z - m_vfront.z *0.55);
+		float height = m_pSampleMap->GetHeight(pos.x - m_vfront.x *0.25, pos.z - m_vfront.z *0.25);
 		if (height >= 0)
 		{
 			pos.y = height;
-			m_pCharacter->SetPosition(pos - m_vfront * 0.55f);
+			m_pCharacter->SetPosition(pos - m_vfront * 0.25);
+		}
+		else
+		{
+
 		}
 	}
 	else if (m_eCondition == CHAR_RUN_BACK)
 	{
-		float height = m_pSampleMap->GetHeight(pos.x - m_vfront.x *0.21, pos.z - m_vfront.z *0.21);
+		float height = m_pSampleMap->GetHeight(pos.x - m_vfront.x *0.15, pos.z - m_vfront.z *0.15);
 		if (height >= 0)
 		{
 			pos.y = height;
-			m_pCharacter->SetPosition(pos + m_vfront * 0.21f);
+			m_pCharacter->SetPosition(pos + m_vfront * 0.15);
+		}
+		else
+		{
+
 		}
 	}
+	//´ë½¬¿ë
+	if (m_eCondition == CHAR_DASH_FRONT)
+	{
+		float height = m_pSampleMap->GetHeight(pos.x - m_vfront.x *0.57, pos.z - m_vfront.z *0.57);
+		if (height >= 0)
+		{
+			pos.y = height;
+			m_pCharacter->SetPosition(pos - m_vfront * 0.57);
+		}
+		else
+		{
 
+		}
+	}
+	if (m_eCondition == CHAR_DASH_BACK)
+	{
+		float height = m_pSampleMap->GetHeight(pos.x - m_vfront.x *0.33, pos.z - m_vfront.z *0.33);
+		if (height >= 0)
+		{
+			pos.y = height;
+			m_pCharacter->SetPosition(pos + m_vfront * 0.33);
+		}
+		else
+		{
 
+		}
+	}
+	ControllStamina();
 }
 
 void CharacterParant::Controller()
@@ -82,6 +116,38 @@ void CharacterParant::Debug()
 
 void CharacterParant::CheckDirection()
 {
+	//
+}
+
+void CharacterParant::ControllStamina()
+{
+
+	if (m_eCondition == CHAR_DASH_FRONT || m_eCondition == CHAR_DASH_BACK)
+	{
+		m_fStamina -= 0.2f;
+	}
+
+	if (m_fStamina <= 0)
+	{
+		m_eCondition = CHAR_IDLE;
+		m_bIsDash = false;
+		ChangeAnimation();
+	}
+
+
+	if (m_eCondition == CHAR_IDLE)
+	{
+		if (m_fStamina <= 10.0f)
+		{
+			m_fStamina += 0.07;
+			if (m_fStamina >= 10.0f)
+			{
+				m_fStamina = 10.0f;
+			}
+		}
+	}
+
+	TEXT->Add(to_string(m_fStamina), 300, 300, 30);
 }
 
 
@@ -149,6 +215,8 @@ void CharacterParant::Init(Map* map, CHARSELECT order)
 	m_eCondition = CHAR_IDLE;
 	ChangeAnimation();
 	m_bIsFront = false;
+	m_bIsDash = false;
+	m_fStamina = 10.0f;
 }
 
 
@@ -193,6 +261,44 @@ void CharacterParant::KeyControl()
 		}
 	}
 
+	if (INPUT->KeyDown('Q'))
+	{
+		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_RUN_FRONT)
+		{
+			m_eCondition = CHAR_DASH_FRONT;
+			m_bIsDash = true;
+			ChangeAnimation();
+		}
+	}
+	else if (INPUT->KeyUp('Q'))
+	{
+		if (m_eCondition == CHAR_DASH_FRONT)
+		{
+			m_eCondition = CHAR_IDLE;
+			m_bIsDash = false;
+			ChangeAnimation();
+		}
+	}
+
+	if (INPUT->KeyDown('E'))
+	{
+		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_RUN_BACK)
+		{
+			m_eCondition = CHAR_DASH_BACK;
+			m_bIsDash = true;
+			ChangeAnimation();
+		}
+	}
+	else if (INPUT->KeyUp('E'))
+	{
+		if (m_eCondition == CHAR_DASH_BACK)
+		{
+			m_eCondition = CHAR_IDLE;
+			m_bIsDash = false;
+			ChangeAnimation();
+		}
+	}
+
 
 	if (INPUT->KeyDown(VK_SPACE))
 	{
@@ -226,6 +332,15 @@ void CharacterParant::KeyControl()
 	}
 	
 
+	if (m_bIsDash)
+	{
+		m_pCharacter->SetAnimationSpeed(5.0f);
+	}
+	else
+	{
+		m_pCharacter->SetAnimationSpeed(1.0f);
+	}
+
 }
 
 void CharacterParant::ChangeAnimation()
@@ -235,6 +350,13 @@ void CharacterParant::ChangeAnimation()
 	case CHAR_IDLE:
 			m_pCharacter->SetBlendAnimation("IDLE");
 			m_pCharacter->SetBlendTime(0.27f);
+		break;
+	case CHAR_DASH_FRONT:
+		m_pCharacter->SetAnimation("RUN");
+	
+		break;
+	case CHAR_DASH_BACK:
+		m_pCharacter->SetAnimation("RUN");
 		break;
 	case CHAR_RUN_FRONT:
 			m_pCharacter->SetAnimation("RUN");

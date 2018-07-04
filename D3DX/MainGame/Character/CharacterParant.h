@@ -35,6 +35,8 @@ enum ANIMATIONTYPE
 enum CHAR_CONDITION			//캐릭터 컨디션
 {
 	CHAR_IDLE,				//캐릭터 대기
+	CHAR_DASH_FRONT,		//캐릭터 대쉬 앞
+	CHAR_DASH_BACK,			//캐릭터 대쉬 뒤
 	CHAR_RUN_FRONT,			//캐릭터 달리기
 	CHAR_RUN_BACK,			//캐릭터 뒤로 달리기
 	CHAR_SKILL,				//캐릭터 스킬쓰기
@@ -66,14 +68,15 @@ protected:
 
 	int						m_nCalAction;		//액션 프레임 계산용 변수
 	bool					m_bIsFront;			//앞인지 뒤인지
-
-
+	bool					m_bIsDash;			//대쉬했늬
+	float					m_fStamina;			//스테미나 게이지
 
 	void SKill();
 	void Move();
 	void Controller();
 	void Debug();
 	void CheckDirection();
+	void ControllStamina();
 
 	int						m_temp;			//애니메이션 확인용 임시변수
 
