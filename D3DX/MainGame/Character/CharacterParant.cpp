@@ -80,6 +80,10 @@ void CharacterParant::Debug()
 {
 }
 
+void CharacterParant::CheckDirection()
+{
+}
+
 
 CharacterParant::CharacterParant()
 {

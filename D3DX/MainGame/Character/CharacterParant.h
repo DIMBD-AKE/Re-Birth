@@ -73,6 +73,7 @@ protected:
 	void Move();
 	void Controller();
 	void Debug();
+	void CheckDirection();
 
 	int						m_temp;			//애니메이션 확인용 임시변수
 
