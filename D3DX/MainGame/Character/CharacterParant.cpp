@@ -83,6 +83,7 @@ void CharacterParant::Debug()
 
 CharacterParant::CharacterParant()
 {
+	m_Status = new STATUS;
 	MODELMANAGER->AddModel("아린", "Model/Character/Arin/", "Arin.x", MODELTYPE_X);
 	MODELMANAGER->AddModel("아카날", "Model/Character/Aknal/", "Aknal.x", MODELTYPE_X);
 	MODELMANAGER->AddModel("헤스티아", "Model/Character/Hestia/", "Hestia.x", MODELTYPE_X);
@@ -115,8 +116,6 @@ void CharacterParant::Init(Map* map, CHARSELECT order)
 	box.lowY = 10.0f;
 	box.lowZ = -50.0f;
 
-
-	
 
 
 	m_pCharacter->SetScale(D3DXVECTOR3(0.02, 0.02, 0.02));

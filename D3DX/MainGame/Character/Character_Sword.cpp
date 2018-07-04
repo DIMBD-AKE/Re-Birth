@@ -20,7 +20,8 @@ void Character_Sword::Init(Map* map, CHARSELECT order)
 
 	if (order == CHAR_ONE)
 	{
-		m_pCharacter = MODELMANAGER->GetModel("º§ºª", MODELTYPE_X);
+		m_pCharacter = MODELMANAGER->GetModel("º£Ä«", MODELTYPE_X);
+		
 		m_Status->chr.fAgi = 1.0f;
 		m_Status->chr.fAtk = 1.0f;
 		m_Status->chr.fAtkSpeed = 1.0f;
