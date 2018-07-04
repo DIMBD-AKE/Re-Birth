@@ -1,6 +1,7 @@
 #pragma once
 
 class ItemParent;
+union STATUS;
 
 enum EQUIPTYPE
 {
@@ -37,6 +38,9 @@ private:
 	float			m_fSlotResize;
 	POINT			m_ptInvBGSize;
 	POINT			m_ptEquipSize;
+
+	// 캐릭터 정보
+	STATUS*			m_pChrStatus;
 
 	// 창 이동
 	POINT			m_ptPrevMouse;
@@ -84,5 +88,6 @@ public:
 	ItemParent * GetFirstItem();
 	STATUS GetEquipStat();
 	bool AddItem(ItemParent item);
+	void SetStatus(STATUS * status) { m_pChrStatus = status; }
 };
 

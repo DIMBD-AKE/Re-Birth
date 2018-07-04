@@ -52,9 +52,6 @@ void SceneManager::Render()
 
 void SceneManager::Destroy()
 {
-	if (m_pCurrentScene)
-		m_pCurrentScene->Release();
-
 	auto iter = m_mScene.begin();
 	for (; iter != m_mScene.end(); iter++)
 	{
