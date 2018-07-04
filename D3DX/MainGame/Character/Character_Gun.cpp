@@ -16,6 +16,7 @@ Character_Gun::~Character_Gun()
 
 void Character_Gun::Init(Map * map, CHARSELECT order)
 {
+	m_eChrType = CHRTYPE_GUN;
 	if (order == CHAR_ONE)
 	{
 		m_pCharacter = MODELMANAGER->GetModel("메그너스", MODELTYPE_X);
@@ -32,11 +33,13 @@ void Character_Gun::Update()
 {
 	if (m_pCharacter)
 	{
+		Controller();
+		KeyControl();
+		Move();
+		m_pInventory->Update();
+
 		m_pCharacter->World();
 		m_pCharacter->Update();
-		Move();
-		ChangeAnimation();
-		m_pInventory->Update();
 	}
 }
 
@@ -49,6 +52,4 @@ void Character_Gun::Render()
 	}
 }
 
-void Character_Gun::ChangeAnimation()
-{
-}
+

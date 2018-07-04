@@ -16,6 +16,8 @@ Character_Magic::~Character_Magic()
 
 void Character_Magic::Init(Map * map, CHARSELECT order)
 {
+	m_eChrType = CHRTYPE_MAGIC;
+
 	if (order == CHAR_ONE)
 	{
 		m_pCharacter = MODELMANAGER->GetModel("¾ÆÄ«³¯", MODELTYPE_X);
@@ -32,11 +34,13 @@ void Character_Magic::Update()
 {
 	if (m_pCharacter)
 	{
+		Controller();
+		KeyControl();
+		Move();
+		m_pInventory->Update();
+
 		m_pCharacter->World();
 		m_pCharacter->Update();
-		Move();
-		ChangeAnimation();
-		m_pInventory->Update();
 	}
 }
 
@@ -49,7 +53,4 @@ void Character_Magic::Render()
 	}
 }
 
-void Character_Magic::ChangeAnimation()
-{
-	
-}
+

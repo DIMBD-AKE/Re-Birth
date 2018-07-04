@@ -34,7 +34,8 @@ enum ANIMATIONTYPE
 enum CHAR_CONDITION			//캐릭터 컨디션
 {
 	CHAR_IDLE,				//캐릭터 대기
-	CHAR_RUN,				//캐릭터 달리기
+	CHAR_RUN_FRONT,			//캐릭터 달리기
+	CHAR_RUN_BACK,			//캐릭터 뒤로 달리기
 	CHAR_SKILL,				//캐릭터 스킬쓰기
 	CHAR_ATTACK,			//캐릭터 일반공격
 	CHAR_DIE,				//캐릭터 죽음
@@ -63,6 +64,9 @@ protected:
 	D3DXVECTOR3				m_vfront;			//이동을 위한 프론트벡터
 
 	int						m_nCalAction;		//액션 프레임 계산용 변수
+	bool					m_bIsFront;			//앞인지 뒤인지
+
+
 
 	void SKill();
 	void Move();
@@ -79,7 +83,6 @@ public:
 	virtual void Init(Map* map, CHARSELECT order);
 	virtual void Update() = 0;
 	virtual void Render();
-	virtual void KeyControl(); //ho
+	virtual void KeyControl(); 
 	virtual void ChangeAnimation();
-	virtual void CalActionFrame() = 0;
 };
