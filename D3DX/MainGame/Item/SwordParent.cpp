@@ -14,7 +14,7 @@ SwordParent::~SwordParent()
 {
 }
 
-void SwordParent::Skill1(Model* pModel, ST_DAMAGE pStatus, MonsterManager * pMonsterManager)
+void SwordParent::Skill1(CharacterParant* pCharacter, ST_DAMAGE pStatus, MonsterManager * pMonsterManager)
 {
 }
 

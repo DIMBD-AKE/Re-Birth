@@ -1,8 +1,8 @@
 #include "../../stdafx.h"
+#include "../Item/ItemParent.h"
 #include "Inventory.h"
 #include "CharacterParant.h"
 #include "../Status.h"
-#include "../Item/ItemParent.h"
 
 void Inventory::InitPos()
 {
@@ -13,11 +13,12 @@ void Inventory::InitPos()
 	m_vEquipPos.x = m_vEquipPos.y = 0;
 
 	m_ptEquipSlot[EQUIP_FIRSTWEAPON] = Util::MakePoint(47, 438);
-	m_ptEquipSlot[EQUIP_SECONDWEAPON] = Util::MakePoint(343, 438);
+	m_ptEquipSlot[EQUIP_POTION] = Util::MakePoint(343, 438);
 	m_ptEquipSlot[EQUIP_HELMET] = Util::MakePoint(195, 58);
 	m_ptEquipSlot[EQUIP_CHEST] = Util::MakePoint(195, 218);
 	m_ptEquipSlot[EQUIP_GLOVES] = Util::MakePoint(47, 282);
 	m_ptEquipSlot[EQUIP_BOOTS] = Util::MakePoint(195, 378);
+	// X 버튼
 	m_ptEquipSlot[EQUIP_END] = Util::MakePoint(795, 16);
 }
 
@@ -166,6 +167,10 @@ void Inventory::Move()
 		m_eMoveType = MOVETYPE_END;
 }
 
+void Inventory::ShowInfo()
+{
+}
+
 Inventory::Inventory()
 	: m_pHoldItem(NULL)
 	, m_isInvShow(false)
@@ -274,7 +279,7 @@ void Inventory::Render()
 			{
 				pos.x += m_fSlotSpacing;
 				pos.y += m_fSlotSpacing;
-				m_pEquip[i]->Render(pos, m_fSlotSize - m_fSlotSpacing * 2);
+				m_pEquip[i]->item->Render(pos, m_fSlotSize - m_fSlotSpacing * 2);
 			}
 			// 테두리
 			if (PtInRect(&rc, MOUSE_POS))
@@ -321,7 +326,7 @@ void Inventory::Render()
 				{
 					pos.x += m_fSlotSpacing;
 					pos.y += m_fSlotSpacing;
-					m_vecInventory[i][j]->Render(pos, m_fSlotSize - m_fSlotSpacing * 2);
+					m_vecInventory[i][j]->item->Render(pos, m_fSlotSize - m_fSlotSpacing * 2);
 				}
 				// 테두리
 				if (PtInRect(&rc, MOUSE_POS))
@@ -341,15 +346,20 @@ void Inventory::Render()
 		pos.x = MOUSE_POS.x - (m_fSlotSize - m_fSlotSpacing) / 2;
 		pos.y = MOUSE_POS.y - (m_fSlotSize - m_fSlotSpacing) / 2;
 		pos.z = 0;
-		m_pHoldItem->Render(pos, m_fSlotSize - m_fSlotSpacing);
+		m_pHoldItem->item->Render(pos, m_fSlotSize - m_fSlotSpacing);
 	}
 
 	SPRITE->End();
 }
 
-ItemParent * Inventory::GetFirstItem()
+ItemParent * Inventory::GetWeapon()
 {
 	return nullptr;
+}
+
+ItemParent * Inventory::GetPotion()
+{
+	return NULL;
 }
 
 STATUS Inventory::GetEquipStat()
@@ -368,7 +378,7 @@ bool Inventory::AddItem(ItemParent item)
 		{
 			if (!m_vecInventory[i][j])
 			{
-				m_vecInventory[i][j] = pItem;
+				m_vecInventory[i][j]->item = pItem;
 				return true;
 			}
 		}

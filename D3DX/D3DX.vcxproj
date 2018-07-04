@@ -165,6 +165,7 @@
     <ClInclude Include="Framework\Struct.h" />
     <ClInclude Include="Framework\Util.h" />
     <ClInclude Include="Framework\Vertex.h" />
+    <ClInclude Include="MainGame\GameEnum.h" />
     <ClInclude Include="MainGame\Item\HealthHighPotion.h" />
     <ClInclude Include="MainGame\Item\HealthPotion.h" />
     <ClInclude Include="MainGame\Item\GunParent.h" />
