@@ -18,6 +18,7 @@ class MonsterParent
 
 	//리스폰상태인지 확인
 	GET(bool, m_bIsRespawn, IsResPawn);
+	GET(Model*, m_pModel, Model);
 
 protected:
 
@@ -27,7 +28,7 @@ protected:
 	//리스폰될떄까지 시간
 	int m_nResPawnCount;
 
-	Model* m_pModel;
+	
 	//Model* m_pDeathModel;
 	
 	MON_STATE m_eState;
