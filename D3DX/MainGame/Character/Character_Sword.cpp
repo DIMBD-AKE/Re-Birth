@@ -35,7 +35,7 @@ void Character_Sword::Init(Map* map, CHARSELECT order)
 		m_Status->chr.nCurrentStam = 10;
 		m_Status->chr.nDef = 26;
 		m_Status->chr.nMaxHp = 100;
-		m_Status->chr.nMaxStam = 10;
+		m_Status->chr.nMaxStam = 20;
 		CharacterParant::Init(map, order);
 	}
 	else if (order == CHAR_TWO)

@@ -124,10 +124,10 @@ void CharacterParant::ControllStamina()
 
 	if (m_eCondition == CHAR_DASH_FRONT || m_eCondition == CHAR_DASH_BACK)
 	{
-		m_fStamina -= 0.2f;
+		m_Status->chr.nCurrentStam -= 1;
 	}
 
-	if (m_fStamina <= 0)
+	if (m_Status->chr.nCurrentStam <= 0)
 	{
 		m_eCondition = CHAR_IDLE;
 		m_bIsDash = false;
@@ -137,17 +137,17 @@ void CharacterParant::ControllStamina()
 
 	if (m_eCondition == CHAR_IDLE)
 	{
-		if (m_fStamina <= 10.0f)
+		if (m_Status->chr.nCurrentStam <= m_Status->chr.nMaxStam)
 		{
-			m_fStamina += 0.07;
-			if (m_fStamina >= 10.0f)
+			m_Status->chr.nCurrentStam += 1;
+			if (m_Status->chr.nCurrentStam >= m_Status->chr.nMaxStam)
 			{
-				m_fStamina = 10.0f;
+				m_Status->chr.nCurrentStam = m_Status->chr.nMaxStam;
 			}
 		}
 	}
 
-	TEXT->Add(to_string(m_fStamina), 300, 300, 30);
+	TEXT->Add(to_string(m_Status->chr.nCurrentStam), 300, 300, 30);
 }
 
 
@@ -264,7 +264,7 @@ void CharacterParant::KeyControl()
 	//앞으로 대쉬
 	if (INPUT->KeyDown('Q'))
 	{
-		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_RUN_FRONT)
+		if (m_eCondition == CHAR_RUN_FRONT)
 		{
 			m_eCondition = CHAR_DASH_FRONT;
 			m_bIsDash = true;
@@ -283,7 +283,7 @@ void CharacterParant::KeyControl()
 	//뒤로 대쉬
 	if (INPUT->KeyDown('E'))
 	{
-		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_RUN_BACK)
+		if (m_eCondition == CHAR_RUN_BACK)
 		{
 			m_eCondition = CHAR_DASH_BACK;
 			m_bIsDash = true;
