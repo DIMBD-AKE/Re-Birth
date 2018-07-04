@@ -150,6 +150,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Framework\UIController.h" />
     <ClInclude Include="MainGame\AStar\Cell.h" />
     <ClInclude Include="MainGame\AStar\AStar.h" />
     <ClInclude Include="Framework\Manager\CameraManager.h" />
@@ -198,6 +199,7 @@
     <ClInclude Include="Framework\Manager\TimeManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Framework\UIController.cpp" />
     <ClCompile Include="MainGame\AStar\Cell.cpp" />
     <ClCompile Include="MainGame\AStar\AStar.cpp" />
     <ClCompile Include="Framework\Manager\CameraManager.cpp" />
