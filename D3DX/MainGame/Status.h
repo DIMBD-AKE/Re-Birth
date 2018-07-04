@@ -1,7 +1,10 @@
 #pragma once
 
 #define CURRENTHP(varName)	varName.chr.nCurrentHP	
-#define MAXHP(varName)	varName.chr.nCurrentHP	
+#define MAXHP(varName)	varName.chr.nMaxHp	
+
+#define CURRENTSTAM(varName)	varName.chr.nCurrentStam	
+#define MAXSTAM(varName)	varName.chr.nMaxStam	
 
 #define ATK(varName)	varName.chr.nAtk	
 #define PHYRATE(varName)	varName.chr.fPhyRate	
@@ -24,6 +27,9 @@ union STATUS
 		int		nCurrentHP;		//캐릭터(적, 플레이어) 현재 피
 		int		nMaxHp;			//캐릭터(적, 플레이어) 최대 피
 
+		int		nCurrentStam;	//캐릭터 현재 스테미나
+		int		nMaxStam;		//캐릭터 전체 스테미나
+
 		int		nAtk;			//기본공격력
 		float	fPhyRate;		//물리계수
 		float	fMagicRate;		//마법계수
@@ -42,8 +48,8 @@ union STATUS
 		float	fCoolTime1;		//스킬1 쿨타임
 		float	fCoolTime2;		//스킬2 쿨타임
 
-		int      nSkillAtk1;      //스킬1 데미지
-		int      nSkillAtk2;      //스킬2 데미지
+		int      nSkillAtk1;	//스킬1 데미지
+		int      nSkillAtk2;	//스킬2 데미지
 
 		int		nAtk;			//공격력 증가량
 		int		nDef;			//방어력 증가량
