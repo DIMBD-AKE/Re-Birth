@@ -1,18 +1,20 @@
 #pragma once
 
-#define CURRENTHP chr.nCurrentHP
-#define MAXHP chr.nMaxHp
+#define CURRENTHP(varName)	varName.chr.nCurrentHP	
+#define MAXHP(varName)	varName.chr.nCurrentHP	
 
-#define ATK chr.nAtk
-#define PHYRATE chr.fPhyRate
-#define MAGICRATE chr.fMagicRate
-#define CHERATE chr.fCheRate
-#define ATKSPEED chr.fAtkSpeed
+#define ATK(varName)	varName.chr.nAtk	
+#define PHYRATE(varName)	varName.chr.fPhyRate	
+#define MAGICRATE(varName)	varName.chr.fMagicRate	
+#define CHERATE(varName)	varName.chr.fCheRate	
+#define ATKSPEED(varName)	varName.chr.fAtkSpeed	
 
-#define DEF chr.nDef
-#define AGI chr.fAgi
-#define HIT chr.fHit
-#define SPEED chr.fSpeed
+#define DEF(varName)	varName.chr.nDef	
+#define AGI(varName)	varName.chr.fAgi	
+#define HIT(varName)	varName.chr.fHit	
+#define SPEED(varName)	varName.chr.fSpeed	
+
+
 
 union STATUS
 {
@@ -40,6 +42,9 @@ union STATUS
 		float	fCoolTime1;		//스킬1 쿨타임
 		float	fCoolTime2;		//스킬2 쿨타임
 
+		int      nSkillAtk1;      //스킬1 데미지
+		int      nSkillAtk2;      //스킬2 데미지
+
 		int		nAtk;			//공격력 증가량
 		int		nDef;			//방어력 증가량
 		int		nHp;			//체력 증가량
@@ -56,6 +61,3 @@ struct ST_DAMAGE
 	float	fMagicRate;
 	float	fCheRate;
 };
-
-
-#define CURRENTHP chr.nCurrentHP

@@ -51,7 +51,11 @@ void Elizabeth::Setup(Map* map, D3DXVECTOR3 spawnPos)
 
 void Elizabeth::SetupStat()
 {
-	m_uMonsterStat.
+	CURRENTHP(m_uMonsterStat) = MAXHP(m_uMonsterStat)  = 100;
+	
+	//m_uMonsterStat.CURRENTHP = m_uMonsterStat.MAXHP = 100;
+
+
 	/*
 		int		nCurrentHP;		//캐릭터(적, 플레이어) 현재 피
 		int		nMaxHp;			//캐릭터(적, 플레이어) 최대 피
