@@ -17,7 +17,8 @@ enum CHRTYPE   //캐릭터 타입
 enum CHARSELECT
 {
 	CHAR_ONE,
-	CHAR_TWO
+	CHAR_TWO,
+	CHAR_THREE
 };
 
 enum ANIMATIONTYPE
