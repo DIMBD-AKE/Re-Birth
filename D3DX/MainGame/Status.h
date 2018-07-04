@@ -26,6 +26,10 @@ union STATUS
 		float	fCoolTime1;		//스킬1 쿨타임
 		float	fCoolTime2;		//스킬2 쿨타임
 
+		float	fPhyRate;		//물리계수
+		float	fMagicRate;		//마법계수
+		float	fCheRate;		//화학계수
+
 		int		nAtk;			//공격력 증가량
 		int		nDef;			//방어력 증가량
 		int		nHp;			//체력 증가량
