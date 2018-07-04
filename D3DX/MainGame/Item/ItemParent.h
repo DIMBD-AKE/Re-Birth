@@ -40,7 +40,8 @@ public:
 	virtual void Skill2(CharacterParant* pCharacter, ST_DAMAGE pStatus, MonsterManager* pMonsterManager);
 	
 	virtual void SetTarget();
-	
+	virtual void SetStatusZero();
+
 	//virtual void Drop();
 	void Render(D3DXVECTOR3 pos, float size);
 };

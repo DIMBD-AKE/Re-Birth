@@ -20,17 +20,7 @@ void ItemParent::SetUp()
 	m_pTexture = TEXTUREMANAGER->AddTexture("장검", "Texture/Item/장검.jpg");
 	m_imageInfo = TEXTUREMANAGER->GetInfo("장검");
 	m_pItemStatus = new STATUS;
-	m_pItemStatus->item.fAgi = 0;
-	m_pItemStatus->item.fAtkSpeed = 0;
-	
-	m_pItemStatus->item.fCoolTime1 = 0;
-	m_pItemStatus->item.fCoolTime2 = 0;
-	m_pItemStatus->item.fHit = 0;
-
-	m_pItemStatus->item.fSpeed = 0;
-	m_pItemStatus->item.nAtk = 0;
-	m_pItemStatus->item.nDef = 0;
-	m_pItemStatus->item.nHp = 0;
+	SetStatusZero();
 }
 
 void ItemParent::Use(CharacterParant& pCharacter)
@@ -75,6 +65,21 @@ void ItemParent::Skill2(CharacterParant* pCharacter,ST_DAMAGE pStatus, MonsterMa
 
 void ItemParent::SetTarget()
 {
+}
+
+void ItemParent::SetStatusZero()
+{
+	this->m_pItemStatus->item.fAgi = 0;
+	this->m_pItemStatus->item.fAtkSpeed = 0;
+	this->m_pItemStatus->item.fCoolTime1 = 0;
+	this->m_pItemStatus->item.fCoolTime2 = 0;
+	this->m_pItemStatus->item.fHit = 0;
+	this->m_pItemStatus->item.fSpeed = 0;
+	this->m_pItemStatus->item.nAtk = 0;
+	this->m_pItemStatus->item.nDef = 0;
+	this->m_pItemStatus->item.nHp = 0;
+	this->m_pItemStatus->item.nSkillAtk1 = 0;
+	this->m_pItemStatus->item.nSkillAtk2 = 0;
 }
 
 void ItemParent::Render(D3DXVECTOR3 pos, float size)
