@@ -16,6 +16,7 @@ HealthPotion::~HealthPotion()
 
 void HealthPotion::SetUp()
 {
+	m_nId = 1;
 	m_pTexture = TEXTUREMANAGER->AddTexture("포션", "Texture/Item/포션.jpg");
 	m_imageInfo = TEXTUREMANAGER->GetInfo("포션");
 }
