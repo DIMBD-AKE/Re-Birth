@@ -1,20 +1,16 @@
 #pragma once
 
+#include "../GameEnum.h"
+
 class ItemParent;
 union STATUS;
+enum EQUIPTYPE;
 
-enum EQUIPTYPE
+struct ST_ITEMSTACK
 {
-	EQUIP_FIRSTWEAPON,
-	EQUIP_SECONDWEAPON,
-	EQUIP_HELMET,
-	EQUIP_CHEST,
-	EQUIP_GLOVES,
-	EQUIP_BOOTS,
-	EQUIP_END
+	ItemParent * item;
+	int count;
 };
-
-union STATUS;
 
 class Inventory
 {
@@ -27,7 +23,7 @@ public:
 	};
 
 private:
-	typedef vector<ItemParent*> InvRow;
+	typedef vector<ST_ITEMSTACK*> InvRow;
 
 private:
 	LPDIRECT3DTEXTURE9	m_pSlotTex;
@@ -48,9 +44,9 @@ private:
 	MOVETYPE		m_eMoveType;
 
 	// 홀드 아이템 정보
-	ItemParent *	m_pHoldItem;
+	ST_ITEMSTACK *	m_pHoldItem;
 	POINT			m_ptHIIndex;
-	EQUIPTYPE		m_eHIType;
+	EQUIPTYPE 		m_eHIType;
 
 	// 인벤토리
 	vector<InvRow>	m_vecInventory;
@@ -61,7 +57,7 @@ private:
 	bool			m_isInvShow;
 
 	// 장비
-	ItemParent *	m_pEquip[EQUIP_END];
+	ST_ITEMSTACK *	m_pEquip[EQUIPTYPE::EQUIP_END];
 	POINT			m_ptEquipSlot[EQUIP_END + 1];
 	POINT			m_vEquipPos;
 	bool			m_isEquipShow;
@@ -71,6 +67,7 @@ private:
 	void PickItem();
 	void ChangeItem();
 	void Move();
+	void ShowInfo();
 
 public:
 	Inventory();
@@ -85,7 +82,8 @@ public:
 	void Update();
 	void Render();
 
-	ItemParent * GetFirstItem();
+	ItemParent * GetWeapon();
+	ItemParent * GetPotion();
 	STATUS GetEquipStat();
 	bool AddItem(ItemParent item);
 	void SetStatus(STATUS * status) { m_pChrStatus = status; }
