@@ -9,6 +9,7 @@ class Cell
 	//
 	Cell* m_pNeighborCell[3];	//나랑 이웃한 삼각형의 포인터
 
+	
 	//하나의 삼각형중 세 점을 담을 변수
 	//SYNTHESIZE_REF(D3DXVECTOR3, m_vVertex[3], Vertex);
 
@@ -38,6 +39,10 @@ class Cell
 
 	//갈수 있는 타일이냐
 	SYNTHESIZE(bool, m_bIsOpen, IsOpen);
+
+	//타일의 속성(출발, 도착 등 설정을 위한 변수)
+	SYNTHESIZE(string, m_sAttribute, Attribute);
+
 	//float m_fTotalCost;
 	//float m_fCostFromStart;
 	//float m_fCostToGoal;
