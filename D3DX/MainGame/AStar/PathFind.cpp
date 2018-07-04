@@ -25,13 +25,14 @@ void PathFind::Setup(vector<D3DXVECTOR3>& Vertex)
 	for (int i = 0; i < Vertex.size(); i += 3)
 	{
 		//Cell* tempCell = new Cell;
+		m_vNaviCell[index] = new Cell;
 
 		D3DXVECTOR3 tempVertex[3];
 		tempVertex[0] = Vertex[i];
 		tempVertex[1] = Vertex[i+1];
 		tempVertex[2] = Vertex[i+2];
 
-		m_vNaviCell[index].SetVertex(tempVertex);
+		m_vNaviCell[index]->SetVertex(tempVertex);
 		//하나의 삼각형 세점 넣기
 		//m_vNaviCell[index]->vertex[0] = Vertex[i];
 		//m_vNaviCell[index]->vertex[1] = Vertex[i+1];
@@ -49,7 +50,7 @@ void PathFind::Setup(vector<D3DXVECTOR3>& Vertex)
 		//중점좌표 
 		//m_vNaviCell[index].center =
 		//	D3DXVECTOR3(plusV/3.0f);
-		m_vNaviCell[index].SetCenter(plusV / 3.0f);
+		m_vNaviCell[index]->SetCenter(plusV / 3.0f);
 
 		//사이드라인 3개 연산을 위한 반복문
 		D3DXVECTOR3 tempVertexCenter[3];
@@ -64,7 +65,7 @@ void PathFind::Setup(vector<D3DXVECTOR3>& Vertex)
 			tempVertexCenter[j] = plusV2 / 2.0f;
 
 			//중점에서 사이드 센터까지의 벡터를 찾고
-			D3DXVECTOR3 costVector = m_vNaviCell[index].GetCenter();
+			D3DXVECTOR3 costVector = m_vNaviCell[index]->GetCenter();
 			costVector = costVector - tempVertexCenter[j];
 
 			//벡터의 렝스를 담아라
@@ -72,8 +73,8 @@ void PathFind::Setup(vector<D3DXVECTOR3>& Vertex)
 			tempArrivalCost[j] = D3DXVec3Length(&costVector);
 		}	
 
-		m_vNaviCell[index].SetVertexCenter(tempVertexCenter);
-		m_vNaviCell[index].SetArrivalCost(tempArrivalCost);
+		m_vNaviCell[index]->SetVertexCenter(tempVertexCenter);
+		m_vNaviCell[index]->SetArrivalCost(tempArrivalCost);
 
 		//m_vNaviCell[index] = tempCell;
 
@@ -192,7 +193,7 @@ void PathFind::MakeNeighborCell(int index)
 		tempNeighborCell[i] = SubMakeNeighborCell(index)[i];
 	}
 
-	m_vNaviCell[index].SetNeighborCell(tempNeighborCell);
+	m_vNaviCell[index]->SetNeighborCell(tempNeighborCell);
 
 	//m_vNaviCell[index]->m_pN[0] = SubMakeNeighborCell(index, 0);
 	//m_vNaviCell[index]->neighborCell[1] = SubMakeNeighborCell(index, 1);
@@ -231,12 +232,12 @@ Cell** PathFind::SubMakeNeighborCell(int myCellIndex)
 
 		//초기 레이의 위치는 사이드라인의 중점
 		//D3DXVECTOR3 rayPos = m_vNaviCell[myCellIndex].vertexCenter[linkCellIndex];
-		D3DXVECTOR3 rayPos = m_vNaviCell[myCellIndex].GetVertexCenter()[i];
+		D3DXVECTOR3 rayPos = m_vNaviCell[myCellIndex]->GetVertexCenter()[i];
 		//rayPos.y = 1000;
 
 		//우선 다른 한점의 좌표를 저장
 		//D3DXVECTOR3 otherV = m_vNaviCell[myCellIndex].vertex[(linkCellIndex + 2) % 3];
-		D3DXVECTOR3 otherV = m_vNaviCell[myCellIndex].GetVertex()[(i + 2) % 3];
+		D3DXVECTOR3 otherV = m_vNaviCell[myCellIndex]->GetVertex()[(i + 2) % 3];
 
 		//다른 한점 - 사이드 중앙 을 통해 방향벡터 구하고
 		D3DXVECTOR3 dir = rayPos - otherV;
@@ -255,15 +256,15 @@ Cell** PathFind::SubMakeNeighborCell(int myCellIndex)
 			if (j == myCellIndex) continue;
 
 			if (D3DXIntersectTri(
-				&m_vNaviCell[j].GetVertex()[0],
-				&m_vNaviCell[j].GetVertex()[1],
-				&m_vNaviCell[j].GetVertex()[2],
+				&m_vNaviCell[j]->GetVertex()[0],
+				&m_vNaviCell[j]->GetVertex()[1],
+				&m_vNaviCell[j]->GetVertex()[2],
 				&rayPos,
 				&D3DXVECTOR3(0, -1, 0),
 				NULL, NULL, NULL))
 			{
 				//충돌이 일어났으면 충돌된 셀로 설정
-				tempNeighborCell[i] = &m_vNaviCell[j];
+				tempNeighborCell[i] = m_vNaviCell[j];
 				//return;
 			}
 			int a = 10;

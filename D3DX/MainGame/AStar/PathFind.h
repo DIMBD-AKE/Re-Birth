@@ -5,7 +5,8 @@ class Cell;
 
 class PathFind
 {
-	vector<Cell> m_vNaviCell;
+	GET(vector<Cell*>, m_vNaviCell, NaviCell);
+	//vector<Cell> m_vNaviCell;
 
 public:
 	PathFind();

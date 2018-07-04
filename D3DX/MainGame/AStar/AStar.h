@@ -1,9 +1,12 @@
 #pragma once
 #include "Cell.h"
 
+class PathFind;
+
 class AStar
 {
-	//전체 타일
+	
+	////전체 타일
 	//vector<ST_CELL*> _vTotalList;
 	//vector<ST_CELL*>::iterator _viTotalList;
 	//
