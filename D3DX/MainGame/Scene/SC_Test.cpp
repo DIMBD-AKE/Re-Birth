@@ -6,7 +6,7 @@
 #include "../Character/Character_Gun.h"
 #include "../Character/Character_Magic.h"
 
-#include "../monster/PathFind.h"
+#include "../Astar/PathFind.h"
 #include "../monster/MonsterManager.h"
 
 #include "../Item/ItemParent.h"
@@ -34,6 +34,7 @@ void SC_Test::Init()
 
 	m_pSampleMap = new Map;
 	m_pSampleMap->Load("Map/Sample.map");
+	//m_pSampleMap->Load("Map/Nav.map");
 
 
 	m_pTestModel = new Character_Sword;
@@ -50,6 +51,8 @@ void SC_Test::Init()
 	Inventory inv;
 	inv.CreateInventory(3, 5);
 
+	m_pPathFind = new PathFind;
+	m_pPathFind->Setup(m_pSampleMap->GetNavMesh());
 
 	m_pMM = new MonsterManager;
 	m_pMM->Setup(m_pSampleMap);
