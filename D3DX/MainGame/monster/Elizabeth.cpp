@@ -52,7 +52,9 @@ void Elizabeth::Setup(Map* map, D3DXVECTOR3 spawnPos)
 void Elizabeth::SetupStat()
 {
 	CURRENTHP(m_uMonsterStat) = MAXHP(m_uMonsterStat)  = 100;
-	
+	ATK(m_uMonsterStat) = 10;
+	PHYRATE(m_uMonsterStat) = 
+
 	//m_uMonsterStat.CURRENTHP = m_uMonsterStat.MAXHP = 100;
 
 

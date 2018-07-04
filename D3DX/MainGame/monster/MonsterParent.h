@@ -47,7 +47,7 @@ public:
 	void CalculDamage(float damage);
 
 	virtual void Setup(Map* map, D3DXVECTOR3 spawnPos);
-	virtual void SetupStat() = 0;
+	virtual void SetupStat();
 	virtual void Update();
 	virtual void RespawnUpdate();
 	virtual void Render();

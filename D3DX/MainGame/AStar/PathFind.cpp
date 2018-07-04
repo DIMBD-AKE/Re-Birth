@@ -265,6 +265,7 @@ Cell** PathFind::SubMakeNeighborCell(int myCellIndex)
 			{
 				//충돌이 일어났으면 충돌된 셀로 설정
 				tempNeighborCell[i] = m_vNaviCell[j];
+				break;
 				//return;
 			}
 			int a = 10;
