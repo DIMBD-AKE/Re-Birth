@@ -23,7 +23,7 @@ public:
 	};
 
 private:
-	typedef vector<ST_ITEMSTACK*> InvRow;
+	typedef vector<ST_ITEMSTACK> InvRow;
 
 private:
 	LPDIRECT3DTEXTURE9	m_pSlotTex;
@@ -44,7 +44,7 @@ private:
 	MOVETYPE		m_eMoveType;
 
 	// 홀드 아이템 정보
-	ST_ITEMSTACK *	m_pHoldItem;
+	ST_ITEMSTACK	m_pHoldItem;
 	POINT			m_ptHIIndex;
 	EQUIPTYPE 		m_eHIType;
 
@@ -57,7 +57,7 @@ private:
 	bool			m_isInvShow;
 
 	// 장비
-	ST_ITEMSTACK *	m_pEquip[EQUIPTYPE::EQUIP_END];
+	ST_ITEMSTACK	m_pEquip[EQUIP_END];
 	POINT			m_ptEquipSlot[EQUIP_END + 1];
 	POINT			m_vEquipPos;
 	bool			m_isEquipShow;

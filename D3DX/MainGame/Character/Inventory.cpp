@@ -1,5 +1,6 @@
 #include "../../stdafx.h"
 #include "../Item/ItemParent.h"
+#include "../Item/HealthPotion.h"
 #include "Inventory.h"
 #include "CharacterParant.h"
 #include "../Status.h"
@@ -33,13 +34,14 @@ void Inventory::PickItem()
 			rc.top = m_fSlotSpacing + m_vInvPos.y + (m_fSlotSize + m_fSlotSpacing) * i;
 			rc.right = rc.left + m_fSlotSize;
 			rc.bottom = rc.top + m_fSlotSize;
-			if (PtInRect(&rc, MOUSE_POS) && m_vecInventory[i][j])
+			if (PtInRect(&rc, MOUSE_POS) && m_vecInventory[i][j].item)
 			{
 				m_ptHIIndex.x = j;
 				m_ptHIIndex.y = i;
 				m_eHIType = EQUIP_END;
 				m_pHoldItem = m_vecInventory[i][j];
-				m_vecInventory[i][j] = NULL;
+				m_vecInventory[i][j].item = NULL;
+				m_vecInventory[i][j].count = 0;
 			}
 		}
 	}
@@ -51,18 +53,19 @@ void Inventory::PickItem()
 		rc.top = m_vEquipPos.y + m_ptEquipSlot[i].y * m_fSlotResize;
 		rc.right = rc.left + m_fSlotSize;
 		rc.bottom = rc.top + m_fSlotSize;
-		if (PtInRect(&rc, MOUSE_POS) && m_pEquip[i])
+		if (PtInRect(&rc, MOUSE_POS) && m_pEquip[i].item)
 		{
 			m_eHIType = (EQUIPTYPE)i;
 			m_pHoldItem = m_pEquip[i];
-			m_pEquip[i] = NULL;
+			m_pEquip[i].item = NULL;
+			m_pEquip[i].count = 0;
 		}
 	}
 }
 
 void Inventory::ChangeItem()
 {
-	if (!m_pHoldItem) return;
+	if (!m_pHoldItem.item) return;
 
 	bool find = false;
 	for (int i = 0; i < m_ptInvSize.y; i++)
@@ -76,10 +79,44 @@ void Inventory::ChangeItem()
 			rc.bottom = rc.top + m_fSlotSize;
 			if (PtInRect(&rc, MOUSE_POS))
 			{
-				find = true;
 				// Áßº¹Ã¼Å© ÇÊ¿ä
-				m_vecInventory[i][j] = m_pHoldItem;
-				m_pHoldItem = NULL;
+				if (m_vecInventory[i][j].item)
+				{
+					// Æ÷¼Ç °ãÄ§
+					if (m_vecInventory[i][j].item->GetEquipType() == EQUIP_POTION &&
+						m_pHoldItem.item->GetEquipType() == EQUIP_POTION)
+					{
+						SAFE_DELETE(m_pHoldItem.item);
+						m_vecInventory[i][j].count += m_pHoldItem.count;
+						find = true;
+					}
+					// È¦µå°¡ ÀåºñÀÏ¶§
+					if (m_eHIType != EQUIP_END && !find)
+					{
+						// °°ÀºÀåºñ¶ó¸é ±³È¯
+						if (m_vecInventory[i][j].item->GetEquipType() == m_pHoldItem.item->GetEquipType())
+						{
+							m_pEquip[m_eHIType] = m_vecInventory[i][j];
+							m_vecInventory[i][j] = m_pHoldItem;
+						}
+						else
+							m_pEquip[m_eHIType] = m_pHoldItem;
+						find = true;
+					}
+					if (!find)
+					{
+						m_vecInventory[m_ptHIIndex.y][m_ptHIIndex.x] = m_vecInventory[i][j];
+						m_vecInventory[i][j] = m_pHoldItem;
+						find = true;
+					}
+				}
+				else
+				{
+					m_vecInventory[i][j] = m_pHoldItem;
+					find = true;
+				}
+				m_pHoldItem.item = NULL;
+				m_pHoldItem.count = 0;
 			}
 		}
 	}
@@ -93,11 +130,29 @@ void Inventory::ChangeItem()
 		rc.bottom = rc.top + m_fSlotSize;
 		if (PtInRect(&rc, MOUSE_POS))
 		{
-			// ÀåÂø°¡´ÉÇÑ ÀåºñÀÎÁö Ã¼Å© ÇÊ¿ä
-			find = true;
-			// Áßº¹Ã¼Å© ÇÊ¿ä
-			m_pEquip[i] = m_pHoldItem;
-			m_pHoldItem = NULL;
+			// ÀÎº¥Åä¸® ¾ÆÀÌÅÛ
+			if (m_eHIType == EQUIP_END)
+			{
+				if (m_pHoldItem.item->GetEquipType() == i)
+				{
+					if (m_pEquip[i].item)
+						m_vecInventory[m_ptHIIndex.y][m_ptHIIndex.x] = m_pEquip[i];
+					m_pEquip[i] = m_pHoldItem;
+					find = true;
+				}
+				else
+				{
+					m_vecInventory[m_ptHIIndex.y][m_ptHIIndex.x] = m_pHoldItem;
+					find = true;
+				}
+			}
+			else
+			{
+				m_pEquip[m_eHIType] = m_pHoldItem;
+				find = true;
+			}			
+			m_pHoldItem.item = NULL;
+			m_pHoldItem.count = 0;
 		}
 	}
 
@@ -107,7 +162,8 @@ void Inventory::ChangeItem()
 			m_vecInventory[m_ptHIIndex.y][m_ptHIIndex.x] = m_pHoldItem;
 		else
 			m_pEquip[m_eHIType] = m_pHoldItem;
-		m_pHoldItem = NULL;
+		m_pHoldItem.item = NULL;
+		m_pHoldItem.count = 0;
 	}
 }
 
@@ -172,8 +228,7 @@ void Inventory::ShowInfo()
 }
 
 Inventory::Inventory()
-	: m_pHoldItem(NULL)
-	, m_isInvShow(false)
+	: m_isInvShow(false)
 	, m_isEquipShow(false)
 	, m_eMoveType(MOVETYPE_END)
 {
@@ -184,10 +239,10 @@ Inventory::~Inventory()
 {
 	for (int i = 0; i < m_ptInvSize.y; i++)
 		for (int j = 0; j < m_ptInvSize.x; j++)
-			SAFE_DELETE(m_vecInventory[i][j]);
+			SAFE_DELETE(m_vecInventory[i][j].item);
 
 	for (int i = 0; i < EQUIP_END; i++)
-		SAFE_DELETE(m_pEquip[i]);
+		SAFE_DELETE(m_pEquip[i].item);
 }
 
 void Inventory::CreateInventory(int col, int row)
@@ -202,7 +257,7 @@ void Inventory::CreateInventory(int col, int row)
 		m_vecInventory.push_back(invRow);
 
 	for (int i = 0; i < EQUIP_END; i++)
-		m_pEquip[i] = NULL;
+		m_pEquip[i].item = NULL;
 
 	m_pSlotTex = TEXTUREMANAGER->AddTexture("UI Inventory Slot", "UI/Inventory Slot.png");
 	m_pSlotOverTex = TEXTUREMANAGER->AddTexture("UI Inventory Slot Over", "UI/Inventory Slot Over.png");
@@ -221,11 +276,20 @@ void Inventory::Update()
 {
 	if (INPUT->KeyDown('I'))
 	{
-		if (!m_isInvShow)
+		if (m_isInvShow)
 		{
-			ItemParent item;
-			item.SetUp();
-			AddItem(item);
+			if (rand() % 2 == 0)
+			{
+				ItemParent item;
+				item.SetUp();
+				AddItem(item);
+			}
+			else
+			{
+				HealthPotion item;
+				item.SetUp();
+				AddItem(item);
+			}
 		}
 	}
 
@@ -266,6 +330,16 @@ void Inventory::Render()
 		SPRITE->SetTransform(&(matS * matT));
 		SPRITE->Draw(m_pEquipTex, NULL, NULL, NULL, 0xFFFFFFFF);
 
+		STATUS item = GetEquipStat();
+		STATUS chr = *m_pChrStatus;
+		chr.chr.nMaxHp += item.item.nHp;
+		chr.chr.nAtk += item.item.nAtk;
+		chr.chr.fAtkSpeed *= item.item.fAtkSpeed;
+		chr.chr.nDef += item.item.nDef;
+		chr.chr.fAgi += item.item.fAgi;
+		chr.chr.fHit += item.item.fHit;
+		chr.chr.fSpeed += item.item.fSpeed;
+
 		for (int i = 0; i < EQUIP_END; i++)
 		{
 			pos.x = m_vEquipPos.x + m_ptEquipSlot[i].x * m_fSlotResize;
@@ -275,11 +349,17 @@ void Inventory::Render()
 			rc.right = rc.left + m_fSlotSize;
 			rc.bottom = rc.top + m_fSlotSize;
 			// ¾ÆÀÌÅÛ
-			if (m_pEquip[i])
+			if (m_pEquip[i].item)
 			{
 				pos.x += m_fSlotSpacing;
 				pos.y += m_fSlotSpacing;
-				m_pEquip[i]->item->Render(pos, m_fSlotSize - m_fSlotSpacing * 2);
+				m_pEquip[i].item->Render(pos, m_fSlotSize - m_fSlotSpacing * 2);
+				if (m_pEquip[i].item)
+					if (m_pEquip[i].item->GetEquipType() == EQUIP_POTION)
+						TEXT->Add(to_string(m_pEquip[i].count),
+							rc.right - 25 * m_fSlotResize,
+							rc.bottom - 30 * m_fSlotResize,
+							30 * m_fSlotResize, "³ª´®½ºÄù¾î Regular", 0xFFFFFFFF);
 			}
 			// Å×µÎ¸®
 			if (PtInRect(&rc, MOUSE_POS))
@@ -289,6 +369,26 @@ void Inventory::Render()
 				SPRITE->SetTransform(&(matS * matT));
 				SPRITE->Draw(m_pSlotOverTex, NULL, NULL, NULL, 0xFFFFFFFF);
 			}
+			// ½ºÅÝ
+			char temp[64];
+			TEXT->Add(to_string(chr.chr.nMaxHp), m_vEquipPos.x + 678 * m_fSlotResize,
+				m_vEquipPos.y + 135.5 * m_fSlotResize, 36 * m_fSlotResize, "³ª´®½ºÄù¾î Regular", 0xFFFFFFFF);
+			TEXT->Add(to_string(chr.chr.nAtk), m_vEquipPos.x + 678 * m_fSlotResize,
+				m_vEquipPos.y + 215 * m_fSlotResize, 36 * m_fSlotResize, "³ª´®½ºÄù¾î Regular", 0xFFFFFFFF);
+			sprintf_s(temp, 64, "%.2f", chr.chr.fAtkSpeed);
+			TEXT->Add(temp, m_vEquipPos.x + 678 * m_fSlotResize,
+				m_vEquipPos.y + 268 * m_fSlotResize, 36 * m_fSlotResize, "³ª´®½ºÄù¾î Regular", 0xFFFFFFFF);
+			TEXT->Add(to_string(chr.chr.nDef), m_vEquipPos.x + 678 * m_fSlotResize,
+				m_vEquipPos.y + 359 * m_fSlotResize, 36 * m_fSlotResize, "³ª´®½ºÄù¾î Regular", 0xFFFFFFFF);
+			sprintf_s(temp, 64, "%.2f", chr.chr.fAgi);
+			TEXT->Add(temp, m_vEquipPos.x + 678 * m_fSlotResize,
+				m_vEquipPos.y + 411 * m_fSlotResize, 36 * m_fSlotResize, "³ª´®½ºÄù¾î Regular", 0xFFFFFFFF);
+			sprintf_s(temp, 64, "%.2f", chr.chr.fHit);
+			TEXT->Add(temp, m_vEquipPos.x + 678 * m_fSlotResize,
+				m_vEquipPos.y + 463 * m_fSlotResize, 36 * m_fSlotResize, "³ª´®½ºÄù¾î Regular", 0xFFFFFFFF);
+			sprintf_s(temp, 64, "%.2f", chr.chr.fSpeed);
+			TEXT->Add(temp, m_vEquipPos.x + 678 * m_fSlotResize,
+				m_vEquipPos.y + 516 * m_fSlotResize, 36 * m_fSlotResize, "³ª´®½ºÄù¾î Regular", 0xFFFFFFFF);
 		}
 	}
 
@@ -321,12 +421,18 @@ void Inventory::Render()
 				D3DXMatrixTranslation(&matT, pos.x, pos.y, 0);
 				SPRITE->SetTransform(&(matS * matT));
 				SPRITE->Draw(m_pSlotTex, NULL, NULL, NULL, 0xFFFFFFFF);
+				if (m_vecInventory[i][j].item)
+					if (m_vecInventory[i][j].item->GetEquipType() == EQUIP_POTION)
+						TEXT->Add(to_string(m_vecInventory[i][j].count),
+							rc.right - 25 * m_fSlotResize,
+							rc.bottom - 30 * m_fSlotResize, 
+							30 * m_fSlotResize, "³ª´®½ºÄù¾î Regular", 0xFFFFFFFF);
 				// ¾ÆÀÌÅÛ
-				if (m_vecInventory[i][j])
+				if (m_vecInventory[i][j].item)
 				{
 					pos.x += m_fSlotSpacing;
 					pos.y += m_fSlotSpacing;
-					m_vecInventory[i][j]->item->Render(pos, m_fSlotSize - m_fSlotSpacing * 2);
+					m_vecInventory[i][j].item->Render(pos, m_fSlotSize - m_fSlotSpacing * 2);
 				}
 				// Å×µÎ¸®
 				if (PtInRect(&rc, MOUSE_POS))
@@ -340,13 +446,13 @@ void Inventory::Render()
 		}
 	}
 
-	if (m_pHoldItem)
+	if (m_pHoldItem.item)
 	{
 		D3DXVECTOR3 pos;
 		pos.x = MOUSE_POS.x - (m_fSlotSize - m_fSlotSpacing) / 2;
 		pos.y = MOUSE_POS.y - (m_fSlotSize - m_fSlotSpacing) / 2;
 		pos.z = 0;
-		m_pHoldItem->item->Render(pos, m_fSlotSize - m_fSlotSpacing);
+		m_pHoldItem.item->Render(pos, m_fSlotSize - m_fSlotSpacing);
 	}
 
 	SPRITE->End();
@@ -354,31 +460,68 @@ void Inventory::Render()
 
 ItemParent * Inventory::GetWeapon()
 {
-	return nullptr;
+	return m_pEquip[EQUIP_FIRSTWEAPON].item;
 }
 
 ItemParent * Inventory::GetPotion()
 {
-	return NULL;
+	return m_pEquip[EQUIP_POTION].item;
 }
 
 STATUS Inventory::GetEquipStat()
 {
-	return STATUS();
+	STATUS status;
+	status.item.nAtk = 0;
+	status.item.nDef = 0;
+	status.item.nHp = 0;
+	status.item.fAgi = 0;
+	status.item.fHit = 0;
+	status.item.fSpeed = 0;
+	for (int i = 0; i < EQUIP_END; i++)
+	{
+		if (!m_pEquip[i].item) continue;
+		if (!m_pEquip[i].item->GetItemStat()) continue;
+		status.item.nAtk += m_pEquip[i].item->GetItemStat()->item.nAtk;
+		status.item.nDef += m_pEquip[i].item->GetItemStat()->item.nDef;
+		status.item.nHp += m_pEquip[i].item->GetItemStat()->item.nHp;
+		status.item.fAgi += m_pEquip[i].item->GetItemStat()->item.fAgi;
+		status.item.fHit += m_pEquip[i].item->GetItemStat()->item.fHit;
+		status.item.fSpeed += m_pEquip[i].item->GetItemStat()->item.fSpeed;
+	}
+	return status;
 }
 
 bool Inventory::AddItem(ItemParent item)
 {
-	ItemParent * pItem = new ItemParent;
+	ItemParent * pItem = new ItemParent;;
 	*pItem = item;
 
+	// Áßº¹ °Ë»ç
 	for (int i = 0; i < m_ptInvSize.y; i++)
 	{
 		for (int j = 0; j < m_ptInvSize.x; j++)
 		{
-			if (!m_vecInventory[i][j])
+			if (m_vecInventory[i][j].item)
 			{
-				m_vecInventory[i][j]->item = pItem;
+				if (m_vecInventory[i][j].item->GetID() == pItem->GetID() &&
+					m_vecInventory[i][j].item->GetEquipType() == EQUIP_POTION)
+				{
+					m_vecInventory[i][j].count++;
+					return true;
+				}
+			}
+		}
+	}
+
+	// ºóÄ­ °Ë»ç
+	for (int i = 0; i < m_ptInvSize.y; i++)
+	{
+		for (int j = 0; j < m_ptInvSize.x; j++)
+		{
+			if (!m_vecInventory[i][j].item)
+			{
+				m_vecInventory[i][j].item = pItem;
+				m_vecInventory[i][j].count = 1;
 				return true;
 			}
 		}
