@@ -90,3 +90,23 @@ void MonsterParent::Respawn(D3DXVECTOR3 spawnPos)
 
 	m_pModel->SetPosition(D3DXVECTOR3(spawnPos.x, m_pMap->GetHeight(spawnPos.x, spawnPos.z), spawnPos.z));
 }
+
+void MonsterParent::CalculDamage(float damage)
+{
+	/*
+		float	fPhyRate;		//물리계수
+		float	fMagicRate;		//마법계수
+		float	fCheRate;		//화학계수
+	*/
+	float totalRate =
+		m_uMonsterStat.chr.fPhyRate +
+		m_uMonsterStat.chr.fMagicRate +
+		m_uMonsterStat.chr.fCheRate;
+
+	float totalDamage = totalRate * m_uMonsterStat.chr.nDef;
+
+	totalDamage = round(totalDamage);
+
+	SetCurrentHP(totalDamage);
+
+}

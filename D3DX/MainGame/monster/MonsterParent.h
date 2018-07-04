@@ -17,6 +17,7 @@ class MonsterParent
 {
 
 	//리스폰상태인지 확인
+	//참이면 죽어서 리스폰중
 	GET(bool, m_bIsRespawn, IsResPawn);
 	GET(Model*, m_pModel, Model);
 
@@ -37,7 +38,8 @@ public:
 	MonsterParent();
 	~MonsterParent();
 
-	void SetCurrentHP(float damage) { m_uMonsterStat.chr.fCurrentHP -= damage; }
+	void SetCurrentHP(int hp) { m_uMonsterStat.chr.nCurrentHP -= hp; }
+	void CalculDamage(float damage);
 
 	virtual void Setup(Map* map, D3DXVECTOR3 spawnPos);
 	virtual void Update();
