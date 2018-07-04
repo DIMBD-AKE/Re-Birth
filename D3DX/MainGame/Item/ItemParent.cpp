@@ -33,7 +33,7 @@ void ItemParent::Attack(Model* pModel,ST_DAMAGE pStatus, MonsterManager* pMonste
 		if (!pMonsterManager->GetMonsterManager()[i]->GetIsResPawn())continue;
 		else
 		{
-			float radius = *(pMonsterManager->GetMonsterManager()[i]->GetModel()->GetBoundSphere().radius);
+			float radius = pMonsterManager->GetMonsterManager()[i]->GetModel()->GetBoundSphere().radius;
 			D3DXVECTOR3 mosPos = *(pMonsterManager->GetMonsterManager()[i]->GetModel()->GetPosition());
 			float distance = D3DXVec3Length(&(mosPos - pos));
 			if (distance - radius > m_fRange) continue;
