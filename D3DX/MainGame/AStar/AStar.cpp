@@ -36,12 +36,12 @@ void AStar::SetCell(int MyCellIndex, int TargetIndex)
 	m_vCloseList.clear();
 
 	//시작타일
-	//m_pStartCell = new Cell;
-	//m_pStartCell->SetAttribute("start");
-	//
-	////엔드타일
-	//m_pEndCell = new Cell;
-	//m_pEndCell->SetAttribute("end");
+	m_pStartCell = m_vCurrentCell[0];
+	m_pStartCell->SetAttribute("start");
+	
+	//엔드타일
+	m_pEndCell = m_vCurrentCell[m_vCurrentCell.size() - 1];
+	m_pEndCell->SetAttribute("end");
 
 	//현재
 	m_pCurrentCell = m_pStartCell;
@@ -53,19 +53,19 @@ void AStar::SetCell(int MyCellIndex, int TargetIndex)
 		if (i == 0)
 		//if (i == MyCellIndex)
 		{
-			m_vCurrentCell[i]->SetAttribute("start");
+			//m_vCurrentCell[i]->SetAttribute("start");
 			m_vTotalList.push_back(m_vCurrentCell[i]);
 		}
 		//일단 강제로 마지막 셀이 도착지
 		else if (i == m_vCurrentCell.size() - 1)
 		{
-			m_vCurrentCell[i]->SetAttribute("end");
+			//m_vCurrentCell[i]->SetAttribute("end");
 			m_vTotalList.push_back(m_vCurrentCell[i]);
 		}
 		//나머지 다 꼬라박아준다.
 		else
 		{
-			m_vTotalList.push_back(m_vCloseList[i]);
+			m_vTotalList.push_back(m_vCurrentCell[i]);
 		}
 	}
 }
@@ -197,6 +197,7 @@ void AStar::pathFinder(Cell* currentCell)
 
 D3DXVECTOR3 AStar::GetNextCell()
 {
+	pathFinder(m_pCurrentCell);
 	if (m_vCloseList.size() <= 0)
 	{
 		return D3DXVECTOR3(-1, -1, -1);
