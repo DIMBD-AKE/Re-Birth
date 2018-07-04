@@ -20,34 +20,40 @@ void Character_Gun::Init(Map * map, CHARSELECT order)
 	m_eChrType = CHRTYPE_GUN;
 	if (order == CHAR_ONE)
 	{
+		//총남캐
 		m_pCharacter = MODELMANAGER->GetModel("메그너스", MODELTYPE_X);
-		m_Status->chr.fAgi = 1.0f;
-		m_Status->chr.fAtkSpeed = 1.0f;
-		m_Status->chr.fCheRate = 1.0f;
-		m_Status->chr.fHit = 1.0f;
-		m_Status->chr.fMagicRate = 1.0f;
-		m_Status->chr.fPhyRate = 1.0f;
-		m_Status->chr.fSpeed = 1.0f;
-		m_Status->chr.nAtk = 1;
-		m_Status->chr.nCurrentHP = 1;
-		m_Status->chr.nDef = 1;
-		m_Status->chr.nMaxHp = 1;
+		m_Status->chr.fAgi = 50.0f;
+		m_Status->chr.fAtkSpeed = 72.0f;
+		m_Status->chr.fCheRate = 70.0f;
+		m_Status->chr.fHit = 70.0f;
+		m_Status->chr.fMagicRate = 25.0f;
+		m_Status->chr.fPhyRate = 25.0f;
+		m_Status->chr.fSpeed = 0.32f;
+		m_Status->chr.nAtk = 50;
+		m_Status->chr.nCurrentHP = 100;
+		m_Status->chr.nCurrentStam = 10;
+		m_Status->chr.nDef = 26;
+		m_Status->chr.nMaxHp = 100;
+		m_Status->chr.nMaxStam = 10;
 		CharacterParant::Init(map, order);
 	}
 	else if (order == CHAR_TWO)
 	{
+		//활여캐
 		m_pCharacter = MODELMANAGER->GetModel("스카디", MODELTYPE_X);
-		m_Status->chr.fAgi = 1.0f;
-		m_Status->chr.fAtkSpeed = 1.0f;
-		m_Status->chr.fCheRate = 1.0f;
-		m_Status->chr.fHit = 1.0f;
-		m_Status->chr.fMagicRate = 1.0f;
-		m_Status->chr.fPhyRate = 1.0f;
-		m_Status->chr.fSpeed = 1.0f;
-		m_Status->chr.nAtk = 1;
-		m_Status->chr.nCurrentHP = 1;
-		m_Status->chr.nDef = 1;
-		m_Status->chr.nMaxHp = 1;
+		m_Status->chr.fAgi = 50.0f;
+		m_Status->chr.fAtkSpeed = 72.0f;
+		m_Status->chr.fCheRate = 70.0f;
+		m_Status->chr.fHit = 70.0f;
+		m_Status->chr.fMagicRate = 25.0f;
+		m_Status->chr.fPhyRate = 25.0f;
+		m_Status->chr.fSpeed = 0.32f;
+		m_Status->chr.nAtk = 50;
+		m_Status->chr.nCurrentHP = 100;
+		m_Status->chr.nCurrentStam = 10;
+		m_Status->chr.nDef = 26;
+		m_Status->chr.nMaxHp = 100;
+		m_Status->chr.nMaxStam = 10;
 		CharacterParant::Init(map, order);
 	}
 }

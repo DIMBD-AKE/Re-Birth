@@ -42,11 +42,11 @@ void CharacterParant::Move()
 	D3DXVECTOR3 vPos = *m_pCharacter->GetPosition();
 	if (m_eCondition == CHAR_RUN_FRONT)
 	{
-		float height = m_pSampleMap->GetHeight(pos.x - m_vfront.x *0.25, pos.z - m_vfront.z *0.25);
+		float height = m_pSampleMap->GetHeight(pos.x - m_vfront.x * m_Status->chr.fSpeed, pos.z - m_vfront.z * m_Status->chr.fSpeed);
 		if (height >= 0)
 		{
 			pos.y = height;
-			m_pCharacter->SetPosition(pos - m_vfront * 0.25);
+			m_pCharacter->SetPosition(pos - m_vfront * m_Status->chr.fSpeed);
 		}
 		else
 		{
@@ -55,11 +55,11 @@ void CharacterParant::Move()
 	}
 	else if (m_eCondition == CHAR_RUN_BACK)
 	{
-		float height = m_pSampleMap->GetHeight(pos.x - m_vfront.x *0.15, pos.z - m_vfront.z *0.15);
+		float height = m_pSampleMap->GetHeight(pos.x - m_vfront.x * m_Status->chr.fSpeed, pos.z - m_vfront.z * m_Status->chr.fSpeed);
 		if (height >= 0)
 		{
 			pos.y = height;
-			m_pCharacter->SetPosition(pos + m_vfront * 0.15);
+			m_pCharacter->SetPosition(pos + m_vfront * m_Status->chr.fSpeed);
 		}
 		else
 		{
@@ -227,6 +227,7 @@ void CharacterParant::Render()
 
 void CharacterParant::KeyControl()
 {
+	//앞으로 달리기
 	if (INPUT->KeyDown('W'))
 	{
 		if (m_eCondition == CHAR_IDLE)
@@ -243,7 +244,7 @@ void CharacterParant::KeyControl()
 			ChangeAnimation();
 		}
 	}
-
+	//뒤로 달리기
 	if (INPUT->KeyDown('S'))
 	{
 		if (m_eCondition == CHAR_IDLE)
@@ -260,7 +261,7 @@ void CharacterParant::KeyControl()
 			ChangeAnimation();
 		}
 	}
-
+	//앞으로 대쉬
 	if (INPUT->KeyDown('Q'))
 	{
 		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_RUN_FRONT)
@@ -274,12 +275,12 @@ void CharacterParant::KeyControl()
 	{
 		if (m_eCondition == CHAR_DASH_FRONT)
 		{
-			m_eCondition = CHAR_IDLE;
+			m_eCondition = CHAR_RUN_FRONT;
 			m_bIsDash = false;
 			ChangeAnimation();
 		}
 	}
-
+	//뒤로 대쉬
 	if (INPUT->KeyDown('E'))
 	{
 		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_RUN_BACK)
@@ -293,13 +294,13 @@ void CharacterParant::KeyControl()
 	{
 		if (m_eCondition == CHAR_DASH_BACK)
 		{
-			m_eCondition = CHAR_IDLE;
+			m_eCondition = CHAR_RUN_BACK;
 			m_bIsDash = false;
 			ChangeAnimation();
 		}
 	}
 
-
+	//일반공격
 	if (INPUT->KeyDown(VK_SPACE))
 	{
 		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_RUN_FRONT || m_eCondition == CHAR_RUN_BACK)
@@ -309,6 +310,7 @@ void CharacterParant::KeyControl()
 		}
 	}
 
+	//스킬공격
 	if (INPUT->KeyDown('K'))
 	{
 		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_RUN_FRONT || m_eCondition == CHAR_RUN_BACK)
@@ -331,7 +333,7 @@ void CharacterParant::KeyControl()
 		ChangeAnimation();
 	}
 	
-
+	//대쉬일때 애니메이션 스피드 제어
 	if (m_bIsDash)
 	{
 		m_pCharacter->SetAnimationSpeed(5.0f);
