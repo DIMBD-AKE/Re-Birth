@@ -38,13 +38,20 @@ public:
 	MonsterParent();
 	~MonsterParent();
 
-	void SetCurrentHP(int hp) { m_uMonsterStat.chr.nCurrentHP -= hp; }
+	void SetCurrentHP(int hp)
+	{ m_uMonsterStat.chr.nCurrentHP -= hp; 
+	if (m_uMonsterStat.chr.nCurrentHP <= 0)
+		m_bIsRespawn = true;
+	}
+
 	void CalculDamage(float damage);
 
 	virtual void Setup(Map* map, D3DXVECTOR3 spawnPos);
+	virtual void SetupStat() = 0;
 	virtual void Update();
 	virtual void RespawnUpdate();
 	virtual void Render();
+	
 
 	void ChangeAni();
 	void Respawn(D3DXVECTOR3 spawnPos);

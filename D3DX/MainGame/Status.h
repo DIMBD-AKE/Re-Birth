@@ -1,5 +1,19 @@
 #pragma once
 
+#define CURRENTHP chr.nCurrentHP
+#define MAXHP chr.nMaxHp
+
+#define ATK chr.nAtk
+#define PHYRATE chr.fPhyRate
+#define MAGICRATE chr.fMagicRate
+#define CHERATE chr.fCheRate
+#define ATKSPEED chr.fAtkSpeed
+
+#define DEF chr.nDef
+#define AGI chr.fAgi
+#define HIT chr.fHit
+#define SPEED chr.fSpeed
+
 union STATUS
 {
 	struct ST_STATUS_CHARACTER
@@ -46,3 +60,6 @@ struct ST_DAMAGE
 	float	fMagicRate;
 	float	fCheRate;
 };
+
+
+#define CURRENTHP chr.nCurrentHP

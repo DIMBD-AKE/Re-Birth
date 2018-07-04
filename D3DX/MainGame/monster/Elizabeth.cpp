@@ -1,6 +1,7 @@
 #include "../../stdafx.h"
 #include "Elizabeth.h"
 #include "../Map.h"
+#include "../Status.h"
 
 Elizabeth::Elizabeth()
 {
@@ -45,10 +46,27 @@ void Elizabeth::Setup(Map* map, D3DXVECTOR3 spawnPos)
 	m_pModel->SetBoundSphere(m_pModel->GetOrigBoundSphere().center, 100.0f);
 
 	//m_pDeathModel = m_pModel;
-	//m_pDeathModel->SetAnimation("DIE");
+	//m_pDeathModel->SetAnimation("DIE");	
+}
 
+void Elizabeth::SetupStat()
+{
+	m_uMonsterStat.
+	/*
+		int		nCurrentHP;		//캐릭터(적, 플레이어) 현재 피
+		int		nMaxHp;			//캐릭터(적, 플레이어) 최대 피
 
-	
+		int		nAtk;			//기본공격력
+		float	fPhyRate;		//물리계수
+		float	fMagicRate;		//마법계수
+		float	fCheRate;		//화학계수
+		float	fAtkSpeed;		//공격속도 (장비속도에 * 연산)
+
+		int		nDef;			//방어력
+		float	fAgi;			//회피력
+		float	fHit;			//명중률
+		float	fSpeed;			//이동속도
+	*/
 }
 
 void Elizabeth::Update()
