@@ -438,7 +438,7 @@ bool ModelX::SetAnimation(string name)
 	if (animMap.find(name) == animMap.end())
 		return false;
 
-	m_pSMesh->SetIndex(GetAnimation()[name]);
+	m_pSMesh->SetIndex(animMap[name]);
 	return true;
 }
 
@@ -458,7 +458,7 @@ bool ModelX::SetBlendAnimation(string name)
 	if (animMap.find(name) == animMap.end())
 		return false;
 
-	m_pSMesh->SetBlendIndex(GetAnimation()[name]);
+	m_pSMesh->SetBlendIndex(animMap[name]);
 	return true;
 }
 
@@ -472,9 +472,13 @@ bool ModelX::SetBlendAnimation(int index)
 	return true;
 }
 
-void ModelX::SetBlendTime(float time)
+bool ModelX::SetBlendTime(float time)
 {
+	if (time < 0 || time > 1)
+		return false;
+
 	m_pSMesh->SetBlendTime(time);
+	return true;
 }
 
 void ModelX::SetAnimationSpeed(float speed)
@@ -485,4 +489,27 @@ void ModelX::SetAnimationSpeed(float speed)
 bool ModelX::IsAnimationEnd()
 {
 	return m_pSMesh->IsAnimationEnd();
+}
+
+bool ModelX::IsAnimationPercent(float rate)
+{
+	return m_pSMesh->IsAnimationPercent(rate);
+}
+
+float ModelX::GetAnimationPeriod(string name)
+{
+	auto animMap = GetAnimation();
+	if (animMap.find(name) == animMap.end())
+		return -1;
+
+	return m_pSMesh->GetAnimationPeriod(animMap[name]);
+}
+
+float ModelX::GetAnimationPeriod(int index)
+{
+	auto animMap = GetAnimation();
+	if (animMap.size() <= index || index < 0)
+		return -1;
+
+	return m_pSMesh->GetAnimationPeriod(index);
 }

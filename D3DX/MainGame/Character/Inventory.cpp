@@ -1,5 +1,6 @@
 #include "../../stdafx.h"
 #include "../Item/ItemParent.h"
+#include "../Item/BasicSword.h"
 #include "../Item/HealthPotion.h"
 #include "Inventory.h"
 #include "CharacterParant.h"
@@ -280,7 +281,7 @@ void Inventory::Update()
 		{
 			if (rand() % 2 == 0)
 			{
-				ItemParent item;
+				BasicSword item;
 				item.SetUp();
 				AddItem(item);
 			}
@@ -471,16 +472,14 @@ ItemParent * Inventory::GetPotion()
 STATUS Inventory::GetEquipStat()
 {
 	STATUS status;
-	status.item.nAtk = 0;
-	status.item.nDef = 0;
-	status.item.nHp = 0;
-	status.item.fAgi = 0;
-	status.item.fHit = 0;
-	status.item.fSpeed = 0;
+	ZeroMemory(&status, sizeof(STATUS));
+	if (m_pEquip[EQUIP_FIRSTWEAPON].item)
+		status.item.fAtkSpeed = m_pEquip[EQUIP_FIRSTWEAPON].item->GetItemStat()->item.fAtkSpeed;
+	else
+		status.item.fAtkSpeed = 1;
 	for (int i = 0; i < EQUIP_END; i++)
 	{
 		if (!m_pEquip[i].item) continue;
-		if (!m_pEquip[i].item->GetItemStat()) continue;
 		status.item.nAtk += m_pEquip[i].item->GetItemStat()->item.nAtk;
 		status.item.nDef += m_pEquip[i].item->GetItemStat()->item.nDef;
 		status.item.nHp += m_pEquip[i].item->GetItemStat()->item.nHp;
