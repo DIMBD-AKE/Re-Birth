@@ -29,7 +29,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>NotSet</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -167,7 +167,6 @@
     <ClInclude Include="Framework\Vertex.h" />
     <ClInclude Include="MainGame\Item\HealthHighPotion.h" />
     <ClInclude Include="MainGame\Item\HealthPotion.h" />
-    <ClInclude Include="MainGame\Item\ItemManager.h" />
     <ClInclude Include="MainGame\Item\GunParent.h" />
     <ClInclude Include="MainGame\Item\ItemParent.h" />
     <ClInclude Include="MainGame\Character\CharacterParant.h" />
@@ -209,7 +208,6 @@
     <ClCompile Include="Framework\Parser\SkinnedMesh.cpp" />
     <ClCompile Include="MainGame\Item\HealthHighPotion.cpp" />
     <ClCompile Include="MainGame\Item\HealthPotion.cpp" />
-    <ClCompile Include="MainGame\Item\ItemManager.cpp" />
     <ClCompile Include="MainGame\Item\GunParent.cpp" />
     <ClCompile Include="MainGame\Item\ItemParent.cpp" />
     <ClCompile Include="MainGame\Character\CharacterParant.cpp" />

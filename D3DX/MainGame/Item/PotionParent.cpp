@@ -14,5 +14,5 @@ PotionParent::~PotionParent()
 
 void PotionParent::Use(CharacterParant& pCharacter)
 {
-	pCharacter.m_Status->chr.fCurrentHP += 100;
+	pCharacter.m_Status->chr.fCurrentHP += m_fHealAmount;
 }
