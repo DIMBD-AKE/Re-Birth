@@ -16,8 +16,8 @@ ItemParent::~ItemParent()
 
 void ItemParent::SetUp()
 {
-	m_pTexture = TEXTUREMANAGER->AddTexture("장검", "Texture/Item/장검.jpg");
-	m_imageInfo = TEXTUREMANAGER->GetInfo("장검");
+	/*m_pTexture = TEXTUREMANAGER->AddTexture("장검", "Texture/Item/장검.jpg");
+	m_imageInfo = TEXTUREMANAGER->GetInfo("장검");*/
 }
 
 void ItemParent::Use(CharacterParant *& pCharacter)
@@ -33,8 +33,15 @@ void ItemParent::Attack(Model* pModel,ST_DAMAGE pStatus, MonsterManager* pMonste
 		if (!pMonsterManager->GetMonsterManager()[i]->GetIsResPawn())continue;
 		else
 		{
-			//pMonsterManager->GetMonsterManager()[i]->GetModel()->Getposition();
-			
+			float radius = *(pMonsterManager->GetMonsterManager()[i]->GetModel()->GetBoundSphere().radius);
+			D3DXVECTOR3 mosPos = *(pMonsterManager->GetMonsterManager()[i]->GetModel()->GetPosition());
+			float distance = D3DXVec3Length(&(mosPos - pos));
+			if (distance - radius > m_fRange) continue;
+			else
+			{
+				D3DXVECTOR3 delta = mosPos - pos;
+				if(atan2(delta.x, delta.z)>m_fScale);
+			}
 		}
 	}
 }
@@ -49,8 +56,6 @@ void ItemParent::Skill2(Model* pModel,ST_DAMAGE pStatus, MonsterManager* pMonste
 
 void ItemParent::Render(D3DXVECTOR3 pos, float size)
 {
-	SPRITE->Begin(D3DXSPRITE_ALPHABLEND | D3DXSPRITE_SORT_TEXTURE);
-
 	D3DXMATRIX	mat;
 
 	float scaleX = size / (float)m_imageInfo.Width;
@@ -65,8 +70,4 @@ void ItemParent::Render(D3DXVECTOR3 pos, float size)
 	SPRITE->SetTransform(&mat);
 
 	SPRITE->Draw(m_pTexture, NULL, NULL, NULL, 0xffffffff);
-
-
-
-	SPRITE->End();
 }
