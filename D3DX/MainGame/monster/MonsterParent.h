@@ -4,14 +4,15 @@
 
 class Map;
 class CharacterParant;
+class AStar;
 
 enum MON_STATE{
-	MS_IDLE,
-	MS_RUN,
-	MS_SKILL,
-	MS_ATTACK,
-	MS_DIE,
-	MS_NONE,
+	MS_IDLE,	//제자리에 있는 상태
+	MS_RUN,		//비전투에 걷는 상태
+	MS_SKILL,	//스킬 사용 상태
+	MS_ATTACK,	//전투 상태
+	MS_DIE,		//죽은 상태
+	MS_NONE,	//죽고나서 애니안돌리기 위한 값
 };
 
 class MonsterParent
@@ -23,6 +24,7 @@ class MonsterParent
 	GET(Model*, m_pModel, Model);
 	SET(CharacterParant*, m_pCharacter, Character);
 
+	D3DXVECTOR3 m_vDir;
 protected:
 
 	//몬스터 스탯
@@ -36,6 +38,9 @@ protected:
 	
 	MON_STATE m_eState;
 	Map* m_pMap;
+
+	AStar* m_pAStar;
+
 public:
 	MonsterParent();
 	virtual ~MonsterParent();

@@ -1,6 +1,7 @@
 #include "../../stdafx.h"
 #include "MonsterParent.h"
 #include "../Map.h"
+#include "../AStar/AStar.h"
 
 MonsterParent::MonsterParent()
 : m_pModel(NULL)
@@ -16,8 +17,13 @@ MonsterParent::~MonsterParent()
 
 void MonsterParent::Setup(Map* map,  D3DXVECTOR3 spawnPos)
 {
+	m_vDir = D3DXVECTOR3(0, 0, 1);
+
+	m_pAStar = new AStar;
+	m_pAStar->SetCurrentCell(map->GetNavMesh());
+
 	m_nResPawnCount = m_bIsRespawn = 0;
-	m_eState = MS_ATTACK;
+	m_eState = MS_RUN;
 	m_pMap = map;
 	m_pModel->SetPosition(D3DXVECTOR3(spawnPos.x, m_pMap->GetHeight(spawnPos.x, spawnPos.z), spawnPos.z));
 	ChangeAni();

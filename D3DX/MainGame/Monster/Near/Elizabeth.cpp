@@ -2,6 +2,7 @@
 #include "Elizabeth.h"
 #include "../../Map.h"
 #include "../../Status.h"
+#include <time.h>
 
 Elizabeth::Elizabeth()
 {
@@ -85,6 +86,27 @@ void Elizabeth::Skill()
 
 void Elizabeth::Move()
 {
+	
+	if (INPUT->KeyDown('O'))
+	{
+		//dir = D3DXVECTOR3(0, 0, 1);
+		srand(time(NULL));
+		
+
+		float temp = (float)rand() / (float)RAND_MAX * 3.14;
+
+		D3DXMATRIX matRotY;
+		D3DXMatrixRotationY(&matRotY, temp);
+		//D3DXMatrixRotationYawPitchRoll(&matRot, m_pModel->GetRotation()->y, m_pModel->GetRotation()->x, m_pModel->GetRotation()->z);
+
+		D3DXVec3TransformNormal(&m_vDir, &m_vDir, &matRotY);
+
+		D3DXVec3Normalize(&m_vDir, &m_vDir);
+	}
+	m_pModel->SetPosition(*m_pModel->GetPosition() + m_vDir*0.01f);
+
+	
+
 	if (INPUT->KeyDown('P'))
 		{
 			m_bIsRespawn = true;
