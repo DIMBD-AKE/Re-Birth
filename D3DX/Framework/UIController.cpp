@@ -21,9 +21,9 @@ UIObject::~UIObject()
 void UIObject::Update()
 {
 	D3DXMatrixIdentity(&m_matWorld);
-	m_matWorld._11 = m_vPosition.x;
-	m_matWorld._22 = m_vPosition.y;
-	m_matWorld._33 = m_vPosition.z;
+	m_matWorld._11 = m_vScale.x;
+	m_matWorld._22 = m_vScale.y;
+	m_matWorld._33 = m_vScale.z;
 	m_matWorld._41 = m_vPosition.x;
 	m_matWorld._42 = m_vPosition.y;
 	m_matWorld._43 = m_vPosition.z;
