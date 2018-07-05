@@ -16,6 +16,18 @@ SkinnedMesh::~SkinnedMesh()
 	SAFE_RELEASE(m_pAnimController);
 }
 
+void SkinnedMesh::CloneAnimation(SkinnedMesh * orig)
+{
+	m_pRoot = orig->m_pRoot;
+	m_animMap = orig->m_animMap;
+	orig->m_pAnimController->CloneAnimationController(
+		orig->m_pAnimController->GetMaxNumAnimationOutputs(),
+		orig->m_pAnimController->GetMaxNumAnimationSets(),
+		orig->m_pAnimController->GetMaxNumTracks(),
+		orig->m_pAnimController->GetMaxNumEvents(),
+		&m_pAnimController);
+}
+
 AllocatedHierachy::AllocatedHierachy()
 {
 }
@@ -172,7 +184,7 @@ void SkinnedMesh::Animate()
 void SkinnedMesh::SetIndex(int index)
 {
 	LPD3DXANIMATIONSET animSet = NULL;
-	m_pAnimController->GetAnimationSet(index, &animSet);
+	m_pAnimController->GetAnimationSet(rand() % m_animMap.size(), &animSet);
 	m_pAnimController->SetTrackAnimationSet(0, animSet);
 	m_pAnimController->SetTrackPosition(0, 0);
 	animSet->Release();
@@ -338,6 +350,13 @@ void SkinnedMesh::Render(LPD3DXFRAME pFrame, D3DXMATRIX * matWorld)
 		Render(pFrame->pFrameSibling, matWorld);
 }
 
+void SkinnedMesh::UpdateRender(D3DXMATRIX * matWorld)
+{
+	Animate();
+	Update();
+	Render(m_pRoot, matWorld);
+}
+
 void SkinnedMesh::SetupBoneMatrixPtrs(LPD3DXFRAME pFrame)
 {
 	if (pFrame && pFrame->pMeshContainer)
@@ -375,4 +394,10 @@ void SkinnedMesh::Destroy(D3DXFRAME * pFrame)
 	if (pFrame->pMeshContainer)
 		ah.DestroyMeshContainer(pFrame->pMeshContainer);
 	ah.DestroyFrame(pFrame);
+}
+
+void SkinnedMesh::AnimationRelease()
+{
+	m_pRoot = NULL;
+	SAFE_RELEASE(m_pAnimController);
 }

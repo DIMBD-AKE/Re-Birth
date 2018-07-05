@@ -56,6 +56,8 @@ public:
 	SkinnedMesh();
 	~SkinnedMesh();
 
+	void CloneAnimation(SkinnedMesh * orig);
+
 	void Setup(string szFolder, string szFile);
 	void Update();
 	void Animate();
@@ -74,8 +76,12 @@ public:
 
 	void Render(LPD3DXFRAME pFrame, D3DXMATRIX * matWorld);
 
+	void UpdateRender(D3DXMATRIX * matWorld);
+
 	void SetupBoneMatrixPtrs(LPD3DXFRAME pFrame);
 	void Destroy(D3DXFRAME* pFrame);
+
+	void AnimationRelease();
 
 	map<string, int> GetAnimMap() { return m_animMap; }
 };
