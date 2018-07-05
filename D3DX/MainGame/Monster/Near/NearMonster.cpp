@@ -22,3 +22,18 @@ void NearMonster::SetupStat()
 {
 
 }
+
+void NearMonster::Attack()
+{
+
+}
+
+void NearMonster::Skill()
+{
+
+}
+
+void NearMonster::Move()
+{
+
+}

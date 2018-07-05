@@ -138,9 +138,6 @@
     <ClInclude Include="MainGame\Item\HealthPotion.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="MainGame\monster\Elizabeth.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="MainGame\AStar\PathFind.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -282,9 +279,6 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="MainGame\Item\HealthPotion.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="MainGame\monster\Elizabeth.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="MainGame\AStar\PathFind.cpp">

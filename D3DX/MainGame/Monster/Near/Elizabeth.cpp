@@ -85,7 +85,22 @@ void Elizabeth::Skill()
 
 void Elizabeth::Move()
 {
-
+	if (INPUT->KeyDown('P'))
+		{
+			m_bIsRespawn = true;
+			m_eState = MS_DIE;
+			ChangeAni();
+		
+		}
+		
+	if (!m_bIsRespawn)
+	{
+		if (m_pModel)
+		{
+			m_pModel->World();
+			m_pModel->Update();
+		}
+	}
 }
 
 

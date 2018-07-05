@@ -137,3 +137,18 @@ void MonsterParent::CalculDamage(float damage)
 	SetCurrentHP(totalDamage);
 
 }
+
+void MonsterParent::Attack()
+{
+
+}
+
+void MonsterParent::Skill()
+{
+
+}
+
+void MonsterParent::Move()
+{
+
+}
