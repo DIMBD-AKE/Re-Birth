@@ -150,7 +150,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="MainGame\Item\ItemManager.h" />
     <ClInclude Include="MainGame\Item\Blade\MagicBlade.h" />
     <ClInclude Include="MainGame\Item\Arrow\MagicArrow.h" />
     <ClInclude Include="MainGame\Item\ArmorParent.h" />
@@ -189,9 +188,14 @@
     <ClInclude Include="Framework\Macro.h" />
     <ClInclude Include="Framework\Manager\ModelManager.h" />
     <ClInclude Include="MainGame\Map.h" />
-    <ClInclude Include="MainGame\monster\Elizabeth.h" />
+    <ClInclude Include="MainGame\monster\Magic\DarkHell.h" />
+    <ClInclude Include="MainGame\monster\Magic\MagicMonster.h" />
+    <ClInclude Include="MainGame\monster\Magic\NifilHeim.h" />
     <ClInclude Include="MainGame\Monster\MonsterParent.h" />
     <ClInclude Include="MainGame\Monster\MonsterManager.h" />
+    <ClInclude Include="MainGame\monster\Near\Assis.h" />
+    <ClInclude Include="MainGame\monster\Near\Elizabeth.h" />
+    <ClInclude Include="MainGame\monster\Near\NearMonster.h" />
     <ClInclude Include="MainGame\Status.h" />
     <ClInclude Include="MainGame\AStar\PathFind.h" />
     <ClInclude Include="MainGame\Item\PotionParent.h" />
@@ -210,7 +214,6 @@
     <ClInclude Include="MainGame\Item\Blade\UniqueBlade.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="MainGame\Item\ItemManager.cpp" />
     <ClCompile Include="MainGame\Item\Blade\MagicBlade.cpp" />
     <ClCompile Include="MainGame\Item\Arrow\MagicArrow.cpp" />
     <ClCompile Include="MainGame\Item\ArmorParent.cpp" />
@@ -242,7 +245,12 @@
     <ClCompile Include="Framework\Manager\SceneManager.cpp" />
     <ClCompile Include="Framework\Manager\ModelManager.cpp" />
     <ClCompile Include="MainGame\Map.cpp" />
-    <ClCompile Include="MainGame\monster\Elizabeth.cpp" />
+    <ClCompile Include="MainGame\monster\Magic\DarkHell.cpp" />
+    <ClCompile Include="MainGame\monster\Magic\MagicMonster.cpp" />
+    <ClCompile Include="MainGame\monster\Magic\NifilHeim.cpp" />
+    <ClCompile Include="MainGame\monster\Near\Assis.cpp" />
+    <ClCompile Include="MainGame\monster\Near\Elizabeth.cpp" />
+    <ClCompile Include="MainGame\monster\Near\NearMonster.cpp" />
     <ClCompile Include="MainGame\Scene\SC_Test.cpp" />
     <ClCompile Include="MainGame\Monster\MonsterParent.cpp" />
     <ClCompile Include="MainGame\Monster\MonsterManager.cpp" />

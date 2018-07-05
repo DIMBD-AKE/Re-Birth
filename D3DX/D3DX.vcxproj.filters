@@ -132,9 +132,6 @@
     <ClInclude Include="MainGame\Item\GunParent.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="MainGame\monster\Elizabeth.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="MainGame\AStar\PathFind.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -186,7 +183,22 @@
     <ClInclude Include="MainGame\Item\Blade\UniqueBlade.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="MainGame\Item\ItemManager.h">
+    <ClInclude Include="MainGame\monster\Magic\DarkHell.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="MainGame\monster\Magic\MagicMonster.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="MainGame\monster\Magic\NifilHeim.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="MainGame\monster\Near\Assis.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="MainGame\monster\Near\Elizabeth.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="MainGame\monster\Near\NearMonster.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
@@ -278,9 +290,6 @@
     <ClCompile Include="MainGame\Item\GunParent.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="MainGame\monster\Elizabeth.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="MainGame\AStar\PathFind.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
@@ -329,7 +338,22 @@
     <ClCompile Include="MainGame\Item\Blade\UniqueBlade.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="MainGame\Item\ItemManager.cpp">
+    <ClCompile Include="MainGame\monster\Magic\DarkHell.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="MainGame\monster\Magic\MagicMonster.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="MainGame\monster\Magic\NifilHeim.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="MainGame\monster\Near\Assis.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="MainGame\monster\Near\Elizabeth.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="MainGame\monster\Near\NearMonster.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
