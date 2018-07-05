@@ -93,14 +93,7 @@ void Elizabeth::Move()
 		
 		}
 		
-	if (!m_bIsRespawn)
-	{
-		if (m_pModel)
-		{
-			m_pModel->World();
-			m_pModel->Update();
-		}
-	}
+	
 }
 
 

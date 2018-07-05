@@ -49,7 +49,16 @@ void MonsterParent::Update()
 		break;
 	}
 
-	ChangeAni();
+
+	if (!m_bIsRespawn)
+	{
+		if (m_pModel)
+		{
+			m_pModel->World();
+			m_pModel->Update();
+		}
+	}
+	//ChangeAni();
 }
 
 void MonsterParent::RespawnUpdate()
