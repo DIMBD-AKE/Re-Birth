@@ -334,6 +334,7 @@ ST_SPHERE Model::GetBoundSphere()
 bool Model::IsPickBoundBox(Ray ray, float * dist)
 {
 	ST_BOUNDBOX box = GetBoundBox();
+	vector<float> vecDist;
 	for (int i = 0; i < box.vecVertex.size(); i += 3)
 	{
 		D3DXVECTOR3 v0, v1, v2;
@@ -342,7 +343,16 @@ bool Model::IsPickBoundBox(Ray ray, float * dist)
 		v2 = box.vecVertex[i + 2].p;
 
 		if (D3DXIntersectTri(&v0, &v1, &v2, &ray.orig, &ray.dir, NULL, NULL, dist))
-			return true;
+			vecDist.push_back(*dist);
+	}
+	if (!vecDist.empty())
+	{
+		float length = vecDist[0];
+		for (int i = 0; i < vecDist.size(); i++)
+			if (length > vecDist[i])
+				length = vecDist[i];
+		*dist = length;
+		return true;
 	}
 	return false;
 }
