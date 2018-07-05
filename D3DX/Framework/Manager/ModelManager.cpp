@@ -293,10 +293,7 @@ void Model::CreateBound(ST_SIZEBOX box)
 	float maxX = (fabs(box.lowX) >= box.highX) ? fabs(box.lowX) : box.highX;
 	float maxY = (fabs(box.lowY) >= box.highY) ? fabs(box.lowY) : box.highY;
 	float maxZ = (fabs(box.lowZ) >= box.highZ) ? fabs(box.lowZ) : box.highZ;
-	m_stBoundSphere.radius = maxX;
-	if (m_stBoundSphere.radius < maxY) m_stBoundSphere.radius = maxY;
-	if (m_stBoundSphere.radius < maxZ) m_stBoundSphere.radius = maxZ;
-
+	m_stBoundSphere.radius = D3DXVec3Length(&(D3DXVECTOR3(maxX, maxY, maxZ)));
 }
 
 void Model::SetBoundBox(D3DXVECTOR3 pos, D3DXVECTOR3 scale)
