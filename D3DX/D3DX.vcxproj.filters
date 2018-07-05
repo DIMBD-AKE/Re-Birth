@@ -132,10 +132,7 @@
     <ClInclude Include="MainGame\Item\GunParent.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="MainGame\Item\HealthHighPotion.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="MainGame\Item\HealthPotion.h">
+    <ClInclude Include="MainGame\monster\Elizabeth.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="MainGame\AStar\PathFind.h">
@@ -153,37 +150,43 @@
     <ClInclude Include="Framework\UIController.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="MainGame\Item\BasicSword.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="MainGame\Item\ArmorParent.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="MainGame\Monster\Distance\DistanceMonster.h">
+    <ClInclude Include="MainGame\Item\Potion\HealthPotion.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="MainGame\Monster\Distance\Nerisa.h">
+    <ClInclude Include="MainGame\Item\Potion\HealthHighPotion.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="MainGame\Monster\Distance\Nike.h">
+    <ClInclude Include="MainGame\Item\Sword\BasicSword.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="MainGame\Monster\Magic\DarkHell.h">
+    <ClInclude Include="MainGame\Item\Arrow\NormalArrow.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="MainGame\Monster\Magic\MagicMonster.h">
+    <ClInclude Include="MainGame\Item\Arrow\RareArrow.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="MainGame\Monster\Magic\NifilHeim.h">
+    <ClInclude Include="MainGame\Item\Arrow\MagicArrow.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="MainGame\Monster\Near\Assis.h">
+    <ClInclude Include="MainGame\Item\Arrow\UniqueArrow.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="MainGame\Monster\Near\Elizabeth.h">
+    <ClInclude Include="MainGame\Item\Blade\MagicBlade.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="MainGame\Monster\Near\NearMonster.h">
+    <ClInclude Include="MainGame\Item\Blade\NormalBlade.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="MainGame\Item\Blade\RareBlade.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="MainGame\Item\Blade\UniqueBlade.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="MainGame\Item\ItemManager.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
@@ -275,10 +278,7 @@
     <ClCompile Include="MainGame\Item\GunParent.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="MainGame\Item\HealthHighPotion.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="MainGame\Item\HealthPotion.cpp">
+    <ClCompile Include="MainGame\monster\Elizabeth.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="MainGame\AStar\PathFind.cpp">
@@ -293,37 +293,43 @@
     <ClCompile Include="Framework\UIController.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="MainGame\Item\BasicSword.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="MainGame\Item\ArmorParent.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="MainGame\Monster\Distance\DistanceMonster.cpp">
+    <ClCompile Include="MainGame\Item\Potion\HealthPotion.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="MainGame\Monster\Distance\Nerisa.cpp">
+    <ClCompile Include="MainGame\Item\Potion\HealthHighPotion.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="MainGame\Monster\Distance\Nike.cpp">
+    <ClCompile Include="MainGame\Item\Sword\BasicSword.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="MainGame\Monster\Magic\DarkHell.cpp">
+    <ClCompile Include="MainGame\Item\Arrow\NormalArrow.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="MainGame\Monster\Magic\MagicMonster.cpp">
+    <ClCompile Include="MainGame\Item\Arrow\RareArrow.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="MainGame\Monster\Magic\NifilHeim.cpp">
+    <ClCompile Include="MainGame\Item\Arrow\MagicArrow.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="MainGame\Monster\Near\Assis.cpp">
+    <ClCompile Include="MainGame\Item\Arrow\UniqueArrow.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="MainGame\Monster\Near\Elizabeth.cpp">
+    <ClCompile Include="MainGame\Item\Blade\MagicBlade.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="MainGame\Monster\Near\NearMonster.cpp">
+    <ClCompile Include="MainGame\Item\Blade\NormalBlade.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="MainGame\Item\Blade\RareBlade.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="MainGame\Item\Blade\UniqueBlade.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="MainGame\Item\ItemManager.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

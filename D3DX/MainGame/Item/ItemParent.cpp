@@ -31,8 +31,8 @@ void ItemParent::Attack(CharacterParant* pCharacter,ST_DAMAGE pStatus, MonsterMa
 {
 	for (int i = 0; i < pMonsterManager->GetMonsterManager().size(); ++i)
 	{
-		D3DXVECTOR3 pos = *(pCharacter->m_pCharacter->GetPosition());
-		D3DXVECTOR3 rot = *(pCharacter->m_pCharacter->GetRotation());
+		D3DXVECTOR3 pos = *(pCharacter->GetCharacter()->GetPosition());
+		D3DXVECTOR3 rot = *(pCharacter->GetCharacter()->GetRotation());
 		if (pMonsterManager->GetMonsterManager()[i]->GetIsResPawn())continue;
 		else
 		{

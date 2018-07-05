@@ -1,7 +1,7 @@
-#include "../../stdafx.h"
+#include "../../../stdafx.h"
 #include "HealthPotion.h"
-#include "../Character/CharacterParant.h"
-#include "../Status.h"
+#include "../../Character/CharacterParant.h"
+#include "../../Status.h"
 
 HealthPotion::HealthPotion()
 {

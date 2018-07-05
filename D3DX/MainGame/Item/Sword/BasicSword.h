@@ -1,5 +1,5 @@
 #pragma once
-#include "SwordParent.h"
+#include "../SwordParent.h"
 class BasicSword :	public SwordParent
 {
 public:

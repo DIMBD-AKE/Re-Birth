@@ -1,5 +1,5 @@
 #pragma once
-#include "PotionParent.h"
+#include "../PotionParent.h"
 class HealthHighPotion : public PotionParent
 {
 public:
