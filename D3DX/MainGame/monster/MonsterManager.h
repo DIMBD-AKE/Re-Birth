@@ -3,7 +3,7 @@
 class MonsterParent;
 class Map;
 class CharacterParant;
-
+class DropManager;
 //만들어진 몬스터들을 총괄하는 클래스
 class MonsterManager
 {
@@ -26,7 +26,7 @@ public:
 	void Render();
 
 	//몬스터 만드는 함수
-	void MakeMonster();
+	void MakeMonster(DropManager* pDropManager);
 
 	//void SetSpawnSpot(vector<D3DXVECTOR3> spawnVec) { m_vSpawnSpot = spawnVec; }
 	//

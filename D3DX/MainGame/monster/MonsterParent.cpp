@@ -4,6 +4,7 @@
 #include "../AStar/AStar.h"
 #include <time.h>
 #include "../Character/CharacterParant.h"
+#include "../Item/DropManager.h"
 
 MonsterParent::MonsterParent()
 : m_pModel(NULL)
@@ -281,4 +282,10 @@ void MonsterParent::MoveForAttack()
 	//
 	//}
 	
+}
+
+void MonsterParent::ItemDrop()
+{
+	//È®·ü¿¬»ê
+	m_pDropManager->AddDropItem(1, *m_pModel->GetPosition());
 }

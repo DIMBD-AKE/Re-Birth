@@ -77,7 +77,7 @@ void MonsterManager::Render()
 
 
 //몬스터 만드는 함수
-void MonsterManager::MakeMonster()
+void MonsterManager::MakeMonster(DropManager* pDropManager)
 {
 	//나중에 전체적으로 수정해야함
 
@@ -94,6 +94,7 @@ void MonsterManager::MakeMonster()
 	test = new Elizabeth;
 	test->Setup(m_pMap, m_vSpawnSpot[spotIndex]);
 	test->SetCharacter(m_pCharacter);
+	test->SetDropManager(pDropManager);
 
 	//몬스터 벡터에 저장
 	m_vMM.push_back(test);

@@ -5,7 +5,7 @@
 class Map;
 class CharacterParant;
 class AStar;
-
+class DropManager;
 enum MON_STATE{
 	MS_IDLE,			//제자리에 있는 상태
 	MS_RUN,				//비전투에 걷는 상태
@@ -24,6 +24,7 @@ class MonsterParent
 	GET(bool, m_bIsRespawn, IsResPawn);
 	GET(Model*, m_pModel, Model);
 	SET(CharacterParant*, m_pCharacter, Character);
+	SET(DropManager*, m_pDropManager, DropManager);
 
 	D3DXVECTOR3		m_vDir;
 	int				m_nPatternChangeCount;
@@ -44,6 +45,9 @@ protected:
 
 	AStar* m_pAStar;
 
+	//드랍 아이템 목록
+	int m_nItemID[3];
+
 public:
 	MonsterParent();
 	virtual ~MonsterParent();
@@ -51,7 +55,10 @@ public:
 	void SetCurrentHP(int hp)
 	{ m_uMonsterStat.chr.nCurrentHP -= hp; 
 	if (m_uMonsterStat.chr.nCurrentHP <= 0)
+	{
 		m_bIsRespawn = true;
+		ItemDrop();
+	}
 	}
 
 	void CalculDamage(float damage);
@@ -67,7 +74,7 @@ public:
 
 	void ChangeAni();
 	void Respawn(D3DXVECTOR3 spawnPos);
-
+	void ItemDrop();
 	/*
 	MS_IDLE,
 	MS_RUN,
