@@ -150,6 +150,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="MainGame\Item\DropManager.h" />
     <ClInclude Include="MainGame\Item\Blade\MagicBlade.h" />
     <ClInclude Include="MainGame\Item\Arrow\MagicArrow.h" />
     <ClInclude Include="MainGame\Item\ArmorParent.h" />
@@ -214,6 +215,7 @@
     <ClInclude Include="MainGame\Item\Blade\UniqueBlade.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="MainGame\Item\DropManager.cpp" />
     <ClCompile Include="MainGame\Item\Blade\MagicBlade.cpp" />
     <ClCompile Include="MainGame\Item\Arrow\MagicArrow.cpp" />
     <ClCompile Include="MainGame\Item\ArmorParent.cpp" />

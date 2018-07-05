@@ -201,6 +201,9 @@
     <ClInclude Include="MainGame\monster\Near\NearMonster.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="MainGame\Item\DropManager.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -354,6 +357,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="MainGame\monster\Near\NearMonster.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="MainGame\Item\DropManager.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
