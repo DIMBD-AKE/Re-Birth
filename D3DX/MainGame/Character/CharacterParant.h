@@ -3,7 +3,9 @@
 class TestItem;
 class Map;
 class Inventory;
+class UIObject;
 union STATUS;
+
 
 //캐릭터의 원형 클래스
 
@@ -58,11 +60,11 @@ protected:
 	TestItem*				m_pFirstItem;		//첫번쨰 스킬 장비
 	
 
-	Model*					m_pCharacter;		//캐릭터 맴버 변수 
+	GET(Model*,m_pCharacter,Character);			//캐릭터 맴버 변수 
 	Map*					m_pSampleMap;		//맵정보 받는 맴버 변수
 	Inventory *				m_pInventory;		//인벤토리용 변수
 	STATUS*					m_Status;			//스테이터스 유니온 변수 
-
+	UIObject*				m_pUIobj;			//UI오브젝트용 변수
 
 	D3DXVECTOR3				m_vfront;			//이동을 위한 프론트벡터
 
