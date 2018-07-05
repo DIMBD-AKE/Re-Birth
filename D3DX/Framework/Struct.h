@@ -37,11 +37,19 @@ struct ST_SPHERE
 	float radius;
 };
 
+struct ST_OBB
+{
+	D3DXVECTOR3 vCenterPos;
+	D3DXVECTOR3 vAxisDir[3];
+	float fAxisLen[3];
+};
+
 struct ST_BOUNDBOX
 {
 	vector<ST_PC_VERTEX> vecVertex;
 	D3DXVECTOR3 scale;
 	D3DXVECTOR3 pos;
+	ST_OBB obb;
 };
 
 struct ST_SIZEBOX
