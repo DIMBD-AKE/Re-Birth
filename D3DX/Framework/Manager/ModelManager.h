@@ -13,7 +13,6 @@ enum MODELTYPE
 class Model
 {
 	SYNTHESIZE(string, m_keyName, KeyName);
-	SYNTHESIZE(string, m_fullPath, FullPath);
 	SYNTHESIZE_PT(D3DXMATRIX, m_matWorld, World);
 	SYNTHESIZE_PT(D3DXVECTOR3, m_vRotation, Rotation);
 	SYNTHESIZE_PT(D3DXVECTOR3, m_vPosition, Position);
@@ -109,8 +108,6 @@ public:
 	virtual ~ModelX();
 
 	void Setup(SkinnedMesh* data) { m_pSMesh = data; }
-	virtual void World();
-	virtual void Update();
 	virtual void Render();
 
 	virtual map<string, int> GetAnimation();
@@ -133,7 +130,7 @@ class ModelManager
 private:
 	map<string, ST_OBJECT*>		m_mObj;
 	map<string, ST_ASE*>		m_mAse;
-	map<string, string>			m_mX;
+	map<string, SkinnedMesh*>	m_mX;
 
 public:
 	void AddModel(string keyName, string folderPath, string fileName, MODELTYPE type);

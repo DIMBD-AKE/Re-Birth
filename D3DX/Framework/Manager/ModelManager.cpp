@@ -36,7 +36,9 @@ void ModelManager::AddModel(string keyName, string folderPath, string fileName, 
 		if (m_mX.find(keyName) != m_mX.end())
 			return;
 
-		m_mX.insert(make_pair(keyName, folderPath + fileName));
+		SkinnedMesh * skin = new SkinnedMesh;
+		skin->Setup(folderPath, fileName);
+		m_mX.insert(make_pair(keyName, skin));
 	}
 }
 
@@ -74,14 +76,9 @@ Model * ModelManager::GetModel(string keyName, MODELTYPE type)
 		{
 			ModelX * x = new ModelX();
 			SkinnedMesh * data = new SkinnedMesh;
-			string fullPath = m_mX[keyName].c_str();
-			string folder = Util::GetFileFolder((char*)fullPath.c_str());
-			fullPath = (char*)m_mX[keyName].c_str();
-			string file = Util::GetFileName((char*)fullPath.c_str());
-			data->Setup(folder, file);
+			data->CloneAnimation(m_mX.find(keyName)->second);
 			x->Setup(data);
 			x->SetKeyName(keyName);
-			x->SetFullPath(m_mX[keyName]);
 			return x;
 		}
 	}
@@ -98,7 +95,9 @@ void ModelManager::Release()
 	for (; aseIter != m_mAse.end(); aseIter++)
 		SAFE_RELEASE(aseIter->second);
 
-	m_mX.clear();
+	auto xIter = m_mX.begin();
+	for (; xIter != m_mX.end(); xIter++)
+		SAFE_DELETE(xIter->second);
 }
 
 ModelOBJ * ModelOBJ::Clone() const
@@ -391,31 +390,15 @@ ModelX * ModelX::Clone() const
 {
 	ModelX * clone = new ModelX;
 	SkinnedMesh * data = new SkinnedMesh;
-	string fullPath = m_fullPath;
-	string folder = Util::GetFileFolder((char*)fullPath.c_str());
-	fullPath = m_fullPath;
-	string file = Util::GetFileName((char*)fullPath.c_str());
-
-	data->Setup(folder, file);
-	*clone = *this;
+	data->CloneAnimation(this->m_pSMesh);
 	clone->Setup(data);
+	clone->SetKeyName(this->m_keyName);
 	return clone;
 }
 
 ModelX::~ModelX()
 {
-	SAFE_DELETE(m_pSMesh);
-}
-
-void ModelX::World()
-{
-	Model::World();
-	m_pSMesh->Update();
-}
-
-void ModelX::Update()
-{
-	m_pSMesh->Animate();
+	m_pSMesh->AnimationRelease();
 }
 
 void ModelX::Render()
@@ -424,7 +407,7 @@ void ModelX::Render()
 	Debug();
 	DEVICE->SetRenderState(D3DRS_LIGHTING, true);
 
-	m_pSMesh->Render(NULL, &m_matWorld);
+	m_pSMesh->UpdateRender(&m_matWorld);
 }
 
 map<string, int> ModelX::GetAnimation()
