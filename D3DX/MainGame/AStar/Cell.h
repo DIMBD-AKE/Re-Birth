@@ -99,6 +99,8 @@ public:
 
 	Cell** GetNeighborCell(){ return m_pNeighborCell; }
 
+
+	void ZeroReset();
 	/*
 	D3DXVECTOR3 vertex[3];		//하나의 삼각형중 세 점을 담을 변수
 

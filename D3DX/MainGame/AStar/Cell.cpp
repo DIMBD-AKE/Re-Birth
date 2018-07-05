@@ -14,4 +14,13 @@ Cell::Cell()
 
 Cell::~Cell()
 {
+
+}
+
+void Cell::ZeroReset()
+{
+	m_fTotalCost = m_fCostFromStart = m_fCostToGoal = 0;
+		m_pParentCell = NULL;
+		m_bIsOpen = true;
+		m_sAttribute = "none";
 }

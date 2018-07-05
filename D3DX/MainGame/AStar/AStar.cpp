@@ -28,9 +28,26 @@ void AStar::SetCell(int MyCellIndex, int TargetIndex)
 	//밑에서 셀들의 속성을 변경하는걸 되돌리는작업
 	for (int i = 0; i < m_vCurrentCell.size(); i++)
 	{
-		m_vCurrentCell[i]->SetAttribute("none");
+		m_vCurrentCell[i]->ZeroReset();
+		//m_vCurrentCell[i]->
+		//m_vCurrentCell[i]->
 	}
 
+	/*
+	SYNTHESIZE(float, m_fTotalCost, TotalCost);
+	
+	//시작부터 현재까지의 코스트
+	SYNTHESIZE(float, m_fCostFromStart, CostFromStart);
+	
+	//시작부터 끝까지의 코스트
+	SYNTHESIZE(float, m_fCostToGoal, CostToGal);
+	
+	//내 타일 오기 전의 타일
+	SYNTHESIZE(Cell*, m_pParentCell, ParentCell);
+	
+	//갈수 있는 타일이냐
+	SYNTHESIZE(bool, m_bIsOpen, IsOpen);
+	*/
 	//담아둔 벡터 클리어 하고 다시 담는다.
 	m_vTotalList.clear();
 	m_vOpenList.clear();
