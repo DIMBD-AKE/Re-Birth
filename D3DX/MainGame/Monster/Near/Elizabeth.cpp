@@ -86,7 +86,8 @@ void Elizabeth::Attack()
 		float length = D3DXVec3Length(&tempV);
 
 		int a = 10;
-		if (length > 10)
+		//공격 가능 사거리까지 하면 될듯
+		if (length > 1)
 		{
 			MoveForAttack();
 		}

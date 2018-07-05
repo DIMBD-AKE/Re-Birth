@@ -150,7 +150,7 @@ void AStar::pathFinder(Cell* currentCell)
 		*/
 		//목표점 - 현재 셀 중점
 		D3DXVECTOR3 tempVec;
-		tempVec = m_pEndCell->GetCenter() - currentCell->GetCenter();
+		tempVec = m_pEndCell->GetCenter() - m_vOpenList[i]->GetCenter();
 		m_vOpenList[i]->SetCostToGal(
 			D3DXVec3Length(&tempVec)
 			);
@@ -217,6 +217,11 @@ void AStar::pathFinder(Cell* currentCell)
 
 D3DXVECTOR3 AStar::GetNextCell()
 {
+	if (m_pStartCell == m_pEndCell)
+	{
+		return D3DXVECTOR3(-1, -1, -1);
+	}
+
 	pathFinder(m_pCurrentCell);
 	if (m_vCloseList.size() <= 0)
 	{

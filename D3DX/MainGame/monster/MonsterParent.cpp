@@ -51,16 +51,22 @@ void MonsterParent::Update()
 	switch (m_eState)
 	{
 		//기본 및 움직이는 상태일때 move함수 호출해서 행동
-	case MS_IDLE: case MS_RUN:	
-		Move();
+	case MS_IDLE: case MS_RUN:
+	{
+					  Move();
+	}
 		break;
 		//스킬상태이면 스킬상태 함수 호출
 	case MS_SKILL:
-		Skill();
+	{
+					 Skill();
+	}
 		break;
 		//공격상태이면 공격상태 호출
 	case MS_ATTACK: case MS_MOVEFORATTACK:
-		Attack();
+	{
+						Attack();
+	}
 		break;
 	default:
 		break;
@@ -227,15 +233,36 @@ void MonsterParent::MoveForAttack()
 
 	int myIndex = m_pAStar->GetCellIndex(*m_pModel->GetPosition());
 
-	m_pAStar->SetCell(myIndex, playerIndex);
+	D3DXVECTOR3 dir;
+	//같은 셀에 있으면
+	if (playerIndex == myIndex)
+	{
+		dir = *m_pCharacter->GetCharacter()->GetPosition()
+			- *m_pModel->GetPosition();
+	}
+	else
+	{
+		m_pAStar->SetCell(myIndex, playerIndex);
 
-	D3DXVECTOR3 nextCell = m_pAStar->GetNextCell();
+		D3DXVECTOR3 nextCell = m_pAStar->GetNextCell();
 
-	D3DXVECTOR3 dir = nextCell - *m_pModel->GetPosition();
+		dir = nextCell - *m_pModel->GetPosition();
 
-	D3DXVec3Normalize(&dir, &dir);
+		if (nextCell == D3DXVECTOR3(-1, -1, -1))
+		{
+			dir = *m_pCharacter->GetCharacter()->GetPosition()
+				- *m_pModel->GetPosition();
+		}
+		
+	}
+		D3DXVec3Normalize(&dir, &dir);
 
-	m_pModel->SetPosition(*m_pModel->GetPosition() + m_vDir* 0.03f);
+		m_pModel->SetPosition(*m_pModel->GetPosition() + dir* 0.03f);
+	
+	char ttest[111];
+	sprintf_s(ttest, sizeof(ttest), "%f, %f, %f", dir.x, dir.y, dir.z);
+	TEXT->Add(ttest, 10, 10, 30);
+
 
 	//if (m_eState == MS_RUN)
 	//{
