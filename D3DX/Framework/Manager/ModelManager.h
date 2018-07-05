@@ -63,6 +63,9 @@ public:
 
 	bool IsPickBoundBox(Ray ray, float * dist);
 	bool IsPickBoundSphere(Ray ray, float * dist);
+
+	bool IsCollisionSphere(Model * target);
+	bool IsCollisionOBB(Model * target);
 };
 
 class ModelOBJ : public Model

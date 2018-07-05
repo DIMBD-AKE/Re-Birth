@@ -274,6 +274,17 @@ void Model::CreateBound(ST_SIZEBOX box)
 
 	m_stBoundBox.scale = D3DXVECTOR3(1, 1, 1);
 
+	// OBB
+	m_stBoundBox.obb.vCenterPos.x = (box.highX + box.lowX) / 2.0f;
+	m_stBoundBox.obb.vCenterPos.y = (box.highY + box.lowY) / 2.0f;
+	m_stBoundBox.obb.vCenterPos.z = (box.highZ + box.lowZ) / 2.0f;
+	m_stBoundBox.obb.vAxisDir[0] = D3DXVECTOR3(1, 0, 0);
+	m_stBoundBox.obb.vAxisDir[1] = D3DXVECTOR3(0, 1, 0);
+	m_stBoundBox.obb.vAxisDir[2] = D3DXVECTOR3(0, 0, 1);
+	m_stBoundBox.obb.fAxisLen[0] = (box.highX + fabs(box.lowX)) / 2.0f;
+	m_stBoundBox.obb.fAxisLen[1] = (box.highY + fabs(box.lowY)) / 2.0f;
+	m_stBoundBox.obb.fAxisLen[2] = (box.highZ + fabs(box.lowZ)) / 2.0f;
+
 	// 바운드스페어
 	float centerX = (box.lowX + box.highX) / 2.0f;
 	float centerY = (box.lowY + box.highY) / 2.0f;
@@ -285,6 +296,7 @@ void Model::CreateBound(ST_SIZEBOX box)
 	m_stBoundSphere.radius = maxX;
 	if (m_stBoundSphere.radius < maxY) m_stBoundSphere.radius = maxY;
 	if (m_stBoundSphere.radius < maxZ) m_stBoundSphere.radius = maxZ;
+
 }
 
 void Model::SetBoundBox(D3DXVECTOR3 pos, D3DXVECTOR3 scale)
@@ -304,6 +316,15 @@ ST_BOUNDBOX Model::GetBoundBox()
 	D3DXMatrixTranslation(&matT, box.pos.x + m_vPosition.x,
 		box.pos.y + m_vPosition.y, box.pos.z + m_vPosition.z);
 
+	// OBB
+	D3DXVec3TransformCoord(&box.obb.vCenterPos, &box.obb.vCenterPos, &matT);
+	box.obb.fAxisLen[0] *= box.scale.x * m_vScale.x;
+	box.obb.fAxisLen[1] *= box.scale.y * m_vScale.y;
+	box.obb.fAxisLen[2] *= box.scale.z * m_vScale.z;
+	for (int i = 0; i < 3; i++)
+		D3DXVec3TransformCoord(&box.obb.vAxisDir[i], &box.obb.vAxisDir[i], &matR);
+
+	// BOX
 	for (int i = 0; i < box.vecVertex.size(); i++)
 		D3DXVec3TransformCoord(&box.vecVertex[i].p, &box.vecVertex[i].p, &(matS * matR * matT));
 	
@@ -363,6 +384,157 @@ bool Model::IsPickBoundSphere(Ray ray, float * dist)
 	bool ret = Util::IntersectSphere(sphere, ray);
 	if (ret && dist) *dist = D3DXVec3Length(&(ray.orig - sphere.center));
 	return ret;
+}
+
+bool Model::IsCollisionSphere(Model * target)
+{
+	float length = target->GetBoundSphere().radius + GetBoundSphere().radius;
+	return (D3DXVec3Length(&(*target->GetPosition() - m_vPosition)) <= length);
+}
+
+bool Model::IsCollisionOBB(Model * target)
+{
+	ST_OBB thisBox = GetBoundBox().obb;
+	ST_OBB targetBox = target->GetBoundBox().obb;
+
+	double c[3][3];
+	double absC[3][3];
+	double d[3];
+
+	double r0, r1, r;
+	int i;
+
+	const double cutoff = 0.999999;
+	bool existsParallelPair = false;
+
+	D3DXVECTOR3 diff = thisBox.vCenterPos - targetBox.vCenterPos;
+
+	for (i = 0; i < 3; ++i)
+	{
+		c[0][i] = D3DXVec3Dot(&thisBox.vAxisDir[0], &targetBox.vAxisDir[i]);
+		absC[0][i] = abs(c[0][i]);
+		if (absC[0][i] > cutoff)
+			existsParallelPair = true;
+	}
+	d[0] = D3DXVec3Dot(&diff, &thisBox.vAxisDir[0]);
+	r = abs(d[0]);
+	r0 = thisBox.fAxisLen[0];
+	r1 = targetBox.fAxisLen[0] * absC[0][0] + targetBox.fAxisLen[1] * absC[0][1] + targetBox.fAxisLen[2] * absC[0][2];
+
+	if (r > r0 + r1)
+		return false;
+
+	for (i = 0; i < 3; ++i)
+	{
+		c[1][i] = D3DXVec3Dot(&thisBox.vAxisDir[1], &targetBox.vAxisDir[i]);
+		absC[1][i] = abs(c[1][i]);
+		if (absC[1][i] > cutoff)
+			existsParallelPair = true;
+	}
+
+	d[1] = D3DXVec3Dot(&diff, &thisBox.vAxisDir[1]);
+	r = abs(d[1]);
+	r0 = thisBox.fAxisLen[1];
+	r1 = targetBox.fAxisLen[0] * absC[1][0] + targetBox.fAxisLen[1] * absC[1][1] + targetBox.fAxisLen[2] * absC[1][2];
+
+	if (r > r0 + r1)
+		return false;
+
+	for (i = 0; i < 3; ++i)
+	{
+		c[2][i] = D3DXVec3Dot(&thisBox.vAxisDir[2], &targetBox.vAxisDir[i]);
+		absC[2][i] = abs(c[2][i]);
+		if (absC[2][i] > cutoff)
+			existsParallelPair = true;
+	}
+
+	d[2] = D3DXVec3Dot(&diff, &thisBox.vAxisDir[2]);
+	r = abs(d[2]);
+	r0 = thisBox.fAxisLen[2];
+	r1 = targetBox.fAxisLen[0] * absC[2][0] + targetBox.fAxisLen[1] * absC[2][1] + targetBox.fAxisLen[2] * absC[2][2];
+
+	if (r > r0 + r1)
+		return false;
+
+	r = abs(D3DXVec3Dot(&diff, &targetBox.vAxisDir[0]));
+	r0 = thisBox.fAxisLen[0] * absC[0][0] + thisBox.fAxisLen[1] * absC[1][0] + thisBox.fAxisLen[2] * absC[2][0];
+	r1 = targetBox.fAxisLen[0];
+
+	if (r > r0 + r1)
+		return false;
+
+	r = abs(D3DXVec3Dot(&diff, &targetBox.vAxisDir[1]));
+	r0 = thisBox.fAxisLen[0] * absC[0][1] + thisBox.fAxisLen[1] * absC[1][1] + thisBox.fAxisLen[2] * absC[2][1];
+	r1 = targetBox.fAxisLen[1];
+
+	if (r > r0 + r1)
+		return false;
+
+	r = abs(D3DXVec3Dot(&diff, &targetBox.vAxisDir[2]));
+	r0 = thisBox.fAxisLen[0] * absC[0][2] + thisBox.fAxisLen[1] * absC[1][2] + thisBox.fAxisLen[2] * absC[2][2];
+	r1 = targetBox.fAxisLen[2];
+
+	if (r > r0 + r1)
+		return false;
+
+	if (existsParallelPair == true)
+		return true;
+
+	r = abs(d[2] * c[1][0] - d[1] * c[2][0]);
+	r0 = thisBox.fAxisLen[1] * absC[2][0] + thisBox.fAxisLen[2] * absC[1][0];
+	r1 = targetBox.fAxisLen[1] * absC[0][2] + targetBox.fAxisLen[2] * absC[0][1];
+	if (r > r0 + r1)
+		return false;
+
+	r = abs(d[2] * c[1][1] - d[1] * c[2][1]);
+	r0 = thisBox.fAxisLen[1] * absC[2][1] + thisBox.fAxisLen[2] * absC[1][1];
+	r1 = targetBox.fAxisLen[0] * absC[0][2] + targetBox.fAxisLen[2] * absC[0][0];
+	if (r > r0 + r1)
+		return false;
+
+	r = abs(d[2] * c[1][2] - d[1] * c[2][2]);
+	r0 = thisBox.fAxisLen[1] * absC[2][2] + thisBox.fAxisLen[2] * absC[1][2];
+	r1 = targetBox.fAxisLen[0] * absC[0][1] + targetBox.fAxisLen[1] * absC[0][0];
+	if (r > r0 + r1)
+		return false;
+
+	r = abs(d[0] * c[2][0] - d[2] * c[0][0]);
+	r0 = thisBox.fAxisLen[0] * absC[2][0] + thisBox.fAxisLen[2] * absC[0][0];
+	r1 = targetBox.fAxisLen[1] * absC[1][2] + targetBox.fAxisLen[2] * absC[1][1];
+	if (r > r0 + r1)
+		return false;
+
+	r = abs(d[0] * c[2][1] - d[2] * c[0][1]);
+	r0 = thisBox.fAxisLen[0] * absC[2][1] + thisBox.fAxisLen[2] * absC[0][1];
+	r1 = targetBox.fAxisLen[0] * absC[1][2] + targetBox.fAxisLen[2] * absC[1][0];
+	if (r > r0 + r1)
+		return false;
+
+	r = abs(d[0] * c[2][2] - d[2] * c[0][2]);
+	r0 = thisBox.fAxisLen[0] * absC[2][2] + thisBox.fAxisLen[2] * absC[0][2];
+	r1 = targetBox.fAxisLen[0] * absC[1][1] + targetBox.fAxisLen[1] * absC[1][0];
+	if (r > r0 + r1)
+		return false;
+
+	r = abs(d[1] * c[0][0] - d[0] * c[1][0]);
+	r0 = thisBox.fAxisLen[0] * absC[1][0] + thisBox.fAxisLen[1] * absC[0][0];
+	r1 = targetBox.fAxisLen[1] * absC[2][2] + targetBox.fAxisLen[2] * absC[2][1];
+	if (r > r0 + r1)
+		return false;
+
+	r = abs(d[1] * c[0][1] - d[0] * c[1][1]);
+	r0 = thisBox.fAxisLen[0] * absC[1][1] + thisBox.fAxisLen[1] * absC[0][1];
+	r1 = targetBox.fAxisLen[0] * absC[2][2] + targetBox.fAxisLen[2] * absC[2][0];
+	if (r > r0 + r1)
+		return false;
+
+	r = abs(d[1] * c[0][2] - d[0] * c[1][2]);
+	r0 = thisBox.fAxisLen[0] * absC[1][2] + thisBox.fAxisLen[1] * absC[0][2];
+	r1 = targetBox.fAxisLen[0] * absC[2][1] + targetBox.fAxisLen[1] * absC[2][0];
+	if (r > r0 + r1)
+		return false;
+
+	return true;
 }
 
 ModelASE * ModelASE::Clone() const
