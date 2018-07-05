@@ -2,6 +2,7 @@
 #include "MonsterManager.h"
 #include "MonsterParent.h"
 #include "./Near/Elizabeth.h"
+#include "../Character/CharacterParant.h"
 #include <time.h>
 
 
@@ -20,9 +21,10 @@ MonsterManager::~MonsterManager()
 	}
 }
 
-void MonsterManager::Setup(Map* map)
+void MonsterManager::Setup(Map* map, CharacterParant* character)
 {
 	m_pMap = map;
+	m_pCharacter = character;
 }
 
 void MonsterManager::Update()
@@ -91,6 +93,7 @@ void MonsterManager::MakeMonster()
 	MonsterParent* test;
 	test = new Elizabeth;
 	test->Setup(m_pMap, m_vSpawnSpot[spotIndex]);
+	test->SetCharacter(m_pCharacter);
 
 	//몬스터 벡터에 저장
 	m_vMM.push_back(test);

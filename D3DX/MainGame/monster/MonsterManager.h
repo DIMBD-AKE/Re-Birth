@@ -2,6 +2,7 @@
 
 class MonsterParent;
 class Map;
+class CharacterParant;
 
 //만들어진 몬스터들을 총괄하는 클래스
 class MonsterManager
@@ -10,14 +11,17 @@ class MonsterManager
 	GET(vector<MonsterParent*>, m_vMM, MonsterManager);
 	SET(vector<D3DXVECTOR3>, m_vSpawnSpot, SpawnSpat);
 
+
 	Map* m_pMap;
+
+	CharacterParant* m_pCharacter;
 	//vector<MonsterParent> m_vMM;
 
 public:
 	MonsterManager();
 	~MonsterManager();
 
-	void Setup(Map* map);
+	void Setup(Map* map, CharacterParant* character);
 	void Update();
 	void Render();
 

@@ -19,7 +19,8 @@ void MonsterParent::Setup(Map* map,  D3DXVECTOR3 spawnPos)
 	m_nResPawnCount = m_bIsRespawn = 0;
 	m_eState = MS_ATTACK;
 	m_pMap = map;
-
+	m_pModel->SetPosition(D3DXVECTOR3(spawnPos.x, m_pMap->GetHeight(spawnPos.x, spawnPos.z), spawnPos.z));
+	ChangeAni();
 	//ST_SIZEBOX box;
 }
 
@@ -30,15 +31,33 @@ void MonsterParent::SetupStat()
 
 void MonsterParent::Update()
 {
+	switch (m_eState)
+	{
+		//기본 및 움직이는 상태일때 move함수 호출해서 행동
+	case MS_IDLE: case MS_RUN:	
+		Move();
+		break;
+		//스킬상태이면 스킬상태 함수 호출
+	case MS_SKILL:
+		Skill();
+		break;
+		//공격상태이면 공격상태 호출
+	case MS_ATTACK:
+		Attack();
+		break;
+	default:
+		break;
+	}
 
+	ChangeAni();
 }
 
 void MonsterParent::RespawnUpdate()
 {
-	char test[111];
-
-	sprintf_s(test, sizeof(test), "%d", m_nResPawnCount);
-	TEXT->Add(test, 10, 10, 20);
+	//char test[111];
+	//
+	//sprintf_s(test, sizeof(test), "%d", m_nResPawnCount);
+	//TEXT->Add(test, 10, 10, 20);
 
 	m_nResPawnCount++;
 
@@ -59,7 +78,10 @@ void MonsterParent::RespawnUpdate()
 }
 void MonsterParent::Render()
 {
-
+	if (m_pModel && m_eState != MS_NONE)
+	{
+		m_pModel->Render();
+	}
 }
 
 void MonsterParent::ChangeAni()
