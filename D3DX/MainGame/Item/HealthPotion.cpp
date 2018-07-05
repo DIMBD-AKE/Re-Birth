@@ -23,6 +23,6 @@ void HealthPotion::SetUp()
 	SetStatusZero();
 
 
-	m_pTexture = TEXTUREMANAGER->AddTexture("포션", "Texture/Item/포션.jpg");
-	m_imageInfo = TEXTUREMANAGER->GetInfo("포션");
+	m_pTexture = TEXTUREMANAGER->AddTexture("HealthPotion", "Texture/Item/Item Num 301 Normal HealthPotion.jpg");
+	m_imageInfo = TEXTUREMANAGER->GetInfo("HealthPotion");
 }

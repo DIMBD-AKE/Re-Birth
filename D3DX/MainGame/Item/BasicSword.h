@@ -4,7 +4,7 @@ class BasicSword :	public SwordParent
 {
 public:
 	BasicSword();
-	~BasicSword();
+	virtual~BasicSword();
 
 	virtual void SetUp();
 };

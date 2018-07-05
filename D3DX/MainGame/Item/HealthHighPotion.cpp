@@ -21,8 +21,8 @@ void HealthHighPotion::SetUp()
 {
 	m_pItemStatus = new STATUS;
 	SetStatusZero();
-	m_pTexture = TEXTUREMANAGER->AddTexture("상급포션", "Texture/Item/상급포션.jpg");
-	m_imageInfo = TEXTUREMANAGER->GetInfo("상급포션");
+	m_pTexture = TEXTUREMANAGER->AddTexture("HealthHighPotion", "Texture/Item/Item Num 201 Magic HealthHighPoition.jpg");
+	m_imageInfo = TEXTUREMANAGER->GetInfo("HealthHighPotion");
 }
 
 void HealthHighPotion::Use(CharacterParant & pCharacter)

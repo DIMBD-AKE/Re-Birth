@@ -34,6 +34,6 @@ void BasicSword::SetUp()
 	m_pItemStatus->item.nAtk = 5;
 	m_pItemStatus->item.nSkillAtk1 = 10;
 
-	m_pTexture = TEXTUREMANAGER->AddTexture("장검", "Texture/Item/장검.jpg");
-	m_imageInfo = TEXTUREMANAGER->GetInfo("장검");
+	m_pTexture = TEXTUREMANAGER->AddTexture("Normal Blade", "Texture/Item/Item Num 321 Normal Blade.jpg");
+	m_imageInfo = TEXTUREMANAGER->GetInfo("Normal Blade");
 }
