@@ -81,5 +81,7 @@ public:
 	virtual void Skill();
 	//몬스터 기본 이동함수
 	virtual void Move();
+	//움직임 관련 리셋함수 (반대편으로 가야하냐)
+	void MoveReset(bool isReverse);
 };
 

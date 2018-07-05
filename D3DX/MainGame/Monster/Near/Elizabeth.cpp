@@ -88,47 +88,30 @@ void Elizabeth::Skill()
 void Elizabeth::Move()
 {
 	
-	if (/*m_nCount == m_nPatternChangeCount*/INPUT->KeyDown(1))
+	if (m_nCount == m_nPatternChangeCount/*INPUT->KeyDown('O')*/)
 	{
-		//m_vDir = D3DXVECTOR3(0, 0, -1);
-		srand(time(NULL));
-		
-		m_nPatternChangeCount = rand() % 500 + 300;
-
-		//각도 변환
-		
-		//D3DXMatrixRotationYawPitchRoll(&matRot, m_pModel->GetRotation()->y, m_pModel->GetRotation()->x, m_pModel->GetRotation()->z);
-
-		
-
-		if (m_eState == MS_IDLE)
-		{
-			float temp = D3DXToRadian(rand() % 180 - 90) ;
-
-			D3DXMATRIX matRotY;
-			D3DXMatrixRotationY(&matRotY, temp);
-
-			D3DXVec3TransformNormal(&m_vDir, &m_vDir, &matRotY);
-
-			D3DXVec3Normalize(&m_vDir, &m_vDir);
-			
-			m_pModel->SetRotation(D3DXVECTOR3(0,-temp,0));
-			m_eState = MS_RUN;
-			//ChangeAni();
-		}
-		else
-		{
-			m_eState = MS_IDLE;
-		}
-		ChangeAni();
-		m_nCount = 0;
+		MoveReset(false);
 	}
 	char ttest[111];
 	sprintf_s(ttest, sizeof(ttest), "%f, %f, %f", m_vDir.x, m_vDir.y, m_vDir.z);
 	TEXT->Add(ttest, 10, 10, 30);
 
 	if (m_eState == MS_RUN)
-	m_pModel->SetPosition(*m_pModel->GetPosition() + m_vDir*0.03f);
+	{
+		D3DXVECTOR3 tempPos = *m_pModel->GetPosition() + m_vDir*0.03f;
+		tempPos.y = m_pMap->GetHeight(tempPos.x, tempPos.z);
+
+		//못가는 곳이다.
+		if (tempPos.y < 0)
+		{
+			MoveReset(true);
+		}
+		else
+		{
+			m_pModel->SetPosition(tempPos);
+		}
+		
+	}
 	
 	m_nCount++;
 

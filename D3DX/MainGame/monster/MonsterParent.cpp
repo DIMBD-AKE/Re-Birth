@@ -2,7 +2,7 @@
 #include "MonsterParent.h"
 #include "../Map.h"
 #include "../AStar/AStar.h"
-
+#include <time.h>
 MonsterParent::MonsterParent()
 : m_pModel(NULL)
 {
@@ -169,4 +169,43 @@ void MonsterParent::Skill()
 void MonsterParent::Move()
 {
 
+}
+
+void MonsterParent::MoveReset(bool isReverse)
+{
+	if (!isReverse)
+	{
+
+		m_vDir = D3DXVECTOR3(0, 0, -1);
+		srand(time(NULL));
+
+		m_nPatternChangeCount = rand() % 500 + 300;
+
+		if (m_eState == MS_IDLE)
+		{
+			float temp = D3DXToRadian(rand() % 180 - 90);
+
+			D3DXMATRIX matRotY;
+			D3DXMatrixRotationY(&matRotY, temp);
+
+			D3DXVec3TransformNormal(&m_vDir, &m_vDir, &matRotY);
+
+			D3DXVec3Normalize(&m_vDir, &m_vDir);
+
+			m_pModel->SetRotation(D3DXVECTOR3(0, temp, 0));
+			m_eState = MS_RUN;
+			//ChangeAni();
+		}
+		else
+		{
+			m_eState = MS_IDLE;
+		}
+		ChangeAni();
+		m_nCount = 0;
+	}
+	else
+	{
+		m_vDir.x = -m_vDir.x; m_vDir.z = -m_vDir.z;
+		m_pModel->SetRotation(*m_pModel->GetRotation() + D3DXVECTOR3(0, D3DX_PI, 0));
+	}
 }
