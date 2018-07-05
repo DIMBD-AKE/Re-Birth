@@ -231,11 +231,17 @@ void Inventory::ShowInfo(ItemParent * pItem, D3DXVECTOR3 pos)
 	D3DXVECTOR3 vItemPos = D3DXVECTOR3(30, 30, 0) * m_fSlotResize;
 	D3DXVECTOR3 vNamePos = D3DXVECTOR3(vItemPos.x + m_fSlotSize + 20 * m_fSlotResize, vItemPos.y, 0);
 
+	POINT wh;
+	if (pItem->GetEquipType() == EQUIP_POTION)
+		wh = Util::MakePoint(500, 300);
+	else
+		wh = Util::MakePoint(500, 550);
+
 	D3DXMATRIX matS, matT;
 	float resizeX, resizeY;
-	resizeX = (500 * m_fSlotResize) /
+	resizeX = (wh.x * m_fSlotResize) /
 		(float)TEXTUREMANAGER->GetInfo("UI Inventory Background").Width;
-	resizeY = (400 * m_fSlotResize) /
+	resizeY = (wh.y * m_fSlotResize) /
 		(float)TEXTUREMANAGER->GetInfo("UI Inventory Background").Height;
 	D3DXMatrixScaling(&matS, resizeX, resizeY, 0);
 	D3DXMatrixTranslation(&matT, pos.x, pos.y, pos.z);
@@ -246,18 +252,60 @@ void Inventory::ShowInfo(ItemParent * pItem, D3DXVECTOR3 pos)
 	pos.z = 0.1;
 	pItem->Render(pos + vItemPos, m_fSlotSize);
 
+	// ½ºÅÝ
+	if (pItem->GetEquipType() != EQUIP_POTION)
+	{
+		TEXT->Add("°ø°Ý·Â " + to_string(pItem->GetItemStat()->item.nAtk),
+			pos.x + vItemPos.x, 
+			pos.y + vItemPos.y + m_fSlotSize + 20 * m_fSlotResize, 
+			36 * m_fSlotResize,	"³ª´®½ºÄù¾î Regular", 0xFFFFFFFF);
+		char temp[32];
+		sprintf_s(temp, 32, "%.2f", pItem->GetItemStat()->item.fAtkSpeed);
+		TEXT->Add("°ø°Ý¼Óµµ " + string(temp),
+			pos.x + vItemPos.x + 200 * m_fSlotResize,
+			pos.y + vItemPos.y + m_fSlotSize + 20 * m_fSlotResize,
+			36 * m_fSlotResize, "³ª´®½ºÄù¾î Regular", 0xFFFFFFFF);
+
+		TEXT->Add("¹æ¾î·Â " + to_string(pItem->GetItemStat()->item.nAtk),
+			pos.x + vItemPos.x,
+			pos.y + vItemPos.y + m_fSlotSize + 65 * m_fSlotResize,
+			36 * m_fSlotResize, "³ª´®½ºÄù¾î Regular", 0xFFFFFFFF);
+		TEXT->Add("Ã¼·Â " + to_string(pItem->GetItemStat()->item.nDef),
+			pos.x + vItemPos.x + 200 * m_fSlotResize,
+			pos.y + vItemPos.y + m_fSlotSize + 65 * m_fSlotResize,
+			36 * m_fSlotResize, "³ª´®½ºÄù¾î Regular", 0xFFFFFFFF);
+
+		sprintf_s(temp, 32, "%.2f", pItem->GetItemStat()->item.fAgi);
+		TEXT->Add("È¸ÇÇ·Â " + string(temp),
+			pos.x + vItemPos.x,
+			pos.y + vItemPos.y + m_fSlotSize + 140 * m_fSlotResize,
+			36 * m_fSlotResize, "³ª´®½ºÄù¾î Regular", 0xFFFFFFFF);
+		sprintf_s(temp, 32, "%.2f", pItem->GetItemStat()->item.fHit);
+		TEXT->Add("¸íÁß·ü " + string(temp),
+			pos.x + vItemPos.x,
+			pos.y + vItemPos.y + m_fSlotSize + 185 * m_fSlotResize,
+			36 * m_fSlotResize, "³ª´®½ºÄù¾î Regular", 0xFFFFFFFF);
+		sprintf_s(temp, 32, "%.2f", pItem->GetItemStat()->item.fSpeed);
+		TEXT->Add("ÀÌµ¿¼Óµµ " + string(temp),
+			pos.x + vItemPos.x,
+			pos.y + vItemPos.y + m_fSlotSize + 230 * m_fSlotResize,
+			36 * m_fSlotResize, "³ª´®½ºÄù¾î Regular", 0xFFFFFFFF);
+	}
+
+	// ÀÌ¸§
 	TEXT->Add(pItem->GetName(), pos.x + vNamePos.x, pos.y + vNamePos.y, 40 * m_fSlotResize,
 		"³ª´®½ºÄù¾î Regular", 0xFFFFFFFF);
 
+	// ¼³¸í
 	char * desc = _strdup(pItem->GetDesc().c_str());
 	char * tok;
 	char * context;
 	tok = strtok_s(desc, "/", &context);
-	TEXT->Add(tok, pos.x + vItemPos.x, pos.y + 315 * m_fSlotResize, 30 * m_fSlotResize,
+	TEXT->Add(tok, pos.x + vItemPos.x, pos.y + (wh.y - 95) * m_fSlotResize, 30 * m_fSlotResize,
 		"³ª´®½ºÄù¾î Regular", 0xFFFFFFFF);
 	tok = strtok_s(NULL, "/", &context);
 	if (tok)
-		TEXT->Add(tok, pos.x + vItemPos.x, pos.y + 350 * m_fSlotResize, 30 * m_fSlotResize,
+		TEXT->Add(tok, pos.x + vItemPos.x, pos.y + (wh.y - 50) * m_fSlotResize, 30 * m_fSlotResize,
 			"³ª´®½ºÄù¾î Regular", 0xFFFFFFFF);
 }
 
@@ -327,6 +375,27 @@ void Inventory::Update()
 		}
 	}
 
+	if (INPUT->KeyPress(VK_UP))
+	{
+		m_fSlotSize += 0.1;
+		m_fSlotResize = m_fSlotSize / (float)TEXTUREMANAGER->GetInfo("UI Inventory Slot").Width;
+
+		m_ptInvBGSize.x = m_fSlotSpacing + (m_fSlotSize + m_fSlotSpacing) * m_ptInvSize.x;
+		m_ptInvBGSize.y = m_fSlotSpacing + (m_fSlotSize + m_fSlotSpacing) * m_ptInvSize.y;
+		m_ptEquipSize.x = TEXTUREMANAGER->GetInfo("UI Inventory Equip").Width * m_fSlotResize;
+		m_ptEquipSize.y = TEXTUREMANAGER->GetInfo("UI Inventory Equip").Height * m_fSlotResize;
+	}
+	if (INPUT->KeyPress(VK_DOWN))
+	{
+		m_fSlotSize -= 0.1;
+		m_fSlotResize = m_fSlotSize / (float)TEXTUREMANAGER->GetInfo("UI Inventory Slot").Width;
+
+		m_ptInvBGSize.x = m_fSlotSpacing + (m_fSlotSize + m_fSlotSpacing) * m_ptInvSize.x;
+		m_ptInvBGSize.y = m_fSlotSpacing + (m_fSlotSize + m_fSlotSpacing) * m_ptInvSize.y;
+		m_ptEquipSize.x = TEXTUREMANAGER->GetInfo("UI Inventory Equip").Width * m_fSlotResize;
+		m_ptEquipSize.y = TEXTUREMANAGER->GetInfo("UI Inventory Equip").Height * m_fSlotResize;
+	}
+
 	Move();
 
 	// ÀåºñÃ¢ ´Ý±â
@@ -360,7 +429,7 @@ void Inventory::Render()
 	if (m_isEquipShow)
 	{
 		D3DXMatrixScaling(&matS, m_fSlotResize, m_fSlotResize, 0);
-		D3DXMatrixTranslation(&matT, m_vEquipPos.x, m_vEquipPos.y, 0.1);
+		D3DXMatrixTranslation(&matT, m_vEquipPos.x, m_vEquipPos.y, 0.6);
 		SPRITE->SetTransform(&(matS * matT));
 		SPRITE->Draw(m_pEquipTex, NULL, NULL, NULL, 0xFFFFFFFF);
 
@@ -385,9 +454,10 @@ void Inventory::Render()
 			// ¾ÆÀÌÅÛ
 			if (m_pEquip[i].item)
 			{
-				pos.x += m_fSlotSpacing;
-				pos.y += m_fSlotSpacing;
-				m_pEquip[i].item->Render(pos, m_fSlotSize - m_fSlotSpacing * 2);
+				pos.x += m_fSlotSpacing / 2;
+				pos.y += m_fSlotSpacing / 2;
+				pos.z = 0.5;
+				m_pEquip[i].item->Render(pos, m_fSlotSize - m_fSlotSpacing);
 				if (m_pEquip[i].item)
 					if (m_pEquip[i].item->GetEquipType() == EQUIP_POTION)
 						TEXT->Add(to_string(m_pEquip[i].count),
@@ -399,7 +469,7 @@ void Inventory::Render()
 			if (PtInRect(&rc, MOUSE_POS))
 			{
 				D3DXMatrixScaling(&matS, m_fSlotResize, m_fSlotResize, 0);
-				D3DXMatrixTranslation(&matT, rc.left, rc.top, 0);
+				D3DXMatrixTranslation(&matT, rc.left, rc.top, 0.5);
 				SPRITE->SetTransform(&(matS * matT));
 				SPRITE->Draw(m_pSlotOverTex, NULL, NULL, NULL, 0xFFFFFFFF);
 			}
