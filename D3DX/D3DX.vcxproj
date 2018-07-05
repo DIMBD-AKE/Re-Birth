@@ -154,6 +154,7 @@
     <ClInclude Include="MainGame\Item\Blade\MagicBlade.h" />
     <ClInclude Include="MainGame\Item\Arrow\MagicArrow.h" />
     <ClInclude Include="MainGame\Item\ArmorParent.h" />
+    <ClInclude Include="MainGame\Item\ItemList.h" />
     <ClInclude Include="MainGame\Item\Sword\BasicSword.h" />
     <ClInclude Include="Framework\UIController.h" />
     <ClInclude Include="MainGame\AStar\Cell.h" />
