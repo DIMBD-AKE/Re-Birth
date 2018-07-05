@@ -224,8 +224,41 @@ void Inventory::Move()
 		m_eMoveType = MOVETYPE_END;
 }
 
-void Inventory::ShowInfo()
+void Inventory::ShowInfo(ItemParent * pItem, D3DXVECTOR3 pos)
 {
+	if (!pItem) return;
+
+	D3DXVECTOR3 vItemPos = D3DXVECTOR3(30, 30, 0) * m_fSlotResize;
+	D3DXVECTOR3 vNamePos = D3DXVECTOR3(vItemPos.x + m_fSlotSize + 20 * m_fSlotResize, vItemPos.y, 0);
+
+	D3DXMATRIX matS, matT;
+	float resizeX, resizeY;
+	resizeX = (500 * m_fSlotResize) /
+		(float)TEXTUREMANAGER->GetInfo("UI Inventory Background").Width;
+	resizeY = (400 * m_fSlotResize) /
+		(float)TEXTUREMANAGER->GetInfo("UI Inventory Background").Height;
+	D3DXMatrixScaling(&matS, resizeX, resizeY, 0);
+	D3DXMatrixTranslation(&matT, pos.x, pos.y, pos.z);
+
+	SPRITE->SetTransform(&(matS * matT));
+	SPRITE->Draw(m_pInvTex, NULL, NULL, NULL, 0xAAFFFFFF);
+
+	pos.z = 0.1;
+	pItem->Render(pos + vItemPos, m_fSlotSize);
+
+	TEXT->Add(pItem->GetName(), pos.x + vNamePos.x, pos.y + vNamePos.y, 40 * m_fSlotResize,
+		"³ª´®½ºÄù¾î Regular", 0xFFFFFFFF);
+
+	char * desc = _strdup(pItem->GetDesc().c_str());
+	char * tok;
+	char * context;
+	tok = strtok_s(desc, "/", &context);
+	TEXT->Add(tok, pos.x + vItemPos.x, pos.y + 315 * m_fSlotResize, 30 * m_fSlotResize,
+		"³ª´®½ºÄù¾î Regular", 0xFFFFFFFF);
+	tok = strtok_s(NULL, "/", &context);
+	if (tok)
+		TEXT->Add(tok, pos.x + vItemPos.x, pos.y + 350 * m_fSlotResize, 30 * m_fSlotResize,
+			"³ª´®½ºÄù¾î Regular", 0xFFFFFFFF);
 }
 
 Inventory::Inventory()
@@ -260,10 +293,10 @@ void Inventory::CreateInventory(int col, int row)
 	for (int i = 0; i < EQUIP_END; i++)
 		m_pEquip[i].item = NULL;
 
-	m_pSlotTex = TEXTUREMANAGER->AddTexture("UI Inventory Slot", "UI/Inventory Slot.png");
-	m_pSlotOverTex = TEXTUREMANAGER->AddTexture("UI Inventory Slot Over", "UI/Inventory Slot Over.png");
-	m_pInvTex = TEXTUREMANAGER->AddTexture("UI Inventory Background", "UI/Inventory Background.png");
-	m_pEquipTex = TEXTUREMANAGER->AddTexture("UI Inventory Equip", "UI/Inventory Equip.png");
+	m_pSlotTex = TEXTUREMANAGER->AddTexture("UI Inventory Slot", "Texture/UI/Inventory Slot.png");
+	m_pSlotOverTex = TEXTUREMANAGER->AddTexture("UI Inventory Slot Over", "Texture/UI/Inventory Slot Over.png");
+	m_pInvTex = TEXTUREMANAGER->AddTexture("UI Inventory Background", "Texture/UI/Inventory Background.png");
+	m_pEquipTex = TEXTUREMANAGER->AddTexture("UI Inventory Equip", "Texture/UI/Inventory Equip.png");
 
 	m_fSlotResize = m_fSlotSize / (float)TEXTUREMANAGER->GetInfo("UI Inventory Slot").Width;
 
@@ -318,7 +351,7 @@ void Inventory::Update()
 
 void Inventory::Render()
 {
-	SPRITE->Begin(D3DXSPRITE_ALPHABLEND);
+	SPRITE_BEGIN;
 
 	D3DXMATRIX matS, matT;
 	D3DXVECTOR3 pos = D3DXVECTOR3(0, 0, 0);
@@ -403,7 +436,7 @@ void Inventory::Render()
 
 		// ¹è°æ
 		D3DXMatrixScaling(&matS, resizeX, resizeY, 0);
-		D3DXMatrixTranslation(&matT, m_vInvPos.x - m_fSlotSpacing, m_vInvPos.y - m_fSlotSpacing, 0.1);
+		D3DXMatrixTranslation(&matT, m_vInvPos.x - m_fSlotSpacing, m_vInvPos.y - m_fSlotSpacing, 0.5);
 		SPRITE->SetTransform(&(matS * matT));
 		SPRITE->Draw(m_pInvTex, NULL, NULL, NULL, 0xFFFFFFFF);
 
@@ -419,7 +452,7 @@ void Inventory::Render()
 				rc.bottom = rc.top + m_fSlotSize;
 				// ½½·Ô
 				D3DXMatrixScaling(&matS, m_fSlotResize, m_fSlotResize, 0);
-				D3DXMatrixTranslation(&matT, pos.x, pos.y, 0);
+				D3DXMatrixTranslation(&matT, pos.x, pos.y, 0.4);
 				SPRITE->SetTransform(&(matS * matT));
 				SPRITE->Draw(m_pSlotTex, NULL, NULL, NULL, 0xFFFFFFFF);
 				if (m_vecInventory[i][j].item)
@@ -433,15 +466,18 @@ void Inventory::Render()
 				{
 					pos.x += m_fSlotSpacing;
 					pos.y += m_fSlotSpacing;
+					pos.z = 0.3;
 					m_vecInventory[i][j].item->Render(pos, m_fSlotSize - m_fSlotSpacing * 2);
 				}
-				// Å×µÎ¸®
 				if (PtInRect(&rc, MOUSE_POS))
 				{
+					// Å×µÎ¸®
 					D3DXMatrixScaling(&matS, m_fSlotResize, m_fSlotResize, 0);
-					D3DXMatrixTranslation(&matT, rc.left, rc.top, 0);
+					D3DXMatrixTranslation(&matT, rc.left, rc.top, 0.3);
 					SPRITE->SetTransform(&(matS * matT));
 					SPRITE->Draw(m_pSlotOverTex, NULL, NULL, NULL, 0xFFFFFFFF);
+					ShowInfo(m_vecInventory[i][j].item,
+						pos - D3DXVECTOR3(100 * m_fSlotResize, 50 * m_fSlotResize, 0.2));
 				}
 			}
 		}
@@ -456,7 +492,7 @@ void Inventory::Render()
 		m_pHoldItem.item->Render(pos, m_fSlotSize - m_fSlotSpacing);
 	}
 
-	SPRITE->End();
+	SPRITE_END;
 }
 
 ItemParent * Inventory::GetWeapon()
@@ -492,7 +528,7 @@ STATUS Inventory::GetEquipStat()
 
 bool Inventory::AddItem(ItemParent item)
 {
-	ItemParent * pItem = new ItemParent;;
+	ItemParent * pItem = new ItemParent;
 	*pItem = item;
 
 	// Áßº¹ °Ë»ç

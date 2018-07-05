@@ -67,7 +67,7 @@ void UIObject::Render()
 	rc.left = m_matWorld._41;
 	rc.top = m_matWorld._42;
 
-	SPRITE->Begin(D3DXSPRITE_ALPHABLEND | D3DXSPRITE_SORT_TEXTURE);
+	SPRITE_BEGIN;
 
 	bool draw = false;
 	if (m_pTex[UITEX_DOWN] && INPUT->KeyPress(VK_LBUTTON))
@@ -103,7 +103,7 @@ void UIObject::Render()
 		SPRITE->Draw(m_pTex[UITEX_NORMAL], NULL, NULL, NULL, 0xFFFFFFFF);
 	}
 
-	SPRITE->End();
+	SPRITE_END;
 
 	for (auto child : m_vecChild)
 		child->Render();

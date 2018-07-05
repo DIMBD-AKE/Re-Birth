@@ -67,7 +67,7 @@ private:
 	void PickItem();
 	void ChangeItem();
 	void Move();
-	void ShowInfo();
+	void ShowInfo(ItemParent * pItem, D3DXVECTOR3 pos);
 
 public:
 	Inventory();
