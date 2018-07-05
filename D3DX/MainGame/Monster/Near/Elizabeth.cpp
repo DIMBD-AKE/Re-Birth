@@ -3,6 +3,7 @@
 #include "../../Map.h"
 #include "../../Status.h"
 #include <time.h>
+#include "../../Character/CharacterParant.h"
 
 Elizabeth::Elizabeth()
 {
@@ -77,7 +78,19 @@ void Elizabeth::SetupStat()
 
 void Elizabeth::Attack()
 {
+	//일단 예외처리 -> 플레이어 연결이 되었다면
 
+	if (m_pCharacter)
+	{
+		D3DXVECTOR3 tempV = *m_pModel->GetPosition() - *m_pCharacter->GetCharacter()->GetPosition();
+		float length = D3DXVec3Length(&tempV);
+
+		int a = 10;
+		if (length > 10)
+		{
+			MoveForAttack();
+		}
+	}
 }
 
 void Elizabeth::Skill()

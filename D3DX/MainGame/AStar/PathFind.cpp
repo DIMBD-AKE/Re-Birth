@@ -288,3 +288,24 @@ Cell** PathFind::SubMakeNeighborCell(int myCellIndex)
 
 	return tempNeighborCell;
 }
+
+int PathFind::GetCellIndex(D3DXVECTOR3 pos)
+{
+	for (int j = 0; j < m_vNaviCell.size(); j++)
+	{
+
+		if (D3DXIntersectTri(
+			&m_vNaviCell[j]->GetVertex()[0],
+			&m_vNaviCell[j]->GetVertex()[1],
+			&m_vNaviCell[j]->GetVertex()[2],
+			&D3DXVECTOR3(pos.x, 10000, pos.z),
+			&D3DXVECTOR3(0, -1, 0),
+			NULL, NULL, NULL))
+		{
+			//충돌이 일어났으면 충돌된 셀로 설정
+			return j;
+		}
+	}
+
+	return -1;
+}

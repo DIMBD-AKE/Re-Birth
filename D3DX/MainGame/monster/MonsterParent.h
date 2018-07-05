@@ -7,12 +7,13 @@ class CharacterParant;
 class AStar;
 
 enum MON_STATE{
-	MS_IDLE,	//제자리에 있는 상태
-	MS_RUN,		//비전투에 걷는 상태
-	MS_SKILL,	//스킬 사용 상태
-	MS_ATTACK,	//전투 상태
-	MS_DIE,		//죽은 상태
-	MS_NONE,	//죽고나서 애니안돌리기 위한 값
+	MS_IDLE,			//제자리에 있는 상태
+	MS_RUN,				//비전투에 걷는 상태
+	MS_SKILL,			//스킬 사용 상태
+	MS_ATTACK,			//전투 상태
+	MS_MOVEFORATTACK,	//전투 중 이동해야 하는 상태
+	MS_DIE,				//죽은 상태
+	MS_NONE,			//죽고나서 애니안돌리기 위한 값
 };
 
 class MonsterParent
@@ -83,5 +84,7 @@ public:
 	virtual void Move();
 	//움직임 관련 리셋함수 (반대편으로 가야하냐)
 	void MoveReset(bool isReverse);
+	//공격할수 있는 거리까지 가는 함수
+	void MoveForAttack();
 };
 

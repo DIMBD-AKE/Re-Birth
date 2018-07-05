@@ -3,6 +3,8 @@
 #include "../Map.h"
 #include "../AStar/AStar.h"
 #include <time.h>
+#include "../Character/CharacterParant.h"
+
 MonsterParent::MonsterParent()
 : m_pModel(NULL)
 {
@@ -24,6 +26,8 @@ void MonsterParent::Setup(Map* map,  D3DXVECTOR3 spawnPos)
 
 	m_pAStar = new AStar;
 	m_pAStar->SetCurrentCell(map->GetNavMesh());
+	//m_pAStar->SetCell(0, 0);
+	//D3DXVECTOR3 temp =  m_pAStar->GetNextCell();
 
 	m_nResPawnCount = m_bIsRespawn = 0;
 	m_eState = MS_RUN;
@@ -40,6 +44,10 @@ void MonsterParent::SetupStat()
 
 void MonsterParent::Update()
 {
+	if (INPUT->KeyDown('O'))
+	{
+		m_eState = MS_ATTACK;
+	}
 	switch (m_eState)
 	{
 		//기본 및 움직이는 상태일때 move함수 호출해서 행동
@@ -51,7 +59,7 @@ void MonsterParent::Update()
 		Skill();
 		break;
 		//공격상태이면 공격상태 호출
-	case MS_ATTACK:
+	case MS_ATTACK: case MS_MOVEFORATTACK:
 		Attack();
 		break;
 	default:
@@ -109,7 +117,7 @@ void MonsterParent::ChangeAni()
 	case MS_IDLE:
 		m_pModel->SetAnimation("IDLE");
 		break;
-	case MS_RUN:
+	case MS_RUN: case MS_MOVEFORATTACK:
 		m_pModel->SetAnimation("RUN");
 		break;
 	case MS_SKILL:
@@ -138,6 +146,7 @@ void MonsterParent::Respawn(D3DXVECTOR3 spawnPos)
 
 void MonsterParent::CalculDamage(float damage)
 {
+	m_eState = MS_ATTACK;
 	/*
 		float	fPhyRate;		//물리계수
 		float	fMagicRate;		//마법계수
@@ -208,4 +217,41 @@ void MonsterParent::MoveReset(bool isReverse)
 		m_vDir.x = -m_vDir.x; m_vDir.z = -m_vDir.z;
 		m_pModel->SetRotation(*m_pModel->GetRotation() + D3DXVECTOR3(0, D3DX_PI, 0));
 	}
+}
+
+void MonsterParent::MoveForAttack()
+{
+	m_eState = MS_MOVEFORATTACK;
+
+	int playerIndex = m_pAStar->GetCellIndex(*m_pCharacter->GetCharacter()->GetPosition());
+
+	int myIndex = m_pAStar->GetCellIndex(*m_pModel->GetPosition());
+
+	m_pAStar->SetCell(myIndex, playerIndex);
+
+	D3DXVECTOR3 nextCell = m_pAStar->GetNextCell();
+
+	D3DXVECTOR3 dir = nextCell - *m_pModel->GetPosition();
+
+	D3DXVec3Normalize(&dir, &dir);
+
+	m_pModel->SetPosition(*m_pModel->GetPosition() + m_vDir* 0.03f);
+
+	//if (m_eState == MS_RUN)
+	//{
+	//	D3DXVECTOR3 tempPos = *m_pModel->GetPosition() + m_vDir*0.03f;
+	//	tempPos.y = m_pMap->GetHeight(tempPos.x, tempPos.z);
+	//
+	//	//못가는 곳이다.
+	//	if (tempPos.y < 0)
+	//	{
+	//		MoveReset(true);
+	//	}
+	//	else
+	//	{
+	//		m_pModel->SetPosition(tempPos);
+	//	}
+	//
+	//}
+	
 }

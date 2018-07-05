@@ -24,5 +24,7 @@ public:
 
 	//실질적인 연결은 여기서		나의 인덱스			연결시켜줄 인덱스
 	Cell** SubMakeNeighborCell(int myCellIndex);
+
+	int GetCellIndex(D3DXVECTOR3 pos);
 };
 

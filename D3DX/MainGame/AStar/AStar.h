@@ -5,6 +5,7 @@ class PathFind;
 
 class AStar
 {
+	PathFind* m_pPathFind;
 	//현재 맵의 셀
 	vector<Cell*> m_vCurrentCell;
 	//전체 타일
@@ -43,5 +44,7 @@ public:
 	void pathFinder(Cell* currentCell);
 
 	D3DXVECTOR3 GetNextCell();
+
+	int GetCellIndex(D3DXVECTOR3 pos);
 };
 

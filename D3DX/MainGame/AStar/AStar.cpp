@@ -15,10 +15,11 @@ AStar::~AStar()
 
 void AStar::SetCurrentCell(vector<D3DXVECTOR3> Vertex)
 {
-	PathFind* tempPathFind = new PathFind;
-	tempPathFind->Setup(Vertex);
 
-	m_vCurrentCell = tempPathFind->GetNaviCell();
+	m_pPathFind = new PathFind;
+	m_pPathFind->Setup(Vertex);
+
+	m_vCurrentCell = m_pPathFind->GetNaviCell();
 }
 
 void AStar::SetCell(int MyCellIndex, int TargetIndex)
@@ -36,11 +37,13 @@ void AStar::SetCell(int MyCellIndex, int TargetIndex)
 	m_vCloseList.clear();
 
 	//시작타일
-	m_pStartCell = m_vCurrentCell[0];
+	//m_pStartCell = m_vCurrentCell[0];
+	m_pStartCell = m_vCurrentCell[MyCellIndex];
 	m_pStartCell->SetAttribute("start");
 	
 	//엔드타일
-	m_pEndCell = m_vCurrentCell[m_vCurrentCell.size() - 1];
+	//m_pEndCell = m_vCurrentCell[m_vCurrentCell.size() - 1];
+	m_pEndCell = m_vCurrentCell[TargetIndex];
 	m_pEndCell->SetAttribute("end");
 
 	//현재
@@ -203,4 +206,9 @@ D3DXVECTOR3 AStar::GetNextCell()
 		return D3DXVECTOR3(-1, -1, -1);
 	}
 	return m_vCloseList[0]->GetCenter();
+}
+
+int AStar::GetCellIndex(D3DXVECTOR3 pos)
+{
+	return m_pPathFind->GetCellIndex(pos);
 }
