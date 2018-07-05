@@ -1,7 +1,7 @@
 #include "../../stdafx.h"
 #include "MonsterManager.h"
 #include "MonsterParent.h"
-#include "Elizabeth.h"
+#include "./Near/Elizabeth.h"
 #include <time.h>
 
 

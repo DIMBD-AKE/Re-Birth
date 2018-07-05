@@ -1,7 +1,7 @@
-#include "../../stdafx.h"
+#include "../../../stdafx.h"
 #include "Elizabeth.h"
-#include "../Map.h"
-#include "../Status.h"
+#include "../../Map.h"
+#include "../../Status.h"
 
 Elizabeth::Elizabeth()
 {
@@ -18,8 +18,13 @@ void Elizabeth::Setup(Map* map, D3DXVECTOR3 spawnPos)
 {
 	MonsterParent::Setup(map, spawnPos);
 
-	MODELMANAGER->AddModel("엘리자베스", "Model/Enemy/Elizabeth/", "Elizabeth.x", MODELTYPE_X);
-	
+	//MODELMANAGER->AddModel("엘리자베스", "Model/Enemy/Elizabeth/", "Elizabeth.x", MODELTYPE_X);
+	//MODELMANAGER->AddModel("엘리자베스", "Model/Enemy/Assis/", "Assis.x", MODELTYPE_X);
+	//MODELMANAGER->AddModel("엘리자베스", "Model/Enemy/DarkHell/", "DarkHell.x", MODELTYPE_X);
+	//MODELMANAGER->AddModel("엘리자베스", "Model/Enemy/PhantomKnight/", "PhantomKnight.x", MODELTYPE_X);
+	MODELMANAGER->AddModel("엘리자베스", "Model/Enemy/Nike/", "Nike.x", MODELTYPE_X);
+
+
 	m_pModel = MODELMANAGER->GetModel("엘리자베스", MODELTYPE_X);
 	//판정 박스 
 	ST_SIZEBOX box;

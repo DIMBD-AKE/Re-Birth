@@ -1,5 +1,5 @@
 #pragma once
-#include "MonsterParent.h"
+#include "../MonsterParent.h"
 
 class Elizabeth :
 	public MonsterParent
