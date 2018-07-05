@@ -31,7 +31,7 @@ public:
 
 	//현재 맵의 서페이스 정보 세팅
 	//맵 넘어갈때 한번만 해주면 된다.
-	void SetCurrentCell(vector<D3DXVECTOR3>& Vertex);
+	void SetCurrentCell(vector<D3DXVECTOR3> Vertex);
 
 	//일단은 인자 사용 안함
 	void SetCell(int MyCellIndex, int TargetIndex);

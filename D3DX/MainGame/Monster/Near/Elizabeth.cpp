@@ -52,6 +52,7 @@ void Elizabeth::SetupStat()
 {
 	CURRENTHP(m_uMonsterStat) = MAXHP(m_uMonsterStat)  = 100;
 	ATK(m_uMonsterStat) = 10;
+	SPEED(m_uMonsterStat) = 0.01f;
 	//PHYRATE(m_uMonsterStat) = 
 
 	//m_uMonsterStat.CURRENTHP = m_uMonsterStat.MAXHP = 100;
@@ -87,23 +88,49 @@ void Elizabeth::Skill()
 void Elizabeth::Move()
 {
 	
-	if (INPUT->KeyDown('O'))
+	if (/*m_nCount == m_nPatternChangeCount*/INPUT->KeyDown(1))
 	{
-		//dir = D3DXVECTOR3(0, 0, 1);
+		//m_vDir = D3DXVECTOR3(0, 0, -1);
 		srand(time(NULL));
 		
+		m_nPatternChangeCount = rand() % 500 + 300;
 
-		float temp = (float)rand() / (float)RAND_MAX * 3.14;
-
-		D3DXMATRIX matRotY;
-		D3DXMatrixRotationY(&matRotY, temp);
+		//각도 변환
+		
 		//D3DXMatrixRotationYawPitchRoll(&matRot, m_pModel->GetRotation()->y, m_pModel->GetRotation()->x, m_pModel->GetRotation()->z);
 
-		D3DXVec3TransformNormal(&m_vDir, &m_vDir, &matRotY);
+		
 
-		D3DXVec3Normalize(&m_vDir, &m_vDir);
+		if (m_eState == MS_IDLE)
+		{
+			float temp = D3DXToRadian(rand() % 180 - 90) ;
+
+			D3DXMATRIX matRotY;
+			D3DXMatrixRotationY(&matRotY, temp);
+
+			D3DXVec3TransformNormal(&m_vDir, &m_vDir, &matRotY);
+
+			D3DXVec3Normalize(&m_vDir, &m_vDir);
+			
+			m_pModel->SetRotation(D3DXVECTOR3(0,-temp,0));
+			m_eState = MS_RUN;
+			//ChangeAni();
+		}
+		else
+		{
+			m_eState = MS_IDLE;
+		}
+		ChangeAni();
+		m_nCount = 0;
 	}
-	m_pModel->SetPosition(*m_pModel->GetPosition() + m_vDir*0.01f);
+	char ttest[111];
+	sprintf_s(ttest, sizeof(ttest), "%f, %f, %f", m_vDir.x, m_vDir.y, m_vDir.z);
+	TEXT->Add(ttest, 10, 10, 30);
+
+	if (m_eState == MS_RUN)
+	m_pModel->SetPosition(*m_pModel->GetPosition() + m_vDir*0.03f);
+	
+	m_nCount++;
 
 	
 

@@ -13,7 +13,7 @@ AStar::~AStar()
 
 }
 
-void AStar::SetCurrentCell(vector<D3DXVECTOR3>& Vertex)
+void AStar::SetCurrentCell(vector<D3DXVECTOR3> Vertex)
 {
 	PathFind* tempPathFind = new PathFind;
 	tempPathFind->Setup(Vertex);

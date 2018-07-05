@@ -19,6 +19,9 @@ void MonsterParent::Setup(Map* map,  D3DXVECTOR3 spawnPos)
 {
 	m_vDir = D3DXVECTOR3(0, 0, 1);
 
+	m_nCount = 0;
+	m_nPatternChangeCount = 0;
+
 	m_pAStar = new AStar;
 	m_pAStar->SetCurrentCell(map->GetNavMesh());
 

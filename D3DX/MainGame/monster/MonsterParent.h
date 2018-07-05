@@ -24,7 +24,9 @@ class MonsterParent
 	GET(Model*, m_pModel, Model);
 	SET(CharacterParant*, m_pCharacter, Character);
 
-	D3DXVECTOR3 m_vDir;
+	D3DXVECTOR3		m_vDir;
+	int				m_nPatternChangeCount;
+	int				m_nCount;
 protected:
 
 	//∏ÛΩ∫≈Õ Ω∫≈»
