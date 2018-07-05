@@ -184,7 +184,7 @@ void SkinnedMesh::Animate()
 void SkinnedMesh::SetIndex(int index)
 {
 	LPD3DXANIMATIONSET animSet = NULL;
-	m_pAnimController->GetAnimationSet(rand() % m_animMap.size(), &animSet);
+	m_pAnimController->GetAnimationSet(index, &animSet);
 	m_pAnimController->SetTrackAnimationSet(0, animSet);
 	m_pAnimController->SetTrackPosition(0, 0);
 	animSet->Release();
