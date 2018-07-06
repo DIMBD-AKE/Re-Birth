@@ -40,7 +40,7 @@ void ItemManager::Load(IN const char * szFolder, IN const char * szFile)
 				char* path = GetToken();
 				Ap.m_pTexture = TEXTUREMANAGER->AddTexture(keyName, path);
 				Ap.m_imageInfo = TEXTUREMANAGER->GetInfo(keyName);
-				m_mIdArmor.insert(make_pair(Ap.GetID, Ap));
+				m_mIdArmor.insert(make_pair(Ap.GetID(), Ap));
 			}
 		}
 
@@ -78,7 +78,7 @@ void ItemManager::Load(IN const char * szFolder, IN const char * szFile)
 			}
 			else if (c == 'S')
 			{
-				STATUS* st;
+				STATUS* st = new STATUS;
 				sscanf_s(szTemp, " %f %f %f %d %d %d %d %d %f %f %f",
 					&st->item.fAtkSpeed, &st->item.fCoolTime1, &st->item.fCoolTime2,
 					&st->item.nSkillAtk1, &st->item.nSkillAtk2, &st->item.nAtk, &st->item.nDef,

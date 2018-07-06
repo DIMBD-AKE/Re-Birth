@@ -7,7 +7,7 @@ private:
 	typedef map<int, ArmorParent> mArmor;
 	GET(mArmor, m_mIdArmor, MIdArmor);
 	FILE *	m_fp;
-	char szToken[1024];
+	char m_szToken[1024];
 
 
 public:
