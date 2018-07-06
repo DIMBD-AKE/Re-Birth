@@ -207,6 +207,18 @@
     <ClInclude Include="MainGame\Item\ItemList.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="MainGame\Monster\Distance\Nike.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="MainGame\Monster\Distance\DistanceMonster.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="MainGame\Monster\Distance\Nerisa.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="MainGame\Item\ItemManager.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -363,6 +375,18 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="MainGame\Item\DropManager.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="MainGame\Monster\Distance\DistanceMonster.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="MainGame\Monster\Distance\Nerisa.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="MainGame\Monster\Distance\Nike.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="MainGame\Item\ItemManager.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
