@@ -234,3 +234,27 @@ int AStar::GetCellIndex(D3DXVECTOR3 pos)
 {
 	return m_pPathFind->GetCellIndex(pos);
 }
+
+void AStar::Render(int MyCellIndex, int TargetIndex)
+{
+	
+	if (DEBUG)
+	{
+		SetCell(MyCellIndex, TargetIndex);
+		GetNextCell();
+		vector<D3DXVECTOR3> tempVector;
+		for (int i = 0; i < m_vCloseList.size(); i++)
+		{
+			tempVector.push_back(m_vCloseList[i]->GetCenter());
+		}
+
+		DEVICE->SetTexture(0, NULL);
+		DEVICE->DrawPrimitiveUP(D3DPT_LINESTRIP,
+			//몇개의 삼각형인지
+			tempVector.size(),
+			//첫 주소
+			&tempVector[0],
+			//크기
+			sizeof(D3DXVECTOR3));
+	}
+}

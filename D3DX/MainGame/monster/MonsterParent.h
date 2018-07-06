@@ -60,7 +60,7 @@ protected:
 	//움직임 관련 리셋함수 (반대편으로 가야하냐)
 	void MoveReset(bool isReverse);
 	//공격할수 있는 거리까지 가는 함수
-	void MoveForAttack();
+	POINT MoveForAttack();
 	void ItemDrop();
 
 public:
