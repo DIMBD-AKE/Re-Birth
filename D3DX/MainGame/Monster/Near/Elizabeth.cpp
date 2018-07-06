@@ -90,11 +90,23 @@ void Elizabeth::Attack()
 		//공격 가능 사거리까지 하면 될듯
 		if (length > 1)
 		{
+			if (m_eState == MS_ATTACK)
+			{
+				m_eState = MS_MOVEFORATTACK;
+				ChangeAni();
+			}
 			MoveForAttack();
 		}
 		else
 		{
+			if (m_eState == MS_MOVEFORATTACK)
+			{
+				m_eState = MS_ATTACK;
+				ChangeAni();
+			}
+			//플레이어 공격기능 설정
 			m_eState = MS_ATTACK;
+			
 		}
 	}
 }
