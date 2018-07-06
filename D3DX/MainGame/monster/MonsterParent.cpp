@@ -45,41 +45,44 @@ void MonsterParent::SetupStat()
 
 void MonsterParent::Update()
 {
-	if (INPUT->KeyDown('O'))
+	if (!DEBUG)
 	{
-		m_eState = MS_ATTACK;
-	}
-	switch (m_eState)
-	{
-		//기본 및 움직이는 상태일때 move함수 호출해서 행동
-	case MS_IDLE: case MS_RUN:
-	{
-					  Move();
-	}
-		break;
-		//스킬상태이면 스킬상태 함수 호출
-	case MS_SKILL:
-	{
-					 Skill();
-	}
-		break;
-		//공격상태이면 공격상태 호출
-	case MS_ATTACK: case MS_MOVEFORATTACK:
-	{
-						Attack();
-	}
-		break;
-	default:
-		break;
-	}
-
-
-	if (!m_bIsRespawn)
-	{
-		if (m_pModel)
+		if (INPUT->KeyDown('O'))
 		{
-			m_pModel->World();
-			m_pModel->Update();
+			m_eState = MS_ATTACK;
+		}
+		switch (m_eState)
+		{
+			//기본 및 움직이는 상태일때 move함수 호출해서 행동
+		case MS_IDLE: case MS_RUN:
+		{
+						  Move();
+		}
+			break;
+			//스킬상태이면 스킬상태 함수 호출
+		case MS_SKILL:
+		{
+						 Skill();
+		}
+			break;
+			//공격상태이면 공격상태 호출
+		case MS_ATTACK: case MS_MOVEFORATTACK:
+		{
+							Attack();
+		}
+			break;
+		default:
+			break;
+		}
+
+
+		if (!m_bIsRespawn)
+		{
+			if (m_pModel)
+			{
+				m_pModel->World();
+				m_pModel->Update();
+			}
 		}
 	}
 	//ChangeAni();
@@ -114,6 +117,12 @@ void MonsterParent::Render()
 	if (m_pModel && m_eState != MS_NONE)
 	{
 		m_pModel->Render();
+		if (DEBUG)
+		{
+			POINT temp = MoveForAttack();
+
+			m_pAStar->Render( temp.y, temp.x);
+		}
 	}
 }
 
@@ -226,7 +235,7 @@ void MonsterParent::MoveReset(bool isReverse)
 	}
 }
 
-void MonsterParent::MoveForAttack()
+POINT MonsterParent::MoveForAttack()
 {
 	m_eState = MS_MOVEFORATTACK;
 
@@ -234,6 +243,7 @@ void MonsterParent::MoveForAttack()
 
 	int myIndex = m_pAStar->GetCellIndex(*m_pModel->GetPosition());
 
+	if (DEBUG) { return{ playerIndex, myIndex }; }
 	D3DXVECTOR3 dir;
 	//같은 셀에 있으면
 	if (playerIndex == myIndex)
@@ -257,7 +267,7 @@ void MonsterParent::MoveForAttack()
 		
 	}
 		D3DXVec3Normalize(&dir, &dir);
-
+		if (!DEBUG)
 		m_pModel->SetPosition(*m_pModel->GetPosition() + dir* 0.03f);
 	
 	char ttest[111];
@@ -281,7 +291,7 @@ void MonsterParent::MoveForAttack()
 	//	}
 	//
 	//}
-	
+	return{ -1, -1 };
 }
 
 void MonsterParent::DropItemSetup()
