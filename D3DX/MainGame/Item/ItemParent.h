@@ -18,7 +18,8 @@ protected:
 	SYNTHESIZE(int, m_nId, ID);											//아이템 고유넘버
 	SYNTHESIZE(STATUS*, m_pItemStatus, ItemStat);						//아이템 스텟보정치
 	SYNTHESIZE(EQUIPTYPE, m_stEquipType, EquipType);					//아이템 장착슬롯
-	
+	SYNTHESIZE(string, m_sRarity, Rarity);								
+
 	vector<MonsterParent*> m_vecTarget;
 	int m_nCurrentTarget;
 

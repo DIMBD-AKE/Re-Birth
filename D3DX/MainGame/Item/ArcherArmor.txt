@@ -1,0 +1,191 @@
+// N 장비명
+// R 레어도
+// D 설명
+// I ID
+// S 스테이터스
+// (AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
+// E EquipType
+// K KeyName
+// T Texture
+//enum EQUIPTYPE
+//{
+//	EQUIP_FIRSTWEAPON,
+//	EQUIP_HELMET,
+//	EQUIP_CHEST,
+//	EQUIP_GLOVES,
+//	EQUIP_BOOTS,
+//	EQUIP_POTION,
+//	EQUIP_END
+//};
+
+
+#
+N ArcherHelmet
+R Normal
+D ""
+I 365
+//(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
+S     0.0         0.0        0.0          0           0        0    10     5   0.0   1.0    0.0
+E 1
+K NormalArcherHelmet
+T "Texture/Item/Item Num 365 Normal ArcherHelmet.jpg"
+#
+N ArcherHelmet
+R Magic
+D ""
+I 265
+//(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
+S     0.0         0.0        0.0          0           0        0    11     6   0.1   1.5    0.0
+E 1
+K MagicArcherHelmet
+T "Texture/Item/Item Num 265 Magic ArcherHelmet.jpg"
+#
+N ArcherHelmet
+R Rare
+D ""
+I 165
+//(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
+S     0.0         0.0        0.0          0           0        0    12     7   0.2   2.0    0.0
+E 1
+K RareArcherHelmet
+T "Texture/Item/Item Num 165 Rare ArcherHelmet.jpg"
+#
+N ArcherHelmet
+R Unique
+D ""
+I 065
+//(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
+S     0.0         0.0        0.0          0           0        0    13    10   0.3   2.5    0.0
+E 1
+K UniqueArcherHelmet
+T "Texture/Item/Item Num 065 Unique ArcherHelmet.jpg"
+#
+N ArcherArmor
+R Normal
+D ""
+I 375
+//(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
+S     0.0         0.0        0.0          0           0        0    20    10   1.0   1.0    0.0
+E 2
+K NormalArcherArmor
+T "Texture/Item/Item Num 375 Normal ArcherArmor.jpg"
+#
+N ArcherArmor
+R Magic
+D ""
+I 275
+//(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
+S     0.0         0.0        0.0          0           0        0    21    12   1.1   1.1    0.0
+E 2
+K MagicArcherArmor
+T "Texture/Item/Item Num 275 Magic ArcherArmor.jpg"
+#
+N ArcherArmor
+R Rare
+D ""
+I 175
+//(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
+S     0.0         0.0        0.0          0           0        0    22    14   1.2   1.2    0.0
+E 2
+K RareArcherArmor
+T "Texture/Item/Item Num 175 Rare ArcherArmor.jpg"
+
+#
+N ArcherArmor
+R Unique
+D ""
+I 075
+//(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
+S     0.0         0.0        0.0          0           0        0    25    16   1.3   1.3    0.0
+E 2
+K UniqueArcherArmor
+T "Texture/Item/Item Num 075 Unique ArcherArmor.jpg"
+#
+N ArcherGauntlet
+R Normal
+D ""
+I 385
+//(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
+S     0.0         0.0        0.0          0           0        0    10    10   1.0   1.0    0.0
+E 3
+K NormalArcherGauntlet
+T "Texture/Item/Item Num 385 Normal ArcherGauntlet.jpg"
+
+#
+N ArcherGauntlet
+R Magic
+D ""
+I 285
+//(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
+S     0.0         0.0        0.0          0           0        0    11    11   1.1   1.1    0.0
+E 3
+K MagicArcherGauntlet
+T "Texture/Item/Item Num 285 Magic ArcherGauntlet.jpg"
+
+#
+N ArcherGauntlet
+R Rare
+D ""
+I 185
+//(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
+S     0.0         0.0        0.0          0           0        0    12    12   1.2   1.2    0.0
+E 3
+K RareArcherGauntlet
+T "Texture/Item/Item Num 185 Rare ArcherGauntlet.jpg"
+
+#
+N ArcherGauntlet
+R Unique
+D ""
+I 085
+//(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
+S     0.0         0.0        0.0          0           0        0    13    13   1.3   1.3    0.0
+E 3
+K UniqueArcherGauntlet
+T "Texture/Item/Item Num 085 Unique ArcherGauntlet.jpg"
+
+#
+N ArcherBoots
+R Normal
+D ""
+I 395
+//(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
+S     0.0         0.0        0.0          0           0        0    10    10   2.0   0.0    0.05
+E 4
+K NormalArcherBoots
+T "Texture/Item/Item Num 395 Normal ArcherBoots.jpg"
+
+#
+N ArcherBoots
+R Magic
+D ""
+I 295
+//(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
+S     0.0         0.0        0.0          0           0        0    11    11   2.5   0.1    0.06
+E 4 
+K MagicArcherBoots
+T "Texture/Item/Item Num 295 Magic ArcherBoots.jpg"
+
+#
+N ArcherBoots
+R Rare
+D ""
+I 195
+//(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
+S     0.0         0.0        0.0          0           0        0    12    12   3.0   0.2    0.07
+E 4
+K RareArcherBoots
+T "Texture/Item/Item Num 195 Rare ArcherBoots.jpg"
+
+#
+N ArcherBoots
+R Unique
+D ""
+I 095
+//(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
+S     0.0         0.0        0.0          0           0        0    13    13   3.5   0.3    0.10
+E 4
+K UniqueArcherBoots
+T "Texture/Item/Item Num 095 Unique ArcherBoots.jpg"
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
