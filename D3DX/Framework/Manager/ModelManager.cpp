@@ -112,6 +112,7 @@ ModelOBJ::~ModelOBJ()
 
 void ModelOBJ::Render()
 {
+	if (!CAMERA->IsFrustum(GetBoundSphere())) return;
 	if (m_isBlend) DEVICE->SetRenderState(D3DRS_ALPHABLENDENABLE, true);
 	else DEVICE->SetRenderState(D3DRS_ALPHABLENDENABLE, false);
 	Debug();
@@ -558,6 +559,7 @@ void ModelASE::Update()
 
 void ModelASE::Render()
 {
+	if (!CAMERA->IsFrustum(GetBoundSphere())) return;
 	if (m_isBlend) DEVICE->SetRenderState(D3DRS_ALPHABLENDENABLE, true);
 	else DEVICE->SetRenderState(D3DRS_ALPHABLENDENABLE, false);
 	Debug();
@@ -582,6 +584,7 @@ ModelX::~ModelX()
 
 void ModelX::Render()
 {
+	if (!CAMERA->IsFrustum(GetBoundSphere())) return;
 	DEVICE->SetRenderState(D3DRS_ALPHABLENDENABLE, true);
 	Debug();
 	DEVICE->SetRenderState(D3DRS_LIGHTING, true);

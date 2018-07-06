@@ -16,6 +16,7 @@ CameraManager::CameraManager()
 	, m_eMode(CAMERA_FREE)
 	, m_fSpeed(0.5f)
 	, m_fSmooth(0.1f)
+	, m_fDistance(0)
 {
 	Setup();
 }
@@ -23,6 +24,30 @@ CameraManager::CameraManager()
 
 CameraManager::~CameraManager()
 {
+}
+
+void CameraManager::UpdateFrustum()
+{
+	D3DXMATRIX matView, matProj;
+	DEVICE->GetTransform(D3DTS_PROJECTION, &matProj);
+	DEVICE->GetTransform(D3DTS_VIEW, &matView);
+
+	for (int i = 0; i < m_vecProjVertex.size(); i++)
+	{
+		D3DXVec3Unproject(&m_vecWorldVertex[i],
+			&m_vecProjVertex[i],
+			NULL,
+			&matProj,
+			&matView,
+			NULL);
+	}
+
+	D3DXPlaneFromPoints(&m_vecPlane[0], &m_vecWorldVertex[0], &m_vecWorldVertex[1], &m_vecWorldVertex[2]);
+	D3DXPlaneFromPoints(&m_vecPlane[1], &m_vecWorldVertex[6], &m_vecWorldVertex[5], &m_vecWorldVertex[4]);
+	D3DXPlaneFromPoints(&m_vecPlane[2], &m_vecWorldVertex[1], &m_vecWorldVertex[5], &m_vecWorldVertex[6]);
+	D3DXPlaneFromPoints(&m_vecPlane[3], &m_vecWorldVertex[0], &m_vecWorldVertex[3], &m_vecWorldVertex[7]);
+	D3DXPlaneFromPoints(&m_vecPlane[4], &m_vecWorldVertex[1], &m_vecWorldVertex[0], &m_vecWorldVertex[4]);
+	D3DXPlaneFromPoints(&m_vecPlane[5], &m_vecWorldVertex[2], &m_vecWorldVertex[6], &m_vecWorldVertex[7]);
 }
 
 void CameraManager::Setup()
@@ -38,6 +63,20 @@ void CameraManager::Setup()
 		10000.0f);
 
 	DEVICE->SetTransform(D3DTS_PROJECTION, &matProj);
+
+	// 프러스텀 셋팅
+	m_vecProjVertex.push_back(D3DXVECTOR3(-1, -1, 0));
+	m_vecProjVertex.push_back(D3DXVECTOR3(-1, 1, 0));
+	m_vecProjVertex.push_back(D3DXVECTOR3(1, 1, 0));
+	m_vecProjVertex.push_back(D3DXVECTOR3(1, -1, 0));
+
+	m_vecProjVertex.push_back(D3DXVECTOR3(-1, -1, 1));
+	m_vecProjVertex.push_back(D3DXVECTOR3(-1, 1, 1));
+	m_vecProjVertex.push_back(D3DXVECTOR3(1, 1, 1));
+	m_vecProjVertex.push_back(D3DXVECTOR3(1, -1, 1));
+
+	m_vecWorldVertex.resize(8);
+	m_vecPlane.resize(6);
 }
 
 void CameraManager::Update()
@@ -93,13 +132,16 @@ void CameraManager::Update()
 	{
 		if (m_pTargetPos)
 		{
-			m_vRotation.x += D3DXToRadian(MOUSE_POS.y - m_ptPrevMouse.y);
-			m_vRotation.y += D3DXToRadian(MOUSE_POS.x - m_ptPrevMouse.x);
+			m_vRotation.x -= D3DXToRadian(MOUSE_POS.y - m_ptPrevMouse.y) * 0.5;
+			m_vRotation.y += D3DXToRadian(MOUSE_POS.x - m_ptPrevMouse.x) * 0.5;
 			if (m_vRotation.x > D3DX_PI * 0.49f) m_vRotation.x = D3DX_PI * 0.49f;
 			if (m_vRotation.x < D3DX_PI * -0.49f) m_vRotation.x = D3DX_PI * -0.49f;
 			m_ptPrevMouse = MOUSE_POS;
 
+			m_fDistance -= MOUSE_WHEEL * 0.005;
+
 			vLookAt = *m_pTargetPos + m_vTargetOffset;
+			vCamOffset.z += m_fDistance;
 			vCamOffset.y = 0;
 			D3DXVec3TransformCoord(&vEye, &(vEye + vCamOffset), &matR);
 			vEye = *m_pTargetPos + m_vTargetOffset + vEye;
@@ -108,6 +150,8 @@ void CameraManager::Update()
 
 	D3DXMatrixLookAtLH(&matView, &vEye, &vLookAt, &m_vUp);
 	DEVICE->SetTransform(D3DTS_VIEW, &matView);
+
+	UpdateFrustum();
 }
 
 void CameraManager::SetTarget(D3DXVECTOR3 * targetPos, D3DXVECTOR3 * targetRot)
@@ -116,7 +160,7 @@ void CameraManager::SetTarget(D3DXVECTOR3 * targetPos, D3DXVECTOR3 * targetRot)
 	m_pTargetRot = targetRot;
 }
 
-void CameraManager::SetFog(bool enable, float start, float end, DWORD color)
+void CameraManager::SetFog(bool enable, float start, float end, DWORD color, float density)
 {
 	DEVICE->SetRenderState(D3DRS_FOGENABLE, enable);
 	if (enable)
@@ -126,5 +170,14 @@ void CameraManager::SetFog(bool enable, float start, float end, DWORD color)
 		DEVICE->SetRenderState(D3DRS_FOGTABLEMODE, D3DFOG_LINEAR);
 		DEVICE->SetRenderState(D3DRS_FOGSTART, *(DWORD*)(&start));
 		DEVICE->SetRenderState(D3DRS_FOGEND, *(DWORD*)(&end));
+		DEVICE->SetRenderState(D3DRS_FOGDENSITY, density);
 	}
+}
+
+bool CameraManager::IsFrustum(ST_SPHERE sphere)
+{
+	for (D3DXPLANE p : m_vecPlane)
+		if (D3DXPlaneDotCoord(&p, &sphere.center) > sphere.radius)
+			return false;
+	return true;
 }
