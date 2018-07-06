@@ -47,6 +47,6 @@ public:
 
 	int GetCellIndex(D3DXVECTOR3 pos);
 
-	void Render(int MyCellIndex, int TargetIndex);
+	void Render(int MyCellIndex, int TargetIndex, D3DXVECTOR3* pos);
 };
 

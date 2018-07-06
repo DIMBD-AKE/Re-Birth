@@ -235,7 +235,7 @@ int AStar::GetCellIndex(D3DXVECTOR3 pos)
 	return m_pPathFind->GetCellIndex(pos);
 }
 
-void AStar::Render(int MyCellIndex, int TargetIndex)
+void AStar::Render(int MyCellIndex, int TargetIndex, D3DXVECTOR3* pos)
 {
 	
 	if (DEBUG)
@@ -243,15 +243,23 @@ void AStar::Render(int MyCellIndex, int TargetIndex)
 		SetCell(MyCellIndex, TargetIndex);
 		GetNextCell();
 		vector<D3DXVECTOR3> tempVector;
+		tempVector.push_back(D3DXVECTOR3(m_vCurrentCell[MyCellIndex]->GetCenter().x, 70, m_vCurrentCell[MyCellIndex]->GetCenter().z));
 		for (int i = 0; i < m_vCloseList.size(); i++)
 		{
-			tempVector.push_back(m_vCloseList[i]->GetCenter());
+			tempVector.push_back(D3DXVECTOR3(m_vCloseList[i]->GetCenter().x, 70, m_vCloseList[i]->GetCenter().z));
 		}
 
+		tempVector.push_back(D3DXVECTOR3((*pos).x, 70, (*pos).z));
+		tempVector.push_back(D3DXVECTOR3((*pos).x, 70, (*pos).z));
+		tempVector.push_back(D3DXVECTOR3((*pos).x, 70, (*pos).z));
+		D3DXMATRIX matW;
+		D3DXMatrixIdentity(&matW);
+		DEVICE->SetTransform(D3DTS_WORLD, &matW);
+		//DEVICE->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 		DEVICE->SetTexture(0, NULL);
 		DEVICE->DrawPrimitiveUP(D3DPT_LINESTRIP,
 			//몇개의 삼각형인지
-			tempVector.size(),
+			tempVector.size()-2,
 			//첫 주소
 			&tempVector[0],
 			//크기

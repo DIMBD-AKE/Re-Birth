@@ -100,15 +100,15 @@ void MonsterManager::MakeMonster(DropManager* pDropManager)
 	//몬스터 벡터에 저장
 	m_vMM.push_back(test);
 
-	spotIndex = rand() % spotSize;
-
-	//몬스터 생성
-	MonsterParent* test1;
-	test1 = new Assis;
-	test1->Setup(m_pMap, m_vSpawnSpot[spotIndex]);
-	test1->SetCharacter(m_pCharacter);
-	test1->SetDropManager(pDropManager);
-
-	//몬스터 벡터에 저장
-	m_vMM.push_back(test1);
+	//spotIndex = rand() % spotSize;
+	//
+	////몬스터 생성
+	//MonsterParent* test1;
+	//test1 = new Assis;
+	//test1->Setup(m_pMap, m_vSpawnSpot[spotIndex]);
+	//test1->SetCharacter(m_pCharacter);
+	//test1->SetDropManager(pDropManager);
+	//
+	////몬스터 벡터에 저장
+	//m_vMM.push_back(test1);
 }

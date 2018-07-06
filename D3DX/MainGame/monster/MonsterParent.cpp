@@ -121,7 +121,7 @@ void MonsterParent::Render()
 		{
 			POINT temp = MoveForAttack();
 
-			m_pAStar->Render( temp.y, temp.x);
+			m_pAStar->Render( temp.y, temp.x, m_pCharacter->GetCharacter()->GetPosition());
 		}
 	}
 }
