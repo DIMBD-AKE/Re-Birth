@@ -6,11 +6,14 @@
 #include "../Character/Character_Gun.h"
 #include "../Character/Character_Magic.h"
 
+//몬스터 관련 헤더
 #include "../Astar/PathFind.h"
 #include "../monster/MonsterManager.h"
 
+//아이템 관련 헤더
 #include "../Item/ItemParent.h"
-#include "../Item/HealthPotion.h"
+#include "../Item/Potion/HealthPotion.h"
+#include "../Item/DropManager.h"
 
 SC_Test::SC_Test()
 {
@@ -29,6 +32,7 @@ void SC_Test::Release()
 	SAFE_DELETE(m_pMM);
 	SAFE_DELETE(m_pItem);
 	SAFE_DELETE(m_pPotion);
+	SAFE_DELETE(m_pDropManager);
 }
 
 void SC_Test::Init()
@@ -56,11 +60,14 @@ void SC_Test::Init()
 	//m_pPathFind = new PathFind;
 	//m_pPathFind->Setup(m_pSampleMap->GetNavMesh());
 
+	m_pDropManager = new DropManager;
+	m_pDropManager->Init();
+
 	m_pMM = new MonsterManager;
-	m_pMM->Setup(m_pSampleMap);
+	m_pMM->Setup(m_pSampleMap, m_pTestModel);
 
 	m_pMM->SetSpawnSpat(m_pSampleMap->GetSpawnEnemy());
-	m_pMM->MakeMonster();
+	m_pMM->MakeMonster(m_pDropManager);
 
 	m_pItem = new ItemParent;
 	m_pItem->SetUp();
@@ -103,4 +110,7 @@ void SC_Test::Render()
 
 	if (m_pItem)m_pItem->Render(D3DXVECTOR3(0, 0, 0), 50);
 	if (m_pPotion)m_pPotion->Render(D3DXVECTOR3(0, 0, 0), 50);
+
+	
+	m_pDropManager->Render();
 }

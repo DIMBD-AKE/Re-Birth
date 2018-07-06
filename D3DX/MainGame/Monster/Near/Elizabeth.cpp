@@ -141,7 +141,7 @@ void Elizabeth::Move()
 			m_bIsRespawn = true;
 			m_eState = MS_DIE;
 			ChangeAni();
-		
+			SetCurrentHP(1000);
 		}
 		
 	
