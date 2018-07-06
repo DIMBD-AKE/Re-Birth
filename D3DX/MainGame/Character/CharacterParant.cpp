@@ -5,6 +5,7 @@
 #include "../Status.h"
 
 
+
 void CharacterParant::SKill()
 {
 	//특정 키를 누르면 아이템 클래스의 skill을 실행한다. 
@@ -12,6 +13,9 @@ void CharacterParant::SKill()
 
 void CharacterParant::Move()
 {
+	//포트레이트
+	//m_pUIobj->Update();
+
 	//전후좌우 점프 움직임
 
 
@@ -55,11 +59,11 @@ void CharacterParant::Move()
 	}
 	else if (m_eCondition == CHAR_RUN_BACK)
 	{
-		float height = m_pSampleMap->GetHeight(pos.x - m_vfront.x * m_Status->chr.fSpeed, pos.z - m_vfront.z * m_Status->chr.fSpeed);
+		float height = m_pSampleMap->GetHeight(pos.x - m_vfront.x * (m_Status->chr.fSpeed-0.2f), pos.z - m_vfront.z * (m_Status->chr.fSpeed-0.2f));
 		if (height >= 0)
 		{
 			pos.y = height;
-			m_pCharacter->SetPosition(pos + m_vfront * m_Status->chr.fSpeed);
+			m_pCharacter->SetPosition(pos + m_vfront * (m_Status->chr.fSpeed-0.2f));
 		}
 		else
 		{
@@ -112,11 +116,12 @@ void CharacterParant::Controller()
 
 void CharacterParant::Debug()
 {
+	TEXT->Add(to_string(m_Status->chr.nCurrentStam), 300, 300, 30);
 }
 
 void CharacterParant::CheckDirection()
 {
-	//
+
 }
 
 void CharacterParant::ControllStamina()
@@ -147,7 +152,7 @@ void CharacterParant::ControllStamina()
 		}
 	}
 
-	TEXT->Add(to_string(m_Status->chr.nCurrentStam), 300, 300, 30);
+
 }
 
 
@@ -162,9 +167,15 @@ CharacterParant::CharacterParant()
 	MODELMANAGER->AddModel("스카디", "Model/Character/Skadi/", "Skadi.x", MODELTYPE_X);
 	MODELMANAGER->AddModel("베카", "Model/Character/Beakah/", "Beakah.x", MODELTYPE_X);
 	MODELMANAGER->AddModel("벨벳", "Model/Character/Velvet/", "Velvet.x", MODELTYPE_X);
-	//MODELMANAGER->AddModel("자일로", "Model/Character/Xylo/", "Xylo.x", MODELTYPE_X);
-	//MODELMANAGER->AddModel("아리토", "Model/Character/Arito/", "Arito.x", MODELTYPE_X);
-	//MODELMANAGER->AddModel("에스타", "Model/Character/Esta/", "Esta.x", MODELTYPE_X);
+	TEXTUREMANAGER->AddTexture("아카날_사진", "Model/Character/Portrait/Portrait_PC_Aknal_S_Icon.tga");
+	TEXTUREMANAGER->AddTexture("아린_사진", "Model/Character/Portrait/Portrait_PC_Arin_S_Icon.tga");
+	TEXTUREMANAGER->AddTexture("베카_사진", "Model/Character/Portrait/Portrait_PC_BeakAh_S_Icon.tga");
+	TEXTUREMANAGER->AddTexture("헤스티아_사진", "Model/Character/Portrait/Portrait_PC_Hestia_S_Icon.tga");
+	TEXTUREMANAGER->AddTexture("메그너스_사진", "Model/Character/Portrait/Portrait_Pc_Magnus_Icon.tga");
+	TEXTUREMANAGER->AddTexture("리아_사진", "Model/Character/Portrait/Portrait_PC_Riah_S_Icon.tga");
+	TEXTUREMANAGER->AddTexture("사카디_사진", "Model/Character/Portrait/Portrait_PC_Skadi_S_Icon.tga");
+	TEXTUREMANAGER->AddTexture("사카디_사진", "Model/Character/Portrait/velvet.png");
+
 }
 
 
@@ -217,12 +228,22 @@ void CharacterParant::Init(Map* map, CHARSELECT order)
 	m_bIsFront = false;
 	m_bIsDash = false;
 	m_fStamina = 10.0f;
+
+
+	//포트레이트 UI
+	m_pUIobj = new UIObject;
+	//m_pUIobj->SetTexture(TEXTUREMANAGER->GetTexture("아카날_사진"));
+	//m_pUIobj->SetPosition(D3DXVECTOR3(0, 0, 0));
+
+
 }
 
 
 
 void CharacterParant::Render()
 {
+	//포트레이트 
+	//m_pUIobj->Render();
 }
 
 void CharacterParant::KeyControl()
