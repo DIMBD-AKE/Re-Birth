@@ -46,7 +46,11 @@ void UIObject::Update()
 		if (PtInRect(&rc, MOUSE_POS))
 		{
 			m_pFunction->OnOver();
-			m_isOver = true;
+			if (!m_isOver)
+			{
+				m_isOver = true;
+				m_pFunction->OnEntrance();
+			}
 			if (INPUT->KeyUp(VK_LBUTTON))
 				m_pFunction->OnClick();
 		}

@@ -14,6 +14,7 @@ public:
 	virtual void OnClick() = 0;
 	virtual void OnOver() = 0;
 	virtual void OnExit() = 0;
+	virtual void OnEntrance() = 0;
 };
 
 class UIObject
@@ -33,10 +34,10 @@ protected:
 
 public:
 	UIObject();
-	virtual ~UIObject();
+	~UIObject();
 
-	virtual void Update();
-	virtual void Render();
+	void Update();
+	void Render();
 
 	void AddChild(UIObject * pChild);
 	void SetTexture(LPDIRECT3DTEXTURE9 normal, LPDIRECT3DTEXTURE9 over = NULL, LPDIRECT3DTEXTURE9 down = NULL);
