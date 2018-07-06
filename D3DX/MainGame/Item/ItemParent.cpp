@@ -29,30 +29,30 @@ void ItemParent::Use(CharacterParant& pCharacter)
 
 void ItemParent::Attack(CharacterParant* pCharacter,ST_DAMAGE pStatus, MonsterManager* pMonsterManager)
 {
-	for (int i = 0; i < pMonsterManager->GetMonsterManager().size(); ++i)
-	{
-		D3DXVECTOR3 pos = *(pCharacter->GetCharacter()->GetPosition());
-		D3DXVECTOR3 rot = *(pCharacter->GetCharacter()->GetRotation());
-		if (pMonsterManager->GetMonsterManager()[i]->GetIsResPawn())continue;
-		else
-		{
-			float radius = pMonsterManager->GetMonsterManager()[i]->GetModel()->GetBoundSphere().radius;
-			D3DXVECTOR3 mosPos = *(pMonsterManager->GetMonsterManager()[i]->GetModel()->GetPosition());
-			float distance = D3DXVec3Length(&(mosPos - pos));
-			if (distance - radius > m_fRange) continue;
-			else
-			{
-				D3DXVECTOR3 delta = mosPos - pos;
-				if(atan2(delta.x, delta.z)>m_fScale) continue;
+	//for (int i = 0; i < pMonsterManager->GetMonsterManager().size(); ++i)
+	//{
+	//	D3DXVECTOR3 pos = *(pCharacter->GetCharacter()->GetPosition());
+	//	D3DXVECTOR3 rot = *(pCharacter->GetCharacter()->GetRotation());
+	//	if (pMonsterManager->GetMonsterManager()[i]->GetIsResPawn())continue;
+	//	else
+	//	{
+	//		float radius = pMonsterManager->GetMonsterManager()[i]->GetModel()->GetBoundSphere().radius;
+	//		D3DXVECTOR3 mosPos = *(pMonsterManager->GetMonsterManager()[i]->GetModel()->GetPosition());
+	//		float distance = D3DXVec3Length(&(mosPos - pos));
+	//		if (distance - radius > m_fRange) continue;
+	//		else
+	//		{
+	//			D3DXVECTOR3 delta = mosPos - pos;
+	//			if(atan2(delta.x, delta.z)>m_fScale) continue;
 
-				int Atk = pCharacter->m_Status->chr.nAtk * m_pItemStatus->item.nAtk;
+	//			int Atk = pCharacter->m_Status->chr.nAtk * m_pItemStatus->item.nAtk;
 
 
 
-				pMonsterManager->GetMonsterManager()[i]->SetCurrentHP(0);
-			}
-		}
-	}
+	//			pMonsterManager->GetMonsterManager()[i]->SetCurrentHP(0);
+	//		}
+	//	}
+	//}
 }
 
 void ItemParent::Skill1(CharacterParant* pCharacter,ST_DAMAGE pStatus, MonsterManager* pMonsterManager)
