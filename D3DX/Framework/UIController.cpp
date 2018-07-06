@@ -141,6 +141,17 @@ void UIObject::SetFunction(IUIFunction * function)
 	m_pFunction = function;
 }
 
+UIObject * UIObject::Find(string name)
+{
+	if (m_sName.compare(name) == 0)
+		return this;
+
+	for (auto child : m_vecChild)
+		return child->Find(name);
+
+	return NULL;
+}
+
 void UIObject::Release()
 {
 	for (auto child : m_vecChild)
