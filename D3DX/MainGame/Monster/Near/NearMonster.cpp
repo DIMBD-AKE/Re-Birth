@@ -37,3 +37,8 @@ void NearMonster::Move()
 {
 
 }
+
+void NearMonster::DropItemSetup()
+{
+
+}

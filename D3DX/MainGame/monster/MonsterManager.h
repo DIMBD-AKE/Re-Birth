@@ -8,7 +8,7 @@ class DropManager;
 class MonsterManager
 {
 
-	GET(vector<MonsterParent*>, m_vMM, MonsterManager);
+	GET(vector<MonsterParent*>, m_vMM, MonsterVector);
 	SET(vector<D3DXVECTOR3>, m_vSpawnSpot, SpawnSpat);
 
 

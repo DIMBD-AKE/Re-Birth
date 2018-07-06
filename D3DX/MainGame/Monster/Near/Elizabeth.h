@@ -17,5 +17,7 @@ public:
 	virtual void Skill() override;
 	//근접 몬스터 기본 이동함수
 	virtual void Move() override;
+
+	virtual void DropItemSetup() override;
 };
 

@@ -284,8 +284,45 @@ void MonsterParent::MoveForAttack()
 	
 }
 
+void MonsterParent::DropItemSetup()
+{
+
+}
+
 void MonsterParent::ItemDrop()
 {
+	srand(time(NULL));
+
+	//0~99값
+	int ranNum = rand() % 100;
+
+	//60퍼 확률
+	if (ranNum < 60)
+	{
+		//m_pDropManager->AddDropItem(m_nItemID[0], *m_pModel->GetPosition());
+		//드랍없음
+	}
+	
+	//20퍼 확률
+	else if (ranNum < 80)
+	{
+		m_pDropManager->AddDropItem(m_nItemID[1], *m_pModel->GetPosition());
+		//드랍1
+	}
+
+	//15퍼 확률
+	else if (ranNum < 95)
+	{
+		m_pDropManager->AddDropItem(m_nItemID[2], *m_pModel->GetPosition());
+		//드랍2
+	}
+
+	//5퍼 확률
+	else if (ranNum < 100)
+	{
+		m_pDropManager->AddDropItem(m_nItemID[3], *m_pModel->GetPosition());
+		//드랍3
+	}
 	//확률연산
-	m_pDropManager->AddDropItem(1, *m_pModel->GetPosition());
+	
 }

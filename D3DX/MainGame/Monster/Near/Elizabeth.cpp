@@ -4,6 +4,7 @@
 #include "../../Status.h"
 #include <time.h>
 #include "../../Character/CharacterParant.h"
+#include "../../Item/ItemList.h"
 
 Elizabeth::Elizabeth()
 {
@@ -91,6 +92,10 @@ void Elizabeth::Attack()
 		{
 			MoveForAttack();
 		}
+		else
+		{
+			m_eState = MS_ATTACK;
+		}
 	}
 }
 
@@ -131,7 +136,7 @@ void Elizabeth::Move()
 
 	
 
-	if (INPUT->KeyDown('P'))
+	if (INPUT->KeyDown('L'))
 		{
 			m_bIsRespawn = true;
 			m_eState = MS_DIE;
@@ -142,6 +147,13 @@ void Elizabeth::Move()
 	
 }
 
+void Elizabeth::DropItemSetup()
+{
+	m_nItemID[0] = HEALTH_POTION;
+	m_nItemID[1] = BASIC_SWORD;
+	m_nItemID[2] = HEALTH_POTION;
+	m_nItemID[3] = BASIC_SWORD;
+}
 
 //void Elizabeth::Update()
 //{

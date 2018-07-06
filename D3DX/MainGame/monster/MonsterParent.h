@@ -1,5 +1,6 @@
 #pragma once
 #include "../Status.h"
+#define MAXITEMNUM 4
 //몬스터들의 기본 틀이 되는 클래스이다.
 
 class Map;
@@ -46,7 +47,21 @@ protected:
 	AStar* m_pAStar;
 
 	//드랍 아이템 목록
-	int m_nItemID[3];
+	int m_nItemID[MAXITEMNUM];
+
+protected:
+	virtual void Attack();
+	//몬스터 스킬함수
+	virtual void Skill();
+	//몬스터 기본 이동함수
+	virtual void Move();
+	//몬스터 별 드랍아이템 세팅함수
+	virtual void DropItemSetup();
+	//움직임 관련 리셋함수 (반대편으로 가야하냐)
+	void MoveReset(bool isReverse);
+	//공격할수 있는 거리까지 가는 함수
+	void MoveForAttack();
+	void ItemDrop();
 
 public:
 	MonsterParent();
@@ -74,7 +89,7 @@ public:
 
 	void ChangeAni();
 	void Respawn(D3DXVECTOR3 spawnPos);
-	void ItemDrop();
+	
 	/*
 	MS_IDLE,
 	MS_RUN,
@@ -84,14 +99,6 @@ public:
 	MS_NONE,
 	*/
 	//몬스터 공격함수
-	virtual void Attack();
-	//몬스터 스킬함수
-	virtual void Skill();
-	//몬스터 기본 이동함수
-	virtual void Move();
-	//움직임 관련 리셋함수 (반대편으로 가야하냐)
-	void MoveReset(bool isReverse);
-	//공격할수 있는 거리까지 가는 함수
-	void MoveForAttack();
+	
 };
 
