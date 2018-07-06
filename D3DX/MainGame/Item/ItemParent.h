@@ -19,6 +19,8 @@ protected:
 	SYNTHESIZE(STATUS*, m_pItemStatus, ItemStat);						//아이템 스텟보정치
 	SYNTHESIZE(EQUIPTYPE, m_stEquipType, EquipType);					//아이템 장착슬롯
 	SYNTHESIZE(string, m_sRarity, Rarity);								
+	GET(float, m_fRange, Range);
+	GET(float, m_fScale, Scale);
 
 	vector<MonsterParent*> m_vecTarget;
 	int m_nCurrentTarget;
@@ -26,8 +28,7 @@ protected:
 	LPDIRECT3DTEXTURE9	m_pTexture;
 	D3DXIMAGE_INFO		m_imageInfo;
 	
-	float		m_fRange;
-	float		m_fScale;
+	
 
 
 public:
