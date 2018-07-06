@@ -62,7 +62,7 @@ protected:
 
 	GET(Model*,m_pCharacter,Character);			//캐릭터 맴버 변수 
 	Map*					m_pSampleMap;		//맵정보 받는 맴버 변수
-	Inventory *				m_pInventory;		//인벤토리용 변수
+	GET(Inventory*,m_pInventory,m_Inventory);		//인벤토리용 변수
 	STATUS*					m_Status;			//스테이터스 유니온 변수 
 	UIObject*				m_pUIobj;			//UI오브젝트용 변수
 
