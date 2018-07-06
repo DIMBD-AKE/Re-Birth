@@ -58,7 +58,7 @@ protected:
 	//몬스터 별 드랍아이템 세팅함수
 	virtual void DropItemSetup();
 	//움직임 관련 리셋함수 (반대편으로 가야하냐)
-	void MoveReset(bool isReverse);
+	void MoveReset(bool isReverse, int max= 0 , int min= 0);
 	//공격할수 있는 거리까지 가는 함수
 	POINT MoveForAttack();
 	void ItemDrop();

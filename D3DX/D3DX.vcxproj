@@ -199,6 +199,7 @@
     <ClInclude Include="MainGame\monster\Magic\NifilHeim.h" />
     <ClInclude Include="MainGame\Monster\MonsterParent.h" />
     <ClInclude Include="MainGame\Monster\MonsterManager.h" />
+    <ClInclude Include="MainGame\Monster\MonsterUseHeader.h" />
     <ClInclude Include="MainGame\monster\Near\Assis.h" />
     <ClInclude Include="MainGame\monster\Near\Elizabeth.h" />
     <ClInclude Include="MainGame\monster\Near\NearMonster.h" />

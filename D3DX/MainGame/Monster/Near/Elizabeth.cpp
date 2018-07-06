@@ -1,10 +1,5 @@
-#include "../../../stdafx.h"
+#include "../MonsterUseHeader.h"
 #include "Elizabeth.h"
-#include "../../Map.h"
-#include "../../Status.h"
-#include <time.h>
-#include "../../Character/CharacterParant.h"
-#include "../../Item/ItemList.h"
 
 Elizabeth::Elizabeth()
 {
@@ -121,11 +116,11 @@ void Elizabeth::Move()
 	
 	if (m_nCount == m_nPatternChangeCount/*INPUT->KeyDown('O')*/)
 	{
-		MoveReset(false);
+		MoveReset(false,800,300);
 	}
-	char ttest[111];
-	sprintf_s(ttest, sizeof(ttest), "%f, %f, %f", m_vDir.x, m_vDir.y, m_vDir.z);
-	TEXT->Add(ttest, 10, 10, 30);
+	//char ttest[111];
+	//sprintf_s(ttest, sizeof(ttest), "%f, %f, %f", m_vDir.x, m_vDir.y, m_vDir.z);
+	//TEXT->Add(ttest, 10, 10, 30);
 
 	if (m_eState == MS_RUN)
 	{
@@ -148,13 +143,13 @@ void Elizabeth::Move()
 
 	
 
-	if (INPUT->KeyDown('L'))
-		{
-			m_bIsRespawn = true;
-			m_eState = MS_DIE;
-			ChangeAni();
-			SetCurrentHP(1000);
-		}
+	//if (INPUT->KeyDown('L'))
+	//	{
+	//		m_bIsRespawn = true;
+	//		m_eState = MS_DIE;
+	//		ChangeAni();
+	//		SetCurrentHP(1000);
+	//	}
 		
 	
 }

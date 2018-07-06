@@ -196,7 +196,7 @@ void MonsterParent::Move()
 
 }
 
-void MonsterParent::MoveReset(bool isReverse)
+void MonsterParent::MoveReset(bool isReverse, int max, int min)
 {
 	if (!isReverse)
 	{
@@ -204,7 +204,7 @@ void MonsterParent::MoveReset(bool isReverse)
 		m_vDir = D3DXVECTOR3(0, 0, -1);
 		srand(time(NULL));
 
-		m_nPatternChangeCount = rand() % 500 + 300;
+		m_nPatternChangeCount = rand() % (max-min) + min;
 
 		if (m_eState == MS_IDLE)
 		{
