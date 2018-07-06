@@ -32,11 +32,15 @@ void ItemManager::Load(IN const char * szFolder, IN const char * szFile)
 		{
 			if (c == 'D')
 			{
-			
+				char* des = GetToken();
+				Ap.SetDesc(des);
 			}
 			else 
 			{
-				TEXTUREMANAGER->AddTexture(keyName, )
+				char* path = GetToken();
+				Ap.m_pTexture = TEXTUREMANAGER->AddTexture(keyName, path);
+				Ap.m_imageInfo = TEXTUREMANAGER->GetInfo(keyName);
+				m_mIdArmor.insert(make_pair(Ap.GetID, Ap));
 			}
 		}
 
