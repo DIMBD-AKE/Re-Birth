@@ -17,7 +17,7 @@ void DropManager::Init()
 {
 	MODELMANAGER->AddModel("DropBox", "Model/Etc/", "DropBox.obj", MODELTYPE_OBJ);
 	m_pModel = MODELMANAGER->GetModel("DropBox", MODELTYPE_OBJ);
-	m_pModel->SetScale(D3DXVECTOR3(0.3, 0.3, 0.3));
+	m_pModel->SetScale(D3DXVECTOR3(0.1, 0.1, 0.1));
 }
 
 void DropManager::AddDropItem(int itemID, D3DXVECTOR3 pos)
@@ -25,6 +25,7 @@ void DropManager::AddDropItem(int itemID, D3DXVECTOR3 pos)
 	ST_DROPBOX box;
 	box.itemID = itemID;
 	box.pos = pos;
+	box.pos.y += 1;
 	box.rot.x = D3DXToRadian(rand() % 360);
 	box.rot.y = D3DXToRadian(rand() % 360);
 	box.rot.z = D3DXToRadian(rand() % 360);
@@ -40,7 +41,7 @@ bool DropManager::GetDropItem(CharacterParant * character)
 		if (character->GetCharacter()->IsCollisionSphere(m_pModel))
 			if (character->GetCharacter()->IsCollisionOBB(m_pModel))
 			{
-				// 인벤토리 검사
+				//if (character->Getm_Inventory()->AddItem())
 				return true;
 			}
 	}
@@ -52,8 +53,10 @@ void DropManager::Render()
 {
 	for (int i = 0; i < m_vecDrop.size(); i++)
 	{
-		m_pModel->SetPosition(m_vecDrop[i].pos);
+		m_vecDrop[i].rot += D3DXVECTOR3(1, 1, 1) * 0.01;
 		m_pModel->SetRotation(m_vecDrop[i].rot);
+		m_pModel->SetPosition(m_vecDrop[i].pos + 
+			D3DXVECTOR3(0, sin(m_vecDrop[i].rot.x), 0) * 0.5);
 		m_pModel->World();
 		m_pModel->Render();
 	}
