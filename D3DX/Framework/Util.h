@@ -46,6 +46,11 @@ public:
 		return ret;
 	}
 
+	static float FRand(float low, float high)
+	{
+		return low + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (high - low)));
+	}
+
 	static float Clamp(float min, float max, float value)
 	{
 		if (value < min) value = min;

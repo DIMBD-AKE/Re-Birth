@@ -31,6 +31,38 @@ struct ST_PNT_VERTEX
 	};
 };
 
+struct ST_PARTICLE
+{
+	D3DXVECTOR3	p;
+	D3DCOLOR	c;
+
+	enum {
+		FVF = D3DFVF_XYZ | D3DFVF_DIFFUSE
+	};
+};
+
+struct ST_PARTICLE_ATTRIBUTE
+{
+	D3DXVECTOR3 vPos;
+	D3DXVECTOR3 vVelocity;
+	D3DXVECTOR3 vAcceleration;
+	D3DXVECTOR3 vGravity;
+	float		fLifeTime;
+	float		fAge;
+	D3DXCOLOR	color;
+	D3DXCOLOR	colorFade;
+	bool		isAlive;
+};
+
+struct ST_PARTICLE_ATTRIBUTE_VARIABLE
+{
+	D3DXVECTOR3 vPosVar;
+	D3DXVECTOR3 vVelocityVar;
+	D3DXVECTOR3 vAccelerationVar;
+	D3DXVECTOR3 vGravityVar;
+	float		fLifeTimeVar;
+};
+
 struct ST_SPHERE
 {
 	D3DXVECTOR3 center;
