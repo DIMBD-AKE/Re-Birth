@@ -11,6 +11,7 @@ public:
 	void Update();
 	float GetElapsedTime();
 	float GetLastUpdateTime();
+	DWORD GetFPS();
 };
 
 #define TIME TimeManager::GetInstance()

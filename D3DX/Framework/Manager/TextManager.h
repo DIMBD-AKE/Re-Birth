@@ -29,10 +29,13 @@ private:
 	LPD3DXFONT			m_pFont;
 	vector<TextInfo>	m_vecText;
 
+	static bool SizeComparison(TextInfo i, TextInfo j) { return (i.size < j.size); }
+
 public:
-	void Add(string text, float x, float y, int size, string fontName = "굴림", 
+	void Add(string text, float x, float y, int size, string fontName = "나눔스퀘어 Regular", 
 		DWORD color = 0xFF000000, bool center = false, const RECT* rc = NULL);
 	FONT GetFont(FONTTYPE type, float x, float y);
+	void RegisterFont(string path);
 	void Render();
 	void Release();
 };
