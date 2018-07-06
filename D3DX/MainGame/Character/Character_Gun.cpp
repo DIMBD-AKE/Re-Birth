@@ -36,6 +36,9 @@ void Character_Gun::Init(Map * map, CHARSELECT order)
 		m_Status->chr.nMaxHp = 100;
 		m_Status->chr.nMaxStam = 10;
 		CharacterParant::Init(map, order);
+
+		m_pUIobj->SetTexture(TEXTUREMANAGER->GetTexture("메그너스_사진"));
+		m_pUIobj->SetPosition(D3DXVECTOR3(1300, 550, 0));
 	}
 	else if (order == CHAR_TWO)
 	{
@@ -55,6 +58,9 @@ void Character_Gun::Init(Map * map, CHARSELECT order)
 		m_Status->chr.nMaxHp = 100;
 		m_Status->chr.nMaxStam = 10;
 		CharacterParant::Init(map, order);
+
+		m_pUIobj->SetTexture(TEXTUREMANAGER->GetTexture("스카디_사진"));
+		m_pUIobj->SetPosition(D3DXVECTOR3(1300, 550, 0));
 	}
 }
 
@@ -68,7 +74,7 @@ void Character_Gun::Update()
 		m_pInventory->Update();
 
 		m_pCharacter->World();
-		m_pCharacter->Update();
+		m_pUIobj->Update();
 	}
 }
 
@@ -78,6 +84,8 @@ void Character_Gun::Render()
 	{
 		m_pCharacter->Render();
 		m_pInventory->Render();
+
+		m_pUIobj->Render();
 	}
 }
 

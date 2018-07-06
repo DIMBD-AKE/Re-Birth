@@ -8,7 +8,9 @@ class MonsterManager;
 //Youn
 class ItemParent;
 class HealthPotion;
+class ItemManager;
 class DropManager;
+
 
 class SC_Test : public Scene
 {
@@ -22,6 +24,7 @@ private:
 	//youn
 	ItemParent* m_pItem;
 	HealthPotion* m_pPotion;
+	ItemManager* m_pIm;
 
 	DropManager* m_pDropManager;
 

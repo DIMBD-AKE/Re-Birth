@@ -14,6 +14,7 @@
 #include "../Item/ItemParent.h"
 #include "../Item/Potion/HealthPotion.h"
 #include "../Item/DropManager.h"
+#include "../Item/ItemManager.h"
 
 SC_Test::SC_Test()
 {
@@ -74,6 +75,9 @@ void SC_Test::Init()
 
 	m_pPotion = new HealthPotion;
 	m_pPotion->SetUp();
+
+	m_pIm = new ItemManager;
+	m_pIm->Load("MainGame/Item/Data", "ArcherArmor.txt");
 
 }
 
