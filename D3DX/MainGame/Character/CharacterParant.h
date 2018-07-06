@@ -4,7 +4,12 @@ class TestItem;
 class Map;
 class Inventory;
 class UIObject;
+class MonsterManager;
+class ItemParent;
 union STATUS;
+struct ST_DAMAGE;
+
+
 
 
 //캐릭터의 원형 클래스
@@ -45,7 +50,8 @@ enum CHAR_CONDITION			//캐릭터 컨디션
 	CHAR_ATTACK,			//캐릭터 일반공격
 	CHAR_DIE,				//캐릭터 죽음
 	CHAR_HIT,				//캐릭터 피격
-	CHAR_BATTLEREADY		//캐릭터 선택됨
+	CHAR_BATTLEREADY,		//캐릭터 선택됨
+	CHAR_NONE				//죽은뒤의 None상태
 };
 
 
@@ -55,10 +61,10 @@ class CharacterParant
 protected:
 	CHRTYPE					m_eChrType;			//캐릭터 타입
 	SYNTHESIZE(CHARSELECT, m_eCharSelect, CharSelect);	 //해당 클래스 캐릭터의 1번째 혹은 2번째
-	CHAR_CONDITION			m_eCondition;		//캐릭터 상태
+	GET(CHAR_CONDITION,	m_eCondition, Condition);		//캐릭터 상태
 
 	TestItem*				m_pFirstItem;		//첫번쨰 스킬 장비
-	
+
 
 	GET(Model*,m_pCharacter,Character);			//캐릭터 맴버 변수 
 	Map*					m_pSampleMap;		//맵정보 받는 맴버 변수
@@ -71,6 +77,7 @@ protected:
 	int						m_nCalAction;		//액션 프레임 계산용 변수
 	bool					m_bIsFront;			//앞인지 뒤인지
 	bool					m_bIsDash;			//대쉬했늬
+	bool					m_bIsDead;			//죽었늬
 	float					m_fStamina;			//스테미나 게이지
 
 	void SKill();
@@ -79,6 +86,12 @@ protected:
 	void Debug();
 	void CheckDirection();
 	void ControllStamina();
+	void UnderAttacked();
+	
+	void SetCurrentHP(int hp);
+
+	void CalculDamage(float damage);
+
 
 	int						m_temp;			//애니메이션 확인용 임시변수
 

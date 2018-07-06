@@ -3,7 +3,9 @@
 #include "Inventory.h"
 #include "../Map.h"
 #include "../Status.h"
-
+#include "../monster/MonsterManager.h"
+#include "../monster/MonsterParent.h"
+#include "../Item/ItemParent.h"
 
 
 void CharacterParant::SKill()
@@ -13,6 +15,7 @@ void CharacterParant::SKill()
 
 void CharacterParant::Move()
 {
+	Debug();
 	//포트레이트
 	//m_pUIobj->Update();
 
@@ -54,7 +57,7 @@ void CharacterParant::Move()
 		}
 		else
 		{
-
+			return;
 		}
 	}
 	else if (m_eCondition == CHAR_RUN_BACK)
@@ -67,7 +70,7 @@ void CharacterParant::Move()
 		}
 		else
 		{
-
+			return;
 		}
 	}
 	//대쉬용
@@ -98,6 +101,8 @@ void CharacterParant::Move()
 		}
 	}
 	ControllStamina();
+
+	
 }
 
 void CharacterParant::Controller()
@@ -116,7 +121,17 @@ void CharacterParant::Controller()
 
 void CharacterParant::Debug()
 {
-	TEXT->Add(to_string(m_Status->chr.nCurrentStam), 300, 300, 30);
+	if (DEBUG)
+	{
+		D3DXVECTOR3 tempPos; 
+		tempPos = *m_pCharacter->GetPosition();
+		tempPos.y += 3;
+		D3DXVECTOR2 pos =  Util::Convert3DTo2D(tempPos);
+		TEXT->Add(to_string(m_Status->chr.nCurrentStam), pos.x, pos.y, 30);
+		TEXT->Add(to_string(m_Status->chr.nCurrentHP), 300, 300, 30);
+
+		CAMERA->SetMode(CAMERA_FREE);
+	}
 }
 
 void CharacterParant::CheckDirection()
@@ -155,6 +170,47 @@ void CharacterParant::ControllStamina()
 
 }
 
+void CharacterParant::UnderAttacked()
+{
+	if (INPUT->KeyDown('Z'))
+	{
+		m_Status->chr.nCurrentHP -= 50;
+	}
+		if (m_Status->chr.nCurrentHP <= 0 && !m_bIsDead)
+		{
+			m_bIsDead = true;
+			m_eCondition = CHAR_DIE;
+			ChangeAnimation();
+		}
+}
+
+void CharacterParant::SetCurrentHP(int hp)
+{
+	m_Status->chr.nCurrentHP -= hp;
+	
+	if (m_Status->chr.nCurrentHP <= 0 && !m_bIsDead)
+	{
+		m_bIsDead = true;
+		m_eCondition = CHAR_DIE;
+		ChangeAnimation();
+	}
+}
+
+
+
+void CharacterParant::CalculDamage(float damage)
+{
+	float totalRate =
+		m_Status->chr.fPhyRate +
+		m_Status->chr.fMagicRate +
+		m_Status->chr.fCheRate;
+
+	float totalDamage = totalRate * m_Status->chr.nDef;
+
+	totalDamage = round(totalDamage);
+
+	SetCurrentHP(totalDamage);
+}
 
 CharacterParant::CharacterParant()
 {
@@ -173,8 +229,8 @@ CharacterParant::CharacterParant()
 	TEXTUREMANAGER->AddTexture("헤스티아_사진", "Model/Character/Portrait/Portrait_PC_Hestia_S_Icon.tga");
 	TEXTUREMANAGER->AddTexture("메그너스_사진", "Model/Character/Portrait/Portrait_Pc_Magnus_Icon.tga");
 	TEXTUREMANAGER->AddTexture("리아_사진", "Model/Character/Portrait/Portrait_PC_Riah_S_Icon.tga");
-	TEXTUREMANAGER->AddTexture("사카디_사진", "Model/Character/Portrait/Portrait_PC_Skadi_S_Icon.tga");
-	TEXTUREMANAGER->AddTexture("사카디_사진", "Model/Character/Portrait/velvet.png");
+	TEXTUREMANAGER->AddTexture("스카디_사진", "Model/Character/Portrait/Portrait_PC_Skadi_S_Icon.tga");
+	TEXTUREMANAGER->AddTexture("벨벳_사진", "Model/Character/Portrait/velvet.png");
 
 }
 
@@ -227,6 +283,7 @@ void CharacterParant::Init(Map* map, CHARSELECT order)
 	ChangeAnimation();
 	m_bIsFront = false;
 	m_bIsDash = false;
+	m_bIsDead = false;
 	m_fStamina = 10.0f;
 
 
@@ -364,6 +421,12 @@ void CharacterParant::KeyControl()
 		m_pCharacter->SetAnimationSpeed(1.0f);
 	}
 
+	//끄앙 주금
+	if (m_pCharacter->IsAnimationEnd() && m_eCondition == CHAR_DIE)
+	{
+		m_eCondition = CHAR_NONE;
+		m_bIsDead = false;
+	}
 }
 
 void CharacterParant::ChangeAnimation()
@@ -401,6 +464,8 @@ void CharacterParant::ChangeAnimation()
 		break;
 	case CHAR_BATTLEREADY:
 			m_pCharacter->SetAnimation("BATTLEREADY");
+		break;
+	case CHAR_NONE :
 		break;
 	}
 }
