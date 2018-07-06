@@ -20,64 +20,80 @@ void ItemManager::Load(IN const char * szFolder, IN const char * szFile)
 
 	fopen_s(&m_fp, sFullPath.c_str(), "r");
 	
-	string keyName;
+	char keyName[1024];
 
 	while (true)
 	{
 		char c = fgetc(m_fp);
 
-		if (feof(m_fp))	break;
+		if (feof(m_fp))	
+			break;
 
-		if (c == 'D' || c == 'T')
-		{
 			if (c == 'D')
 			{
-				char* des = GetToken();
+				char* path = GetToken();
+				string des = path;
 				Ap.SetDesc(des);
+
 			}
-			else 
+			else if (c == 'T')
 			{
 				char* path = GetToken();
 				Ap.m_pTexture = TEXTUREMANAGER->AddTexture(keyName, path);
 				Ap.m_imageInfo = TEXTUREMANAGER->GetInfo(keyName);
 				m_mIdArmor.insert(make_pair(Ap.GetID(), Ap));
+				int a = 0;
 			}
-		}
-
-		else
-		{
-			char szTemp[1024];
-			fgets(szTemp, 1024, m_fp);
-
+		
 			if (c == '/')
 			{
+				char szTemp[1024];
+				fgets(szTemp, 1024, m_fp);
+
 				continue;
 			}
 			else if (c == '#')
 			{
+				char szTemp[1024];
+				fgets(szTemp, 1024, m_fp);
+
 				ZeroMemory(&Ap, sizeof(ArmorParent));
 			}
 			else if (c == 'N')
 			{
-				string name;
+				char szTemp[1024];
+				fgets(szTemp, 1024, m_fp);
+
+				char name[1024];
 				sscanf_s(szTemp, " %s", name, 1024);
-				Ap.SetName(name);
+				string rt(name);
+				Ap.SetName(rt);
 			}
 			else if (c == 'R')
 			{
-				string rarity;
+				char szTemp[1024];
+				fgets(szTemp, 1024, m_fp);
+
+				char rarity[1024];
 				sscanf_s(szTemp, " %s", rarity, 1024);
-				Ap.SetRarity(rarity);
+				string rt(rarity);
+				Ap.SetRarity(rt);
 			}
 
 			else if (c == 'I')
 			{
+				char szTemp[1024];
+				fgets(szTemp, 1024, m_fp);
+
 				int Id;
-				sscanf_s(szTemp, " %f", &Id);
+				sscanf_s(szTemp, " %d", &Id);
 				Ap.SetID(Id);
 			}
 			else if (c == 'S')
 			{
+				char szTemp[1024];
+				fgets(szTemp, 1024, m_fp);
+
 				STATUS* st = new STATUS;
 				sscanf_s(szTemp, " %f %f %f %d %d %d %d %d %f %f %f",
 					&st->item.fAtkSpeed, &st->item.fCoolTime1, &st->item.fCoolTime2,
@@ -87,17 +103,21 @@ void ItemManager::Load(IN const char * szFolder, IN const char * szFile)
 			}
 			else if (c == 'E')
 			{
+				char szTemp[1024];
+				fgets(szTemp, 1024, m_fp);
+
 				EQUIPTYPE et;
 				sscanf_s(szTemp, " %d", &et);
 				Ap.SetEquipType(et);
 			}
 			else if (c == 'K')
 			{
+				char szTemp[1024];
+				fgets(szTemp, 1024, m_fp);
+
 				sscanf_s(szTemp, " %s", keyName, 1024);
 			}
 		}
-
-	}
 
 	fclose(m_fp);
 
@@ -110,20 +130,20 @@ char* ItemManager::GetToken()
 
 	while (true)
 	{
-		char c = fgetc(m_fp);
+		char d = fgetc(m_fp);
 
 		if (feof(m_fp))	break;
 
-		if (c == '\"')
+		if (d == '\"')
 		{
-			if (isQuote)
+		if (isQuote)
 				break;
 
 			isQuote = true;
 			continue;
 		}
 
-		if (!isQuote && IsWhite(c))
+		if (!isQuote && IsWhite(d))
 		{
 			if (nReadCount == 0)
 				continue;
@@ -131,7 +151,7 @@ char* ItemManager::GetToken()
 				break;
 		}
 
-		m_szToken[nReadCount++] = c;
+		m_szToken[nReadCount++] = d;
 	}
 
 	if (nReadCount == 0)
