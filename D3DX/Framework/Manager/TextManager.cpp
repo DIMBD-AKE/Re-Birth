@@ -1,5 +1,6 @@
 #include "../../stdafx.h"
 #include "TextManager.h"
+#include <algorithm>
 
 void TextManager::Add(string text, float x, float y, int size, string fontName, DWORD color, bool center, const RECT * rc)
 {
@@ -26,9 +27,16 @@ FONT TextManager::GetFont(FONTTYPE type, float x, float y)
 	return font;
 }
 
+void TextManager::RegisterFont(string path)
+{
+	int ret = AddFontResource(path.c_str());
+	assert(ret > 0 && "폰트 주소가 잘못되었습니다.");
+}
+
 void TextManager::Render()
 {
 	D3DXFONT_DESC des;
+	sort(m_vecText.begin(), m_vecText.end(), SizeComparison);
 	for (int i = 0; i < m_vecText.size(); i++)
 	{
 		m_pFont->GetDesc(&des);
@@ -53,7 +61,7 @@ void TextManager::Render()
 
 		if (!m_vecText[i].center)
 			m_pFont->DrawText(NULL, m_vecText[i].text.c_str(), -1,
-				&m_vecText[i].rect, NULL | DT_NOCLIP, m_vecText[i].color);
+				&m_vecText[i].rect, DT_LEFT | DT_NOCLIP, m_vecText[i].color);
 		else
 			m_pFont->DrawText(NULL, m_vecText[i].text.c_str(), -1,
 				&m_vecText[i].rect, DT_CENTER | DT_NOCLIP, m_vecText[i].color);
@@ -80,8 +88,11 @@ TextManager::TextManager()
 		OUT_DEFAULT_PRECIS, // 글자 크기와 상관없이 출력
 		ANTIALIASED_QUALITY,
 		FF_DONTCARE,
-		"굴림",
+		NULL,
 		&m_pFont);
+
+	RegisterFont("Font/NanumSquareR.ttf");
+	RegisterFont("Font/UhBee Yiseul.ttf");
 }
 
 TextManager::~TextManager()

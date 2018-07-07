@@ -15,6 +15,7 @@ MainGame::~MainGame()
 	TEXT->Release();
 	TEXTUREMANAGER->Release();
 	MODELMANAGER->Release();
+	PARTICLE->Release();
 	DEVICEMANAGER->Destroy();
 }
 

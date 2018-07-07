@@ -384,16 +384,8 @@ void SkinnedMesh::SetupBoneMatrixPtrs(LPD3DXFRAME pFrame)
 
 void SkinnedMesh::Destroy(D3DXFRAME * pFrame)
 {
-	if (pFrame->pFrameFirstChild)
-		Destroy(pFrame->pFrameFirstChild);
-
-	if (pFrame->pFrameSibling)
-		Destroy(pFrame->pFrameSibling);
-
 	AllocatedHierachy ah;
-	if (pFrame->pMeshContainer)
-		ah.DestroyMeshContainer(pFrame->pMeshContainer);
-	ah.DestroyFrame(pFrame);
+	D3DXFrameDestroy(pFrame, &ah);
 }
 
 void SkinnedMesh::AnimationRelease()

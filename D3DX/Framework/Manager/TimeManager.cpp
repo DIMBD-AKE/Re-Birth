@@ -30,3 +30,8 @@ float TimeManager::GetLastUpdateTime()
 {
 	return m_dwLastUpdateTime / 1000.0f;
 }
+
+DWORD TimeManager::GetFPS()
+{
+	return 1000 / (m_fElapsedTime * 1000);
+}
