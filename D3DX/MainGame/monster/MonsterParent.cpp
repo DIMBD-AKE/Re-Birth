@@ -24,6 +24,7 @@ void MonsterParent::Setup(Map* map,  D3DXVECTOR3 spawnPos)
 
 	m_nCount = 0;
 	m_nPatternChangeCount = 0;
+	m_nAttackDelay = 0;
 
 	m_pAStar = new AStar;
 	m_pAStar->SetCurrentCell(map->GetNavMesh());
@@ -270,11 +271,11 @@ POINT MonsterParent::MoveForAttack()
 	}
 		D3DXVec3Normalize(&dir, &dir);
 		if (!DEBUG)
-		m_pModel->SetPosition(*m_pModel->GetPosition() + dir* 0.03f);
+			m_pModel->SetPosition(*m_pModel->GetPosition() + dir* SPEED(m_uMonsterStat));
 	
-	char ttest[111];
-	sprintf_s(ttest, sizeof(ttest), "%f, %f, %f", dir.x, dir.y, dir.z);
-	TEXT->Add(ttest, 10, 10, 30);
+	//char ttest[111];
+	//sprintf_s(ttest, sizeof(ttest), "%f, %f, %f", dir.x, dir.y, dir.z);
+	//TEXT->Add(ttest, 10, 10, 30);
 
 
 	//if (m_eState == MS_RUN)

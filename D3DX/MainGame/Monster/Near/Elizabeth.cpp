@@ -47,17 +47,31 @@ void Elizabeth::Setup(Map* map, D3DXVECTOR3 spawnPos)
 
 void Elizabeth::SetupStat()
 {
+	ZeroMemory(&m_uMonsterStat, sizeof(m_uMonsterStat));
+
 	CURRENTHP(m_uMonsterStat) = MAXHP(m_uMonsterStat)  = 100;
-	ATK(m_uMonsterStat) = 10;
-	SPEED(m_uMonsterStat) = 0.01f;
+	ATK(m_uMonsterStat) = 3;
+	PHYRATE(m_uMonsterStat) = 0.9f;
+	MAGICRATE(m_uMonsterStat) = 1.3f;
+	CHERATE(m_uMonsterStat) = 1.0f;
+	ATKSPEED(m_uMonsterStat) = 100.0f;
+
+	DEF(m_uMonsterStat) = 3;
+	AGI(m_uMonsterStat) = 10.0f;
+	HIT(m_uMonsterStat) = 10.0f;
+	SPEED(m_uMonsterStat) = 0.05f;
+	RANGE(m_uMonsterStat) = 1.5f;
 	//PHYRATE(m_uMonsterStat) = 
 
 	//m_uMonsterStat.CURRENTHP = m_uMonsterStat.MAXHP = 100;
 
 
 	/*
-		int		nCurrentHP;		//캐릭터(적, 플레이어) 현재 피
+	int		nCurrentHP;		//캐릭터(적, 플레이어) 현재 피
 		int		nMaxHp;			//캐릭터(적, 플레이어) 최대 피
+
+		int		nCurrentStam;	//캐릭터 현재 스테미나
+		int		nMaxStam;		//캐릭터 전체 스테미나
 
 		int		nAtk;			//기본공격력
 		float	fPhyRate;		//물리계수
@@ -69,6 +83,8 @@ void Elizabeth::SetupStat()
 		float	fAgi;			//회피력
 		float	fHit;			//명중률
 		float	fSpeed;			//이동속도
+		float	fRange;			//공격 거리
+		float	fScale;			//공격 범위
 	*/
 }
 
@@ -78,12 +94,22 @@ void Elizabeth::Attack()
 
 	if (m_pCharacter)
 	{
+		if (m_pCharacter->GetIsDead())
+		{
+			m_eState = MS_IDLE;
+			ChangeAni();
+			return;
+		}
+		//char test1[111];
+		//sprintf_s(test1, sizeof(test1), "플레이어의 체력 : %d, 엘리자베스의 체력 : %d", m_nAttackDelay);
+		//
+		//TEXT->Add(test1, 10, 10, 30);
 		D3DXVECTOR3 tempV = *m_pModel->GetPosition() - *m_pCharacter->GetCharacter()->GetPosition();
 		float length = D3DXVec3Length(&tempV);
 
 		int a = 10;
 		//공격 가능 사거리까지 하면 될듯
-		if (length > 1)
+		if (length > RANGE(m_uMonsterStat))
 		{
 			if (m_eState == MS_ATTACK)
 			{
@@ -94,6 +120,11 @@ void Elizabeth::Attack()
 		}
 		else
 		{
+			char test[111];
+			sprintf_s(test, sizeof(test), "공격딜레이 : %d", m_nAttackDelay);
+
+			TEXT->Add(test, 10, 10, 30);
+
 			if (m_eState == MS_MOVEFORATTACK)
 			{
 				m_eState = MS_ATTACK;
@@ -101,8 +132,16 @@ void Elizabeth::Attack()
 			}
 			//플레이어 공격기능 설정
 			m_eState = MS_ATTACK;
-			
+			if (m_nAttackDelay >= ATKSPEED(m_uMonsterStat))
+			{
+				float tatalRate = PHYRATE(m_uMonsterStat) + MAGICRATE(m_uMonsterStat) + CHERATE(m_uMonsterStat);
+				float tatalDamage = tatalRate * ATK(m_uMonsterStat);
+				m_pCharacter->CalculDamage(tatalDamage);
+				m_nAttackDelay = 0;
+			}
+			m_nAttackDelay++;
 		}
+	
 	}
 }
 
@@ -124,7 +163,7 @@ void Elizabeth::Move()
 
 	if (m_eState == MS_RUN)
 	{
-		D3DXVECTOR3 tempPos = *m_pModel->GetPosition() + m_vDir*0.03f;
+		D3DXVECTOR3 tempPos = *m_pModel->GetPosition() + m_vDir* SPEED(m_uMonsterStat);
 		tempPos.y = m_pMap->GetHeight(tempPos.x, tempPos.z);
 
 		//못가는 곳이다.

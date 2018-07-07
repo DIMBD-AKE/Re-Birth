@@ -38,6 +38,8 @@ protected:
 	//리스폰될떄까지 시간
 	int m_nResPawnCount;
 
+	//공격카운트
+	int m_nAttackDelay;
 	
 	//Model* m_pDeathModel;
 	

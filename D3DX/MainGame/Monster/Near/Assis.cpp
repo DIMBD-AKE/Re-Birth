@@ -57,6 +57,13 @@ void Assis::Attack()
 
 	if (m_pCharacter)
 	{
+		if (m_pCharacter->GetIsDead())
+		{
+			m_eState = MS_IDLE;
+			ChangeAni();
+			return;
+		}
+
 		D3DXVECTOR3 tempV = *m_pModel->GetPosition() - *m_pCharacter->GetCharacter()->GetPosition();
 		float length = D3DXVec3Length(&tempV);
 
