@@ -204,6 +204,7 @@
     <ClInclude Include="MainGame\monster\Near\Assis.h" />
     <ClInclude Include="MainGame\monster\Near\Elizabeth.h" />
     <ClInclude Include="MainGame\monster\Near\NearMonster.h" />
+    <ClInclude Include="MainGame\Monster\TotalMonster.h" />
     <ClInclude Include="MainGame\Status.h" />
     <ClInclude Include="MainGame\AStar\PathFind.h" />
     <ClInclude Include="MainGame\Item\PotionParent.h" />

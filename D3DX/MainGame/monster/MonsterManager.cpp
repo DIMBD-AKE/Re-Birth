@@ -1,10 +1,6 @@
-#include "../../stdafx.h"
+#include "MonsterUseHeader.h"
 #include "MonsterManager.h"
-#include "MonsterParent.h"
-#include "./Near/Elizabeth.h"
-#include "./Near/Assis.h"
-#include "../Character/CharacterParant.h"
-#include <time.h>
+#include "TotalMonster.h"
 
 
 MonsterManager::MonsterManager()
@@ -80,9 +76,22 @@ void MonsterManager::Render()
 //몬스터 만드는 함수
 void MonsterManager::MakeMonster(DropManager* pDropManager)
 {
-	//나중에 전체적으로 수정해야함
 
-	//벡터의 사이즈를 저장
+	MakeElizabeth(pDropManager);
+
+	MakeAssis(pDropManager);
+
+	MakeDarkHell(pDropManager);
+
+	MakeNifilHeim(pDropManager);
+	
+	MakeNerisa(pDropManager);
+
+	MakeNike(pDropManager);
+}
+//근접
+void MonsterManager::MakeElizabeth(DropManager* pDropManager)
+{
 	int spotSize = m_vSpawnSpot.size();
 
 	srand(time(NULL));
@@ -91,24 +100,110 @@ void MonsterManager::MakeMonster(DropManager* pDropManager)
 	int spotIndex = rand() % spotSize;
 
 	//몬스터 생성
-	MonsterParent* test;
-	test = new Elizabeth;
-	test->Setup(m_pMap, m_vSpawnSpot[spotIndex]);
-	test->SetCharacter(m_ppCharacter);
-	test->SetDropManager(pDropManager);
+	MonsterParent* elizabeth;
+	elizabeth = new Elizabeth;
+	elizabeth->Setup(m_pMap, m_vSpawnSpot[spotIndex]);
+	elizabeth->SetCharacter(m_ppCharacter);
+	elizabeth->SetDropManager(pDropManager);
 
-	//몬스터 벡터에 저장
-	m_vMM.push_back(test);
+	m_vMM.push_back(elizabeth);
+}
 
-	spotIndex = rand() % spotSize;
-	
+void MonsterManager::MakeAssis(DropManager* pDropManager)
+{
+	int spotSize = m_vSpawnSpot.size();
+
+	srand(time(NULL));
+
+	//벡터에서 랜덤 인덱스 추출
+	int spotIndex = rand() % spotSize;
+
 	//몬스터 생성
-	MonsterParent* test1;
-	test1 = new Assis;
-	test1->Setup(m_pMap, m_vSpawnSpot[spotIndex]);
-	test1->SetCharacter(m_ppCharacter);
-	test1->SetDropManager(pDropManager);
-	
-	//몬스터 벡터에 저장
-	m_vMM.push_back(test1);
+	MonsterParent* assis;
+	assis = new Assis;
+	assis->Setup(m_pMap, m_vSpawnSpot[spotIndex]);
+	assis->SetCharacter(m_ppCharacter);
+	assis->SetDropManager(pDropManager);
+
+	m_vMM.push_back(assis);
+}
+
+
+//원거리
+void MonsterManager::MakeNerisa(DropManager* pDropManager)
+{
+	int spotSize = m_vSpawnSpot.size();
+
+	srand(time(NULL));
+
+	//벡터에서 랜덤 인덱스 추출
+	int spotIndex = rand() % spotSize;
+
+	//몬스터 생성
+	MonsterParent* nerisa;
+	nerisa = new Nerisa;
+	nerisa->Setup(m_pMap, m_vSpawnSpot[spotIndex]);
+	nerisa->SetCharacter(m_ppCharacter);
+	nerisa->SetDropManager(pDropManager);
+
+	m_vMM.push_back(nerisa);
+}
+
+void MonsterManager::MakeNike(DropManager* pDropManager)
+{
+	int spotSize = m_vSpawnSpot.size();
+
+	srand(time(NULL));
+
+	//벡터에서 랜덤 인덱스 추출
+	int spotIndex = rand() % spotSize;
+
+	//몬스터 생성
+	MonsterParent* nike;
+	nike = new Nike;
+	nike->Setup(m_pMap, m_vSpawnSpot[spotIndex]);
+	nike->SetCharacter(m_ppCharacter);
+	nike->SetDropManager(pDropManager);
+
+	m_vMM.push_back(nike);
+}
+
+
+//마법
+void MonsterManager::MakeDarkHell(DropManager* pDropManager)
+{
+	int spotSize = m_vSpawnSpot.size();
+
+	srand(time(NULL));
+
+	//벡터에서 랜덤 인덱스 추출
+	int spotIndex = rand() % spotSize;
+
+	//몬스터 생성
+	MonsterParent* darkHell;
+	darkHell = new DarkHell;
+	darkHell->Setup(m_pMap, m_vSpawnSpot[spotIndex]);
+	darkHell->SetCharacter(m_ppCharacter);
+	darkHell->SetDropManager(pDropManager);
+
+	m_vMM.push_back(darkHell);
+}
+
+void MonsterManager::MakeNifilHeim(DropManager* pDropManager)
+{
+	int spotSize = m_vSpawnSpot.size();
+
+	srand(time(NULL));
+
+	//벡터에서 랜덤 인덱스 추출
+	int spotIndex = rand() % spotSize;
+
+	//몬스터 생성
+	MonsterParent* nifilHeim;
+	nifilHeim = new NifilHeim;
+	nifilHeim->Setup(m_pMap, m_vSpawnSpot[spotIndex]);
+	nifilHeim->SetCharacter(m_ppCharacter);
+	nifilHeim->SetDropManager(pDropManager);
+
+	m_vMM.push_back(nifilHeim);
 }

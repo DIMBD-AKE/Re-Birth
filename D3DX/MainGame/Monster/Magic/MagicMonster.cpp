@@ -14,7 +14,7 @@ MagicMonster::~MagicMonster()
 
 void MagicMonster::Setup(Map* map, D3DXVECTOR3 spawnPos)
 {
-
+	MonsterParent::Setup(map, spawnPos);
 }
 
 void MagicMonster::SetupStat()

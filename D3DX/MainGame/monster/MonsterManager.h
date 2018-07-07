@@ -17,6 +17,20 @@ class MonsterManager
 	CharacterParant** m_ppCharacter;
 	//vector<MonsterParent> m_vMM;
 
+private:
+
+	//근접
+	void MakeElizabeth(DropManager* pDropManager);
+	void MakeAssis(DropManager* pDropManager);
+
+	//원거리
+	void MakeNerisa(DropManager* pDropManager);
+	void MakeNike(DropManager* pDropManager);
+
+	//마법
+	void MakeDarkHell(DropManager* pDropManager);
+	void MakeNifilHeim(DropManager* pDropManager);
+
 public:
 	MonsterManager();
 	~MonsterManager();

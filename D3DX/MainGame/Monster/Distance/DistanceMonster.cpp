@@ -14,6 +14,9 @@ DistanceMonster::~DistanceMonster()
 
 void DistanceMonster::Setup(Map* map, D3DXVECTOR3 spawnPos)
 {
+	//부모의 셋업을 호출해라
+	MonsterParent::Setup(map, spawnPos);
+
 
 }
 
