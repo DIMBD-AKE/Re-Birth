@@ -14,14 +14,14 @@ class MonsterManager
 
 	Map* m_pMap;
 
-	CharacterParant* m_pCharacter;
+	CharacterParant** m_ppCharacter;
 	//vector<MonsterParent> m_vMM;
 
 public:
 	MonsterManager();
 	~MonsterManager();
 
-	void Setup(Map* map, CharacterParant* character);
+	void Setup(Map* map, CharacterParant** character);
 	void Update();
 	void Render();
 

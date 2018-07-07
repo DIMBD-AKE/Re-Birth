@@ -22,10 +22,10 @@ MonsterManager::~MonsterManager()
 	}
 }
 
-void MonsterManager::Setup(Map* map, CharacterParant* character)
+void MonsterManager::Setup(Map* map, CharacterParant** character)
 {
 	m_pMap = map;
-	m_pCharacter = character;
+	m_ppCharacter = character;
 }
 
 void MonsterManager::Update()
@@ -94,7 +94,7 @@ void MonsterManager::MakeMonster(DropManager* pDropManager)
 	MonsterParent* test;
 	test = new Elizabeth;
 	test->Setup(m_pMap, m_vSpawnSpot[spotIndex]);
-	test->SetCharacter(m_pCharacter);
+	test->SetCharacter(m_ppCharacter);
 	test->SetDropManager(pDropManager);
 
 	//몬스터 벡터에 저장
@@ -106,7 +106,7 @@ void MonsterManager::MakeMonster(DropManager* pDropManager)
 	MonsterParent* test1;
 	test1 = new Assis;
 	test1->Setup(m_pMap, m_vSpawnSpot[spotIndex]);
-	test1->SetCharacter(m_pCharacter);
+	test1->SetCharacter(m_ppCharacter);
 	test1->SetDropManager(pDropManager);
 	
 	//몬스터 벡터에 저장

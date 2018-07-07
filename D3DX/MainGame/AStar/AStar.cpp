@@ -243,15 +243,15 @@ void AStar::Render(int MyCellIndex, int TargetIndex, D3DXVECTOR3* pos)
 		SetCell(MyCellIndex, TargetIndex);
 		GetNextCell();
 		vector<D3DXVECTOR3> tempVector;
-		tempVector.push_back(D3DXVECTOR3(m_vCurrentCell[MyCellIndex]->GetCenter().x, 70, m_vCurrentCell[MyCellIndex]->GetCenter().z));
+		tempVector.push_back(D3DXVECTOR3(m_vCurrentCell[MyCellIndex]->GetCenter().x, m_vCurrentCell[MyCellIndex]->GetCenter().y + 2 , m_vCurrentCell[MyCellIndex]->GetCenter().z));
 		for (int i = 0; i < m_vCloseList.size(); i++)
 		{
-			tempVector.push_back(D3DXVECTOR3(m_vCloseList[i]->GetCenter().x, 70, m_vCloseList[i]->GetCenter().z));
+			tempVector.push_back(D3DXVECTOR3(m_vCloseList[i]->GetCenter().x, m_vCloseList[i]->GetCenter().y+2, m_vCloseList[i]->GetCenter().z));
 		}
 
-		tempVector.push_back(D3DXVECTOR3((*pos).x, 70, (*pos).z));
-		tempVector.push_back(D3DXVECTOR3((*pos).x, 70, (*pos).z));
-		tempVector.push_back(D3DXVECTOR3((*pos).x, 70, (*pos).z));
+		tempVector.push_back(D3DXVECTOR3((*pos).x, (*pos).y+2, (*pos).z));
+		tempVector.push_back(D3DXVECTOR3((*pos).x, (*pos).y+2, (*pos).z));
+		tempVector.push_back(D3DXVECTOR3((*pos).x, (*pos).y+2, (*pos).z));
 		D3DXMATRIX matW;
 		D3DXMatrixIdentity(&matW);
 		DEVICE->SetTransform(D3DTS_WORLD, &matW);

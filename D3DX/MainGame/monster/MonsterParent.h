@@ -24,11 +24,14 @@ class MonsterParent
 	//참이면 죽어서 리스폰중
 	GET(bool, m_bIsRespawn, IsResPawn);
 	GET(Model*, m_pModel, Model);
-	SET(CharacterParant*, m_pCharacter, Character);
+	SET(CharacterParant**, m_ppCharacter, Character);
 	SET(DropManager*, m_pDropManager, DropManager);
 
 	D3DXVECTOR3		m_vDir;
+
 	int				m_nPatternChangeCount;
+	int				m_nMinMoveCount, m_nMaxMoveCount;
+
 	int				m_nCount;
 protected:
 
