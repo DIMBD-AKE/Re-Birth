@@ -40,6 +40,8 @@ union STATUS
 		float	fAgi;			//회피력
 		float	fHit;			//명중률
 		float	fSpeed;			//이동속도
+		float	fRange;			//공격 거리
+		float	fScale;			//공격 범위
 	} chr;
 
 	struct ST_STATUS_ITEM

@@ -227,11 +227,11 @@ void CharacterParant::Attack()
 			float radius = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().radius;		//몬스터의 바운드 스페어의 반지름 받고 
 			D3DXVECTOR3 mosPos = *(m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetPosition());		//몬스터 포지션 받고 
 			float distance = D3DXVec3Length(&(mosPos - pos));												//거리계산으로 몬스터 위치와 플레이어 포지션 뺀 값을 저장하는 변수만들고
-			if (distance - radius > m_fRange) continue;														//거리랑 반지름을 뺀 값이 공격 길이보다 크면 처리하지 않고
+			if (distance - radius > m_Status->chr.fRange) continue;														//거리랑 반지름을 뺀 값이 공격 길이보다 크면 처리하지 않고
 			else
 			{
 				D3DXVECTOR3 delta = mosPos - pos;															//델타 변수는 몬스터 포지션과 내 포지션을 뺀 벡터값으로 두고
-				if(atan2(delta.x, delta.z)>m_fScale) continue;												//아탄2의 결과 각도보다 fScale값이 크면 그냥 넘기고 
+				if(atan2(delta.x, delta.z)>m_Status->chr.fScale) continue;												//아탄2의 결과 각도보다 fScale값이 크면 그냥 넘기고 
 						
 				int Atk = m_Status->chr.nAtk;																//플레이어 공격력 담는 변수인데 이건 지금 필요 없고 
 				m_pMonsterManager->GetMonsterVector()[i]->SetCurrentHP(100);									//그냥 위의 조건을 다 만족하면 지금 내 앞에 있는 몬스터 체력0으로 만들어버려랏
@@ -318,8 +318,6 @@ void CharacterParant::Init(Map* map, CHARSELECT order, MonsterManager* pMonsterM
 	m_bIsDash = false;
 	m_bIsDead = false;
 	m_fStamina = 10.0f;
-	m_fRange = 30.0f;
-	m_fScale = 30.0f;
 
 
 	//포트레이트 UI
