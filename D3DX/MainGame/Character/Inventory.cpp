@@ -1,7 +1,5 @@
 #include "../../stdafx.h"
 #include "../Item/ItemParent.h"
-#include "../Item/Sword/BasicSword.h"
-#include "../Item/Potion/HealthPotion.h"
 #include "Inventory.h"
 #include "CharacterParant.h"
 #include "../Status.h"
@@ -356,25 +354,6 @@ void Inventory::CreateInventory(int col, int row)
 
 void Inventory::Update()
 {
-	if (INPUT->KeyDown('I'))
-	{
-		if (m_isInvShow)
-		{
-			if (rand() % 2 == 0)
-			{
-				BasicSword item;
-				item.SetUp();
-				AddItem(item);
-			}
-			else
-			{
-				HealthPotion item;
-				item.SetUp();
-				AddItem(item);
-			}
-		}
-	}
-
 	if (INPUT->KeyPress(VK_UP))
 	{
 		m_fSlotSize += 0.1;
