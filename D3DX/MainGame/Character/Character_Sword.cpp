@@ -38,6 +38,8 @@ void Character_Sword::Init(Map* map, CHARSELECT order, MonsterManager* pMonsterM
 		m_Status->chr.nDef = 26;
 		m_Status->chr.nMaxHp = 100;
 		m_Status->chr.nMaxStam = 50;
+		m_Status->chr.fRange = 3.0f;
+		m_Status->chr.fScale = 10.0f;
 		CharacterParant::Init(map, order, pMonsterManager);
 		
 		
@@ -62,6 +64,8 @@ void Character_Sword::Init(Map* map, CHARSELECT order, MonsterManager* pMonsterM
 		m_Status->chr.nDef = 26;
 		m_Status->chr.nMaxHp = 100;
 		m_Status->chr.nMaxStam = 40;
+		m_Status->chr.fRange = 5.0f;
+		m_Status->chr.fScale = 0.2f;
 		CharacterParant::Init(map, order, pMonsterManager);
 
 		m_pUIobj->SetTexture(TEXTUREMANAGER->GetTexture("리아_사진"));
@@ -84,6 +88,8 @@ void Character_Sword::Init(Map* map, CHARSELECT order, MonsterManager* pMonsterM
 		m_Status->chr.nDef = 26;
 		m_Status->chr.nMaxHp = 100;
 		m_Status->chr.nMaxStam = 100;
+		m_Status->chr.fRange = 5.0f;
+		m_Status->chr.fScale = 30.0f;
 		CharacterParant::Init(map, order, pMonsterManager);
 
 		m_pUIobj->SetTexture(TEXTUREMANAGER->GetTexture("벨벳_사진"));

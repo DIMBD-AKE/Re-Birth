@@ -35,6 +35,8 @@ void Character_Gun::Init(Map * map, CHARSELECT order, MonsterManager* pMonsterMa
 		m_Status->chr.nDef = 26;
 		m_Status->chr.nMaxHp = 100;
 		m_Status->chr.nMaxStam = 10;
+		m_Status->chr.fRange = 20.0f;
+		m_Status->chr.fScale = 1.2f;
 		CharacterParant::Init(map, order, pMonsterManager);
 
 		m_pUIobj->SetTexture(TEXTUREMANAGER->GetTexture("메그너스_사진"));
@@ -57,6 +59,8 @@ void Character_Gun::Init(Map * map, CHARSELECT order, MonsterManager* pMonsterMa
 		m_Status->chr.nDef = 26;
 		m_Status->chr.nMaxHp = 100;
 		m_Status->chr.nMaxStam = 10;
+		m_Status->chr.fRange = 25.0f;
+		m_Status->chr.fScale = 1.2f;
 		CharacterParant::Init(map, order, pMonsterManager);
 
 		m_pUIobj->SetTexture(TEXTUREMANAGER->GetTexture("스카디_사진"));
@@ -69,11 +73,14 @@ void Character_Gun::Update()
 	if (m_pCharacter)
 	{
 		Controller();
+		UnderAttacked();
 		KeyControl();
 		Move();
+
 		m_pInventory->Update();
 
 		m_pCharacter->World();
+
 		m_pUIobj->Update();
 	}
 }

@@ -253,13 +253,13 @@ CharacterParant::CharacterParant()
 	MODELMANAGER->AddModel("스카디", "Model/Character/Skadi/", "Skadi.x", MODELTYPE_X);
 	MODELMANAGER->AddModel("베카", "Model/Character/Beakah/", "Beakah.x", MODELTYPE_X);
 	MODELMANAGER->AddModel("벨벳", "Model/Character/Velvet/", "Velvet.x", MODELTYPE_X);
-	TEXTUREMANAGER->AddTexture("아카날_사진", "Model/Character/Portrait/Portrait_PC_Aknal_S_Icon.tga");
-	TEXTUREMANAGER->AddTexture("아린_사진", "Model/Character/Portrait/Portrait_PC_Arin_S_Icon.tga");
-	TEXTUREMANAGER->AddTexture("베카_사진", "Model/Character/Portrait/Portrait_PC_BeakAh_S_Icon.tga");
-	TEXTUREMANAGER->AddTexture("헤스티아_사진", "Model/Character/Portrait/Portrait_PC_Hestia_S_Icon.tga");
-	TEXTUREMANAGER->AddTexture("메그너스_사진", "Model/Character/Portrait/Portrait_Pc_Magnus_Icon.tga");
-	TEXTUREMANAGER->AddTexture("리아_사진", "Model/Character/Portrait/Portrait_PC_Riah_S_Icon.tga");
-	TEXTUREMANAGER->AddTexture("스카디_사진", "Model/Character/Portrait/Portrait_PC_Skadi_S_Icon.tga");
+	TEXTUREMANAGER->AddTexture("아카날_사진", "Model/Character/Portrait/Portrait_PC_Aknal_S_Icon.png");
+	TEXTUREMANAGER->AddTexture("아린_사진", "Model/Character/Portrait/Portrait_PC_Arin_S_Icon.png");
+	TEXTUREMANAGER->AddTexture("베카_사진", "Model/Character/Portrait/Portrait_PC_BeakAh_S_Icon.png");
+	TEXTUREMANAGER->AddTexture("헤스티아_사진", "Model/Character/Portrait/Portrait_PC_Hestia_S_Icon.png");
+	TEXTUREMANAGER->AddTexture("메그너스_사진", "Model/Character/Portrait/Portrait_Pc_Magnus_Icon.png");
+	TEXTUREMANAGER->AddTexture("리아_사진", "Model/Character/Portrait/Portrait_PC_Riah_S_Icon.png");
+	TEXTUREMANAGER->AddTexture("스카디_사진", "Model/Character/Portrait/Portrait_PC_Skadi_S_Icon.png");
 	TEXTUREMANAGER->AddTexture("벨벳_사진", "Model/Character/Portrait/velvet.png");
 
 }

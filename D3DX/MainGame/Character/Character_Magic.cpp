@@ -37,6 +37,8 @@ void Character_Magic::Init(Map * map, CHARSELECT order, MonsterManager* pMonster
 		m_Status->chr.nDef = 26;
 		m_Status->chr.nMaxHp = 100;
 		m_Status->chr.nMaxStam = 10;
+		m_Status->chr.fRange = 15.0f;
+		m_Status->chr.fScale = 10.0f;
 		CharacterParant::Init(map, order, pMonsterManager);
 
 		m_pUIobj->SetTexture(TEXTUREMANAGER->GetTexture("아카날_사진"));
@@ -59,6 +61,8 @@ void Character_Magic::Init(Map * map, CHARSELECT order, MonsterManager* pMonster
 		m_Status->chr.nDef = 26;
 		m_Status->chr.nMaxHp = 100;
 		m_Status->chr.nMaxStam = 10;
+		m_Status->chr.fRange = 10.0f;
+		m_Status->chr.fScale = 15.2f;
 		CharacterParant::Init(map, order, pMonsterManager);
 
 		m_pUIobj->SetTexture(TEXTUREMANAGER->GetTexture("헤스티아_사진"));
@@ -71,11 +75,14 @@ void Character_Magic::Update()
 	if (m_pCharacter)
 	{
 		Controller();
+		UnderAttacked();
 		KeyControl();
 		Move();
+
 		m_pInventory->Update();
 
 		m_pCharacter->World();
+
 		m_pUIobj->Update();
 	}
 }

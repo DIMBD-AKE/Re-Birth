@@ -80,8 +80,7 @@ protected:
 	bool					m_bIsDash;			//대쉬했늬
 	bool					m_bIsDead;			//죽었늬
 	float					m_fStamina;			//스테미나 게이지
-	float					m_fRange;
-	float					m_fScale;
+	
 
 	void SKill();
 	void Move();
