@@ -72,6 +72,8 @@ public:
 	if (m_uMonsterStat.chr.nCurrentHP <= 0)
 	{
 		m_bIsRespawn = true;
+		m_eState = MS_DIE;
+		ChangeAni();
 		ItemDrop();
 	}
 	}
