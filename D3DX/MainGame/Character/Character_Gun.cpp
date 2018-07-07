@@ -15,7 +15,7 @@ Character_Gun::~Character_Gun()
 }
 
 
-void Character_Gun::Init(Map * map, CHARSELECT order)
+void Character_Gun::Init(Map * map, CHARSELECT order, MonsterManager* pMonsterManager)
 {
 	m_eChrType = CHRTYPE_GUN;
 	if (order == CHAR_ONE)
@@ -35,7 +35,7 @@ void Character_Gun::Init(Map * map, CHARSELECT order)
 		m_Status->chr.nDef = 26;
 		m_Status->chr.nMaxHp = 100;
 		m_Status->chr.nMaxStam = 10;
-		CharacterParant::Init(map, order);
+		CharacterParant::Init(map, order, pMonsterManager);
 
 		m_pUIobj->SetTexture(TEXTUREMANAGER->GetTexture("메그너스_사진"));
 		m_pUIobj->SetPosition(D3DXVECTOR3(1300, 550, 0));
@@ -57,7 +57,7 @@ void Character_Gun::Init(Map * map, CHARSELECT order)
 		m_Status->chr.nDef = 26;
 		m_Status->chr.nMaxHp = 100;
 		m_Status->chr.nMaxStam = 10;
-		CharacterParant::Init(map, order);
+		CharacterParant::Init(map, order, pMonsterManager);
 
 		m_pUIobj->SetTexture(TEXTUREMANAGER->GetTexture("스카디_사진"));
 		m_pUIobj->SetPosition(D3DXVECTOR3(1300, 550, 0));

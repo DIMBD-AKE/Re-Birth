@@ -14,7 +14,7 @@ Character_Sword::~Character_Sword()
 {
 }
 
-void Character_Sword::Init(Map* map, CHARSELECT order)
+void Character_Sword::Init(Map* map, CHARSELECT order, MonsterManager* pMonsterManager)
 {
 	m_eChrType = CHRTYPE_SWORD;
 
@@ -38,7 +38,7 @@ void Character_Sword::Init(Map* map, CHARSELECT order)
 		m_Status->chr.nDef = 26;
 		m_Status->chr.nMaxHp = 100;
 		m_Status->chr.nMaxStam = 50;
-		CharacterParant::Init(map, order);
+		CharacterParant::Init(map, order, pMonsterManager);
 		
 		
 		//포트레이트 UI
@@ -62,7 +62,7 @@ void Character_Sword::Init(Map* map, CHARSELECT order)
 		m_Status->chr.nDef = 26;
 		m_Status->chr.nMaxHp = 100;
 		m_Status->chr.nMaxStam = 40;
-		CharacterParant::Init(map, order);
+		CharacterParant::Init(map, order, pMonsterManager);
 
 		m_pUIobj->SetTexture(TEXTUREMANAGER->GetTexture("리아_사진"));
 		m_pUIobj->SetPosition(D3DXVECTOR3(1300, 550, 0));
@@ -84,7 +84,7 @@ void Character_Sword::Init(Map* map, CHARSELECT order)
 		m_Status->chr.nDef = 26;
 		m_Status->chr.nMaxHp = 100;
 		m_Status->chr.nMaxStam = 100;
-		CharacterParant::Init(map, order);
+		CharacterParant::Init(map, order, pMonsterManager);
 
 		m_pUIobj->SetTexture(TEXTUREMANAGER->GetTexture("벨벳_사진"));
 		m_pUIobj->SetPosition(D3DXVECTOR3(1300, 550, 0));

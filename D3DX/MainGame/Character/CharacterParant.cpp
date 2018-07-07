@@ -16,6 +16,7 @@ void CharacterParant::SKill()
 void CharacterParant::Move()
 {
 	Debug();
+	Attack();
 	//포트레이트
 	//m_pUIobj->Update();
 
@@ -130,7 +131,7 @@ void CharacterParant::Debug()
 		TEXT->Add(to_string(m_Status->chr.nCurrentStam), pos.x, pos.y, 30);
 		TEXT->Add(to_string(m_Status->chr.nCurrentHP), 300, 300, 30);
 
-		CAMERA->SetMode(CAMERA_FREE);
+	//	CAMERA->SetMode(CAMERA_FREE);
 	}
 }
 
@@ -212,6 +213,35 @@ void CharacterParant::CalculDamage(float damage)
 	SetCurrentHP(totalDamage);
 }
 
+void CharacterParant::Attack()
+{	
+	D3DXVECTOR3 pos = *m_pCharacter->GetPosition();														//플레이어 포지션 받고 
+	D3DXVECTOR3 rot = *m_pCharacter->GetRotation();														//플레이어 각도 받고 
+	
+
+	for (int i = 0; i < m_pMonsterManager->GetMonsterVector().size(); ++i)
+	{											
+		if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn())continue;								//리젠할때는 건드리지 않고 
+		else
+		{
+			float radius = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().radius;		//몬스터의 바운드 스페어의 반지름 받고 
+			D3DXVECTOR3 mosPos = *(m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetPosition());		//몬스터 포지션 받고 
+			float distance = D3DXVec3Length(&(mosPos - pos));												//거리계산으로 몬스터 위치와 플레이어 포지션 뺀 값을 저장하는 변수만들고
+			if (distance - radius > m_fRange) continue;														//거리랑 반지름을 뺀 값이 공격 길이보다 크면 처리하지 않고
+			else
+			{
+				D3DXVECTOR3 delta = mosPos - pos;															//델타 변수는 몬스터 포지션과 내 포지션을 뺀 벡터값으로 두고
+				if(atan2(delta.x, delta.z)>m_fScale) continue;												//아탄2의 결과 각도보다 fScale값이 크면 그냥 넘기고 
+						
+				int Atk = m_Status->chr.nAtk;																//플레이어 공격력 담는 변수인데 이건 지금 필요 없고 
+				m_pMonsterManager->GetMonsterVector()[i]->SetCurrentHP(100);									//그냥 위의 조건을 다 만족하면 지금 내 앞에 있는 몬스터 체력0으로 만들어버려랏
+				//pMonsterManager->GetMonsterVector()[i]->CalculDamage(,);
+				//m_pMonsterManager->GetMonsterVector()[i]->
+			}
+		}
+	}
+}
+
 CharacterParant::CharacterParant()
 {
 	m_Status = new STATUS;
@@ -240,9 +270,10 @@ CharacterParant::~CharacterParant()
 	SAFE_DELETE(m_pCharacter);
 }
 
-void CharacterParant::Init(Map* map, CHARSELECT order)
+void CharacterParant::Init(Map* map, CHARSELECT order, MonsterManager* pMonsterManager)
 {
 	m_pSampleMap = map;
+	m_pMonsterManager = pMonsterManager;
 	
 	//TODO : 바운딩 박스 만들기 (캐릭터 크기마다 일일히 입력해주자
 	ST_SIZEBOX box;
@@ -274,6 +305,8 @@ void CharacterParant::Init(Map* map, CHARSELECT order)
 	CAMERA->SetTargetOffset(D3DXVECTOR3(0, 5, 0));
 	CAMERA->SetTarget(m_pCharacter->GetPosition(), m_pCharacter->GetRotation());
 
+
+	
 	
 	m_temp = 0;
 	m_nCalAction = 0;
@@ -285,12 +318,13 @@ void CharacterParant::Init(Map* map, CHARSELECT order)
 	m_bIsDash = false;
 	m_bIsDead = false;
 	m_fStamina = 10.0f;
+	m_fRange = 30.0f;
+	m_fScale = 30.0f;
 
 
 	//포트레이트 UI
 	m_pUIobj = new UIObject;
-	//m_pUIobj->SetTexture(TEXTUREMANAGER->GetTexture("아카날_사진"));
-	//m_pUIobj->SetPosition(D3DXVECTOR3(0, 0, 0));
+
 
 
 }

@@ -14,7 +14,10 @@
 #include "../Item/ItemParent.h"
 #include "../Item/Potion/HealthPotion.h"
 #include "../Item/DropManager.h"
-#include "../Item/ItemManager.h"
+
+
+DWORD FtoDw(float f) { return *((DWORD*)&f); }
+
 
 SC_Test::SC_Test()
 {
@@ -45,7 +48,6 @@ void SC_Test::Init()
 
 
 	m_pTestModel = new Character_Sword;
-	m_pTestModel->Init(m_pSampleMap, CHAR_ONE);
 
 
 	
@@ -66,6 +68,7 @@ void SC_Test::Init()
 
 	m_pMM = new MonsterManager;
 	m_pMM->Setup(m_pSampleMap, m_pTestModel);
+	m_pTestModel->Init(m_pSampleMap, CHAR_ONE, m_pMM);
 
 	m_pMM->SetSpawnSpat(m_pSampleMap->GetSpawnEnemy());
 	m_pMM->MakeMonster(m_pDropManager);
@@ -76,27 +79,96 @@ void SC_Test::Init()
 	m_pPotion = new HealthPotion;
 	m_pPotion->SetUp();
 
-	m_pIm = new ItemManager;
-	m_pIm->Load("MainGame/Item/Data", "ArcherArmor.txt");
-
 }
 
 void SC_Test::Update()
 {
-	if (m_pTestModel)
+	if (m_pTestModel && m_pTestModel->GetCondition() != CHAR_NONE)
 	{
 		m_pTestModel->Update();
 
 
+		if (INPUT->KeyPress('0'))
+		{
+			CharacterParant* L_TestModel = m_pTestModel;
+			CharacterParant* L_TestModel2;
+			L_TestModel2 = new Character_Sword;
+			L_TestModel2->Init(m_pSampleMap, CHAR_ONE, m_pMM);
+			m_pTestModel = L_TestModel2;
+			L_TestModel2 = NULL;
+			SAFE_DELETE(L_TestModel);
+		}
 		if (INPUT->KeyPress('1'))
 		{
-			
-			SAFE_DELETE(m_pTestModel);
-			m_pTestModel = new Character_Sword;
-			m_pTestModel->Init(m_pSampleMap, CHAR_TWO);
+			CharacterParant* L_TestModel = m_pTestModel;
+			CharacterParant* L_TestModel2;
+			L_TestModel2 = new Character_Sword;
+			L_TestModel2->Init(m_pSampleMap, CHAR_TWO, m_pMM);
+			m_pTestModel = L_TestModel2;
+			L_TestModel2 = NULL;
+			SAFE_DELETE(L_TestModel);
+		}
+		if (INPUT->KeyPress('2'))
+		{
+			CharacterParant* L_TestModel = m_pTestModel;
+			CharacterParant* L_TestModel2;
+			L_TestModel2 = new Character_Gun;
+			L_TestModel2->Init(m_pSampleMap, CHAR_ONE, m_pMM);
+			m_pTestModel = L_TestModel2;
+			L_TestModel2 = NULL;
+			SAFE_DELETE(L_TestModel);
+		}
+		if (INPUT->KeyPress('3'))
+		{
+			CharacterParant* L_TestModel = m_pTestModel;
+			CharacterParant* L_TestModel2;
+			L_TestModel2 = new Character_Gun;
+			L_TestModel2->Init(m_pSampleMap, CHAR_TWO, m_pMM);
+			m_pTestModel = L_TestModel2;
+			L_TestModel2 = NULL;
+			SAFE_DELETE(L_TestModel);
+		}
+		if (INPUT->KeyPress('4'))
+		{
+			CharacterParant* L_TestModel = m_pTestModel;
+			CharacterParant* L_TestModel2;
+			L_TestModel2 = new Character_Magic;
+			L_TestModel2->Init(m_pSampleMap, CHAR_ONE, m_pMM);
+			m_pTestModel = L_TestModel2;
+			L_TestModel2 = NULL;
+			SAFE_DELETE(L_TestModel);
+		}
+		if (INPUT->KeyPress('5'))
+		{
+			CharacterParant* L_TestModel = m_pTestModel;
+			CharacterParant* L_TestModel2;
+			L_TestModel2 = new Character_Magic;
+			L_TestModel2->Init(m_pSampleMap, CHAR_TWO, m_pMM);
+			m_pTestModel = L_TestModel2;
+			L_TestModel2 = NULL;
+			SAFE_DELETE(L_TestModel);
+		}
+		if (INPUT->KeyPress('6'))
+		{
+			CharacterParant* L_TestModel = m_pTestModel;
+			CharacterParant* L_TestModel2;
+			L_TestModel2 = new Character_Sword;
+			L_TestModel2->Init(m_pSampleMap, CHAR_THREE, m_pMM);
+			m_pTestModel = L_TestModel2;
+			L_TestModel2 = NULL;
+			SAFE_DELETE(L_TestModel);
 		}
 	}
-	
+	if (m_pTestModel->GetCondition() == CHAR_NONE)
+	{
+		CharacterParant* L_TestModel = m_pTestModel;
+		CharacterParant* L_TestModel2;
+		L_TestModel2 = new Character_Sword;
+		L_TestModel2->Init(m_pSampleMap, CHAR_TWO, m_pMM);
+		m_pTestModel = L_TestModel2;
+		L_TestModel2 = NULL;
+		SAFE_DELETE(L_TestModel);
+	}
 	//여기 한줄
 	if (m_pMM) m_pMM->Update();
 }
@@ -108,13 +180,23 @@ void SC_Test::Render()
 
 
 	if (m_pSampleMap)
+	{
+		DEVICE->SetRenderState(D3DRS_FOGENABLE, true);
+		DEVICE->SetRenderState(D3DRS_FOGCOLOR, 0xffffffff);
+		DEVICE->SetRenderState(D3DRS_FOGDENSITY, FtoDw(0.1f));         // 안개의 강도
+		DEVICE->SetRenderState(D3DRS_FOGSTART, FtoDw(50.0f));         // 안개의 시작 위치
+		DEVICE->SetRenderState(D3DRS_FOGEND, FtoDw(100.0f));         // 안개 강도의 최대값 위치
+		DEVICE->SetRenderState(D3DRS_FOGTABLEMODE, D3DFOG_LINEAR);      // 안개 중간 보간값
+		
+
 		m_pSampleMap->Render();
-	//여기 한줄
-	if (m_pMM) m_pMM->Render();
+		//여기 한줄
+		if (m_pMM) m_pMM->Render();
 
-	if (m_pItem)m_pItem->Render(D3DXVECTOR3(0, 0, 0), 50);
-	if (m_pPotion)m_pPotion->Render(D3DXVECTOR3(0, 0, 0), 50);
-
-	
-	m_pDropManager->Render();
+		if (m_pItem)m_pItem->Render(D3DXVECTOR3(0, 0, 0), 50);
+		if (m_pPotion)m_pPotion->Render(D3DXVECTOR3(0, 0, 0), 50);
+		m_pDropManager->Render();
+		
+		DEVICE->SetRenderState(D3DRS_FOGENABLE, false);
+	}
 }

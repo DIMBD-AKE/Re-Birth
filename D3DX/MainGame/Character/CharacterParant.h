@@ -71,6 +71,7 @@ protected:
 	GET(Inventory*,m_pInventory,m_Inventory);		//인벤토리용 변수
 	STATUS*					m_Status;			//스테이터스 유니온 변수 
 	UIObject*				m_pUIobj;			//UI오브젝트용 변수
+	MonsterManager*			m_pMonsterManager;	//몬스터 매니저용 변수
 
 	D3DXVECTOR3				m_vfront;			//이동을 위한 프론트벡터
 
@@ -79,6 +80,8 @@ protected:
 	bool					m_bIsDash;			//대쉬했늬
 	bool					m_bIsDead;			//죽었늬
 	float					m_fStamina;			//스테미나 게이지
+	float					m_fRange;
+	float					m_fScale;
 
 	void SKill();
 	void Move();
@@ -89,8 +92,8 @@ protected:
 	void UnderAttacked();
 	
 	void SetCurrentHP(int hp);
-
 	void CalculDamage(float damage);
+	void Attack();
 
 
 	int						m_temp;			//애니메이션 확인용 임시변수
@@ -100,7 +103,7 @@ public:
 	CharacterParant();
 	virtual ~CharacterParant();
 
-	virtual void Init(Map* map, CHARSELECT order);
+	virtual void Init(Map* map, CHARSELECT order, MonsterManager* pMonsterManager);
 	virtual void Update() = 0;
 	virtual void Render();
 	virtual void KeyControl(); 

@@ -16,6 +16,7 @@ class SC_Test : public Scene
 {
 private:
 	CharacterParant*	m_pTestModel;
+
 	Map *		m_pSampleMap;
 
 	//Jae

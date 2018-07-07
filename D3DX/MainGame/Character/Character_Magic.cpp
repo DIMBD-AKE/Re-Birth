@@ -15,7 +15,7 @@ Character_Magic::~Character_Magic()
 }
 
 
-void Character_Magic::Init(Map * map, CHARSELECT order)
+void Character_Magic::Init(Map * map, CHARSELECT order, MonsterManager* pMonsterManager)
 {
 	m_eChrType = CHRTYPE_MAGIC;
 
@@ -37,7 +37,7 @@ void Character_Magic::Init(Map * map, CHARSELECT order)
 		m_Status->chr.nDef = 26;
 		m_Status->chr.nMaxHp = 100;
 		m_Status->chr.nMaxStam = 10;
-		CharacterParant::Init(map, order);
+		CharacterParant::Init(map, order, pMonsterManager);
 
 		m_pUIobj->SetTexture(TEXTUREMANAGER->GetTexture("아카날_사진"));
 		m_pUIobj->SetPosition(D3DXVECTOR3(1300, 550, 0));
@@ -59,7 +59,7 @@ void Character_Magic::Init(Map * map, CHARSELECT order)
 		m_Status->chr.nDef = 26;
 		m_Status->chr.nMaxHp = 100;
 		m_Status->chr.nMaxStam = 10;
-		CharacterParant::Init(map, order);
+		CharacterParant::Init(map, order, pMonsterManager);
 
 		m_pUIobj->SetTexture(TEXTUREMANAGER->GetTexture("헤스티아_사진"));
 		m_pUIobj->SetPosition(D3DXVECTOR3(1300, 550, 0));
