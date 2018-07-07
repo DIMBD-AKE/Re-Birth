@@ -78,7 +78,7 @@ protected:
 	int						m_nCalAction;		//액션 프레임 계산용 변수
 	bool					m_bIsFront;			//앞인지 뒤인지
 	bool					m_bIsDash;			//대쉬했늬
-	bool					m_bIsDead;			//죽었늬
+	GET(bool,m_bIsDead,IsDead);			//죽었늬
 	float					m_fStamina;			//스테미나 게이지
 	
 
