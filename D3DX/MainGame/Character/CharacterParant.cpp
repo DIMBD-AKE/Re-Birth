@@ -16,7 +16,7 @@ void CharacterParant::SKill()
 void CharacterParant::Move()
 {
 	Debug();
-	Attack();
+	
 	//포트레이트
 	//m_pUIobj->Update();
 
@@ -418,6 +418,7 @@ void CharacterParant::KeyControl()
 		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_RUN_FRONT || m_eCondition == CHAR_RUN_BACK)
 		{
 			m_eCondition = CHAR_ATTACK;
+			Attack();
 			ChangeAnimation();
 		}
 	}
