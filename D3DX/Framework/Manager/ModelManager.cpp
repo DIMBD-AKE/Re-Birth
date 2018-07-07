@@ -276,9 +276,6 @@ void Model::CreateBound(ST_SIZEBOX box)
 	m_stBoundBox.scale = D3DXVECTOR3(1, 1, 1);
 
 	// OBB
-	m_stBoundBox.obb.vCenterPos.x = (box.highX + box.lowX) / 2.0f;
-	m_stBoundBox.obb.vCenterPos.y = (box.highY + box.lowY) / 2.0f;
-	m_stBoundBox.obb.vCenterPos.z = (box.highZ + box.lowZ) / 2.0f;
 	m_stBoundBox.obb.vAxisDir[0] = D3DXVECTOR3(1, 0, 0);
 	m_stBoundBox.obb.vAxisDir[1] = D3DXVECTOR3(0, 1, 0);
 	m_stBoundBox.obb.vAxisDir[2] = D3DXVECTOR3(0, 0, 1);
@@ -315,7 +312,7 @@ ST_BOUNDBOX Model::GetBoundBox()
 		box.pos.y + m_vPosition.y, box.pos.z + m_vPosition.z);
 
 	// OBB
-	D3DXVec3TransformCoord(&box.obb.vCenterPos, &box.obb.vCenterPos, &matT);
+	D3DXVec3TransformCoord(&box.obb.vCenterPos, &D3DXVECTOR3(0, 0, 0), &matT);
 	box.obb.fAxisLen[0] *= box.scale.x * m_vScale.x;
 	box.obb.fAxisLen[1] *= box.scale.y * m_vScale.y;
 	box.obb.fAxisLen[2] *= box.scale.z * m_vScale.z;
