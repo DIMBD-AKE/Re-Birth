@@ -16,8 +16,8 @@
 #define AGI(varName)	varName.chr.fAgi	
 #define HIT(varName)	varName.chr.fHit	
 #define SPEED(varName)	varName.chr.fSpeed	
-
-
+#define RANGE(varName)  varName.chr.fRange
+#define SCALE(varName)  varName.chr.fScale
 
 union STATUS
 {
