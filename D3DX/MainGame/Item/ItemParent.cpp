@@ -25,6 +25,7 @@ void ItemParent::SetUp()
 
 void ItemParent::Use(CharacterParant& pCharacter)
 {
+
 }
 
 void ItemParent::Attack(CharacterParant* pCharacter,ST_DAMAGE pStatus, MonsterManager* pMonsterManager)

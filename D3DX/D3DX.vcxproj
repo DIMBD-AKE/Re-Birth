@@ -220,6 +220,7 @@
     <ClInclude Include="Framework\Manager\TimeManager.h" />
     <ClInclude Include="MainGame\Item\Arrow\UniqueArrow.h" />
     <ClInclude Include="MainGame\Item\Blade\UniqueBlade.h" />
+    <ClInclude Include="MainGame\Item\ItemHeaderIndex.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework\Manager\ParticleManager.cpp" />
