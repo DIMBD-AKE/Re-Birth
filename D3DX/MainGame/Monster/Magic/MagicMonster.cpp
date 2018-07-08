@@ -1,5 +1,6 @@
 #include "../MonsterUseHeader.h"
 #include "MagicMonster.h"
+#include "MagicCircle.h"
 
 
 MagicMonster::MagicMonster()
@@ -15,6 +16,9 @@ MagicMonster::~MagicMonster()
 void MagicMonster::Setup(Map* map, D3DXVECTOR3 spawnPos)
 {
 	MonsterParent::Setup(map, spawnPos);
+
+	m_bIsAttack = false;
+	m_pMagicCircle = new MagicCircle;
 }
 
 void MagicMonster::SetupStat()
@@ -42,8 +46,8 @@ void MagicMonster::Attack()
 		float length = D3DXVec3Length(&tempV);
 
 		int a = 10;
-		//공격 가능 사거리까지 하면 될듯
-		if (length > RANGE(m_uMonsterStat))
+		//공격 가능 사거리까지 하면 될듯 && 공격중이냐
+		if (length > RANGE(m_uMonsterStat) && !m_bIsAttack)
 		{
 			if (m_eState == MS_ATTACK)
 			{
@@ -67,16 +71,24 @@ void MagicMonster::Attack()
 				ChangeAni();
 			}
 			//플레이어 공격기능 설정
+			m_bIsAttack = true;
 			m_eState = MS_ATTACK;
+
+			//공격 딜레이가 오면
 			if (m_nAttackDelay >= ATKSPEED(m_uMonsterStat))
 			{
 				//마법타입 공격방식 수정해야함
+
+				//구 충돌이 일어났다면 폭발위치에 있다는거다.
+				//if로 판단한다.
 
 
 				float tatalRate = PHYRATE(m_uMonsterStat) + MAGICRATE(m_uMonsterStat) + CHERATE(m_uMonsterStat);
 				float tatalDamage = tatalRate * ATK(m_uMonsterStat);
 				(*m_ppCharacter)->CalculDamage(tatalDamage);
 				m_nAttackDelay = 0;
+
+				m_bIsAttack = false;
 			}
 			m_nAttackDelay++;
 		}

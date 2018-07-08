@@ -231,6 +231,9 @@
     <ClInclude Include="MainGame\Monster\TotalMonster.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="MainGame\Monster\Magic\MagicCircle.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -402,6 +405,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Framework\Manager\ParticleManager.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="MainGame\Monster\Magic\MagicCircle.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
