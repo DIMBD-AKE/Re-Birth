@@ -11,11 +11,24 @@ MonsterManager::MonsterManager()
 
 MonsterManager::~MonsterManager()
 {
+	//
+	/*
+	GET(vector<MonsterParent*>, m_vMM, MonsterVector);
+	SET(vector<D3DXVECTOR3>, m_vSpawnSpot, SpawnSpat);
+
+
+	Map* m_pMap;
+
+	CharacterParant** m_ppCharacter;
+	*/
 	//SAFE_DELETE(m_pMap);
 	for (int i = 0; i < m_vMM.size(); i++)
 	{
 		SAFE_DELETE(m_vMM[i]);
 	}
+
+	m_pMap = NULL;
+	m_ppCharacter = NULL;
 }
 
 void MonsterManager::Setup(Map* map, CharacterParant** character)

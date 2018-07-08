@@ -234,7 +234,7 @@ void CharacterParant::Attack()
 				if(atan2(delta.x, delta.z)>m_Status->chr.fScale) continue;												//아탄2의 결과 각도보다 fScale값이 크면 그냥 넘기고 
 						
 				int Atk = m_Status->chr.nAtk;																//플레이어 공격력 담는 변수인데 이건 지금 필요 없고 
-				m_pMonsterManager->GetMonsterVector()[i]->SetCurrentHP(100);									//그냥 위의 조건을 다 만족하면 지금 내 앞에 있는 몬스터 체력0으로 만들어버려랏
+				//m_pMonsterManager->GetMonsterVector()[i]->SetCurrentHP(100);									//그냥 위의 조건을 다 만족하면 지금 내 앞에 있는 몬스터 체력0으로 만들어버려랏
 				//pMonsterManager->GetMonsterVector()[i]->CalculDamage(,);
 				//m_pMonsterManager->GetMonsterVector()[i]->
 			}
