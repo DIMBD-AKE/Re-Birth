@@ -16,7 +16,12 @@ void CharacterParant::SKill()
 void CharacterParant::Move()
 {
 	Debug();
-	
+	D3DXVECTOR3 tempPos1;
+	tempPos1 = *m_pCharacter->GetPosition();
+	tempPos1.y += 3;
+	D3DXVECTOR2 pos1 = Util::Convert3DTo2D(tempPos1);
+	TEXT->Add(to_string(m_Status->chr.nCurrentHP), pos1.x, pos1.y, 30);
+	//TEXT->Add(to_string(m_Status->chr.nCurrentHP), 300, 300, 30);
 	//포트레이트
 	//m_pUIobj->Update();
 
@@ -253,12 +258,11 @@ void CharacterParant::Attack()
 			else
 			{
 				D3DXVECTOR3 delta = mosPos - pos;															//델타 변수는 몬스터 포지션과 내 포지션을 뺀 벡터값으로 두고
-				if(atan2(delta.x, delta.z)>m_Status->chr.fScale) continue;												//아탄2의 결과 각도보다 fScale값이 크면 그냥 넘기고 
-						
-				int Atk = m_Status->chr.nAtk;																//플레이어 공격력 담는 변수인데 이건 지금 필요 없고 
-				//m_pMonsterManager->GetMonsterVector()[i]->SetCurrentHP(100);									//그냥 위의 조건을 다 만족하면 지금 내 앞에 있는 몬스터 체력0으로 만들어버려랏
-				m_pMonsterManager->GetMonsterVector()[MinIndex]->CalculDamage(10000000.0f);
-				//m_pMonsterManager->GetMonsterVector()[i]->
+				if(atan2(delta.x, delta.z)>m_Status->chr.fScale) continue;									//아탄2의 결과 각도보다 fScale값이 크면 그냥 넘기고 
+				else
+				{
+					m_pMonsterManager->GetMonsterVector()[MinIndex]->CalculDamage(10000000.0f);
+				}
 			}
 		}
 	}
@@ -339,6 +343,7 @@ void CharacterParant::Init(Map* map, CHARSELECT order, MonsterManager* pMonsterM
 	m_bIsFront = false;
 	m_bIsDash = false;
 	m_bIsDead = false;
+	m_bIsAttack = false;
 	m_fStamina = 10.0f;
 
 
@@ -438,9 +443,14 @@ void CharacterParant::KeyControl()
 		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_RUN_FRONT || m_eCondition == CHAR_RUN_BACK)
 		{
 			m_eCondition = CHAR_ATTACK;
+			m_bIsAttack = true;
 			Attack();
 			ChangeAnimation();
 		}
+	}
+	else if (INPUT->KeyUp(VK_SPACE))
+	{
+		m_bIsAttack = false;
 	}
 
 	//스킬공격
@@ -470,6 +480,15 @@ void CharacterParant::KeyControl()
 	if (m_bIsDash)
 	{
 		m_pCharacter->SetAnimationSpeed(5.0f);
+	}
+	else
+	{
+		m_pCharacter->SetAnimationSpeed(1.0f);
+	}
+	//공격상태일때 애니메이션 스피드 제어
+	if (m_bIsAttack)
+	{
+		m_pCharacter->SetAnimationSpeed(1.0f * m_Status->chr.fAtkSpeed);
 	}
 	else
 	{
