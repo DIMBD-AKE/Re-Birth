@@ -253,7 +253,7 @@ bool SkinnedMesh::IsAnimationEnd()
 	m_pAnimController->GetTrackAnimationSet(0, &anim);
 	m_pAnimController->GetTrackDesc(0, &desc);
 
-	float period = anim->GetPeriod() * desc.Speed;
+	float period = anim->GetPeriod() / desc.Speed;
 	float current = fmod(desc.Position, period);
 	float curRate = current / period;
 	float elapseRate = TIME->GetElapsedTime() / period;
@@ -269,7 +269,7 @@ float SkinnedMesh::GetAnimationPeriod(int index)
 	D3DXTRACK_DESC desc;
 	m_pAnimController->GetAnimationSet(index, &animSet);
 	m_pAnimController->GetTrackDesc(0, &desc);
-	float period = animSet->GetPeriod() * desc.Speed;
+	float period = animSet->GetPeriod() / desc.Speed;
 	SAFE_RELEASE(animSet);
 	return period;
 }
