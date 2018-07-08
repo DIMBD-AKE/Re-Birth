@@ -39,7 +39,23 @@ void DarkHell::Setup(Map* map, D3DXVECTOR3 spawnPos)
 
 void DarkHell::SetupStat()
 {
+	m_nMinMoveCount = 555;
+	m_nMaxMoveCount = 222;
 
+	ZeroMemory(&m_uMonsterStat, sizeof(m_uMonsterStat));
+
+	CURRENTHP(m_uMonsterStat) = MAXHP(m_uMonsterStat) = 150;
+	ATK(m_uMonsterStat) = 8;
+	PHYRATE(m_uMonsterStat) = 0.8f;
+	MAGICRATE(m_uMonsterStat) = 1.3f;
+	CHERATE(m_uMonsterStat) = 0.8f;
+	ATKSPEED(m_uMonsterStat) = 110.0f;
+
+	DEF(m_uMonsterStat) = 5;
+	AGI(m_uMonsterStat) = 5.0f;
+	HIT(m_uMonsterStat) = 5.0f;
+	SPEED(m_uMonsterStat) = 0.03f;
+	RANGE(m_uMonsterStat) = 2.2f;
 }
 
 
