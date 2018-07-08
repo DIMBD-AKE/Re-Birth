@@ -1,4 +1,4 @@
-#include "../../../stdafx.h"
+#include "../MonsterUseHeader.h"
 #include "Nerisa.h"
 
 
@@ -39,15 +39,31 @@ void Nerisa::Setup(Map* map, D3DXVECTOR3 spawnPos)
 
 void Nerisa::SetupStat()
 {
+	m_nMinMoveCount = 444;
+	m_nMaxMoveCount = 333;
 
+	ZeroMemory(&m_uMonsterStat, sizeof(m_uMonsterStat));
+
+	CURRENTHP(m_uMonsterStat) = MAXHP(m_uMonsterStat) = 80;
+	ATK(m_uMonsterStat) = 6;
+	PHYRATE(m_uMonsterStat) = 0.9f;
+	MAGICRATE(m_uMonsterStat) = 0.9f;
+	CHERATE(m_uMonsterStat) = 1.3f;
+	ATKSPEED(m_uMonsterStat) = 110.0f;
+
+	DEF(m_uMonsterStat) = 3;
+	AGI(m_uMonsterStat) = 20.0f;
+	HIT(m_uMonsterStat) = 20.0f;
+	SPEED(m_uMonsterStat) = 0.09f;
+	RANGE(m_uMonsterStat) = 6.5f;
 }
 
 
 //근접 몬스터 공격함수
-void Nerisa::Attack()
-{
-
-}
+//void Nerisa::Attack()
+//{
+//
+//}
 
 //근접 몬스터 스킬함수
 void Nerisa::Skill()
@@ -56,10 +72,10 @@ void Nerisa::Skill()
 }
 
 //근접 몬스터 기본 이동함수
-void Nerisa::Move()
-{
-
-}
+//void Nerisa::Move()
+//{
+//
+//}
 
 
 void Nerisa::DropItemSetup()

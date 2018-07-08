@@ -58,7 +58,7 @@ void Elizabeth::SetupStat()
 	CHERATE(m_uMonsterStat) = 1.0f;
 	ATKSPEED(m_uMonsterStat) = 100.0f;
 
-	DEF(m_uMonsterStat) = 3;
+	DEF(m_uMonsterStat) = 4;
 	AGI(m_uMonsterStat) = 10.0f;
 	HIT(m_uMonsterStat) = 10.0f;
 	SPEED(m_uMonsterStat) = 0.05f;

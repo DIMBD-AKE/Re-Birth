@@ -1,4 +1,4 @@
-#include "../../../stdafx.h"
+#include "../MonsterUseHeader.h"
 #include "NifilHeim.h"
 
 

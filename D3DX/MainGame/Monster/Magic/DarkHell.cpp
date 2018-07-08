@@ -1,4 +1,4 @@
-#include "../../../stdafx.h"
+#include "../MonsterUseHeader.h"
 #include "DarkHell.h"
 
 
@@ -44,10 +44,10 @@ void DarkHell::SetupStat()
 
 
 //근접 몬스터 공격함수
-void DarkHell::Attack()
-{
-
-}
+//void DarkHell::Attack()
+//{
+//
+//}
 
 //근접 몬스터 스킬함수
 void DarkHell::Skill()
@@ -56,10 +56,10 @@ void DarkHell::Skill()
 }
 
 //근접 몬스터 기본 이동함수
-void DarkHell::Move()
-{
-
-}
+//void DarkHell::Move()
+//{
+//
+//}
 
 
 void DarkHell::DropItemSetup()
