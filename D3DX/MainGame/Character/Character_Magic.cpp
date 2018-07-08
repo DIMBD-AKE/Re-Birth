@@ -94,6 +94,8 @@ void Character_Magic::Render()
 		m_pCharacter->Render();
 		m_pInventory->Render();
 		m_pUIobj->Render();
+
+		CharacterParant::Render();
 	}
 }
 
