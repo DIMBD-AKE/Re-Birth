@@ -219,14 +219,36 @@ void CharacterParant::Attack()
 	D3DXVECTOR3 rot = *m_pCharacter->GetRotation();														//플레이어 각도 받고 
 	
 
+	//1. 제일 가까운놈 인덱스를 저장할 변수를 만든다.
+	//2. 거리를 담을 변수를 만든다.
+	//3. 초기화에 0번째 놈과의 거리를 담는다.(0번째놈이 죽었을경우 대충 큰값 아무거나 넣는데)인덱스는 0이다.
+	//4. i = 1부터 벡터사이즈만큼 돌면서 거리를 구하고 2번에 만든 변수와 비교를 하여 작은놈의 값으로 다시 넣고 인덱스값을 바꾼다.
+	int MinIndex = 0;
+	float MinDistance = 0.0f;
+	
+	
 	for (int i = 0; i < m_pMonsterManager->GetMonsterVector().size(); ++i)
 	{											
 		if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn())continue;								//리젠할때는 건드리지 않고 
 		else
 		{
-			float radius = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().radius;		//몬스터의 바운드 스페어의 반지름 받고 
-			D3DXVECTOR3 mosPos = *(m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetPosition());		//몬스터 포지션 받고 
+			float radius = m_pMonsterManager->GetMonsterVector()[0]->GetModel()->GetBoundSphere().radius;		//몬스터의 바운드 스페어의 반지름 받고 
+			D3DXVECTOR3 mosPos = *(m_pMonsterManager->GetMonsterVector()[0]->GetModel()->GetPosition());		//몬스터 포지션 받고 
 			float distance = D3DXVec3Length(&(mosPos - pos));												//거리계산으로 몬스터 위치와 플레이어 포지션 뺀 값을 저장하는 변수만들고
+			
+			
+			for (int j = 1; j < m_pMonsterManager->GetMonsterVector().size(); j++)
+			{
+				D3DXVECTOR3 mosPos2 = *(m_pMonsterManager->GetMonsterVector()[j]->GetModel()->GetPosition());		
+				float distance2 = D3DXVec3Length(&(mosPos2 - pos));
+				if (distance > distance2)
+				{
+					distance = distance2;
+					MinIndex = j;
+				}
+			}
+			
+			
 			if (distance - radius > m_Status->chr.fRange) continue;														//거리랑 반지름을 뺀 값이 공격 길이보다 크면 처리하지 않고
 			else
 			{
@@ -235,7 +257,7 @@ void CharacterParant::Attack()
 						
 				int Atk = m_Status->chr.nAtk;																//플레이어 공격력 담는 변수인데 이건 지금 필요 없고 
 				//m_pMonsterManager->GetMonsterVector()[i]->SetCurrentHP(100);									//그냥 위의 조건을 다 만족하면 지금 내 앞에 있는 몬스터 체력0으로 만들어버려랏
-				//pMonsterManager->GetMonsterVector()[i]->CalculDamage(,);
+				m_pMonsterManager->GetMonsterVector()[MinIndex]->CalculDamage(10000000.0f);
 				//m_pMonsterManager->GetMonsterVector()[i]->
 			}
 		}
