@@ -1,9 +1,6 @@
-#include "../../stdafx.h"
+#include "MonsterUseHeader.h"
 #include "MonsterParent.h"
-#include "../Map.h"
 #include "../AStar/AStar.h"
-#include <time.h>
-#include "../Character/CharacterParant.h"
 #include "../Item/DropManager.h"
 
 MonsterParent::MonsterParent()
@@ -124,7 +121,7 @@ void MonsterParent::Render()
 		{
 			POINT temp = MoveForAttack();
 
-			m_pAStar->Render( temp.y, temp.x, (*m_ppCharacter)->GetCharacter()->GetPosition());
+			m_pAStar->Render( temp.y, temp.x, CHARACTER->GetPosition());
 		}
 	}
 }
@@ -242,7 +239,7 @@ POINT MonsterParent::MoveForAttack()
 {
 	m_eState = MS_MOVEFORATTACK;
 
-	int playerIndex = m_pAStar->GetCellIndex(*(*m_ppCharacter)->GetCharacter()->GetPosition());
+	int playerIndex = m_pAStar->GetCellIndex(*CHARACTER->GetPosition());
 
 	int myIndex = m_pAStar->GetCellIndex(*m_pModel->GetPosition());
 
@@ -251,7 +248,7 @@ POINT MonsterParent::MoveForAttack()
 	//같은 셀에 있으면
 	if (playerIndex == myIndex)
 	{
-		dir = *(*m_ppCharacter)->GetCharacter()->GetPosition()
+		dir = *CHARACTER->GetPosition()
 			- *m_pModel->GetPosition();
 	}
 	else
@@ -264,7 +261,7 @@ POINT MonsterParent::MoveForAttack()
 
 		if (nextCell == D3DXVECTOR3(-1, -1, -1))
 		{
-			dir = *(*m_ppCharacter)->GetCharacter()->GetPosition()
+			dir = *CHARACTER->GetPosition()
 				- *m_pModel->GetPosition();
 		}
 		

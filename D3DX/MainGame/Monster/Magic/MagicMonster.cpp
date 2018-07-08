@@ -30,9 +30,9 @@ void MagicMonster::SetupStat()
 //근접 몬스터 공격함수
 void MagicMonster::Attack()
 {
-	if ((*m_ppCharacter))
+	if ((PCHARACTER))
 	{
-		if ((*m_ppCharacter)->GetIsDead())
+		if ((PCHARACTER)->GetIsDead())
 		{
 			m_eState = MS_IDLE;
 			ChangeAni();
@@ -42,7 +42,7 @@ void MagicMonster::Attack()
 		//sprintf_s(test1, sizeof(test1), "플레이어의 체력 : %d, 엘리자베스의 체력 : %d", m_nAttackDelay);
 		//
 		//TEXT->Add(test1, 10, 10, 30);
-		D3DXVECTOR3 tempV = *m_pModel->GetPosition() - *(*m_ppCharacter)->GetCharacter()->GetPosition();
+		D3DXVECTOR3 tempV = *m_pModel->GetPosition() - *CHARACTER->GetPosition();
 		float length = D3DXVec3Length(&tempV);
 
 		int a = 10;
@@ -69,7 +69,7 @@ void MagicMonster::Attack()
 			if (!m_bIsAttack)
 			{
 				//공격장판은 플레이어 위치를 중점으로 반지름 5만큼
-				m_pMagicCircle->SetPosAndRad(*(*m_ppCharacter)->GetCharacter()->GetPosition(), 3);
+				m_pMagicCircle->SetPosAndRad(*CHARACTER->GetPosition(), 3);
 				m_bIsAttack = true;
 				m_eState = MS_ATTACK;
 				ChangeAni();
@@ -86,20 +86,22 @@ void MagicMonster::Attack()
 			//공격 딜레이가 오면
 			if (m_nAttackDelay >= ATKSPEED(m_uMonsterStat))
 			{
-				
+
 				//마법타입 공격방식 수정해야함
 
 				//구 충돌이 일어났다면 폭발위치에 있다는거다.
 				//if로 판단한다.
-				m_pMagicCircle->PlayerCollision(
+				if (m_pMagicCircle->PlayerCollision(
 					*CHARACTER->GetPosition(),
-					CHARACTER->GetBoundSphere().radius);
+					CHARACTER->GetBoundSphere().radius))
+				{
 
-				float tatalRate = PHYRATE(m_uMonsterStat) + MAGICRATE(m_uMonsterStat) + CHERATE(m_uMonsterStat);
-				float tatalDamage = tatalRate * ATK(m_uMonsterStat);
-				(*m_ppCharacter)->CalculDamage(tatalDamage);
-				m_nAttackDelay = 0;
-
+					float tatalRate = PHYRATE(m_uMonsterStat) + MAGICRATE(m_uMonsterStat) + CHERATE(m_uMonsterStat);
+					float tatalDamage = tatalRate * ATK(m_uMonsterStat);
+					PCHARACTER->CalculDamage(tatalDamage);
+				}
+					m_nAttackDelay = 0;
+				
 				m_bIsAttack = false;
 			}
 			m_nAttackDelay++;

@@ -61,24 +61,28 @@ void DistanceMonster::Attack()
 			//
 			//TEXT->Add(test, 10, 10, 30);
 
-			//장애물 충돌 판정 추가
-
-
-			if (m_eState == MS_MOVEFORATTACK)
+			//사거리에 들어와서 공격이 가능한 위치라면
+			if (AttackPossible())
 			{
+				//GetWall
+				if (m_eState == MS_MOVEFORATTACK)
+				{
+					m_eState = MS_ATTACK;
+					ChangeAni();
+				}
+				//플레이어 공격기능 설정
 				m_eState = MS_ATTACK;
-				ChangeAni();
+				if (m_nAttackDelay >= ATKSPEED(m_uMonsterStat))
+				{
+					float tatalRate = PHYRATE(m_uMonsterStat) + MAGICRATE(m_uMonsterStat) + CHERATE(m_uMonsterStat);
+					float tatalDamage = tatalRate * ATK(m_uMonsterStat);
+					(*m_ppCharacter)->CalculDamage(tatalDamage);
+					m_nAttackDelay = 0;
+				}
+
+				m_nAttackDelay++;
 			}
-			//플레이어 공격기능 설정
-			m_eState = MS_ATTACK;
-			if (m_nAttackDelay >= ATKSPEED(m_uMonsterStat))
-			{
-				float tatalRate = PHYRATE(m_uMonsterStat) + MAGICRATE(m_uMonsterStat) + CHERATE(m_uMonsterStat);
-				float tatalDamage = tatalRate * ATK(m_uMonsterStat);
-				(*m_ppCharacter)->CalculDamage(tatalDamage);
-				m_nAttackDelay = 0;
-			}
-			m_nAttackDelay++;
+			
 		}
 
 	}
@@ -125,4 +129,24 @@ void DistanceMonster::Move()
 void DistanceMonster::DropItemSetup()
 {
 
+}
+
+bool DistanceMonster::AttackPossible()
+{
+	m_vWallVertex = m_pMap->GetWall();
+	D3DXVECTOR3 dir;
+	dir = *CHARACTER->GetPosition() - *m_pModel->GetPosition();
+
+	float length = D3DXVec3Length(&dir);
+
+	for (int i = 0; i < m_vWallVertex.size(); i += 3)
+	{
+		float wallLength;
+		if (D3DXIntersectTri(&m_vWallVertex[i], &m_vWallVertex[i + 1], &m_vWallVertex[i + 2], m_pModel->GetPosition(), &dir, NULL, NULL, &wallLength))
+		{
+			if (wallLength < length)
+				return false;
+		}
+	}
+	return true;
 }

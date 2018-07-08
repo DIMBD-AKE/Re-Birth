@@ -25,9 +25,9 @@ void NearMonster::SetupStat()
 
 void NearMonster::Attack()
 {
-	if ((*m_ppCharacter))
+	if (PCHARACTER)
 	{
-		if ((*m_ppCharacter)->GetIsDead())
+		if (PCHARACTER->GetIsDead())
 		{
 			m_eState = MS_IDLE;
 			ChangeAni();
@@ -37,7 +37,7 @@ void NearMonster::Attack()
 		//sprintf_s(test1, sizeof(test1), "플레이어의 체력 : %d, 엘리자베스의 체력 : %d", m_nAttackDelay);
 		//
 		//TEXT->Add(test1, 10, 10, 30);
-		D3DXVECTOR3 tempV = *m_pModel->GetPosition() - *(*m_ppCharacter)->GetCharacter()->GetPosition();
+		D3DXVECTOR3 tempV = *m_pModel->GetPosition() - *CHARACTER->GetPosition();
 		float length = D3DXVec3Length(&tempV);
 
 		int a = 10;
@@ -69,7 +69,7 @@ void NearMonster::Attack()
 			{
 				float tatalRate = PHYRATE(m_uMonsterStat) + MAGICRATE(m_uMonsterStat) + CHERATE(m_uMonsterStat);
 				float tatalDamage = tatalRate * ATK(m_uMonsterStat);
-				(*m_ppCharacter)->CalculDamage(tatalDamage);
+				PCHARACTER->CalculDamage(tatalDamage);
 				m_nAttackDelay = 0;
 			}
 			m_nAttackDelay++;
