@@ -72,8 +72,8 @@ protected:
 
 	void SetCurrentHP(int hp)
 	{
-		m_uMonsterStat.chr.nCurrentHP -= hp;
-		if (m_uMonsterStat.chr.nCurrentHP <= 0)
+		CURRENTHP(m_uMonsterStat) -= hp;
+		if (CURRENTHP(m_uMonsterStat) <= 0)
 		{
 			m_bIsRespawn = true;
 			m_eState = MS_DIE;
