@@ -179,11 +179,17 @@ void MonsterParent::CalculDamage(float damage)
 		float	fCheRate;		//화학계수
 	*/
 	float totalRate =
-		m_uMonsterStat.chr.fPhyRate +
-		m_uMonsterStat.chr.fMagicRate +
-		m_uMonsterStat.chr.fCheRate;
+		PHYRATE(m_uMonsterStat) +
+		CHERATE(m_uMonsterStat) +
+		MAGICRATE(m_uMonsterStat);
 
-	float totalDamage = totalRate * m_uMonsterStat.chr.nDef;
+	float totalDamage = totalRate * DEF(m_uMonsterStat);
+
+	totalDamage =  damage - totalDamage;	
+
+	totalDamage /= 3;
+
+	if (totalDamage <= 1) totalDamage = 1;
 
 	totalDamage = round(totalDamage);
 
