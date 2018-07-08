@@ -47,10 +47,16 @@ struct ST_PARTICLE_ATTRIBUTE
 	D3DXVECTOR3 vVelocity;
 	D3DXVECTOR3 vAcceleration;
 	D3DXVECTOR3 vGravity;
+	float		fStartRadius;
+	float		fEndRadius;
+	float		fRadiusSpeed;
+	float		fCurrentRadiusSpeed;
 	float		fLifeTime;
 	float		fAge;
 	D3DXCOLOR	color;
 	D3DXCOLOR	colorFade;
+	int			nLoop;
+	int			nMaxLoop;
 	bool		isAlive;
 };
 
@@ -60,7 +66,19 @@ struct ST_PARTICLE_ATTRIBUTE_VARIABLE
 	D3DXVECTOR3 vVelocityVar;
 	D3DXVECTOR3 vAccelerationVar;
 	D3DXVECTOR3 vGravityVar;
+	float		fStartRadiusVar;
+	float		fEndRadiusVar;
+	float		fRadiusSpeedVar;
 	float		fLifeTimeVar;
+};
+
+struct ST_PARTICLE_INFO
+{
+	LPDIRECT3DTEXTURE9				pTexture;
+	ST_PARTICLE_ATTRIBUTE			origAttribute;
+	ST_PARTICLE_ATTRIBUTE_VARIABLE	varAttribute;
+	float		fParticleSize;
+	int			nParticleCount;
 };
 
 struct ST_SPHERE

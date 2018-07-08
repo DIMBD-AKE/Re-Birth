@@ -11,29 +11,27 @@ ParticleManager::~ParticleManager()
 {
 }
 
-Particle::Particle()
+ParticleSystem::ParticleSystem()
 	: m_pTexture(NULL)
 	, m_pVB(NULL)
 {
 }
 
-Particle::~Particle()
+ParticleSystem::~ParticleSystem()
 {
 	SAFE_RELEASE(m_pVB);
-	SAFE_DELETE(m_stOrigAttribute);
-	SAFE_DELETE(m_stVarAttribute);
 	for (auto a : m_lAttribute)
 		SAFE_DELETE(a);
 }
 
-void Particle::Init(LPDIRECT3DTEXTURE9 texture, float size, int count,
-	ST_PARTICLE_ATTRIBUTE orig, ST_PARTICLE_ATTRIBUTE_VARIABLE var)
+void ParticleSystem::Init(LPDIRECT3DTEXTURE9 texture, float size, int count,
+	ST_PARTICLE_ATTRIBUTE * orig, ST_PARTICLE_ATTRIBUTE_VARIABLE * var)
 {
 	m_pTexture = texture;
 	m_fParticleSize = size;
 	m_nParticleCount = count;
-	m_nVertexBatchSize = count / 1;
-	m_nVertexOffset = 0;
+	m_nVBBatchSize = count / 1;
+	m_nVBOffset = 0;
 
 	SAFE_DELETE(m_pVB);
 	DEVICE->CreateVertexBuffer(
@@ -43,18 +41,37 @@ void Particle::Init(LPDIRECT3DTEXTURE9 texture, float size, int count,
 		D3DPOOL_DEFAULT,
 		&m_pVB, NULL);
 
-	m_stOrigAttribute = new ST_PARTICLE_ATTRIBUTE(orig);
-	m_stVarAttribute = new ST_PARTICLE_ATTRIBUTE_VARIABLE(var);
+	m_pOrigAttribute = orig;
+	m_pVarAttribute = var;
+
+	D3DXMatrixIdentity(&m_matWorld);
 
 	for (int i = 0; i < m_nParticleCount; i++)
-		m_lAttribute.push_back(new ST_PARTICLE_ATTRIBUTE(ResetParticle(var)));
+		m_lAttribute.push_back(new ST_PARTICLE_ATTRIBUTE(ResetParticle(0)));
+
+	// 시간 재설정
+	auto iter = m_lAttribute.begin();
+	for (;; iter++)
+	{
+		if (iter == m_lAttribute.end())
+			iter = m_lAttribute.begin();
+		(*iter)->fAge += 0.1;
+		if ((*iter)->fAge > (*iter)->fLifeTime)
+			break;
+	}
 }
 
-ST_PARTICLE_ATTRIBUTE Particle::ResetParticle(ST_PARTICLE_ATTRIBUTE_VARIABLE var)
+ST_PARTICLE_ATTRIBUTE ParticleSystem::ResetParticle(int loop)
 {
-	ST_PARTICLE_ATTRIBUTE att = *m_stOrigAttribute;
+	ST_PARTICLE_ATTRIBUTE att = *m_pOrigAttribute;
+	ST_PARTICLE_ATTRIBUTE_VARIABLE var = *m_pVarAttribute;
 
-	att.isAlive = true;
+	att.nLoop = loop;
+	att.nLoop++;
+	if (att.nLoop > att.nMaxLoop && att.nMaxLoop > 0)
+		att.isAlive = false;
+	else
+		att.isAlive = true;
 
 	att.fLifeTime += Util::FRand(-var.fLifeTimeVar, var.fLifeTimeVar);
 
@@ -74,14 +91,26 @@ ST_PARTICLE_ATTRIBUTE Particle::ResetParticle(ST_PARTICLE_ATTRIBUTE_VARIABLE var
 	att.vGravity.y += Util::FRand(-var.vGravityVar.y, var.vGravityVar.y);
 	att.vGravity.z += Util::FRand(-var.vGravityVar.z, var.vGravityVar.z);
 
+	att.fStartRadius += Util::FRand(-var.fStartRadiusVar, var.fStartRadiusVar);
+	att.fEndRadius += Util::FRand(-var.fEndRadiusVar, var.fEndRadiusVar);
+	att.fRadiusSpeed += Util::FRand(-var.fRadiusSpeedVar, var.fRadiusSpeedVar);
+
 	return att;
 }
 
-void Particle::Update()
+void ParticleSystem::Attribute(ST_PARTICLE_ATTRIBUTE orig, ST_PARTICLE_ATTRIBUTE_VARIABLE var)
+{
+	*m_pOrigAttribute = orig;
+	*m_pVarAttribute = var;
+}
+
+void ParticleSystem::Update()
 {
 	auto iter = m_lAttribute.begin();
 	for (; iter != m_lAttribute.end(); iter++)
 	{
+		if (!(*iter)->isAlive) continue;
+
 		(*iter)->vPos += 
 			(*iter)->vVelocity * TIME->GetElapsedTime() + 
 			(*iter)->vAcceleration * TIME->GetElapsedTime() +
@@ -90,79 +119,91 @@ void Particle::Update()
 		(*iter)->vAcceleration += (*iter)->vAcceleration * TIME->GetElapsedTime();
 		(*iter)->vGravity += (*iter)->vGravity * TIME->GetElapsedTime();
 
+		(*iter)->fCurrentRadiusSpeed += (*iter)->fRadiusSpeed * TIME->GetElapsedTime();
+
 		(*iter)->fAge += TIME->GetElapsedTime();
 
 		if ((*iter)->fAge > (*iter)->fLifeTime)
-			*(*iter) = ResetParticle(*m_stVarAttribute);
+		{
+			*(*iter) = ResetParticle((*iter)->nLoop);
+		}
 	}
 }
 
-void Particle::PreRender()
+void ParticleSystem::PreRender()
 {
 	DEVICE->SetRenderState(D3DRS_LIGHTING, false);
 	DEVICE->SetRenderState(D3DRS_POINTSPRITEENABLE, true);
 	DEVICE->SetRenderState(D3DRS_POINTSCALEENABLE, true);
+	DEVICE->SetRenderState(D3DRS_ZWRITEENABLE, false);
 
 	DWORD b = FtoDw(m_fParticleSize);
 	DEVICE->SetRenderState(D3DRS_POINTSIZE, b);
 
+	DEVICE->SetRenderState(D3DRS_POINTSIZE_MIN, FtoDw(0.0));
 	DEVICE->SetRenderState(D3DRS_POINTSCALE_A, FtoDw(0.0));
 	DEVICE->SetRenderState(D3DRS_POINTSCALE_B, FtoDw(0.0));
 	DEVICE->SetRenderState(D3DRS_POINTSCALE_C, FtoDw(1.0));
 }
 
-void Particle::Render()
+void ParticleSystem::Render()
 {
 	PreRender();
 
-	D3DXMATRIX world;
-	D3DXMatrixIdentity(&world);
-	DEVICE->SetTransform(D3DTS_WORLD, &world);
+	DEVICE->SetTransform(D3DTS_WORLD, &m_matWorld);
 	DEVICE->SetTexture(0, m_pTexture);
 	DEVICE->SetFVF(ST_PARTICLE::FVF);
 	DEVICE->SetStreamSource(0, m_pVB, 0, sizeof(ST_PARTICLE::FVF));
 
-	if (m_nVertexOffset >= m_nParticleCount)
-		m_nVertexOffset = 0;
+	if (m_nVBOffset >= m_nParticleCount)
+		m_nVBOffset = 0;
 
 	ST_PARTICLE * pV = NULL;
 	m_pVB->Lock(
-		m_nVertexOffset * sizeof(ST_PARTICLE),
-		m_nVertexBatchSize * sizeof(ST_PARTICLE),
+		m_nVBOffset * sizeof(ST_PARTICLE),
+		m_nVBBatchSize * sizeof(ST_PARTICLE),
 		(void**)&pV,
-		m_nVertexOffset ? D3DLOCK_NOOVERWRITE : D3DLOCK_DISCARD);
+		m_nVBOffset ? D3DLOCK_NOOVERWRITE : D3DLOCK_DISCARD);
 
 	int numParticleInBatch = 0;
 
 	auto iter = m_lAttribute.begin();
 	for (; iter != m_lAttribute.end(); iter++)
 	{
-		if ((*iter)->isAlive)
+		if ((*iter)->isAlive && (*iter)->nLoop > 1)
 		{
-			pV->p = (*iter)->vPos;
+			float rate = (*iter)->fAge / (*iter)->fLifeTime;
+
+			float radius = (*iter)->fStartRadius + (*iter)->fEndRadius * rate;
+			D3DXVECTOR3 vRad = D3DXVECTOR3(0, 0, 0);
+			vRad.x = cos((*iter)->fCurrentRadiusSpeed) * radius;
+			vRad.z = -sin((*iter)->fCurrentRadiusSpeed) * radius;
+			pV->p = (*iter)->vPos + vRad;
+
 			D3DXCOLOR color = (*iter)->colorFade - (*iter)->color;
-			color *= (*iter)->fAge / (*iter)->fLifeTime;
+			color *= rate;
 			pV->c = (*iter)->color + color;
+
 			pV++;
 
 			numParticleInBatch++;
 
-			if (numParticleInBatch >= m_nVertexBatchSize)
+			if (numParticleInBatch == m_nVBBatchSize)
 			{
 				m_pVB->Unlock();
 
-				DEVICE->DrawPrimitive(D3DPT_POINTLIST, m_nVertexOffset, m_nVertexBatchSize);
+				DEVICE->DrawPrimitive(D3DPT_POINTLIST, m_nVBOffset, m_nVBBatchSize);
 				
-				m_nVertexOffset += m_nVertexBatchSize;
+				m_nVBOffset += m_nVBBatchSize;
 
-				if (m_nVertexOffset >= m_nParticleCount)
-					m_nVertexOffset = 0;
+				if (m_nVBOffset >= m_nParticleCount)
+					m_nVBOffset = 0;
 
 				m_pVB->Lock(
-					m_nVertexOffset * sizeof(ST_PARTICLE),
-					m_nVertexBatchSize * sizeof(ST_PARTICLE),
+					m_nVBOffset * sizeof(ST_PARTICLE),
+					m_nVBBatchSize * sizeof(ST_PARTICLE),
 					(void**)&pV,
-					m_nVertexOffset ? D3DLOCK_NOOVERWRITE : D3DLOCK_DISCARD);
+					m_nVBOffset ? D3DLOCK_NOOVERWRITE : D3DLOCK_DISCARD);
 
 				numParticleInBatch = 0;
 			}
@@ -172,49 +213,83 @@ void Particle::Render()
 	m_pVB->Unlock();
 
 	if (numParticleInBatch)
-		DEVICE->DrawPrimitive(D3DPT_POINTLIST, m_nVertexOffset, numParticleInBatch);
+		DEVICE->DrawPrimitive(D3DPT_POINTLIST, m_nVBOffset, numParticleInBatch);
 
-	m_nVertexOffset += m_nVertexBatchSize;
+	m_nVBOffset += m_nVBBatchSize;
 
 	PostRender();
 }
 
-void Particle::PostRender()
+void ParticleSystem::PostRender()
 {
 	DEVICE->SetRenderState(D3DRS_LIGHTING, true);
 	DEVICE->SetRenderState(D3DRS_POINTSPRITEENABLE, false);
 	DEVICE->SetRenderState(D3DRS_POINTSCALEENABLE, false);
+	DEVICE->SetRenderState(D3DRS_ZWRITEENABLE, true);
 }
 
-void ParticleManager::AddParticle(string keyName, LPDIRECT3DTEXTURE9 texture, float size, int count, ST_PARTICLE_ATTRIBUTE orig, ST_PARTICLE_ATTRIBUTE_VARIABLE var)
+void ParticleManager::AddParticle(string keyName, LPDIRECT3DTEXTURE9 texture, float size, int count, 
+	ST_PARTICLE_ATTRIBUTE orig, ST_PARTICLE_ATTRIBUTE_VARIABLE var)
 {
 	if (m_mapParticle.find(keyName) != m_mapParticle.end()) return;
-	Particle * particle = new Particle;
-	particle->Init(texture, size, count, orig, var);
-	m_mapParticle.insert(make_pair(keyName, particle));
+	ST_PARTICLE_INFO info;
+	info.fParticleSize = size;
+	info.nParticleCount = count;
+	info.origAttribute = orig;
+	info.varAttribute = var;
+	info.pTexture = texture;
+	if (info.origAttribute.nMaxLoop > 0)
+		info.origAttribute.nMaxLoop++;
+	m_mapParticle.insert(make_pair(keyName, info));
 }
 
 void ParticleManager::AddParticle(string fullPath)
 {
 }
 
-void ParticleManager::Update()
+Particle * ParticleManager::GetParticle(string keyName)
 {
-	auto iter = m_mapParticle.begin();
-	for (; iter != m_mapParticle.end(); iter++)
-		iter->second->Update();
-}
+	if (m_mapParticle.find(keyName) == m_mapParticle.end())
+		return NULL;
 
-void ParticleManager::Render()
-{
-	auto iter = m_mapParticle.begin();
-	for (; iter != m_mapParticle.end(); iter++)
-		iter->second->Render();
+	Particle * particle = new Particle;
+	particle->Init(&m_mapParticle[keyName]);
+	return particle;
 }
 
 void ParticleManager::Release()
 {
-	auto iter = m_mapParticle.begin();
-	for (; iter != m_mapParticle.end(); iter++)
-		SAFE_DELETE(iter->second);
+	m_mapParticle.clear();
+}
+
+Particle::Particle()
+	: m_pParticleSystem(NULL)
+{
+	m_vPosition = D3DXVECTOR3(0, 0, 0);
+	m_vRotation = D3DXVECTOR3(0, 0, 0);
+	m_vScale = D3DXVECTOR3(1, 1, 1);
+}
+
+Particle::~Particle()
+{
+	SAFE_DELETE(m_pParticleSystem);
+}
+
+void Particle::Init(ST_PARTICLE_INFO * info)
+{
+	SAFE_DELETE(m_pParticleSystem);
+	m_pParticleSystem = new ParticleSystem;
+	m_pParticleSystem->Init(info->pTexture, info->fParticleSize, info->nParticleCount,
+		&info->origAttribute, &info->varAttribute);
+}
+
+void Particle::World()
+{
+	D3DXMATRIX matS, matR, matT;
+
+	D3DXMatrixScaling(&matS, m_vScale.x, m_vScale.y, m_vScale.z);
+	D3DXMatrixRotationYawPitchRoll(&matR, m_vRotation.y, m_vRotation.x, m_vRotation.z);
+	D3DXMatrixTranslation(&matT, m_vPosition.x, m_vPosition.y, m_vPosition.z);
+
+	m_pParticleSystem->SetWorld(matS * matR * matT);
 }

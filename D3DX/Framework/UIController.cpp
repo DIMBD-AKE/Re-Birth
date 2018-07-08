@@ -45,19 +45,19 @@ void UIObject::Update()
 
 		if (PtInRect(&rc, MOUSE_POS))
 		{
-			m_pFunction->OnOver();
+			m_pFunction->OnOver(this);
 			if (!m_isOver)
 			{
 				m_isOver = true;
-				m_pFunction->OnEntrance();
+				m_pFunction->OnEntrance(this);
 			}
 			if (INPUT->KeyUp(VK_LBUTTON))
-				m_pFunction->OnClick();
+				m_pFunction->OnClick(this);
 		}
 		else if (m_isOver)
 		{
 			m_isOver = false;
-			m_pFunction->OnExit();
+			m_pFunction->OnExit(this);
 		}
 	}
 
