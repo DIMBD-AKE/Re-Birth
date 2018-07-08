@@ -69,9 +69,10 @@ void MagicMonster::Attack()
 			if (!m_bIsAttack)
 			{
 				//공격장판은 플레이어 위치를 중점으로 반지름 5만큼
-				m_pMagicCircle->SetPosAndRad(*(*m_ppCharacter)->GetCharacter()->GetPosition(), 5);
+				m_pMagicCircle->SetPosAndRad(*(*m_ppCharacter)->GetCharacter()->GetPosition(), 3);
 				m_bIsAttack = true;
 				m_eState = MS_ATTACK;
+				ChangeAni();
 			}
 
 

@@ -55,7 +55,7 @@ void DarkHell::SetupStat()
 	AGI(m_uMonsterStat) = 5.0f;
 	HIT(m_uMonsterStat) = 5.0f;
 	SPEED(m_uMonsterStat) = 0.03f;
-	RANGE(m_uMonsterStat) = 2.2f;
+	RANGE(m_uMonsterStat) = 10.0f;
 }
 
 
