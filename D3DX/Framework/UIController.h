@@ -8,13 +8,15 @@ enum UITEXTURE
 	UITEX_END
 };
 
+class UIObject;
+
 class IUIFunction
 {
 public:
-	virtual void OnClick() = 0;
-	virtual void OnOver() = 0;
-	virtual void OnExit() = 0;
-	virtual void OnEntrance() = 0;
+	virtual void OnClick(UIObject * pSender) = 0;
+	virtual void OnOver(UIObject * pSender) = 0;
+	virtual void OnExit(UIObject * pSender) = 0;
+	virtual void OnEntrance(UIObject * pSender) = 0;
 };
 
 class UIObject
