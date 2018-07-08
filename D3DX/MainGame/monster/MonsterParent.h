@@ -55,6 +55,8 @@ protected:
 	int m_nItemID[MAXITEMNUM];
 
 protected:
+	virtual void SetupStat();
+
 	virtual void Attack();
 	//몬스터 스킬함수
 	virtual void Skill();
@@ -68,44 +70,37 @@ protected:
 	POINT MoveForAttack();
 	void ItemDrop();
 
+	void SetCurrentHP(int hp)
+	{
+		m_uMonsterStat.chr.nCurrentHP -= hp;
+		if (m_uMonsterStat.chr.nCurrentHP <= 0)
+		{
+			m_bIsRespawn = true;
+			m_eState = MS_DIE;
+			ChangeAni();
+			ItemDrop();
+		}
+	}
+
+	void ChangeAni();
+	
+
 public:
 	MonsterParent();
 	virtual ~MonsterParent();
 
-	void SetCurrentHP(int hp)
-	{ m_uMonsterStat.chr.nCurrentHP -= hp; 
-	if (m_uMonsterStat.chr.nCurrentHP <= 0)
-	{
-		m_bIsRespawn = true;
-		m_eState = MS_DIE;
-		ChangeAni();
-		ItemDrop();
-	}
-	}
+	
 
 	void CalculDamage(float damage);
 
 	virtual void Setup(Map* map, D3DXVECTOR3 spawnPos);
-	virtual void SetupStat();
+
 	void Update();
 
 	void RespawnUpdate();
 
 	void Render();
 	
-
-	void ChangeAni();
 	void Respawn(D3DXVECTOR3 spawnPos);
-	
-	/*
-	MS_IDLE,
-	MS_RUN,
-	MS_SKILL,
-	MS_ATTACK,
-	MS_DIE,
-	MS_NONE,
-	*/
-	//몬스터 공격함수
-	
 };
 

@@ -23,7 +23,7 @@ protected:
 	bool AttackPossible();
 public:
 	DistanceMonster();
-	~DistanceMonster();
+	virtual ~DistanceMonster();
 
 	virtual void Setup(Map* map, D3DXVECTOR3 spawnPos) override;
 	

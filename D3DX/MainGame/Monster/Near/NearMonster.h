@@ -4,11 +4,8 @@
 class NearMonster :
 	public MonsterParent
 {
-public:
-	NearMonster();
-	virtual ~NearMonster();
+protected:
 
-	virtual void Setup(Map* map, D3DXVECTOR3 spawnPos) override;
 	virtual void SetupStat() override;
 
 	//근접 몬스터 공격함수
@@ -19,5 +16,11 @@ public:
 	virtual void Move() override;
 
 	virtual void DropItemSetup() override;
+public:
+	NearMonster();
+	virtual ~NearMonster();
+
+	virtual void Setup(Map* map, D3DXVECTOR3 spawnPos) override;
+	
 };
 

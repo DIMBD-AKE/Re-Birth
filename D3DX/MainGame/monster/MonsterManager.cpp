@@ -77,16 +77,16 @@ void MonsterManager::Render()
 void MonsterManager::MakeMonster(DropManager* pDropManager)
 {
 
-	MakeElizabeth(pDropManager);
+	//MakeElizabeth(pDropManager);
+	//
+	//MakeAssis(pDropManager);
 
-	MakeAssis(pDropManager);
-
-	MakeDarkHell(pDropManager);
-
-	MakeNifilHeim(pDropManager);
+	//MakeDarkHell(pDropManager);
+	//
+	//MakeNifilHeim(pDropManager);
 	
 	MakeNerisa(pDropManager);
-
+	
 	MakeNike(pDropManager);
 }
 //±Ÿ¡¢
