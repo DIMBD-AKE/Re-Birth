@@ -285,6 +285,15 @@ void Map::Load(string mapPath)
 			m_vecSurface.push_back(v2);
 		}
 
+		if (tok[0] == 'w')
+		{
+			tok = strtok_s(NULL, "\t", &context);
+			D3DXVECTOR3 wall;
+			sscanf_s(tok, "%f %f %f %f %f %f %f %f %f",
+				&wall.x, &wall.y, &wall.z);
+			m_vecWall.push_back(wall);
+		}
+
 		if (tok[0] == 's')
 		{
 			if (tok[1] == 'P')
@@ -328,7 +337,7 @@ void Map::Load(string mapPath)
 			int index = z * MAPSIZE + x;
 			D3DXCOLOR color = pColorSrc[index];
 			float gray = (color.r + color.g + color.b) / 3.0f;
-			m_vecTerrain[index].p.y = gray * 255;
+			m_vecTerrain[index].p.y = gray * 255.0f;
 		}
 	}
 
@@ -414,11 +423,19 @@ void Map::Debug()
 
 	vector<ST_PC_VERTEX> vecVertex;
 	ST_PC_VERTEX v;
+	// ³×ºê
 	v.c = D3DCOLOR_XRGB(65, 178, 244);
 	for (int i = 0; i < m_vecSurface.size(); i++)
 	{
 		v.p = m_vecSurface[i];
 		v.p.y += 0.1;
+		vecVertex.push_back(v);
+	}
+	// º®
+	v.c = D3DCOLOR_XRGB(150, 88, 122);
+	for (int i = 0; i < m_vecWall.size(); i++)
+	{
+		v.p = m_vecWall[i];
 		vecVertex.push_back(v);
 	}
 
@@ -428,7 +445,9 @@ void Map::Debug()
 	DEVICE->SetTexture(0, NULL);
 	DEVICE->SetFVF(ST_PC_VERTEX::FVF);
 	DEVICE->SetTransform(D3DTS_WORLD, &m_matWorld);
+	DEVICE->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 	DEVICE->DrawPrimitiveUP(D3DPT_TRIANGLELIST, vecVertex.size() / 3, &vecVertex[0], sizeof(ST_PC_VERTEX));
+	DEVICE->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
 float Map::GetHeight(float x, float z)

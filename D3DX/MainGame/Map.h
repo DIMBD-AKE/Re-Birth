@@ -9,6 +9,7 @@ private:
 	GET(D3DXVECTOR3, m_vSpawnBoss, SpawnBoss);
 	GET(vector<D3DXVECTOR3>, m_vecSpawnEnemy, SpawnEnemy);
 	GET(vector<D3DXVECTOR3>, m_vecSurface, NavMesh);
+	GET(vector<D3DXVECTOR3>, m_vecWall, Wall);
 
 	vector<ST_PNT_VERTEX>	m_vecTerrain;
 	vector<DWORD>			m_vecIndex;
@@ -31,7 +32,6 @@ public:
 
 	void Load(string mapPath);
 	void Render();
-
 
 	float GetHeight(float x, float z);
 };
