@@ -49,7 +49,7 @@ void NifilHeim::SetupStat()
 	PHYRATE(m_uMonsterStat) = 0.8f;
 	MAGICRATE(m_uMonsterStat) = 1.3f;
 	CHERATE(m_uMonsterStat) = 0.8f;
-	ATKSPEED(m_uMonsterStat) = 110.0f;
+	ATKSPEED(m_uMonsterStat) =0.7f;
 
 	DEF(m_uMonsterStat) = 5;
 	AGI(m_uMonsterStat) = 5.0f;

@@ -96,11 +96,11 @@ void MonsterManager::MakeMonster(DropManager* pDropManager)
 
 	//MakeDarkHell(pDropManager);
 	//
-	//MakeNifilHeim(pDropManager);
+	MakeNifilHeim(pDropManager);
 	
-	MakeNerisa(pDropManager);
-	
-	MakeNike(pDropManager);
+	//MakeNerisa(pDropManager);
+	//
+	//MakeNike(pDropManager);
 }
 //±Ÿ¡¢
 void MonsterManager::MakeElizabeth(DropManager* pDropManager)

@@ -49,7 +49,7 @@ void Nike::SetupStat()
 	PHYRATE(m_uMonsterStat) = 0.9f;
 	MAGICRATE(m_uMonsterStat) = 0.9f;
 	CHERATE(m_uMonsterStat) = 1.3f;
-	ATKSPEED(m_uMonsterStat) = 110.0f;
+	ATKSPEED(m_uMonsterStat) = 0.8f;
 
 	DEF(m_uMonsterStat) = 4;
 	AGI(m_uMonsterStat) = 20.0f;

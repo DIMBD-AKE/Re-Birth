@@ -49,14 +49,15 @@ void NearMonster::Attack()
 				m_eState = MS_MOVEFORATTACK;
 				ChangeAni();
 			}
+			m_nAttackDelay = 0;
 			MoveForAttack();
 		}
 		else
 		{
-			char test[111];
-			sprintf_s(test, sizeof(test), "공격딜레이 : %d", m_nAttackDelay);
+			//char test[111];
+			//sprintf_s(test, sizeof(test), "공격딜레이 : %d", m_nAttackDelay);
 
-			TEXT->Add(test, 10, 10, 30);
+			//TEXT->Add(test, 10, 10, 30);
 
 			if (m_eState == MS_MOVEFORATTACK)
 			{
@@ -65,7 +66,8 @@ void NearMonster::Attack()
 			}
 			//플레이어 공격기능 설정
 			m_eState = MS_ATTACK;
-			if (m_nAttackDelay >= ATKSPEED(m_uMonsterStat))
+			//if (m_nAttackDelay >= ATKSPEED(m_uMonsterStat))
+			if (m_pModel->IsAnimationPercent(ATKSPEED(m_uMonsterStat)))
 			{
 				float tatalRate = PHYRATE(m_uMonsterStat) + MAGICRATE(m_uMonsterStat) + CHERATE(m_uMonsterStat);
 				float tatalDamage = tatalRate * ATK(m_uMonsterStat);

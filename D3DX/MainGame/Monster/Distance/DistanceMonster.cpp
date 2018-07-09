@@ -72,7 +72,7 @@ void DistanceMonster::Attack()
 				}
 				//플레이어 공격기능 설정
 				m_eState = MS_ATTACK;
-				if (m_nAttackDelay >= ATKSPEED(m_uMonsterStat))
+				if (m_pModel->IsAnimationPercent(ATKSPEED(m_uMonsterStat)))
 				{
 					float tatalRate = PHYRATE(m_uMonsterStat) + MAGICRATE(m_uMonsterStat) + CHERATE(m_uMonsterStat);
 					float tatalDamage = tatalRate * ATK(m_uMonsterStat);

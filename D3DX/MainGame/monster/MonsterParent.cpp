@@ -55,6 +55,20 @@ void MonsterParent::SetupStat()
 
 void MonsterParent::Update()
 {
+	if (INPUT->KeyDown(VK_DOWN))
+	{
+		ATKSPEED(m_uMonsterStat) -= 1;
+	}
+
+	if (INPUT->KeyDown(VK_UP))
+	{
+		ATKSPEED(m_uMonsterStat) += 1;
+	}
+	char test[111];
+	
+	sprintf_s(test, sizeof(test), "%d, %f, %f", m_nAttackDelay, ATKSPEED(m_uMonsterStat), m_pModel->GetAnimationPeriod("ATTACK"));
+	TEXT->Add(test, 10, 10, 30);
+
 	if (!DEBUG)
 	{
 		if (INPUT->KeyDown('O'))

@@ -84,7 +84,7 @@ void MagicMonster::Attack()
 			//플레이어 공격기능 설정
 
 			//공격 딜레이가 오면
-			if (m_nAttackDelay >= ATKSPEED(m_uMonsterStat))
+			if (m_pModel->IsAnimationPercent(ATKSPEED(m_uMonsterStat)))
 			{
 
 				//마법타입 공격방식 수정해야함

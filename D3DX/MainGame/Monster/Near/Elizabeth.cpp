@@ -56,7 +56,7 @@ void Elizabeth::SetupStat()
 	PHYRATE(m_uMonsterStat) = 0.9f;
 	MAGICRATE(m_uMonsterStat) = 1.3f;
 	CHERATE(m_uMonsterStat) = 1.0f;
-	ATKSPEED(m_uMonsterStat) = 100.0f;
+	ATKSPEED(m_uMonsterStat) = 0.5f;
 
 	DEF(m_uMonsterStat) = 4;
 	AGI(m_uMonsterStat) = 10.0f;
