@@ -11,6 +11,8 @@ private:
 
 	float		m_fParticleSize;
 	int			m_nParticleCount;
+
+	int			m_nVBSize;
 	int			m_nVBBatchSize;
 	int			m_nVBOffset;
 
