@@ -185,7 +185,7 @@ void ParticleSystem::Render()
 	auto iter = m_lAttribute.begin();
 	for (; iter != m_lAttribute.end(); iter++)
 	{
-		if ((*iter)->isAlive && (*iter)->nLoop > 1)
+		if ((*iter)->isAlive && (*iter)->nLoop > 0)
 		{
 			float rate = (*iter)->fAge / (*iter)->fLifeTime;
 
