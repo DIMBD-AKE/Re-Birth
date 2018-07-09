@@ -44,6 +44,8 @@ void ParticleSystem::Init(LPDIRECT3DTEXTURE9 texture, float size, int count,
 	m_pOrigAttribute = orig;
 	m_pVarAttribute = var;
 
+	m_isRegen = true;
+
 	D3DXMatrixIdentity(&m_matWorld);
 
 	for (int i = 0; i < m_nParticleCount; i++)
@@ -123,10 +125,8 @@ void ParticleSystem::Update()
 
 		(*iter)->fAge += TIME->GetElapsedTime();
 
-		if ((*iter)->fAge > (*iter)->fLifeTime)
-		{
+		if ((*iter)->fAge > (*iter)->fLifeTime && m_isRegen)
 			*(*iter) = ResetParticle((*iter)->nLoop);
-		}
 	}
 }
 
@@ -243,8 +243,153 @@ void ParticleManager::AddParticle(string keyName, LPDIRECT3DTEXTURE9 texture, fl
 	m_mapParticle.insert(make_pair(keyName, info));
 }
 
-void ParticleManager::AddParticle(string fullPath)
+void ParticleManager::AddParticle(string keyName, LPDIRECT3DTEXTURE9 texture, string fullPath)
 {
+	if (m_mapParticle.find(keyName) != m_mapParticle.end()) return;
+
+	FILE * fp;
+	fopen_s(&fp, fullPath.c_str(), "r");
+
+	ST_PARTICLE_ATTRIBUTE orig;
+	ST_PARTICLE_ATTRIBUTE_VARIABLE var;
+	int count;
+	float size;
+
+	ZeroMemory(&orig, sizeof(ST_PARTICLE_ATTRIBUTE));
+	ZeroMemory(&var, sizeof(ST_PARTICLE_ATTRIBUTE_VARIABLE));
+
+	char line[256];
+	while (true)
+	{
+		fgets(line, 256, fp);
+		if (feof(fp)) break;
+
+		char * context;
+		char * tok = strtok_s(line, "\t\n", &context);
+		if (strcmp(tok, "A_CNT") == 0)
+		{
+			tok = strtok_s(NULL, "\t\n", &context);
+			sscanf_s(tok, "%d", &count);
+		}
+		if (strcmp(tok, "A_SIZ") == 0)
+		{
+			tok = strtok_s(NULL, "\t\n", &context);
+			sscanf_s(tok, "%f", &size);
+		}
+		if (strcmp(tok, "A_POS") == 0)
+		{
+			tok = strtok_s(NULL, "\t\n", &context);
+			sscanf_s(tok, "%f %f %f", &orig.vPos.x, &orig.vPos.y, &orig.vPos.z);
+		}
+		if (strcmp(tok, "A_VEL") == 0)
+		{
+			tok = strtok_s(NULL, "\t\n", &context);
+			sscanf_s(tok, "%f %f %f", &orig.vVelocity.x, &orig.vVelocity.y, &orig.vVelocity.z);
+		}
+		if (strcmp(tok, "A_ACL") == 0)
+		{
+			tok = strtok_s(NULL, "\t\n", &context);
+			sscanf_s(tok, "%f %f %f", &orig.vAcceleration.x, &orig.vAcceleration.y, &orig.vAcceleration.z);
+		}
+		if (strcmp(tok, "A_GRV") == 0)
+		{
+			tok = strtok_s(NULL, "\t\n", &context);
+			sscanf_s(tok, "%f %f %f", &orig.vGravity.x, &orig.vGravity.y, &orig.vGravity.z);
+		}
+		if (strcmp(tok, "A_STR") == 0)
+		{
+			tok = strtok_s(NULL, "\t\n", &context);
+			sscanf_s(tok, "%f", &orig.fStartRadius);
+		}
+		if (strcmp(tok, "A_EDR") == 0)
+		{
+			tok = strtok_s(NULL, "\t\n", &context);
+			sscanf_s(tok, "%f", &orig.fEndRadius);
+		}
+		if (strcmp(tok, "A_RSD") == 0)
+		{
+			tok = strtok_s(NULL, "\t\n", &context);
+			sscanf_s(tok, "%f", &orig.fRadiusSpeed);
+		}
+		if (strcmp(tok, "A_LIF") == 0)
+		{
+			tok = strtok_s(NULL, "\t\n", &context);
+			sscanf_s(tok, "%f", &orig.fLifeTime);
+		}
+		if (strcmp(tok, "A_COL") == 0)
+		{
+			tok = strtok_s(NULL, "\t\n", &context);
+			DWORD temp;
+			sscanf_s(tok, "%d", &temp);
+			orig.color = D3DXCOLOR(temp);
+		}
+		if (strcmp(tok, "A_CLF") == 0)
+		{
+			tok = strtok_s(NULL, "\t\n", &context);
+			DWORD temp;
+			sscanf_s(tok, "%d", &temp);
+			orig.colorFade = D3DXCOLOR(temp);
+		}
+		if (strcmp(tok, "A_LOP") == 0)
+		{
+			tok = strtok_s(NULL, "\t\n", &context);
+			sscanf_s(tok, "%f", &orig.nMaxLoop);
+			if (orig.nMaxLoop > 0)
+				orig.nMaxLoop++;
+		}
+
+		if (strcmp(tok, "V_POS") == 0)
+		{
+			tok = strtok_s(NULL, "\t\n", &context);
+			sscanf_s(tok, "%f %f %f", &var.vPosVar.x, &var.vPosVar.y, &var.vPosVar.z);
+		}
+		if (strcmp(tok, "V_VEL") == 0)
+		{
+			tok = strtok_s(NULL, "\t\n", &context);
+			sscanf_s(tok, "%f %f %f", &var.vVelocityVar.x, &var.vVelocityVar.y, &var.vVelocityVar.z);
+		}
+		if (strcmp(tok, "V_ACL") == 0)
+		{
+			tok = strtok_s(NULL, "\t\n", &context);
+			sscanf_s(tok, "%f %f %f", &var.vAccelerationVar.x, &var.vAccelerationVar.y, &var.vAccelerationVar.z);
+		}
+		if (strcmp(tok, "V_GRV") == 0)
+		{
+			tok = strtok_s(NULL, "\t\n", &context);
+			sscanf_s(tok, "%f %f %f", &var.vGravityVar.x, &var.vGravityVar.y, &var.vGravityVar.z);
+		}
+		if (strcmp(tok, "V_STR") == 0)
+		{
+			tok = strtok_s(NULL, "\t\n", &context);
+			sscanf_s(tok, "%f", &var.fStartRadiusVar);
+		}
+		if (strcmp(tok, "V_EDR") == 0)
+		{
+			tok = strtok_s(NULL, "\t\n", &context);
+			sscanf_s(tok, "%f", &var.fEndRadiusVar);
+		}
+		if (strcmp(tok, "V_RSD") == 0)
+		{
+			tok = strtok_s(NULL, "\t\n", &context);
+			sscanf_s(tok, "%f", &var.fRadiusSpeedVar);
+		}
+		if (strcmp(tok, "V_LIF") == 0)
+		{
+			tok = strtok_s(NULL, "\t\n", &context);
+			sscanf_s(tok, "%f", &var.fLifeTimeVar);
+		}
+	}
+
+	ST_PARTICLE_INFO info;
+	info.fParticleSize = size;
+	info.nParticleCount = count;
+	info.pTexture = texture;
+	info.origAttribute = orig;
+	info.varAttribute = var;
+
+	if (info.origAttribute.nMaxLoop > 0)
+		info.origAttribute.nMaxLoop++;
+	m_mapParticle.insert(make_pair(keyName, info));
 }
 
 Particle * ParticleManager::GetParticle(string keyName)
