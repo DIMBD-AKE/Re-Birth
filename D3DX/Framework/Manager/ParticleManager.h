@@ -33,6 +33,7 @@ public:
 
 	void Attribute(ST_PARTICLE_ATTRIBUTE orig, ST_PARTICLE_ATTRIBUTE_VARIABLE var);
 
+	void TimeReset();
 	void Update();
 
 	void PreRender();
@@ -58,6 +59,7 @@ public:
 
 	void Init(ST_PARTICLE_INFO * info);
 	void World();
+	void TimeReset() { m_pParticleSystem->TimeReset(); }
 	void Update() { m_pParticleSystem->Update(); }
 	void Render() { m_pParticleSystem->Render(); }
 	void SetRegen(bool regen) { m_pParticleSystem->SetRegen(regen); }

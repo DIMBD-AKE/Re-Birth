@@ -52,15 +52,7 @@ void ParticleSystem::Init(LPDIRECT3DTEXTURE9 texture, float size, int count,
 		m_lAttribute.push_back(new ST_PARTICLE_ATTRIBUTE(ResetParticle(0)));
 
 	// 시간 재설정
-	auto iter = m_lAttribute.begin();
-	for (;; iter++)
-	{
-		if (iter == m_lAttribute.end())
-			iter = m_lAttribute.begin();
-		(*iter)->fAge += 0.1;
-		if ((*iter)->fAge > (*iter)->fLifeTime)
-			break;
-	}
+	TimeReset();
 }
 
 ST_PARTICLE_ATTRIBUTE ParticleSystem::ResetParticle(int loop)
@@ -104,6 +96,19 @@ void ParticleSystem::Attribute(ST_PARTICLE_ATTRIBUTE orig, ST_PARTICLE_ATTRIBUTE
 {
 	*m_pOrigAttribute = orig;
 	*m_pVarAttribute = var;
+}
+
+void ParticleSystem::TimeReset()
+{
+	auto iter = m_lAttribute.begin();
+	for (;; iter++)
+	{
+		if (iter == m_lAttribute.end())
+			iter = m_lAttribute.begin();
+		(*iter)->fAge += 0.1;
+		if ((*iter)->fAge > (*iter)->fLifeTime)
+			break;
+	}
 }
 
 void ParticleSystem::Update()
