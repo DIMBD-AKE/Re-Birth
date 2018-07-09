@@ -101,12 +101,18 @@ void ParticleSystem::Attribute(ST_PARTICLE_ATTRIBUTE orig, ST_PARTICLE_ATTRIBUTE
 void ParticleSystem::TimeReset()
 {
 	auto iter = m_lAttribute.begin();
+	for (; iter != m_lAttribute.end(); iter++)
+	{
+		(*iter)->nLoop = 0;
+		(*iter)->isAlive = true;
+	}
+
+	iter = m_lAttribute.begin();
 	for (;; iter++)
 	{
 		if (iter == m_lAttribute.end())
 			iter = m_lAttribute.begin();
 		(*iter)->fAge += 0.1;
-		(*iter)->nLoop = 0;
 		if ((*iter)->fAge > (*iter)->fLifeTime)
 			break;
 	}
@@ -386,6 +392,8 @@ void ParticleManager::AddParticle(string keyName, LPDIRECT3DTEXTURE9 texture, st
 			sscanf_s(tok, "%f", &var.fLifeTimeVar);
 		}
 	}
+
+	fclose(fp);
 
 	ST_PARTICLE_INFO info;
 	info.fParticleSize = size;
