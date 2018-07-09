@@ -30,7 +30,9 @@ void ParticleSystem::Init(LPDIRECT3DTEXTURE9 texture, float size, int count,
 	m_pTexture = texture;
 	m_fParticleSize = size;
 	m_nParticleCount = count;
-	m_nVBBatchSize = count / 1;
+
+	m_nVBSize = 2048;
+	m_nVBBatchSize = m_nVBBatchSize / 4;
 	m_nVBOffset = 0;
 
 	SAFE_DELETE(m_pVB);
@@ -149,8 +151,14 @@ void ParticleSystem::PreRender()
 	DEVICE->SetRenderState(D3DRS_POINTSCALEENABLE, true);
 	DEVICE->SetRenderState(D3DRS_ZWRITEENABLE, false);
 	DEVICE->SetRenderState(D3DRS_ALPHABLENDENABLE, true);
+
+	DEVICE->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
 	DEVICE->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 	DEVICE->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+
+	DEVICE->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
+	DEVICE->SetTextureStageState(0, D3DTSS_ALPHAARG0, D3DTA_DIFFUSE);
+	DEVICE->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
 
 	DWORD b = FtoDw(m_fParticleSize);
 	DEVICE->SetRenderState(D3DRS_POINTSIZE, b);
@@ -168,9 +176,9 @@ void ParticleSystem::Render()
 	DEVICE->SetTransform(D3DTS_WORLD, &m_matWorld);
 	DEVICE->SetTexture(0, m_pTexture);
 	DEVICE->SetFVF(ST_PARTICLE::FVF);
-	DEVICE->SetStreamSource(0, m_pVB, 0, sizeof(ST_PARTICLE::FVF));
+	DEVICE->SetStreamSource(0, m_pVB, 0, sizeof(ST_PARTICLE));
 
-	if (m_nVBOffset >= m_nParticleCount)
+	if (m_nVBOffset >= m_nVBSize)
 		m_nVBOffset = 0;
 
 	ST_PARTICLE * pV = NULL;
@@ -195,9 +203,14 @@ void ParticleSystem::Render()
 			vRad.z = -sin((*iter)->fCurrentRadiusSpeed) * radius;
 			pV->p = (*iter)->vPos + vRad;
 
-			D3DXCOLOR color = (*iter)->colorFade - (*iter)->color;
-			color *= rate;
-			pV->c = (*iter)->color + color;
+			D3DXCOLOR currentColor = (*iter)->colorFade - (*iter)->color;
+			currentColor *= rate;
+			currentColor += (*iter)->color;
+			pV->c = D3DCOLOR_ARGB(
+				(int)(255 - 255 * rate), 
+				(int)(currentColor.r * 255),
+				(int)(currentColor.g * 255),
+				(int)(currentColor.b * 255));
 
 			pV++;
 
@@ -211,7 +224,7 @@ void ParticleSystem::Render()
 				
 				m_nVBOffset += m_nVBBatchSize;
 
-				if (m_nVBOffset >= m_nParticleCount)
+				if (m_nVBOffset >= m_nVBSize)
 					m_nVBOffset = 0;
 
 				m_pVB->Lock(
@@ -241,6 +254,11 @@ void ParticleSystem::PostRender()
 	DEVICE->SetRenderState(D3DRS_POINTSPRITEENABLE, false);
 	DEVICE->SetRenderState(D3DRS_POINTSCALEENABLE, false);
 	DEVICE->SetRenderState(D3DRS_ZWRITEENABLE, true);
+	DEVICE->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	DEVICE->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+	DEVICE->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG1);
+	DEVICE->SetTextureStageState(0, D3DTSS_ALPHAARG0, D3DTA_CURRENT);
+	DEVICE->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
 }
 
 void ParticleManager::AddParticle(string keyName, LPDIRECT3DTEXTURE9 texture, float size, int count, 
