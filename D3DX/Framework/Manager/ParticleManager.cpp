@@ -106,6 +106,7 @@ void ParticleSystem::TimeReset()
 		if (iter == m_lAttribute.end())
 			iter = m_lAttribute.begin();
 		(*iter)->fAge += 0.1;
+		(*iter)->nLoop = 0;
 		if ((*iter)->fAge > (*iter)->fLifeTime)
 			break;
 	}
