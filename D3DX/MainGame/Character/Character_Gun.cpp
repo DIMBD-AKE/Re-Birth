@@ -23,7 +23,7 @@ void Character_Gun::Init(Map * map, CHARSELECT order, MonsterManager* pMonsterMa
 		//총남캐
 		m_pCharacter = MODELMANAGER->GetModel("메그너스", MODELTYPE_X);
 		m_Status->chr.fAgi = 50.0f;
-		m_Status->chr.fAtkSpeed = 72.0f;
+		m_Status->chr.fAtkSpeed = 3.0f;
 		m_Status->chr.fCheRate = 70.0f;
 		m_Status->chr.fHit = 70.0f;
 		m_Status->chr.fMagicRate = 25.0f;
@@ -36,7 +36,7 @@ void Character_Gun::Init(Map * map, CHARSELECT order, MonsterManager* pMonsterMa
 		m_Status->chr.nMaxHp = 100;
 		m_Status->chr.nMaxStam = 10;
 		m_Status->chr.fRange = 20.0f;
-		m_Status->chr.fScale = 1.2f;
+		m_Status->chr.fScale = 3.2f;
 		CharacterParant::Init(map, order, pMonsterManager);
 
 		m_pUIobj->SetTexture(TEXTUREMANAGER->GetTexture("메그너스_사진"));
@@ -47,7 +47,7 @@ void Character_Gun::Init(Map * map, CHARSELECT order, MonsterManager* pMonsterMa
 		//활여캐
 		m_pCharacter = MODELMANAGER->GetModel("스카디", MODELTYPE_X);
 		m_Status->chr.fAgi = 50.0f;
-		m_Status->chr.fAtkSpeed = 72.0f;
+		m_Status->chr.fAtkSpeed = 2.0f;
 		m_Status->chr.fCheRate = 70.0f;
 		m_Status->chr.fHit = 70.0f;
 		m_Status->chr.fMagicRate = 25.0f;
@@ -60,7 +60,7 @@ void Character_Gun::Init(Map * map, CHARSELECT order, MonsterManager* pMonsterMa
 		m_Status->chr.nMaxHp = 100;
 		m_Status->chr.nMaxStam = 10;
 		m_Status->chr.fRange = 25.0f;
-		m_Status->chr.fScale = 1.2f;
+		m_Status->chr.fScale = 3.2f;
 		CharacterParant::Init(map, order, pMonsterManager);
 
 		m_pUIobj->SetTexture(TEXTUREMANAGER->GetTexture("스카디_사진"));
@@ -93,6 +93,8 @@ void Character_Gun::Render()
 		m_pInventory->Render();
 
 		m_pUIobj->Render();
+
+		CharacterParant::Render();
 	}
 }
 

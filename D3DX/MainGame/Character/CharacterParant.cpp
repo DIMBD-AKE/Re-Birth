@@ -211,12 +211,21 @@ void CharacterParant::SetCurrentHP(int hp)
 
 void CharacterParant::CalculDamage(float damage)
 {
+	
+
+	
 	float totalRate =
 		m_Status->chr.fPhyRate +
 		m_Status->chr.fMagicRate +
 		m_Status->chr.fCheRate;
 
 	float totalDamage = totalRate * m_Status->chr.nDef;
+
+	totalDamage = damage - totalDamage;
+
+	totalDamage /= 3;
+
+	if (totalDamage <= 1) totalDamage = 1;
 
 	totalDamage = round(totalDamage);
 
@@ -234,82 +243,86 @@ void CharacterParant::Attack()
 		D3DXVECTOR3 pos = *m_pCharacter->GetPosition();														//플레이어 포지션 받고 
 		D3DXVECTOR3 rot = *m_pCharacter->GetRotation();														//플레이어 각도 받고 
 		
-		int MinIndex = 0;
+		int MinIndex = -1;
 		float MinDistance = 0.0f;
+		float radius;
+		D3DXVECTOR3 mosPos;
+		float distance; 
 
 	if (m_eChrType == CHRTYPE_SWORD || m_eChrType == CHRTYPE_GUN)
 	{
-
+		//기준점이 되는 몬스터를 구하고 
 		for (int i = 0; i < m_pMonsterManager->GetMonsterVector().size(); ++i)
 		{
 			if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn())continue;								//리젠할때는 건드리지 않고 
-			else
+			
+			float radius1 = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().radius;		//몬스터의 바운드 스페어의 반지름 받고 
+			D3DXVECTOR3 mosPos1 = *(m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetPosition());		//몬스터 포지션 받고 
+			float distance1 = D3DXVec3Length(&(mosPos1 - pos));
+	
+			if (distance1 - radius1 > m_Status->chr.fRange) continue;
+			distance = distance1;
+			//radius = radius1;
+
+			MinIndex = i;
+			break;
+		}
+		if (MinIndex != -1)//만약 기준점이 된 몬스터가 구해졌으면 
+		{
+			for (int i = MinIndex+1; i < m_pMonsterManager->GetMonsterVector().size(); ++i)
 			{
-				float radius = m_pMonsterManager->GetMonsterVector()[0]->GetModel()->GetBoundSphere().radius;		//몬스터의 바운드 스페어의 반지름 받고 
-				D3DXVECTOR3 mosPos = *(m_pMonsterManager->GetMonsterVector()[0]->GetModel()->GetPosition());		//몬스터 포지션 받고 
-				float distance = D3DXVec3Length(&(mosPos - pos));												//거리계산으로 몬스터 위치와 플레이어 포지션 뺀 값을 저장하는 변수만들고
-
-
-				for (int j = 1; j < m_pMonsterManager->GetMonsterVector().size(); j++)
+				if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn())continue;	//리젠할때는 건드리지 않고 
+				radius = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().radius;
+				D3DXVECTOR3 mosPos2 = *(m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetPosition());
+				float distance2 = D3DXVec3Length(&(mosPos2 - pos));
+				if (distance2 - radius > m_Status->chr.fRange) continue;
+				if (distance > distance2)
 				{
-					D3DXVECTOR3 mosPos2 = *(m_pMonsterManager->GetMonsterVector()[j]->GetModel()->GetPosition());
-					float distance2 = D3DXVec3Length(&(mosPos2 - pos));
-					if (distance > distance2)
-					{
-						distance = distance2;
-						MinIndex = j;
-					}
-				}
-
-
-				if (distance - radius > m_Status->chr.fRange) continue;														//거리랑 반지름을 뺀 값이 공격 길이보다 크면 처리하지 않고
-				else
-				{
-					D3DXVECTOR3 delta = mosPos - pos;															//델타 변수는 몬스터 포지션과 내 포지션을 뺀 벡터값으로 두고
-					if (atan2(delta.x, delta.z) > m_Status->chr.fScale) continue;									//아탄2의 결과 각도보다 fScale값이 크면 그냥 넘기고 
-					else
-					{
-						m_pMonsterManager->GetMonsterVector()[MinIndex]->CalculDamage(10000000.0f);
-					}
+					distance = distance2;
+					MinIndex = i;
 				}
 			}
+			m_pMonsterManager->GetMonsterVector()[MinIndex]->CalculDamage(10000000.0f);
 		}
+
+		
+
+		
 	}
 	else if (m_eChrType == CHRTYPE_MAGIC)
 	{
+		//기준점이 되는 몬스터를 구하고 
 		for (int i = 0; i < m_pMonsterManager->GetMonsterVector().size(); ++i)
 		{
 			if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn())continue;								//리젠할때는 건드리지 않고 
-			else
+
+			float radius1 = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().radius;		//몬스터의 바운드 스페어의 반지름 받고 
+			D3DXVECTOR3 mosPos1 = *(m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetPosition());		//몬스터 포지션 받고 
+			float distance1 = D3DXVec3Length(&(mosPos1 - pos));
+
+			if (distance1 - radius1 > m_Status->chr.fRange) continue;
+			distance = distance1;
+			//radius = radius1;
+
+			MinIndex = i;
+			break;
+		}
+		if (MinIndex != -1)//만약 기준점이 된 몬스터가 구해졌으면 
+		{
+			for (int i = MinIndex + 1; i < m_pMonsterManager->GetMonsterVector().size(); ++i)
 			{
-				float radius = m_pMonsterManager->GetMonsterVector()[0]->GetModel()->GetBoundSphere().radius;		//몬스터의 바운드 스페어의 반지름 받고 
-				D3DXVECTOR3 mosPos = *(m_pMonsterManager->GetMonsterVector()[0]->GetModel()->GetPosition());		//몬스터 포지션 받고 
-				float distance = D3DXVec3Length(&(mosPos - pos));												//거리계산으로 몬스터 위치와 플레이어 포지션 뺀 값을 저장하는 변수만들고
-
-
-				for (int j = 1; j < m_pMonsterManager->GetMonsterVector().size(); j++)
+				if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn())continue;	//리젠할때는 건드리지 않고 
+				radius = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().radius;
+				D3DXVECTOR3 mosPos2 = *(m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetPosition());
+				float distance2 = D3DXVec3Length(&(mosPos2 - pos));
+				if (distance2 - radius > m_Status->chr.fRange) continue;
+				if (distance > distance2)
 				{
-					D3DXVECTOR3 mosPos2 = *(m_pMonsterManager->GetMonsterVector()[j]->GetModel()->GetPosition());
-					float distance2 = D3DXVec3Length(&(mosPos2 - pos));
-					if (distance > distance2)
-					{
-						distance = distance2;
-						MinIndex = j;
-					}
-				}
-
-
-				if (distance - radius > m_Status->chr.fRange) continue;														//거리랑 반지름을 뺀 값이 공격 길이보다 크면 처리하지 않고
-				else
-				{
-					D3DXVECTOR3 delta = mosPos - pos;															//델타 변수는 몬스터 포지션과 내 포지션을 뺀 벡터값으로 두고
-					if (atan2(delta.x, delta.z) > m_Status->chr.fScale) continue;									//아탄2의 결과 각도보다 fScale값이 크면 그냥 넘기고 
-					else
-					{
-						m_pMonsterManager->GetMonsterVector()[MinIndex]->CalculDamage(10000000.0f);
-					}
+					distance = distance2;
+					MinIndex = i;
 				}
 			}
+			m_pMonsterManager->GetMonsterVector()[MinIndex]->CalculDamage(10000000.0f);
 		}
 	}
 }
@@ -526,10 +539,16 @@ void CharacterParant::KeyControl()
 	if (m_bIsDash)
 	{
 		m_pCharacter->SetAnimationSpeed(1.0f * 100);
+		float temp;
+		temp = m_pCharacter->GetAnimationPeriod("RUN");
+		int a = 0;
 	}
 	else
 	{
 		m_pCharacter->SetAnimationSpeed(1.0f);
+		float temp;
+		temp = m_pCharacter->GetAnimationPeriod("RUN");
+		int a = 0;
 	}
 	//공격상태일때 애니메이션 스피드 제어
 	if (m_bIsAttack)
