@@ -14,6 +14,8 @@ private:
 	int			m_nVBBatchSize;
 	int			m_nVBOffset;
 
+	bool		m_isRegen;
+
 	ST_PARTICLE_ATTRIBUTE*			m_pOrigAttribute;
 	ST_PARTICLE_ATTRIBUTE_VARIABLE*	m_pVarAttribute;
 
@@ -27,6 +29,7 @@ public:
 		ST_PARTICLE_ATTRIBUTE * orig, ST_PARTICLE_ATTRIBUTE_VARIABLE * var);
 
 	ST_PARTICLE_ATTRIBUTE ResetParticle(int loop);
+	void SetRegen(bool regen) { m_isRegen = regen; }
 
 	void Attribute(ST_PARTICLE_ATTRIBUTE orig, ST_PARTICLE_ATTRIBUTE_VARIABLE var);
 
@@ -57,6 +60,7 @@ public:
 	void World();
 	void Update() { m_pParticleSystem->Update(); }
 	void Render() { m_pParticleSystem->Render(); }
+	void SetRegen(bool regen) { m_pParticleSystem->SetRegen(regen); }
 };
 
 class ParticleManager
@@ -69,7 +73,7 @@ private:
 public:
 	void AddParticle(string keyName, LPDIRECT3DTEXTURE9 texture, float size, int count,
 		ST_PARTICLE_ATTRIBUTE orig, ST_PARTICLE_ATTRIBUTE_VARIABLE var);
-	void AddParticle(string fullPath);
+	void AddParticle(string keyName, LPDIRECT3DTEXTURE9 texture, string fullPath);
 
 	Particle * GetParticle(string keyName);
 
