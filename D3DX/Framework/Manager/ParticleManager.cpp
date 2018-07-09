@@ -136,6 +136,8 @@ void ParticleSystem::PreRender()
 	DEVICE->SetRenderState(D3DRS_POINTSPRITEENABLE, true);
 	DEVICE->SetRenderState(D3DRS_POINTSCALEENABLE, true);
 	DEVICE->SetRenderState(D3DRS_ZWRITEENABLE, false);
+	DEVICE->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	DEVICE->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 
 	DWORD b = FtoDw(m_fParticleSize);
 	DEVICE->SetRenderState(D3DRS_POINTSIZE, b);
@@ -333,9 +335,7 @@ void ParticleManager::AddParticle(string keyName, LPDIRECT3DTEXTURE9 texture, st
 		if (strcmp(tok, "A_LOP") == 0)
 		{
 			tok = strtok_s(NULL, "\t\n", &context);
-			sscanf_s(tok, "%f", &orig.nMaxLoop);
-			if (orig.nMaxLoop > 0)
-				orig.nMaxLoop++;
+			sscanf_s(tok, "%d", &orig.nMaxLoop);
 		}
 
 		if (strcmp(tok, "V_POS") == 0)
