@@ -164,7 +164,7 @@ void MonsterParent::Respawn(D3DXVECTOR3 spawnPos)
 	m_nResPawnCount = m_bIsRespawn = 0;
 	m_eState = MS_IDLE;
 	ChangeAni();
-
+	CURRENTHP(m_uMonsterStat) = MAXHP(m_uMonsterStat);
 	
 
 	m_pModel->SetPosition(D3DXVECTOR3(spawnPos.x, m_pMap->GetHeight(spawnPos.x, spawnPos.z), spawnPos.z));
