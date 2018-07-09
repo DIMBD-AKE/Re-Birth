@@ -27,6 +27,8 @@ class MonsterParent
 	SET(CharacterParant**, m_ppCharacter, Character);
 	SET(DropManager*, m_pDropManager, DropManager);
 
+
+
 	D3DXVECTOR3		m_vDir;
 
 	int				m_nPatternChangeCount;

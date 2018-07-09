@@ -54,6 +54,25 @@ void NearMonster::Attack()
 		}
 		else
 		{
+			D3DXVECTOR3 dir =
+				*CHARACTER->GetPosition() - *m_pModel->GetPosition();
+
+			float x = dir.x - 0;
+			float y = dir.z - 0;
+
+			float distance = sqrtf(x * x + y * y);
+
+			float angle = acosf(x / distance);
+
+			if (dir.z > 0)
+			{
+				angle = D3DX_PI * 2 - angle;
+				if (angle >= D3DX_PI * 2) angle -= D3DX_PI * 2;
+			}
+
+			angle -= D3DX_PI / 2;
+
+			m_pModel->SetRotation(D3DXVECTOR3(0, angle, 0));
 			//char test[111];
 			//sprintf_s(test, sizeof(test), "공격딜레이 : %d", m_nAttackDelay);
 
