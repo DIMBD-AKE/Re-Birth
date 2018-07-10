@@ -7,6 +7,8 @@ class Map;
 class CharacterParant;
 class AStar;
 class DropManager;
+class UIObject;
+
 enum MON_STATE{
 	MS_IDLE,			//제자리에 있는 상태
 	MS_RUN,				//비전투에 걷는 상태
@@ -27,7 +29,15 @@ class MonsterParent
 	SET(CharacterParant**, m_ppCharacter, Character);
 	SET(DropManager*, m_pDropManager, DropManager);
 
+	//타겟팅이 되었냐(데미지를 입었냐)
+	SET(bool, m_bIsTargeting, IsTargeting);
 
+protected:
+
+	float m_fUIMoveX;
+	float m_fUIMoveY;
+
+	UIObject* m_pHPBar;
 
 	D3DXVECTOR3		m_vDir;
 
@@ -35,8 +45,6 @@ class MonsterParent
 	int				m_nMinMoveCount, m_nMaxMoveCount;
 
 	int				m_nCount;
-protected:
-
 	//몬스터 스탯
 	STATUS m_uMonsterStat;
 

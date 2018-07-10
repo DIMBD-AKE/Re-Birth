@@ -45,6 +45,26 @@ void MonsterParent::Setup(Map* map,  D3DXVECTOR3 spawnPos)
 	ChangeAni();
 
 	SetupStat();
+
+	m_pHPBar = new UIObject;
+
+	TEXTUREMANAGER->AddTexture("MonBackBar", "./Model/Enemy/UI/백바.jpg");
+	TEXTUREMANAGER->AddTexture("MonFrontBar", "./Model/Enemy/UI/프론트바.jpg");
+
+	m_pHPBar->SetTexture(TEXTUREMANAGER->GetTexture("MonFrontBar"));
+
+	D3DXVECTOR3 UIPos = *m_pModel->GetPosition();
+
+	UIPos.x -= m_fUIMoveX;
+	UIPos.y -= m_fUIMoveY;
+
+	auto temp = Convert3DTo2D(UIPos);
+	UIPos.x = temp.x;
+	UIPos.y = temp.y;
+	UIPos.z = 0;
+
+	m_pHPBar->SetPosition(UIPos);
+	
 	//ST_SIZEBOX box;
 }
 
@@ -55,18 +75,42 @@ void MonsterParent::SetupStat()
 
 void MonsterParent::Update()
 {
+	//m_pModel->GetBoundBox();
+	//
+	D3DXVECTOR3 UIPos = *m_pModel->GetPosition();
+	//UIPos.x -= m_fUIMoveX;
+	//UIPos.y += m_fUIMoveY;
+	
+	auto temp = Convert3DTo2D(UIPos);
+	UIPos.x = temp.x - m_fUIMoveX;
+	UIPos.y = temp.y - m_fUIMoveY;
+	UIPos.z = 0;
+	m_pHPBar->SetPosition(UIPos);
+	
+	m_pHPBar->Update();
+
+	if (INPUT->KeyDown(VK_RIGHT))
+	{
+		m_fUIMoveX -= 1;
+	}
+
+	if (INPUT->KeyDown(VK_LEFT))
+	{
+		m_fUIMoveX += 1;
+	}
+
 	if (INPUT->KeyDown(VK_DOWN))
 	{
-		ATKSPEED(m_uMonsterStat) -= 1;
+		m_fUIMoveY -= 1;
 	}
 
 	if (INPUT->KeyDown(VK_UP))
 	{
-		ATKSPEED(m_uMonsterStat) += 1;
+		m_fUIMoveY += 1;
 	}
 	char test[111];
 	
-	sprintf_s(test, sizeof(test), "%d, %f, %f", m_nAttackDelay, ATKSPEED(m_uMonsterStat), m_pModel->GetAnimationPeriod("ATTACK"));
+	sprintf_s(test, sizeof(test), "%f, %f", m_fUIMoveX, m_fUIMoveY);
 	TEXT->Add(test, 10, 10, 30);
 
 	if (!DEBUG)
@@ -147,7 +191,11 @@ void MonsterParent::Render()
 
 			m_pAStar->Render( temp.y, temp.x, CHARACTER->GetPosition());
 		}
+
+		m_pHPBar->Render();
 	}
+
+
 }
 
 void MonsterParent::ChangeAni()
