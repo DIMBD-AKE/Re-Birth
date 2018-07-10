@@ -201,10 +201,10 @@ void Elizabeth::Skill()
 
 void Elizabeth::DropItemSetup()
 {
-	m_nItemID[0] = HEALTH_POTION;
-	m_nItemID[1] = BASIC_SWORD;
-	m_nItemID[2] = HEALTH_POTION;
-	m_nItemID[3] = BASIC_SWORD;
+	m_nItemID[0] = SWORDMAN_NORMAL_ARMOR;
+	m_nItemID[1] = SWORDMAN_NORMAL_ARMOR;
+	m_nItemID[2] = SWORDMAN_NORMAL_ARMOR;
+	m_nItemID[3] = SWORDMAN_NORMAL_ARMOR;
 }
 
 //void Elizabeth::Update()

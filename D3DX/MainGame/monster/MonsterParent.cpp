@@ -25,7 +25,7 @@ MonsterParent::~MonsterParent()
 	*/
 }
 
-void MonsterParent::Setup(Map* map,  D3DXVECTOR3 spawnPos)
+void MonsterParent::Setup(Map* map, D3DXVECTOR3 spawnPos)
 {
 	m_vDir = D3DXVECTOR3(0, 0, 1);
 
@@ -64,7 +64,7 @@ void MonsterParent::Setup(Map* map,  D3DXVECTOR3 spawnPos)
 	UIPos.z = 0;
 
 	m_pHPBar->SetPosition(UIPos);
-	
+
 	//ST_SIZEBOX box;
 }
 
@@ -75,41 +75,49 @@ void MonsterParent::SetupStat()
 
 void MonsterParent::Update()
 {
+	if (INPUT->KeyDown('L'))
+	{
+		m_bIsRespawn = true;
+		m_eState = MS_DIE;
+		ChangeAni();
+		SetCurrentHP(1000);
+	}
+
 	//m_pModel->GetBoundBox();
 	//
 	D3DXVECTOR3 UIPos = *m_pModel->GetPosition();
 	//UIPos.x -= m_fUIMoveX;
 	//UIPos.y += m_fUIMoveY;
-	
+
 	auto temp = Convert3DTo2D(UIPos);
-	UIPos.x = temp.x - m_fUIMoveX;
-	UIPos.y = temp.y - m_fUIMoveY;
+	UIPos.x = temp.x;
+	UIPos.y = temp.y;
 	UIPos.z = 0;
 	m_pHPBar->SetPosition(UIPos);
-	
+
 	m_pHPBar->Update();
 
 	if (INPUT->KeyDown(VK_RIGHT))
 	{
-		m_fUIMoveX -= 1;
+		m_fUIMoveX -= 10;
 	}
 
 	if (INPUT->KeyDown(VK_LEFT))
 	{
-		m_fUIMoveX += 1;
+		m_fUIMoveX += 10;
 	}
 
 	if (INPUT->KeyDown(VK_DOWN))
 	{
-		m_fUIMoveY -= 1;
+		m_fUIMoveY -= 10;
 	}
 
 	if (INPUT->KeyDown(VK_UP))
 	{
-		m_fUIMoveY += 1;
+		m_fUIMoveY += 10;
 	}
 	char test[111];
-	
+
 	sprintf_s(test, sizeof(test), "%f, %f", m_fUIMoveX, m_fUIMoveY);
 	TEXT->Add(test, 10, 10, 30);
 
@@ -182,6 +190,18 @@ void MonsterParent::RespawnUpdate()
 }
 void MonsterParent::Render()
 {
+	/*
+
+	D3DXVECTOR3 UIPos = *m_pModel->GetPosition();
+	//UIPos.x -= m_fUIMoveX;
+	//UIPos.y += m_fUIMoveY;
+
+	auto temp = Convert3DTo2D(UIPos);
+	UIPos.x = temp.x - m_fUIMoveX;
+	UIPos.y = temp.y - m_fUIMoveY;
+	UIPos.z = 0;
+	m_pHPBar->SetPosition(UIPos);
+	*/
 	if (m_pModel && m_eState != MS_NONE)
 	{
 		m_pModel->Render();
@@ -189,8 +209,25 @@ void MonsterParent::Render()
 		{
 			POINT temp = MoveForAttack();
 
-			m_pAStar->Render( temp.y, temp.x, CHARACTER->GetPosition());
+			m_pAStar->Render(temp.y, temp.x, CHARACTER->GetPosition());
 		}
+
+		SPRITE_BEGIN;
+
+		D3DXVECTOR3 UIPos = *m_pModel->GetPosition();
+		//UIPos.x -= m_fUIMoveX;
+		//UIPos.y += m_fUIMoveY;
+
+		auto temp = Convert3DTo2D(UIPos);
+
+		RECT rc;
+		SetRect(&rc, temp.x, temp.y, 150, 20);
+
+		SPRITE_END;
+		//UIPos.x = temp.x - m_fUIMoveX;
+		//UIPos.y = temp.y - m_fUIMoveY;
+		//UIPos.z = 0;
+		//m_pHPBar->SetPosition(UIPos);
 
 		m_pHPBar->Render();
 	}
@@ -227,7 +264,7 @@ void MonsterParent::Respawn(D3DXVECTOR3 spawnPos)
 	m_eState = MS_IDLE;
 	ChangeAni();
 	CURRENTHP(m_uMonsterStat) = MAXHP(m_uMonsterStat);
-	
+
 
 	m_pModel->SetPosition(D3DXVECTOR3(spawnPos.x, m_pMap->GetHeight(spawnPos.x, spawnPos.z), spawnPos.z));
 }
@@ -236,9 +273,9 @@ void MonsterParent::CalculDamage(float damage)
 {
 	m_eState = MS_ATTACK;
 	/*
-		float	fPhyRate;		//물리계수
-		float	fMagicRate;		//마법계수
-		float	fCheRate;		//화학계수
+	float	fPhyRate;		//물리계수
+	float	fMagicRate;		//마법계수
+	float	fCheRate;		//화학계수
 	*/
 	float totalRate =
 		PHYRATE(m_uMonsterStat) +
@@ -247,7 +284,7 @@ void MonsterParent::CalculDamage(float damage)
 
 	float totalDamage = totalRate * DEF(m_uMonsterStat);
 
-	totalDamage =  damage - totalDamage;	
+	totalDamage = damage - totalDamage;
 
 	totalDamage /= 3;
 
@@ -282,7 +319,7 @@ void MonsterParent::MoveReset(bool isReverse, int max, int min)
 		m_vDir = D3DXVECTOR3(0, 0, -1);
 		srand(time(NULL));
 
-		m_nPatternChangeCount = rand() % (max-min) + min;
+		m_nPatternChangeCount = rand() % (max - min) + min;
 
 		if (m_eState == MS_IDLE)
 		{
@@ -342,36 +379,36 @@ POINT MonsterParent::MoveForAttack()
 			dir = *CHARACTER->GetPosition()
 				- *m_pModel->GetPosition();
 		}
-		
+
 	}
-		D3DXVec3Normalize(&dir, &dir);
-		if (!DEBUG)
-		{
-			//D3DXVECTOR3 dirVector = *m_pModel->GetPosition() + dir;
-			//
-			//D3DXVECTOR3 test = *m_pModel->GetPosition();
+	D3DXVec3Normalize(&dir, &dir);
+	if (!DEBUG)
+	{
+		//D3DXVECTOR3 dirVector = *m_pModel->GetPosition() + dir;
+		//
+		//D3DXVECTOR3 test = *m_pModel->GetPosition();
 
-			float angle = GetAngle(0, 0, dir.x, dir.z);
+		float angle = GetAngle(0, 0, dir.x, dir.z);
 
-			//float x = dir.x - 0;
-			//float y = dir.z - 0;
-			//
-			//float distance = sqrtf(x * x + y * y);
-			//
-			//float angle = acosf(x / distance);
-			//
-			//if (dir.z > 0)
-			//{
-			//	angle = D3DX_PI * 2 - angle;
-			//	if (angle >= D3DX_PI * 2) angle -= D3DX_PI * 2;
-			//}
+		//float x = dir.x - 0;
+		//float y = dir.z - 0;
+		//
+		//float distance = sqrtf(x * x + y * y);
+		//
+		//float angle = acosf(x / distance);
+		//
+		//if (dir.z > 0)
+		//{
+		//	angle = D3DX_PI * 2 - angle;
+		//	if (angle >= D3DX_PI * 2) angle -= D3DX_PI * 2;
+		//}
 
-			angle -= D3DX_PI / 2;
+		angle -= D3DX_PI / 2;
 
-			m_pModel->SetRotation(D3DXVECTOR3(0, angle, 0));
-			m_pModel->SetPosition(*m_pModel->GetPosition() + dir* SPEED(m_uMonsterStat));
-		}
-	
+		m_pModel->SetRotation(D3DXVECTOR3(0, angle, 0));
+		m_pModel->SetPosition(*m_pModel->GetPosition() + dir* SPEED(m_uMonsterStat));
+	}
+
 	//char ttest[111];
 	//sprintf_s(ttest, sizeof(ttest), "%f, %f, %f", dir.x, dir.y, dir.z);
 	//TEXT->Add(ttest, 10, 10, 30);
@@ -414,7 +451,7 @@ void MonsterParent::ItemDrop()
 	//	//m_pDropManager->AddDropItem(m_nItemID[0], *m_pModel->GetPosition());
 	//	//드랍없음
 	//}
-	
+
 	//20퍼 확률
 	if (ranNum < 80)
 	{
@@ -436,5 +473,5 @@ void MonsterParent::ItemDrop()
 		//드랍3
 	}
 	//확률연산
-	
+
 }
