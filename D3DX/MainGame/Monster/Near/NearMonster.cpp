@@ -27,6 +27,9 @@ void NearMonster::Attack()
 {
 	if (PCHARACTER)
 	{
+		//내가 타겟팅이 되었으면 공격함수가 실행이 될테니 카운트 증가 시작
+		m_nTargetingCount++;
+
 		if (PCHARACTER->GetIsDead())
 		{
 			m_eState = MS_IDLE;
@@ -50,7 +53,6 @@ void NearMonster::Attack()
 				m_eState = MS_MOVEFORATTACK;
 				ChangeAni();
 			}
-			m_nAttackDelay = 0;
 			MoveForAttack();
 		}
 		else
@@ -94,11 +96,18 @@ void NearMonster::Attack()
 				float tatalRate = PHYRATE(m_uMonsterStat) + MAGICRATE(m_uMonsterStat) + CHERATE(m_uMonsterStat);
 				float tatalDamage = tatalRate * ATK(m_uMonsterStat);
 				PCHARACTER->CalculDamage(tatalDamage);
-				m_nAttackDelay = 0;
 			}
-			m_nAttackDelay++;
 		}
 
+
+		//200이 될동안 더이상의 공격이 없다면
+		if (m_nTargetingCount >= 200)
+		{
+			m_eState = MS_IDLE;
+			ChangeAni();
+			m_nTargetingCount = 0;
+			m_bIsTargeting = false;
+		}
 	}
 }
 

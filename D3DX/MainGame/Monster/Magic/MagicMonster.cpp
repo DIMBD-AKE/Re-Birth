@@ -123,11 +123,9 @@ void MagicMonster::Attack()
 					float tatalDamage = tatalRate * ATK(m_uMonsterStat);
 					PCHARACTER->CalculDamage(tatalDamage);
 				}
-					m_nAttackDelay = 0;
 				
 				m_bIsAttack = false;
 			}
-			m_nAttackDelay++;
 		}
 
 	}

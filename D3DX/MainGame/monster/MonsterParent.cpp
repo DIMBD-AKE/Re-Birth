@@ -31,7 +31,6 @@ void MonsterParent::Setup(Map* map, D3DXVECTOR3 spawnPos)
 
 	m_nCount = 0;
 	m_nPatternChangeCount = 0;
-	m_nAttackDelay = 0;
 
 	m_pAStar = new AStar;
 	m_pAStar->SetCurrentCell(map->GetNavMesh());
@@ -68,8 +67,9 @@ void MonsterParent::Setup(Map* map, D3DXVECTOR3 spawnPos)
 
 	UIObject* backBar = new UIObject;
 
-	backBar->SetPosition(D3DXVECTOR3(0, 0, 0));
+	backBar->SetPosition(D3DXVECTOR3(0, 0, 0.1));
 	backBar->SetTexture(TEXTUREMANAGER->GetTexture("MonBackBar"));
+
 
 	m_pHPBar->AddChild(backBar);
 	//ST_SIZEBOX box;
@@ -82,32 +82,42 @@ void MonsterParent::SetupStat()
 
 void MonsterParent::Update()
 {
-	if (INPUT->KeyDown('K'))
+	
+	//if (INPUT->KeyDown('K'))
+	//{
+	//	SetCurrentHP(10);
+	//}
+
+	if (m_bIsTargeting)
 	{
-		SetCurrentHP(10);
+		float tempF = (float)CURRENTHP(m_uMonsterStat) / MAXHP(m_uMonsterStat);
+
+
+		m_pHPBar->SetScale(D3DXVECTOR3(tempF, 1, 1));
+
+		//if (INPUT->KeyDown('L'))
+		//{
+		//	m_bIsRespawn = true;
+		//	m_eState = MS_DIE;
+		//	ChangeAni();
+		//	SetCurrentHP(1000);
+		//}
+
+		//m_pModel->GetBoundBox();
+		//
+		D3DXVECTOR3 UIPos = *m_pModel->GetPosition();
+		//UIPos.x -= m_fUIMoveX;
+		UIPos.y += m_fUIMoveY;
+
+		auto temp = Convert3DTo2D(UIPos);
+		UIPos.x = temp.x - m_fUIMoveX;
+		UIPos.y = temp.y;
+		UIPos.z = 0;
+		m_pHPBar->SetPosition(UIPos);
+
+		m_pHPBar->Update();
+
 	}
-	if (INPUT->KeyDown('L'))
-	{
-		m_bIsRespawn = true;
-		m_eState = MS_DIE;
-		ChangeAni();
-		SetCurrentHP(1000);
-	}
-
-	//m_pModel->GetBoundBox();
-	//
-	D3DXVECTOR3 UIPos = *m_pModel->GetPosition();
-	//UIPos.x -= m_fUIMoveX;
-	UIPos.y += m_fUIMoveY;
-
-	auto temp = Convert3DTo2D(UIPos);
-	UIPos.x = temp.x - m_fUIMoveX;
-	UIPos.y = temp.y;
-	UIPos.z = 0;
-	m_pHPBar->SetPosition(UIPos);
-
-	m_pHPBar->Update();
-
 	if (INPUT->KeyDown(VK_RIGHT))
 	{
 		m_fUIMoveX -= 10;
@@ -240,7 +250,7 @@ void MonsterParent::Render()
 		//UIPos.z = 0;
 		//m_pHPBar->SetPosition(UIPos);
 
-		m_pHPBar->Render();
+		if (m_bIsTargeting) m_pHPBar->Render();
 	}
 
 

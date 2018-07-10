@@ -101,10 +101,8 @@ void DistanceMonster::Attack()
 					float tatalRate = PHYRATE(m_uMonsterStat) + MAGICRATE(m_uMonsterStat) + CHERATE(m_uMonsterStat);
 					float tatalDamage = tatalRate * ATK(m_uMonsterStat);
 					(*m_ppCharacter)->CalculDamage(tatalDamage);
-					m_nAttackDelay = 0;
 				}
 
-				m_nAttackDelay++;
 			}
 			
 		}

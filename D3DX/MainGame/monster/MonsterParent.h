@@ -30,12 +30,15 @@ class MonsterParent
 	SET(DropManager*, m_pDropManager, DropManager);
 
 	//타겟팅이 되었냐(데미지를 입었냐)
-	SET(bool, m_bIsTargeting, IsTargeting);
+	
 
 protected:
 
 	float m_fUIMoveX;
 	float m_fUIMoveY;
+
+	bool m_bIsTargeting;
+	int m_nTargetingCount;
 
 	UIObject* m_pHPBar;
 
@@ -52,7 +55,7 @@ protected:
 	int m_nResPawnCount;
 
 	//공격카운트
-	int m_nAttackDelay;
+	//int m_nAttackDelay;
 	
 	//Model* m_pDeathModel;
 	
@@ -83,8 +86,11 @@ protected:
 	void SetCurrentHP(int hp)
 	{
 		CURRENTHP(m_uMonsterStat) -= hp;
+		m_bIsTargeting = true;
+		m_nTargetingCount = 0;
 		if (CURRENTHP(m_uMonsterStat) <= 0)
 		{
+			CURRENTHP(m_uMonsterStat) = 0;
 			m_bIsRespawn = true;
 			m_eState = MS_DIE;
 			ChangeAni();
