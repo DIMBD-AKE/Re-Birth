@@ -17,9 +17,14 @@ void Assis::Setup(Map* map, D3DXVECTOR3 spawnPos)
 	MODELMANAGER->AddModel("아시스", "Model/Enemy/Assis/", "Assis.x", MODELTYPE_X);
 	m_pModel = MODELMANAGER->GetModel("아시스", MODELTYPE_X);
 
+	m_fUIMoveX = 50.0f;
+	m_fUIMoveY = 3.5f;
+
+	//m_bIsTargeting = true;
 	//부모의 셋업을 호출해라
 	NearMonster::Setup(map, spawnPos);
 
+	
 
 	//MODELMANAGER->AddModel("엘리자베스", "Model/Enemy/Assis/", "Assis.x", MODELTYPE_X);
 	//MODELMANAGER->AddModel("엘리자베스", "Model/Enemy/DarkHell/", "DarkHell.x", MODELTYPE_X);

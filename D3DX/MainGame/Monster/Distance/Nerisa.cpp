@@ -18,6 +18,11 @@ void Nerisa::Setup(Map* map, D3DXVECTOR3 spawnPos)
 	MODELMANAGER->AddModel("너리사", "Model/Enemy/Nerisa/", "Nerisa.x", MODELTYPE_X);
 	m_pModel = MODELMANAGER->GetModel("너리사", MODELTYPE_X);
 
+	m_fUIMoveX = 50.0f;
+	m_fUIMoveY =4.0f;
+
+	//m_bIsTargeting = true;
+
 	//부모의 셋업을 호출해라
 	DistanceMonster::Setup(map, spawnPos);
 	

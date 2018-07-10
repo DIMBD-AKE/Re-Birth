@@ -18,6 +18,11 @@ void Nike::Setup(Map* map, D3DXVECTOR3 spawnPos)
 	MODELMANAGER->AddModel("니케", "Model/Enemy/Nike/", "Nike.x", MODELTYPE_X);
 	m_pModel = MODELMANAGER->GetModel("니케", MODELTYPE_X);
 
+	m_fUIMoveX = 50.0f;
+	m_fUIMoveY = 4.0f;
+
+	//m_bIsTargeting = true;
+
 	//부모의 셋업을 호출해라
 	DistanceMonster::Setup(map, spawnPos);
 

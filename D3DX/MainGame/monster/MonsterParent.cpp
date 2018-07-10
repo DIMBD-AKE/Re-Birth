@@ -118,29 +118,29 @@ void MonsterParent::Update()
 		m_pHPBar->Update();
 
 	}
-	if (INPUT->KeyDown(VK_RIGHT))
-	{
-		m_fUIMoveX -= 10;
-	}
-
-	if (INPUT->KeyDown(VK_LEFT))
-	{
-		m_fUIMoveX += 10;
-	}
-
-	if (INPUT->KeyDown(VK_DOWN))
-	{
-		m_fUIMoveY -= 10;
-	}
-
-	if (INPUT->KeyDown(VK_UP))
-	{
-		m_fUIMoveY += 10;
-	}
-	char test[111];
-
-	sprintf_s(test, sizeof(test), "%f, %f", m_fUIMoveX, m_fUIMoveY);
-	TEXT->Add(test, 10, 10, 30);
+	//if (INPUT->KeyDown(VK_RIGHT))
+	//{
+	//	m_fUIMoveX -= 10;
+	//}
+	//
+	//if (INPUT->KeyDown(VK_LEFT))
+	//{
+	//	m_fUIMoveX += 10;
+	//}
+	//
+	//if (INPUT->KeyDown(VK_DOWN))
+	//{
+	//	m_fUIMoveY -= 10;
+	//}
+	//
+	//if (INPUT->KeyDown(VK_UP))
+	//{
+	//	m_fUIMoveY += 10;
+	//}
+	//char test[111];
+	//
+	//sprintf_s(test, sizeof(test), "%f, %f", m_fUIMoveX, m_fUIMoveY);
+	//TEXT->Add(test, 10, 10, 30);
 
 	if (!DEBUG)
 	{

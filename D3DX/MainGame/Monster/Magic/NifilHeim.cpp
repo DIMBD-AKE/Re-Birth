@@ -18,6 +18,11 @@ void NifilHeim::Setup(Map* map, D3DXVECTOR3 spawnPos)
 	MODELMANAGER->AddModel("니플하임", "Model/Enemy/NifilHeim/", "NifilHeim.x", MODELTYPE_X);
 	m_pModel = MODELMANAGER->GetModel("니플하임", MODELTYPE_X);
 
+	m_fUIMoveX = 50.0f;
+	m_fUIMoveY = 6.0f;
+
+	//m_bIsTargeting = true;
+
 	//부모의 셋업을 호출해라
 	MagicMonster::Setup(map, spawnPos);
 
