@@ -16,6 +16,11 @@ void CharacterParant::SKill()
 void CharacterParant::Move()
 {
 	Debug();
+	
+	if(m_bIsUnderAttacked) AppearDamage();
+	CountAppearDamage();
+	
+
 	D3DXVECTOR3 tempPos1;
 	tempPos1 = *m_pCharacter->GetPosition();
 	tempPos1.y += 3;
@@ -59,7 +64,14 @@ void CharacterParant::Move()
 		if (height >= 0)
 		{
 			pos.y = height;
-			m_pCharacter->SetPosition(pos - m_vfront * m_Status->chr.fSpeed);
+			if (m_bIsUnderAttacked)
+			{
+				m_pCharacter->SetPosition(pos - m_vfront * (m_Status->chr.fSpeed- 0.1f));
+			}
+			else
+			{
+				m_pCharacter->SetPosition(pos - m_vfront * m_Status->chr.fSpeed);
+			}
 		}
 		else
 		{
@@ -72,7 +84,16 @@ void CharacterParant::Move()
 		if (height >= 0)
 		{
 			pos.y = height;
-			m_pCharacter->SetPosition(pos + m_vfront * (m_Status->chr.fSpeed-0.2f));
+			
+			if (m_bIsUnderAttacked)
+			{
+				m_pCharacter->SetPosition(pos + m_vfront * (m_Status->chr.fSpeed - 0.2f));
+			}
+			else
+			{
+				m_pCharacter->SetPosition(pos + m_vfront * (m_Status->chr.fSpeed - 0.2f));
+			}
+
 		}
 		else
 		{
@@ -123,6 +144,16 @@ void CharacterParant::Move()
 
 }
 
+void CharacterParant::AppearDamage()
+{
+	D3DXVECTOR3 tempPos;
+	tempPos = *m_pCharacter->GetPosition();
+	tempPos.y += 4.0f;
+	D3DXVECTOR2 pos =  Convert3DTo2D(tempPos);
+	TEXT->Add(to_string(m_nDamage), pos.x, pos.y, 30);
+
+}
+
 void CharacterParant::Controller()
 {
 	//===============기능키 제어=====================//
@@ -143,11 +174,11 @@ void CharacterParant::Debug()
 		/*D3DXVECTOR3 tempPos; 
 		tempPos = *m_pCharacter->GetPosition();
 		tempPos.y += 3;
-		D3DXVECTOR2 pos =  Convert3DTo2D(tempPos);
+		D3DXVECTOR2 pos =  Util::Convert3DTo2D(tempPos);
 		TEXT->Add(to_string(m_Status->chr.nCurrentStam), pos.x, pos.y, 30);*/
 		TEXT->Add(to_string(m_Status->chr.nCurrentHP), 300, 300, 30);
 
-		CAMERA->SetMode(CAMERA_FREE);
+		//CAMERA->SetMode(CAMERA_FREE);
 	}
 }
 
@@ -204,13 +235,16 @@ void CharacterParant::UnderAttacked()
 
 void CharacterParant::SetCurrentHP(int hp)
 {
+	m_nDamage = hp;
 	m_Status->chr.nCurrentHP -= hp;
-	
+	m_bIsUnderAttacked = true;
+
 	if (m_Status->chr.nCurrentHP <= 0 && !m_bIsDead)
 	{
 		m_bIsDead = true;
 		m_eCondition = CHAR_DIE;
 		ChangeAnimation();
+		m_pParticle2->SetPosition(*m_pCharacter->GetPosition());
 	}
 }
 
@@ -218,9 +252,6 @@ void CharacterParant::SetCurrentHP(int hp)
 
 void CharacterParant::CalculDamage(float damage)
 {
-	
-
-	
 	float totalRate =
 		m_Status->chr.fPhyRate +
 		m_Status->chr.fMagicRate +
@@ -273,7 +304,6 @@ void CharacterParant::Attack()
 			if (distance1 - radius1 > m_Status->chr.fRange) continue;
 			distance = distance1;
 			distance = subDistance;
-			//radius = radius1;
 
 			MinIndex = i;
 			break;
@@ -294,12 +324,7 @@ void CharacterParant::Attack()
 				}
 				
 			}
-			
-			m_pMonsterManager->GetMonsterVector()[MinIndex]->CalculDamage(1.0f);
-			m_pParticle->SetPosition(D3DXVECTOR3(m_pMonsterManager->GetMonsterVector()[MinIndex]->GetModel()->GetPosition()->x, 
-				m_pMonsterManager->GetMonsterVector()[MinIndex]->GetModel()->GetPosition()->y+2.0f, 
-				m_pMonsterManager->GetMonsterVector()[MinIndex]->GetModel()->GetPosition()->z));
-			m_pParticle->TimeReset();
+			m_pMonsterManager->GetMonsterVector()[MinIndex]->CalculDamage(100000.0f);
 
 		}
 		//============범위안에 있는 애들 다 공격하는 무기 skill용====================
@@ -424,6 +449,35 @@ void CharacterParant::Attack()
 	}
 }
 
+void CharacterParant::CountAppearDamage()
+{
+
+	if (m_bIsUnderAttacked)
+	{
+		m_nDamageCount++;
+		if (m_eCondition != CHAR_ATTACK || m_eCondition != CHAR_RUN_FRONT || m_eCondition != CHAR_RUN_BACK)
+		{
+			m_eCondition = CHAR_HIT;
+			ChangeAnimation();
+		}
+	}
+
+	if (m_nDamageCount < 10 && m_bIsUnderAttacked)
+	{
+
+		m_pParticle->SetPosition(D3DXVECTOR3(m_pCharacter->GetPosition()->x, m_pCharacter->GetPosition()->y + 1.5f, m_pCharacter->GetPosition()->z));
+		m_pParticle->TimeReset();
+		
+	}
+
+	if (m_nDamageCount >= 20)
+	{
+		m_nDamageCount = 0;
+		m_bIsUnderAttacked = false;
+	}
+
+}
+
 CharacterParant::CharacterParant()
 {
 	m_Status = new STATUS;
@@ -446,7 +500,7 @@ CharacterParant::CharacterParant()
 	//공격시 파티클
 	PARTICLE->AddParticle("ATTACK",
 		TEXTUREMANAGER->AddTexture("파티클1", "Texture/Particle/Sphere.png"),
-		"Particle/attack.ptc");
+		"Particle/underAttacked.ptc");
 	//플레이어 죽었을때 파티클
 	PARTICLE->AddParticle("Die",
 		TEXTUREMANAGER->AddTexture("파티클2", "Texture/Particle/Sphere.png"),
@@ -510,8 +564,10 @@ void CharacterParant::Init(Map* map, CHARSELECT order, MonsterManager* pMonsterM
 	m_bIsDash = false;
 	m_bIsDead = false;
 	m_bIsAttack = false;
+	m_bIsUnderAttacked = false;
 	m_fStamina = 10.0f;
-
+	m_nDamage = 0;
+	m_nDamageCount = 0;
 
 	//포트레이트 UI
 	m_pUIobj = new UIObject;
@@ -538,7 +594,7 @@ void CharacterParant::KeyControl()
 	//앞으로 달리기
 	if (INPUT->KeyDown('W'))
 	{
-		if (m_eCondition == CHAR_IDLE)
+		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_HIT)
 		{
 			m_eCondition = CHAR_RUN_FRONT;
 			ChangeAnimation();
@@ -555,7 +611,7 @@ void CharacterParant::KeyControl()
 	//뒤로 달리기
 	if (INPUT->KeyDown('S'))
 	{
-		if (m_eCondition == CHAR_IDLE)
+		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_HIT)
 		{
 			m_eCondition = CHAR_RUN_BACK;
 			ChangeAnimation();
@@ -646,6 +702,13 @@ void CharacterParant::KeyControl()
 		m_eCondition = CHAR_IDLE;
 		ChangeAnimation();
 	}
+
+	//피격상태에서 애니메이션 한바퀴 돌린후 대기상태로 돌려줌
+	if (m_pCharacter->IsAnimationEnd() && m_eCondition == CHAR_HIT)
+	{
+		m_eCondition = CHAR_IDLE;
+		ChangeAnimation();
+	}
 	
 	//대쉬일때 애니메이션 스피드 제어
 	if (m_eCondition == CHAR_DASH_FRONT || m_eCondition == CHAR_DASH_BACK)
@@ -658,6 +721,7 @@ void CharacterParant::KeyControl()
 	{
 		m_pCharacter->SetAnimationSpeed(1.0f * m_Status->chr.fAtkSpeed);
 	}
+
 	
 
 	//끄앙 주금
@@ -666,6 +730,8 @@ void CharacterParant::KeyControl()
 		m_eCondition = CHAR_NONE;
 		m_bIsDead = false;
 	}
+
+
 }
 
 void CharacterParant::ChangeAnimation()

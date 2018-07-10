@@ -76,9 +76,12 @@ protected:
 	D3DXVECTOR3				m_vfront;			//이동을 위한 프론트벡터
 
 	int						m_nCalAction;		//액션 프레임 계산용 변수
+	int						m_nDamage;			//데미지 띄우기용 변수 
 	bool					m_bIsFront;			//앞인지 뒤인지
 	bool					m_bIsDash;			//대쉬했늬
 	bool					m_bIsAttack;		//일반공격 했늬?
+	bool					m_bIsUnderAttacked; //공격받았니?
+	int						m_nDamageCount;		//데미지 띄우는 카운트
 
 	GET(bool,m_bIsDead,IsDead);			//죽었늬
 	float					m_fStamina;			//스테미나 게이지
@@ -92,6 +95,7 @@ protected:
 
 	void SKill();
 	void Move();
+	void AppearDamage();
 	void Controller();
 	void Debug();
 	void CheckDirection();
@@ -101,7 +105,7 @@ protected:
 	void SetCurrentHP(int hp);
 	void CalculDamage(float damage);
 	void Attack();
-
+	void CountAppearDamage();
 
 	int						m_temp;			//애니메이션 확인용 임시변수
 
