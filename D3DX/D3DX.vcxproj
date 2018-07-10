@@ -150,6 +150,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Framework\EffectObject.h" />
     <ClInclude Include="Framework\Manager\ParticleManager.h" />
     <ClInclude Include="MainGame\Monster\Magic\MagicCircle.h" />
     <ClInclude Include="MainGame\Item\DropManager.h" />
@@ -227,6 +228,7 @@
     <ClInclude Include="MainGame\Item\ItemHeaderIndex.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Framework\EffectObject.cpp" />
     <ClCompile Include="Framework\Manager\ParticleManager.cpp" />
     <ClCompile Include="MainGame\Monster\Magic\MagicCircle.cpp" />
     <ClCompile Include="MainGame\Item\DropManager.cpp" />

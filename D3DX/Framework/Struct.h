@@ -20,6 +20,17 @@ struct ST_PT_VERTEX
 	};
 };
 
+struct ST_PCT_VERTEX
+{
+	D3DXVECTOR3	p;
+	D3DCOLOR	c;
+	D3DXVECTOR2 t;
+
+	enum {
+		FVF = D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1
+	};
+};
+
 struct ST_PNT_VERTEX
 {
 	D3DXVECTOR3	p;
@@ -81,6 +92,16 @@ struct ST_PARTICLE_INFO
 	ST_PARTICLE_ATTRIBUTE_VARIABLE	varAttribute;
 	float		fParticleSize;
 	int			nParticleCount;
+};
+
+struct ST_EFFECT_IMAGE
+{
+	LPDIRECT3DTEXTURE9 tex;
+	float height;
+	float time;
+	float sc0, sc1, sc2;
+	float sp0, sp1, sp2;
+	int a0, a1, a2;
 };
 
 struct ST_SPHERE
