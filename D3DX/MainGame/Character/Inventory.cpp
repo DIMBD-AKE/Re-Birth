@@ -12,14 +12,14 @@ void Inventory::InitPos()
 	m_vInvPos.x = m_vInvPos.y = 0;
 	m_vEquipPos.x = m_vEquipPos.y = 0;
 
-	m_ptEquipSlot[EQUIP_FIRSTWEAPON] = Util::MakePoint(47, 438);
-	m_ptEquipSlot[EQUIP_POTION] = Util::MakePoint(343, 438);
-	m_ptEquipSlot[EQUIP_HELMET] = Util::MakePoint(195, 58);
-	m_ptEquipSlot[EQUIP_CHEST] = Util::MakePoint(195, 218);
-	m_ptEquipSlot[EQUIP_GLOVES] = Util::MakePoint(47, 282);
-	m_ptEquipSlot[EQUIP_BOOTS] = Util::MakePoint(195, 378);
+	m_ptEquipSlot[EQUIP_FIRSTWEAPON] = MakePoint(47, 438);
+	m_ptEquipSlot[EQUIP_POTION] = MakePoint(343, 438);
+	m_ptEquipSlot[EQUIP_HELMET] = MakePoint(195, 58);
+	m_ptEquipSlot[EQUIP_CHEST] = MakePoint(195, 218);
+	m_ptEquipSlot[EQUIP_GLOVES] = MakePoint(47, 282);
+	m_ptEquipSlot[EQUIP_BOOTS] = MakePoint(195, 378);
 	// X ¹öÆ°
-	m_ptEquipSlot[EQUIP_END] = Util::MakePoint(795, 16);
+	m_ptEquipSlot[EQUIP_END] = MakePoint(795, 16);
 }
 
 void Inventory::PickItem()
@@ -231,9 +231,9 @@ void Inventory::ShowInfo(ItemParent * pItem, D3DXVECTOR3 pos)
 
 	POINT wh;
 	if (pItem->GetEquipType() == EQUIP_POTION)
-		wh = Util::MakePoint(500, 300);
+		wh = MakePoint(500, 300);
 	else
-		wh = Util::MakePoint(500, 550);
+		wh = MakePoint(500, 550);
 
 	D3DXMATRIX matS, matT;
 	float resizeX, resizeY;

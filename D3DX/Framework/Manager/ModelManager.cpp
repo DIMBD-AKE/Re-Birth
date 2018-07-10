@@ -376,7 +376,7 @@ bool Model::IsPickBoundBox(Ray ray, float * dist)
 bool Model::IsPickBoundSphere(Ray ray, float * dist)
 {
 	ST_SPHERE sphere = GetBoundSphere();
-	bool ret = Util::IntersectSphere(sphere, ray);
+	bool ret = IntersectSphere(sphere, ray);
 	if (ret && dist) *dist = D3DXVec3Length(&(ray.orig - sphere.center));
 	return ret;
 }

@@ -247,8 +247,8 @@ void Map::Load(string mapPath)
 		{
 			tok = strtok_s(NULL, "\t", &context);
 			string key = string(tok);
-			string folder = Util::GetFileFolder((char*)string(tok).c_str());
-			string file = Util::GetFileName((char*)string(tok).c_str());
+			string folder = GetFileFolder((char*)string(tok).c_str());
+			string file = GetFileName((char*)string(tok).c_str());
 			MODELMANAGER->AddModel(key, folder, file, MODELTYPE_OBJ);
 			tok = strtok_s(NULL, "\t", &context);
 			D3DXVECTOR3 p, r, s;

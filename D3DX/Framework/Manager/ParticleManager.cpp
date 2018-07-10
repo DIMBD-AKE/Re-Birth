@@ -69,27 +69,27 @@ ST_PARTICLE_ATTRIBUTE ParticleSystem::ResetParticle(int loop)
 	else
 		att.isAlive = true;
 
-	att.fLifeTime += Util::FRand(-var.fLifeTimeVar, var.fLifeTimeVar);
+	att.fLifeTime += FRand(-var.fLifeTimeVar, var.fLifeTimeVar);
 
-	att.vPos.x += Util::FRand(-var.vPosVar.x, var.vPosVar.x);
-	att.vPos.y += Util::FRand(-var.vPosVar.y, var.vPosVar.y);
-	att.vPos.z += Util::FRand(-var.vPosVar.z, var.vPosVar.z);
+	att.vPos.x += FRand(-var.vPosVar.x, var.vPosVar.x);
+	att.vPos.y += FRand(-var.vPosVar.y, var.vPosVar.y);
+	att.vPos.z += FRand(-var.vPosVar.z, var.vPosVar.z);
 	
-	att.vVelocity.x += Util::FRand(-var.vVelocityVar.x, var.vVelocityVar.x);
-	att.vVelocity.y += Util::FRand(-var.vVelocityVar.y, var.vVelocityVar.y);
-	att.vVelocity.z += Util::FRand(-var.vVelocityVar.z, var.vVelocityVar.z);
+	att.vVelocity.x += FRand(-var.vVelocityVar.x, var.vVelocityVar.x);
+	att.vVelocity.y += FRand(-var.vVelocityVar.y, var.vVelocityVar.y);
+	att.vVelocity.z += FRand(-var.vVelocityVar.z, var.vVelocityVar.z);
 
-	att.vAcceleration.x += Util::FRand(-var.vAccelerationVar.x, var.vAccelerationVar.x);
-	att.vAcceleration.y += Util::FRand(-var.vAccelerationVar.y, var.vAccelerationVar.y);
-	att.vAcceleration.z += Util::FRand(-var.vAccelerationVar.z, var.vAccelerationVar.z);
+	att.vAcceleration.x += FRand(-var.vAccelerationVar.x, var.vAccelerationVar.x);
+	att.vAcceleration.y += FRand(-var.vAccelerationVar.y, var.vAccelerationVar.y);
+	att.vAcceleration.z += FRand(-var.vAccelerationVar.z, var.vAccelerationVar.z);
 
-	att.vGravity.x += Util::FRand(-var.vGravityVar.x, var.vGravityVar.x);
-	att.vGravity.y += Util::FRand(-var.vGravityVar.y, var.vGravityVar.y);
-	att.vGravity.z += Util::FRand(-var.vGravityVar.z, var.vGravityVar.z);
+	att.vGravity.x += FRand(-var.vGravityVar.x, var.vGravityVar.x);
+	att.vGravity.y += FRand(-var.vGravityVar.y, var.vGravityVar.y);
+	att.vGravity.z += FRand(-var.vGravityVar.z, var.vGravityVar.z);
 
-	att.fStartRadius += Util::FRand(-var.fStartRadiusVar, var.fStartRadiusVar);
-	att.fEndRadius += Util::FRand(-var.fEndRadiusVar, var.fEndRadiusVar);
-	att.fRadiusSpeed += Util::FRand(-var.fRadiusSpeedVar, var.fRadiusSpeedVar);
+	att.fStartRadius += FRand(-var.fStartRadiusVar, var.fStartRadiusVar);
+	att.fEndRadius += FRand(-var.fEndRadiusVar, var.fEndRadiusVar);
+	att.fRadiusSpeed += FRand(-var.fRadiusSpeedVar, var.fRadiusSpeedVar);
 
 	return att;
 }

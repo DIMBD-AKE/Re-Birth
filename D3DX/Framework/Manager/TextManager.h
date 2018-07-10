@@ -28,6 +28,7 @@ private:
 
 	LPD3DXFONT			m_pFont;
 	vector<TextInfo>	m_vecText;
+	vector<string>		m_vecRegFont;
 
 	static bool SizeComparison(TextInfo i, TextInfo j) { return (i.size < j.size); }
 

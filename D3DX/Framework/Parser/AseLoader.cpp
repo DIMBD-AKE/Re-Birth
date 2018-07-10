@@ -183,7 +183,7 @@ ST_ASE_MATERIAL AseLoader::ProcessMaterial(FILE * fp, string path)
 				if (strcmp(tok, ID_BITMAP) == 0)
 				{
 					tok = strtok_s(NULL, "\t \"", &context);
-					string s = path + Util::GetFileName(tok);
+					string s = path + GetFileName(tok);
 					mat.tex = TEXTUREMANAGER->AddTexture(s, s);
 				}
 			} while (tok[0] != '}');

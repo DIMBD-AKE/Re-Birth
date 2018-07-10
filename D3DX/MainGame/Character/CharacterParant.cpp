@@ -19,7 +19,7 @@ void CharacterParant::Move()
 	D3DXVECTOR3 tempPos1;
 	tempPos1 = *m_pCharacter->GetPosition();
 	tempPos1.y += 3;
-	D3DXVECTOR2 pos1 = Util::Convert3DTo2D(tempPos1);
+	D3DXVECTOR2 pos1 = Convert3DTo2D(tempPos1);
 	TEXT->Add(to_string(m_Status->chr.nCurrentHP), pos1.x, pos1.y, 30);
 	//TEXT->Add(to_string(m_Status->chr.nCurrentHP), 300, 300, 30);
 	//포트레이트
@@ -143,7 +143,7 @@ void CharacterParant::Debug()
 		/*D3DXVECTOR3 tempPos; 
 		tempPos = *m_pCharacter->GetPosition();
 		tempPos.y += 3;
-		D3DXVECTOR2 pos =  Util::Convert3DTo2D(tempPos);
+		D3DXVECTOR2 pos =  Convert3DTo2D(tempPos);
 		TEXT->Add(to_string(m_Status->chr.nCurrentStam), pos.x, pos.y, 30);*/
 		TEXT->Add(to_string(m_Status->chr.nCurrentHP), 300, 300, 30);
 

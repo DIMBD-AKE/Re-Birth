@@ -127,16 +127,16 @@ void UIObject::SetTexture(LPDIRECT3DTEXTURE9 normal, LPDIRECT3DTEXTURE9 over, LP
 
 	D3DSURFACE_DESC desc;
 	normal->GetLevelDesc(0, &desc);
-	m_ptTexWH[UITEX_NORMAL] = Util::MakePoint(desc.Width, desc.Height);
+	m_ptTexWH[UITEX_NORMAL] = MakePoint(desc.Width, desc.Height);
 	if (over)
 	{
 		over->GetLevelDesc(0, &desc);
-		m_ptTexWH[UITEX_OVER] = Util::MakePoint(desc.Width, desc.Height);
+		m_ptTexWH[UITEX_OVER] = MakePoint(desc.Width, desc.Height);
 	}
 	if (down)
 	{
 		down->GetLevelDesc(0, &desc);
-		m_ptTexWH[UITEX_DOWN] = Util::MakePoint(desc.Width, desc.Height);
+		m_ptTexWH[UITEX_DOWN] = MakePoint(desc.Width, desc.Height);
 	}
 }
 

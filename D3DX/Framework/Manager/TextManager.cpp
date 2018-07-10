@@ -30,6 +30,7 @@ FONT TextManager::GetFont(FONTTYPE type, float x, float y)
 void TextManager::RegisterFont(string path)
 {
 	int ret = AddFontResource(path.c_str());
+	m_vecRegFont.push_back(path);
 	assert(ret > 0 && "폰트 주소가 잘못되었습니다.");
 }
 
@@ -73,6 +74,8 @@ void TextManager::Render()
 void TextManager::Release()
 {
 	SAFE_RELEASE(m_pFont);
+	for (auto path : m_vecRegFont)
+		RemoveFontResource(path.c_str());
 }
 
 TextManager::TextManager()
