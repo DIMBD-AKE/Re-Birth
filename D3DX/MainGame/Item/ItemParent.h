@@ -8,7 +8,7 @@ class CharacterParant;
 class MonsterParent;
 class MonsterManager;
 class Model;
-
+class SkillManager;
 
 class ItemParent
 {

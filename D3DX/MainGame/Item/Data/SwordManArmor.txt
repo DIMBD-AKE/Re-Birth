@@ -19,172 +19,172 @@
 //};
 
 # Armor
-N ArcherHelmet
+N SwordManHelmet
 R Normal
 D "d"
-I 365
+I 361
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 10 5 0.0 1.0 0.0
 E 1
-K NormalArcherHelmet
-T "Texture/Item/Item Num 365 Normal ArcherHelmet.jpg"
+K NormalSwordManHelmet
+T "Texture/Item/Item Num 361 Normal SwordManHelmet.jpg"
 
 # Armor
-N ArcherHelmet
+N SwordManHelmet
 R Magic
 D "Çï¸ä"
-I 265
+I 261
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 11 6 0.1 1.5 0.0
 E 1
-K MagicArcherHelmet
-T "Texture/Item/Item Num 265 Magic ArcherHelmet.jpg"
+K MagicSwordManHelmet
+T "Texture/Item/Item Num 261 Magic SwordManHelmet.jpg"
 # Armor
-N ArcherHelmet
+N SwordManHelmet
 R Rare
 D "Çï¸ä"
-I 165
+I 161
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 12 7 0.2 2.0 0.0
 E 1
-K RareArcherHelmet
-T "Texture/Item/Item Num 165 Rare ArcherHelmet.jpg"
+K RareSwordManHelmet
+T "Texture/Item/Item Num 161 Rare SwordManHelmet.jpg"
 # Armor
-N ArcherHelmet
+N SwordManHelmet
 R Unique
 D "Çï¸ä"
-I 065
+I 061
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 13 10 0.3 2.5 0.0
 E 1
-K UniqueArcherHelmet
-T "Texture/Item/Item Num 065 Unique ArcherHelmet.jpg"
+K UniqueSwordManHelmet
+T "Texture/Item/Item Num 061 Unique SwordManHelmet.jpg"
 # Armor
-N ArcherArmor
+N SwordManArmor
 R Normal
 D "°©¿Ê"
-I 375
+I 371
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 20 10 1.0 1.0 0.0
 E 2
-K NormalArcherArmor
-T "Texture/Item/Item Num 375 Normal ArcherArmor.jpg"
+K NormalSwordManArmor
+T "Texture/Item/Item Num 371 Normal SwordManArmor.jpg"
 # Armor
-N ArcherArmor
+N SwordManArmor
 R Magic
 D "°©¿Ê"
-I 275
+I 271
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 21 12 1.1 1.1 0.0
 E 2
-K MagicArcherArmor
-T "Texture/Item/Item Num 275 Magic ArcherArmor.jpg"
+K MagicSwordManArmor
+T "Texture/Item/Item Num 271 Magic SwordManArmor.jpg"
 # Armor
-N ArcherArmor
+N SwordManArmor
 R Rare
 D "°©¿Ê"
-I 175
+I 171
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 22 14 1.2 1.2 0.0
 E 2
-K RareArcherArmor
-T "Texture/Item/Item Num 175 Rare ArcherArmor.jpg"
+K RareSwordManArmor
+T "Texture/Item/Item Num 171 Rare SwordManArmor.jpg"
 # Armor
-N ArcherArmor
+N SwordManArmor
 R Unique
 D "°©¿Ê"
-I 075
+I 071
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 25 16 1.3 1.3 0.0
 E 2
-K UniqueArcherArmor
-T "Texture/Item/Item Num 075 Unique ArcherArmor.jpg"
+K UniqueSwordManArmor
+T "Texture/Item/Item Num 071 Unique SwordManArmor.jpg"
 # Armor
-N ArcherGauntlet
+N SwordManGauntlet
 R Normal
 D "°ÇÆ²¸´"
-I 385
+I 381
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 10 10 1.0 1.0 0.0
 E 3
-K NormalArcherGauntlet
-T "Texture/Item/Item Num 385 Normal ArcherGauntlet.jpg"
+K NormalSwordManGauntlet
+T "Texture/Item/Item Num 381 Normal SwordManGauntlet.jpg"
 
 # Armor
-N ArcherGauntlet
+N SwordManGauntlet
 R Magic
 D "°ÇÆ²¸´"
-I 285
+I 281
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 11 11 1.1 1.1 0.0
 E 3
-K MagicArcherGauntlet
-T "Texture/Item/Item Num 285 Magic ArcherGauntlet.jpg"
+K MagicSwordManGauntlet
+T "Texture/Item/Item Num 281 Magic SwordManGauntlet.jpg"
 
 # Armor
-N ArcherGauntlet
+N SwordManGauntlet
 R Rare
 D "°ÇÆ²¸´"
-I 185
+I 181
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 12 12 1.2 1.2 0.0
 E 3
-K RareArcherGauntlet
-T "Texture/Item/Item Num 185 Rare ArcherGauntlet.jpg"
+K RareSwordManGauntlet
+T "Texture/Item/Item Num 181 Rare SwordManGauntlet.jpg"
 
 # Armor
-N ArcherGauntlet
+N SwordManGauntlet
 R Unique
 D "°ÇÆ²¸´"
-I 085
+I 081
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 13 13 1.3 1.3 0.0
 E 3
-K UniqueArcherGauntlet
-T "Texture/Item/Item Num 085 Unique ArcherGauntlet.jpg"
+K UniqueSwordManGauntlet
+T "Texture/Item/Item Num 081 Unique SwordManGauntlet.jpg"
 
 # Armor
-N ArcherBoots
+N SwordManBoots
 R Normal
 D "ºÎÃ÷"
-I 395
+I 391
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 10 10 2.0 0.0 0.05
 E 4
-K NormalArcherBoots
-T "Texture/Item/Item Num 295 Magic ArcherBoots.jpg"
+K NormalSwordManBoots
+T "Texture/Item/Item Num 291 Magic SwordManBoots.jpg"
 
 # Armor
-N ArcherBoots
+N SwordManBoots
 R Magic
 D "ºÎÃ÷"
-I 295
+I 291
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 11 11 2.5 0.1 0.06
 E 4 
-K MagicArcherBoots
-T "Texture/Item/Item Num 295 Magic ArcherBoots.jpg"
+K MagicSwordManBoots
+T "Texture/Item/Item Num 291 Magic SwordManBoots.jpg"
 
 # Armor
-N ArcherBoots
+N SwordManBoots
 R Rare
 D "ºÎÃ÷"
-I 195
+I 191
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 12 12 3.0 0.2 0.07
 E 4
-K RareArcherBoots
-T "Texture/Item/Item Num 195 Rare ArcherBoots.jpg"
+K RareSwordManBoots
+T "Texture/Item/Item Num 191 Rare SwordManBoots.jpg"
 
 # Armor
-N ArcherBoots
+N SwordManBoots
 R Unique
 D "ºÎÃ÷"
-I 095
+I 091
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 13 13 3.5 0.3 0.10
 E 4
-K UniqueArcherBoots
-T "Texture/Item/Item Num 095 Unique ArcherBoots.jpg"
+K UniqueSwordManBoots
+T "Texture/Item/Item Num 091 Unique SwordManBoots.jpg"
 
 /////////////////////////////////////////////////////////////////////////////////////////////////

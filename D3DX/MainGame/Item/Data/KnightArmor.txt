@@ -19,172 +19,172 @@
 //};
 
 # Armor
-N ArcherHelmet
+N KnightHelmet
 R Normal
 D "d"
-I 365
+I 362
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 0.0 0.0 0.0 0 0 0 10 5 0.0 1.0 0.0
+S 0.0 0.0 0.0 0 0 0 20 7 0.0 0.7 0.0
 E 1
-K NormalArcherHelmet
-T "Texture/Item/Item Num 365 Normal ArcherHelmet.jpg"
+K NormalKnightHelmet
+T "Texture/Item/Item Num 362 Normal KnightHelmet.jpg"
 
 # Armor
-N ArcherHelmet
+N KnightHelmet
 R Magic
 D "Çï¸ä"
-I 265
+I 262
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 0.0 0.0 0.0 0 0 0 11 6 0.1 1.5 0.0
+S 0.0 0.0 0.0 0 0 0 25 8 0.1 0.8 0.0
 E 1
-K MagicArcherHelmet
-T "Texture/Item/Item Num 265 Magic ArcherHelmet.jpg"
+K MagicKnightHelmet
+T "Texture/Item/Item Num 262 Magic KnightHelmet.jpg"
 # Armor
-N ArcherHelmet
+N KnightHelmet
 R Rare
 D "Çï¸ä"
-I 165
+I 162
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 0.0 0.0 0.0 0 0 0 12 7 0.2 2.0 0.0
+S 0.0 0.0 0.0 0 0 0 30 9 0.2 1.0 0.0
 E 1
-K RareArcherHelmet
-T "Texture/Item/Item Num 165 Rare ArcherHelmet.jpg"
+K RareKnightHelmet
+T "Texture/Item/Item Num 162 Rare KnightHelmet.jpg"
 # Armor
-N ArcherHelmet
+N KnightHelmet
 R Unique
 D "Çï¸ä"
-I 065
+I 062
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 0.0 0.0 0.0 0 0 0 13 10 0.3 2.5 0.0
+S 0.0 0.0 0.0 0 0 0 35 10 0.3 1.2 0.0
 E 1
-K UniqueArcherHelmet
-T "Texture/Item/Item Num 065 Unique ArcherHelmet.jpg"
+K UniqueKnightHelmet
+T "Texture/Item/Item Num 062 Unique KnightHelmet.jpg"
 # Armor
-N ArcherArmor
+N KnightArmor
 R Normal
 D "°©¿Ê"
-I 375
+I 372
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 20 10 1.0 1.0 0.0
 E 2
-K NormalArcherArmor
-T "Texture/Item/Item Num 375 Normal ArcherArmor.jpg"
+K NormalKnightArmor
+T "Texture/Item/Item Num 372 Normal KnightArmor.jpg"
 # Armor
-N ArcherArmor
+N KnightArmor
 R Magic
 D "°©¿Ê"
-I 275
+I 272
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 21 12 1.1 1.1 0.0
 E 2
-K MagicArcherArmor
-T "Texture/Item/Item Num 275 Magic ArcherArmor.jpg"
+K MagicKnightArmor
+T "Texture/Item/Item Num 272 Magic KnightArmor.jpg"
 # Armor
-N ArcherArmor
+N KnightArmor
 R Rare
 D "°©¿Ê"
-I 175
+I 172
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 22 14 1.2 1.2 0.0
 E 2
-K RareArcherArmor
-T "Texture/Item/Item Num 175 Rare ArcherArmor.jpg"
+K RareKnightArmor
+T "Texture/Item/Item Num 172 Rare KnightArmor.jpg"
 # Armor
-N ArcherArmor
+N KnightArmor
 R Unique
 D "°©¿Ê"
-I 075
+I 072
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 25 16 1.3 1.3 0.0
 E 2
-K UniqueArcherArmor
-T "Texture/Item/Item Num 075 Unique ArcherArmor.jpg"
+K UniqueKnightArmor
+T "Texture/Item/Item Num 072 Unique KnightArmor.jpg"
 # Armor
-N ArcherGauntlet
+N KnightGauntlet
 R Normal
 D "°ÇÆ²¸´"
-I 385
+I 382
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 10 10 1.0 1.0 0.0
 E 3
-K NormalArcherGauntlet
-T "Texture/Item/Item Num 385 Normal ArcherGauntlet.jpg"
+K NormalKnightGauntlet
+T "Texture/Item/Item Num 382 Normal KnightGauntlet.jpg"
 
 # Armor
-N ArcherGauntlet
+N KnightGauntlet
 R Magic
 D "°ÇÆ²¸´"
-I 285
+I 282
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 11 11 1.1 1.1 0.0
 E 3
-K MagicArcherGauntlet
-T "Texture/Item/Item Num 285 Magic ArcherGauntlet.jpg"
+K MagicKnightGauntlet
+T "Texture/Item/Item Num 282 Magic KnightGauntlet.jpg"
 
 # Armor
-N ArcherGauntlet
+N KnightGauntlet
 R Rare
 D "°ÇÆ²¸´"
-I 185
+I 182
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 12 12 1.2 1.2 0.0
 E 3
-K RareArcherGauntlet
-T "Texture/Item/Item Num 185 Rare ArcherGauntlet.jpg"
+K RareKnightGauntlet
+T "Texture/Item/Item Num 182 Rare KnightGauntlet.jpg"
 
 # Armor
-N ArcherGauntlet
+N KnightGauntlet
 R Unique
 D "°ÇÆ²¸´"
-I 085
+I 082
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 13 13 1.3 1.3 0.0
 E 3
-K UniqueArcherGauntlet
-T "Texture/Item/Item Num 085 Unique ArcherGauntlet.jpg"
+K UniqueKnightGauntlet
+T "Texture/Item/Item Num 082 Unique KnightGauntlet.jpg"
 
 # Armor
-N ArcherBoots
+N KnightBoots
 R Normal
 D "ºÎÃ÷"
-I 395
+I 392
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 10 10 2.0 0.0 0.05
 E 4
-K NormalArcherBoots
-T "Texture/Item/Item Num 295 Magic ArcherBoots.jpg"
+K NormalKnightBoots
+T "Texture/Item/Item Num 292 Magic KnightBoots.jpg"
 
 # Armor
-N ArcherBoots
+N KnightBoots
 R Magic
 D "ºÎÃ÷"
-I 295
+I 292
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 11 11 2.5 0.1 0.06
 E 4 
-K MagicArcherBoots
-T "Texture/Item/Item Num 295 Magic ArcherBoots.jpg"
+K MagicKnightBoots
+T "Texture/Item/Item Num 292 Magic KnightBoots.jpg"
 
 # Armor
-N ArcherBoots
+N KnightBoots
 R Rare
 D "ºÎÃ÷"
-I 195
+I 192
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 12 12 3.0 0.2 0.07
 E 4
-K RareArcherBoots
-T "Texture/Item/Item Num 195 Rare ArcherBoots.jpg"
+K RareKnightBoots
+T "Texture/Item/Item Num 192 Rare KnightBoots.jpg"
 
 # Armor
-N ArcherBoots
+N KnightBoots
 R Unique
 D "ºÎÃ÷"
-I 095
+I 092
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 13 13 3.5 0.3 0.10
 E 4
-K UniqueArcherBoots
-T "Texture/Item/Item Num 095 Unique ArcherBoots.jpg"
+K UniqueKnightBoots
+T "Texture/Item/Item Num 092 Unique KnightBoots.jpg"
 
 /////////////////////////////////////////////////////////////////////////////////////////////////

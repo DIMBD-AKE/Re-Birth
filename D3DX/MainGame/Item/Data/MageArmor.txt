@@ -19,172 +19,172 @@
 //};
 
 # Armor
-N ArcherHelmet
+N MageHelmet
 R Normal
 D "d"
-I 365
+I 364
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 10 5 0.0 1.0 0.0
 E 1
-K NormalArcherHelmet
-T "Texture/Item/Item Num 365 Normal ArcherHelmet.jpg"
+K NormalMageHelmet
+T "Texture/Item/Item Num 364 Normal MageHelmet.jpg"
 
 # Armor
-N ArcherHelmet
+N MageHelmet
 R Magic
 D "Çï¸ä"
-I 265
+I 264
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 11 6 0.1 1.5 0.0
 E 1
-K MagicArcherHelmet
-T "Texture/Item/Item Num 265 Magic ArcherHelmet.jpg"
+K MagicMageHelmet
+T "Texture/Item/Item Num 264 Magic MageHelmet.jpg"
 # Armor
-N ArcherHelmet
+N MageHelmet
 R Rare
 D "Çï¸ä"
-I 165
+I 164
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 12 7 0.2 2.0 0.0
 E 1
-K RareArcherHelmet
-T "Texture/Item/Item Num 165 Rare ArcherHelmet.jpg"
+K RareMageHelmet
+T "Texture/Item/Item Num 164 Rare MageHelmet.jpg"
 # Armor
-N ArcherHelmet
+N MageHelmet
 R Unique
 D "Çï¸ä"
-I 065
+I 064
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 13 10 0.3 2.5 0.0
 E 1
-K UniqueArcherHelmet
-T "Texture/Item/Item Num 065 Unique ArcherHelmet.jpg"
+K UniqueMageHelmet
+T "Texture/Item/Item Num 064 Unique MageHelmet.jpg"
 # Armor
-N ArcherArmor
+N MageArmor
 R Normal
 D "°©¿Ê"
-I 375
+I 374
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 20 10 1.0 1.0 0.0
 E 2
-K NormalArcherArmor
-T "Texture/Item/Item Num 375 Normal ArcherArmor.jpg"
+K NormalMageArmor
+T "Texture/Item/Item Num 374 Normal MageArmor.jpg"
 # Armor
-N ArcherArmor
+N MageArmor
 R Magic
 D "°©¿Ê"
-I 275
+I 274
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 21 12 1.1 1.1 0.0
 E 2
-K MagicArcherArmor
-T "Texture/Item/Item Num 275 Magic ArcherArmor.jpg"
+K MagicMageArmor
+T "Texture/Item/Item Num 274 Magic MageArmor.jpg"
 # Armor
-N ArcherArmor
+N MageArmor
 R Rare
 D "°©¿Ê"
-I 175
+I 174
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 22 14 1.2 1.2 0.0
 E 2
-K RareArcherArmor
-T "Texture/Item/Item Num 175 Rare ArcherArmor.jpg"
+K RareMageArmor
+T "Texture/Item/Item Num 174 Rare MageArmor.jpg"
 # Armor
-N ArcherArmor
+N MageArmor
 R Unique
 D "°©¿Ê"
-I 075
+I 074
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 25 16 1.3 1.3 0.0
 E 2
-K UniqueArcherArmor
-T "Texture/Item/Item Num 075 Unique ArcherArmor.jpg"
+K UniqueMageArmor
+T "Texture/Item/Item Num 074 Unique MageArmor.jpg"
 # Armor
-N ArcherGauntlet
+N MageGauntlet
 R Normal
 D "°ÇÆ²¸´"
-I 385
+I 384
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 10 10 1.0 1.0 0.0
 E 3
-K NormalArcherGauntlet
-T "Texture/Item/Item Num 385 Normal ArcherGauntlet.jpg"
+K NormalMageGauntlet
+T "Texture/Item/Item Num 384 Normal MageGauntlet.jpg"
 
 # Armor
-N ArcherGauntlet
+N MageGauntlet
 R Magic
 D "°ÇÆ²¸´"
-I 285
+I 284
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 11 11 1.1 1.1 0.0
 E 3
-K MagicArcherGauntlet
-T "Texture/Item/Item Num 285 Magic ArcherGauntlet.jpg"
+K MagicMageGauntlet
+T "Texture/Item/Item Num 284 Magic MageGauntlet.jpg"
 
 # Armor
-N ArcherGauntlet
+N MageGauntlet
 R Rare
 D "°ÇÆ²¸´"
-I 185
+I 184
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 12 12 1.2 1.2 0.0
 E 3
-K RareArcherGauntlet
-T "Texture/Item/Item Num 185 Rare ArcherGauntlet.jpg"
+K RareMageGauntlet
+T "Texture/Item/Item Num 184 Rare MageGauntlet.jpg"
 
 # Armor
-N ArcherGauntlet
+N MageGauntlet
 R Unique
 D "°ÇÆ²¸´"
-I 085
+I 084
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 13 13 1.3 1.3 0.0
 E 3
-K UniqueArcherGauntlet
-T "Texture/Item/Item Num 085 Unique ArcherGauntlet.jpg"
+K UniqueMageGauntlet
+T "Texture/Item/Item Num 084 Unique MageGauntlet.jpg"
 
 # Armor
-N ArcherBoots
+N MageBoots
 R Normal
 D "ºÎÃ÷"
-I 395
+I 394
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 10 10 2.0 0.0 0.05
 E 4
-K NormalArcherBoots
-T "Texture/Item/Item Num 295 Magic ArcherBoots.jpg"
+K NormalMageBoots
+T "Texture/Item/Item Num 294 Magic MageBoots.jpg"
 
 # Armor
-N ArcherBoots
+N MageBoots
 R Magic
 D "ºÎÃ÷"
-I 295
+I 294
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 11 11 2.5 0.1 0.06
 E 4 
-K MagicArcherBoots
-T "Texture/Item/Item Num 295 Magic ArcherBoots.jpg"
+K MagicMageBoots
+T "Texture/Item/Item Num 294 Magic MageBoots.jpg"
 
 # Armor
-N ArcherBoots
+N MageBoots
 R Rare
 D "ºÎÃ÷"
-I 195
+I 194
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 12 12 3.0 0.2 0.07
 E 4
-K RareArcherBoots
-T "Texture/Item/Item Num 195 Rare ArcherBoots.jpg"
+K RareMageBoots
+T "Texture/Item/Item Num 194 Rare MageBoots.jpg"
 
 # Armor
-N ArcherBoots
+N MageBoots
 R Unique
 D "ºÎÃ÷"
-I 095
+I 094
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 13 13 3.5 0.3 0.10
 E 4
-K UniqueArcherBoots
-T "Texture/Item/Item Num 095 Unique ArcherBoots.jpg"
+K UniqueMageBoots
+T "Texture/Item/Item Num 094 Unique MageBoots.jpg"
 
 /////////////////////////////////////////////////////////////////////////////////////////////////

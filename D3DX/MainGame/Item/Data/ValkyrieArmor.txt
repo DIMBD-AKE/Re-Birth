@@ -1,0 +1,105 @@
+// N Àåºñ¸í
+// R ·¹¾îµµ
+// D ¼³¸í
+// I ID
+// S ½ºÅ×ÀÌÅÍ½º
+// (AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
+// E EquipType
+// K KeyName
+// T Texture
+//enum EQUIPTYPE
+//{
+//	EQUIP_FIRSTWEAPON,
+//	EQUIP_HELMET,
+//	EQUIP_CHEST,
+//	EQUIP_GLOVES,
+//	EQUIP_BOOTS,
+//	EQUIP_POTION,
+//	EQUIP_END
+//};
+
+# Armor
+N ValkyrieHelmet
+R Rare
+D "Çï¸ä"
+I 166
+//(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
+S 0.0 0.0 0.0 0 0 0 12 7 0.2 2.0 0.0
+E 1
+K RareValkyrieHelmet
+T "Texture/Item/Item Num 166 Rare ValkyrieHelmet.jpg"
+# Armor
+N ValkyrieHelmet
+R Unique
+D "Çï¸ä"
+I 066
+//(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
+S 0.0 0.0 0.0 0 0 0 13 10 0.3 2.5 0.0
+E 1
+K UniqueValkyrieHelmet
+T "Texture/Item/Item Num 066 Unique ValkyrieHelmet.jpg"
+# Armor
+N ValkyrieArmor
+R Rare
+D "°©¿Ê"
+I 176
+//(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
+S 0.0 0.0 0.0 0 0 0 22 14 1.2 1.2 0.0
+E 2
+K RareValkyrieArmor
+T "Texture/Item/Item Num 176 Rare ValkyrieArmor.jpg"
+# Armor
+N ValkyrieArmor
+R Unique
+D "°©¿Ê"
+I 076
+//(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
+S 0.0 0.0 0.0 0 0 0 25 16 1.3 1.3 0.0
+E 2
+K UniqueValkyrieArmor
+T "Texture/Item/Item Num 076 Unique ValkyrieArmor.jpg"
+# Armor
+N ValkyrieGauntlet
+R Rare
+D "°ÇÆ²¸´"
+I 186
+//(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
+S 0.0 0.0 0.0 0 0 0 12 12 1.2 1.2 0.0
+E 3
+K RareValkyrieGauntlet
+T "Texture/Item/Item Num 186 Rare ValkyrieGauntlet.jpg"
+
+# Armor
+N ValkyrieGauntlet
+R Unique
+D "°ÇÆ²¸´"
+I 086
+//(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
+S 0.0 0.0 0.0 0 0 0 13 13 1.3 1.3 0.0
+E 3
+K UniqueValkyrieGauntlet
+T "Texture/Item/Item Num 086 Unique ValkyrieGauntlet.jpg"
+
+# Armor
+N ValkyrieBoots
+R Rare
+D "ºÎÃ÷"
+I 196
+//(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
+S 0.0 0.0 0.0 0 0 0 12 12 3.0 0.2 0.07
+E 4
+K RareValkyrieBoots
+T "Texture/Item/Item Num 196 Rare ValkyrieBoots.jpg"
+
+# Armor
+N ValkyrieBoots
+R Unique
+D "ºÎÃ÷"
+I 096
+//(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
+S 0.0 0.0 0.0 0 0 0 13 13 3.5 0.3 0.10
+E 4
+K UniqueValkyrieBoots
+T "Texture/Item/Item Num 096 Unique ValkyrieBoots.jpg"
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
