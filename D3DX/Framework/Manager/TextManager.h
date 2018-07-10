@@ -23,19 +23,17 @@ private:
 		RECT rect;
 		DWORD color;
 		int size;
-		bool center;
 	};
 
-	LPD3DXFONT			m_pFont;
+	vector<LPD3DXFONT>	m_vecFont;
 	vector<TextInfo>	m_vecText;
 	vector<string>		m_vecRegFont;
 
-	static bool SizeComparison(TextInfo i, TextInfo j) { return (i.size < j.size); }
+	LPD3DXFONT GetFont(string fontName, int size);
 
 public:
-	void Add(string text, float x, float y, int size, string fontName = "나눔스퀘어 Regular", 
-		DWORD color = 0xFF000000, bool center = false, const RECT* rc = NULL);
-	FONT GetFont(FONTTYPE type, float x, float y);
+	void Add(string text, float x, float y, int size, string fontName = "", 
+		DWORD color = 0xFF000000);
 	void RegisterFont(string path);
 	void Render();
 	void Release();

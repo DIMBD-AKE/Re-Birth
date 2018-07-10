@@ -2,29 +2,48 @@
 #include "TextManager.h"
 #include <algorithm>
 
-void TextManager::Add(string text, float x, float y, int size, string fontName, DWORD color, bool center, const RECT * rc)
+LPD3DXFONT TextManager::GetFont(string fontName, int size)
 {
-	TextInfo info = TextInfo();
-	RECT _rc = { x, y, x + size * text.length(), y + size };
-	info.text = text;
-	if (rc == NULL) info.rect = _rc;
-	else info.rect = *rc;
-	info.color = color;
-	info.size = size;
-	info.font = fontName;
-	info.center = center;
+	for (int i = 0; i < m_vecFont.size(); i++)
+	{
+		D3DXFONT_DESC desc;
+		m_vecFont[i]->GetDesc(&desc);
+		if (fontName.compare(desc.FaceName) == 0 && size == desc.Height)
+			return m_vecFont[i];
+	}
 
-	m_vecText.push_back(info);
+	LPD3DXFONT font;
+	D3DXCreateFont(
+		DEVICE,
+		size,
+		0,
+		FW_NORMAL,
+		1,
+		FALSE,
+		HANGUL_CHARSET,
+		OUT_DEFAULT_PRECIS,
+		ANTIALIASED_QUALITY,
+		FF_DONTCARE,
+		fontName.c_str(),
+		&font);
+	m_vecFont.push_back(font);
+	return font;
 }
 
-FONT TextManager::GetFont(FONTTYPE type, float x, float y)
+void TextManager::Add(string text, float x, float y, int size, string fontName, DWORD color)
 {
-	FONT font;
-	D3DXFONT_DESC desc;
-	ZeroMemory(&desc, sizeof(D3DXFONT_DESC));
+	TextInfo info = TextInfo();
+	RECT _rc = { x, y, 0, 0 };
+	info.rect = _rc;
+	info.text = text;
+	info.color = color;
+	info.size = size;
+	if (fontName.length() == 0)
+		info.font = "나눔스퀘어 Regular";
+	else
+		info.font = fontName;
 
-	D3DXCreateFontIndirect(DEVICE, &desc, &font.font);
-	return font;
+	m_vecText.push_back(info);
 }
 
 void TextManager::RegisterFont(string path)
@@ -37,35 +56,12 @@ void TextManager::RegisterFont(string path)
 void TextManager::Render()
 {
 	D3DXFONT_DESC des;
-	sort(m_vecText.begin(), m_vecText.end(), SizeComparison);
 	for (int i = 0; i < m_vecText.size(); i++)
 	{
-		m_pFont->GetDesc(&des);
+		LPD3DXFONT font = GetFont(m_vecText[i].font, m_vecText[i].size);
 
-		if (des.Height != m_vecText[i].size || m_vecText[i].font.compare(des.FaceName))
-		{
-			SAFE_RELEASE(m_pFont);
-			D3DXCreateFont(
-				DEVICE,
-				m_vecText[i].size,
-				0,
-				FW_NORMAL,
-				1,
-				FALSE,
-				HANGUL_CHARSET,
-				OUT_DEFAULT_PRECIS, // 글자 크기와 상관없이 출력
-				ANTIALIASED_QUALITY,
-				FF_DONTCARE,
-				m_vecText[i].font.c_str(),
-				&m_pFont);
-		}
-
-		if (!m_vecText[i].center)
-			m_pFont->DrawText(NULL, m_vecText[i].text.c_str(), -1,
-				&m_vecText[i].rect, DT_LEFT | DT_NOCLIP, m_vecText[i].color);
-		else
-			m_pFont->DrawText(NULL, m_vecText[i].text.c_str(), -1,
-				&m_vecText[i].rect, DT_CENTER | DT_NOCLIP, m_vecText[i].color);
+		font->DrawText(NULL, m_vecText[i].text.c_str(), -1,
+			&m_vecText[i].rect, DT_LEFT | DT_NOCLIP, m_vecText[i].color);
 	}
 
 	m_vecText.clear();
@@ -73,27 +69,15 @@ void TextManager::Render()
 
 void TextManager::Release()
 {
-	SAFE_RELEASE(m_pFont);
+	for (auto font : m_vecFont)
+		SAFE_RELEASE(font);
+	m_vecFont.clear();
 	for (auto path : m_vecRegFont)
 		RemoveFontResource(path.c_str());
 }
 
 TextManager::TextManager()
 {
-	D3DXCreateFont(
-		DEVICE,
-		16,
-		0,
-		FW_NORMAL,
-		1,
-		FALSE,
-		HANGUL_CHARSET,
-		OUT_DEFAULT_PRECIS, // 글자 크기와 상관없이 출력
-		ANTIALIASED_QUALITY,
-		FF_DONTCARE,
-		NULL,
-		&m_pFont);
-
 	RegisterFont("Font/NanumSquareR.ttf");
 	RegisterFont("Font/UhBee Yiseul.ttf");
 }
