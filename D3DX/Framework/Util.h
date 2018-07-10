@@ -167,6 +167,13 @@ namespace UTIL
 		return qv * qv - vv * (qq - rr) >= 0;
 	}
 
+	static float GetDistance(D3DXVECTOR3 pos1, D3DXVECTOR3 pos2)
+	{
+		D3DXVECTOR3 tempV = pos1 - pos2;
+
+		return D3DXVec3Length(&tempV);
+	}
+
 	static bool IntersectSphere(D3DXVECTOR3 pos1, float radius1, D3DXVECTOR3 pos2, float radius2)
 	{
 		float distance = GetDistance(pos1, pos2);
@@ -180,12 +187,7 @@ namespace UTIL
 		return false;
 	}
 
-	static float GetDistance(D3DXVECTOR3 pos1, D3DXVECTOR3 pos2)
-	{
-		D3DXVECTOR3 tempV = pos1 - pos2;
-
-		return D3DXVec3Length(&tempV);
-	}
+	
 
 	//두 벡터간의 각도 -> 0,0, 방향벡터x, 방향벡터y
 	static float GetAngle(float x1, float z1, float x2, float z2)
