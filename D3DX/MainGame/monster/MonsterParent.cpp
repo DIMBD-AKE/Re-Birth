@@ -303,19 +303,20 @@ POINT MonsterParent::MoveForAttack()
 			//
 			//D3DXVECTOR3 test = *m_pModel->GetPosition();
 
+			float angle = GetAngle(0, 0, dir.x, dir.z);
 
-			float x = dir.x - 0;
-			float y = dir.z - 0;
-
-			float distance = sqrtf(x * x + y * y);
-
-			float angle = acosf(x / distance);
-
-			if (dir.z > 0)
-			{
-				angle = D3DX_PI * 2 - angle;
-				if (angle >= D3DX_PI * 2) angle -= D3DX_PI * 2;
-			}
+			//float x = dir.x - 0;
+			//float y = dir.z - 0;
+			//
+			//float distance = sqrtf(x * x + y * y);
+			//
+			//float angle = acosf(x / distance);
+			//
+			//if (dir.z > 0)
+			//{
+			//	angle = D3DX_PI * 2 - angle;
+			//	if (angle >= D3DX_PI * 2) angle -= D3DX_PI * 2;
+			//}
 
 			angle -= D3DX_PI / 2;
 

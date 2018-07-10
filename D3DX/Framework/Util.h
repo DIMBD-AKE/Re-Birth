@@ -1,8 +1,7 @@
 #pragma once
 
-class Util
+namespace UTIL
 {
-public:
 	static char* GetFileType(char* fullPath)
 	{
 		char * context;
@@ -167,4 +166,45 @@ public:
 
 		return qv * qv - vv * (qq - rr) >= 0;
 	}
+
+	static bool IntersectSphere(D3DXVECTOR3 pos1, float radius1, D3DXVECTOR3 pos2, float radius2)
+	{
+		float distance = GetDistance(pos1, pos2);
+
+
+		if (radius1 + radius2 >= distance)
+		{
+			return true;
+		}
+
+		return false;
+	}
+
+	static float GetDistance(D3DXVECTOR3 pos1, D3DXVECTOR3 pos2)
+	{
+		D3DXVECTOR3 tempV = pos1 - pos2;
+
+		return D3DXVec3Length(&tempV);
+	}
+
+	//µÎ º¤ÅÍ°£ÀÇ °¢µµ -> 0,0, ¹æÇâº¤ÅÍx, ¹æÇâº¤ÅÍy
+	static float GetAngle(float x1, float z1, float x2, float z2)
+	{
+		float x = x2 - x1;
+		float y = z2 - z1;
+
+		float distance = sqrtf(x * x + y * y);
+
+		float angle = acosf(x / distance);
+
+		if (z2 > z1)
+		{
+			angle = D3DX_PI * 2 - angle;
+			if (angle >= D3DX_PI * 2) angle -= D3DX_PI*2;
+		}
+
+		return angle;
+	}
+
+
 };

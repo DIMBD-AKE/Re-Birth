@@ -2,7 +2,6 @@
 #include "Macro.h"
 #include "Struct.h"
 #include "Manager\DeviceManager.h"
-#include "Util.h"
 #include "Manager\TextManager.h"
 #include "Manager\TimeManager.h"
 #include "Manager\SceneManager.h"
@@ -13,3 +12,6 @@
 #include "Manager\CameraManager.h"
 #include "Manager\ParticleManager.h"
 #include "UIController.h"
+#include "Util.h"
+
+using namespace UTIL;
