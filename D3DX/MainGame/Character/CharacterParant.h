@@ -85,8 +85,10 @@ protected:
 	
 
 	vector<D3DXVECTOR3*>	m_vecVertex;		//디버그용 벡터
-
 	
+	
+	Particle*		m_pParticle;
+	Particle*		m_pParticle2;
 
 	void SKill();
 	void Move();

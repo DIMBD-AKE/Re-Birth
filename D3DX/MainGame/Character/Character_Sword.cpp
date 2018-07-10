@@ -111,6 +111,8 @@ void Character_Sword::Update()
 		
 		m_pCharacter->World();
 		
+
+
 		m_pUIobj->Update();
 		
 	}
@@ -128,6 +130,8 @@ void Character_Sword::Render()
 
 		//포트레이트 
 		m_pUIobj->Render();
+
+		
 
 		CharacterParant::Render();
 	}
