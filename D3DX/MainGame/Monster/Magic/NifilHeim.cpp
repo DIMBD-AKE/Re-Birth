@@ -85,5 +85,8 @@ void NifilHeim::Skill()
 
 void NifilHeim::DropItemSetup()
 {
-
+	m_nItemID[0] = SWORDMAN_NORMAL_ARMOR;
+	m_nItemID[1] = SWORDMAN_NORMAL_ARMOR;
+	m_nItemID[2] = SWORDMAN_NORMAL_ARMOR;
+	m_nItemID[3] = SWORDMAN_NORMAL_ARMOR;
 }
