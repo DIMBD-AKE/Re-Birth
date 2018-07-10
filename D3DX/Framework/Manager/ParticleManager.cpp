@@ -83,10 +83,6 @@ ST_PARTICLE_ATTRIBUTE ParticleSystem::ResetParticle(int loop)
 	att.vAcceleration.y += FRand(-var.vAccelerationVar.y, var.vAccelerationVar.y);
 	att.vAcceleration.z += FRand(-var.vAccelerationVar.z, var.vAccelerationVar.z);
 
-	att.vGravity.x += FRand(-var.vGravityVar.x, var.vGravityVar.x);
-	att.vGravity.y += FRand(-var.vGravityVar.y, var.vGravityVar.y);
-	att.vGravity.z += FRand(-var.vGravityVar.z, var.vGravityVar.z);
-
 	att.fStartRadius += FRand(-var.fStartRadiusVar, var.fStartRadiusVar);
 	att.fEndRadius += FRand(-var.fEndRadiusVar, var.fEndRadiusVar);
 	att.fRadiusSpeed += FRand(-var.fRadiusSpeedVar, var.fRadiusSpeedVar);
@@ -127,13 +123,22 @@ void ParticleSystem::Update()
 	{
 		if (!(*iter)->isAlive) continue;
 
-		(*iter)->vPos += 
-			(*iter)->vVelocity * TIME->GetElapsedTime() + 
+		D3DXVECTOR3 grav = D3DXVECTOR3(0, 0, 0);
+
+		float dist = D3DXVec3Length(&((*iter)->vGravityPos - (*iter)->vPos));
+		if (dist < (*iter)->fGravityRadius)
+		{
+			D3DXVECTOR3 dir = (*iter)->vGravityPos - (*iter)->vPos;
+			D3DXVec3Normalize(&dir, &dir);
+			grav += dir * (sqrt((*iter)->fGravityForce) * (pow((*iter)->fGravityRadius, 2) - pow(dist, 2))) * 0.1;
+		}
+
+		(*iter)->vPos +=
+			(*iter)->vVelocity * TIME->GetElapsedTime() +
 			(*iter)->vAcceleration * TIME->GetElapsedTime() +
-			(*iter)->vGravity * TIME->GetElapsedTime();
+			grav * TIME->GetElapsedTime();
 
 		(*iter)->vAcceleration += (*iter)->vAcceleration * TIME->GetElapsedTime();
-		(*iter)->vGravity += (*iter)->vGravity * TIME->GetElapsedTime();
 
 		(*iter)->fCurrentRadiusSpeed += (*iter)->fRadiusSpeed * TIME->GetElapsedTime();
 
@@ -327,7 +332,8 @@ void ParticleManager::AddParticle(string keyName, LPDIRECT3DTEXTURE9 texture, st
 		if (strcmp(tok, "A_GRV") == 0)
 		{
 			tok = strtok_s(NULL, "\t\n", &context);
-			sscanf_s(tok, "%f %f %f", &orig.vGravity.x, &orig.vGravity.y, &orig.vGravity.z);
+			sscanf_s(tok, "%f %f %f %f %f", &orig.vGravityPos.x, &orig.vGravityPos.y, &orig.vGravityPos.z,
+				&orig.fGravityForce, &orig.fGravityRadius);
 		}
 		if (strcmp(tok, "A_STR") == 0)
 		{
@@ -383,11 +389,6 @@ void ParticleManager::AddParticle(string keyName, LPDIRECT3DTEXTURE9 texture, st
 		{
 			tok = strtok_s(NULL, "\t\n", &context);
 			sscanf_s(tok, "%f %f %f", &var.vAccelerationVar.x, &var.vAccelerationVar.y, &var.vAccelerationVar.z);
-		}
-		if (strcmp(tok, "V_GRV") == 0)
-		{
-			tok = strtok_s(NULL, "\t\n", &context);
-			sscanf_s(tok, "%f %f %f", &var.vGravityVar.x, &var.vGravityVar.y, &var.vGravityVar.z);
 		}
 		if (strcmp(tok, "V_STR") == 0)
 		{

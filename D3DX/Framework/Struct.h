@@ -46,7 +46,9 @@ struct ST_PARTICLE_ATTRIBUTE
 	D3DXVECTOR3 vPos;
 	D3DXVECTOR3 vVelocity;
 	D3DXVECTOR3 vAcceleration;
-	D3DXVECTOR3 vGravity;
+	D3DXVECTOR3 vGravityPos;
+	float		fGravityForce;
+	float		fGravityRadius;
 	float		fStartRadius;
 	float		fEndRadius;
 	float		fRadiusSpeed;
@@ -65,7 +67,6 @@ struct ST_PARTICLE_ATTRIBUTE_VARIABLE
 	D3DXVECTOR3 vPosVar;
 	D3DXVECTOR3 vVelocityVar;
 	D3DXVECTOR3 vAccelerationVar;
-	D3DXVECTOR3 vGravityVar;
 	float		fStartRadiusVar;
 	float		fEndRadiusVar;
 	float		fRadiusSpeedVar;
