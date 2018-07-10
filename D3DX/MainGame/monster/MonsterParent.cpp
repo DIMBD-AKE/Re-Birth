@@ -45,6 +45,7 @@ void MonsterParent::Setup(Map* map, D3DXVECTOR3 spawnPos)
 	ChangeAni();
 
 	SetupStat();
+	DropItemSetup();
 
 	m_pHPBar = new UIObject;
 
@@ -65,6 +66,12 @@ void MonsterParent::Setup(Map* map, D3DXVECTOR3 spawnPos)
 
 	m_pHPBar->SetPosition(UIPos);
 
+	UIObject* backBar = new UIObject;
+
+	backBar->SetPosition(D3DXVECTOR3(0, 0, 0));
+	backBar->SetTexture(TEXTUREMANAGER->GetTexture("MonBackBar"));
+
+	m_pHPBar->AddChild(backBar);
 	//ST_SIZEBOX box;
 }
 
@@ -75,6 +82,10 @@ void MonsterParent::SetupStat()
 
 void MonsterParent::Update()
 {
+	if (INPUT->KeyDown('K'))
+	{
+		SetCurrentHP(10);
+	}
 	if (INPUT->KeyDown('L'))
 	{
 		m_bIsRespawn = true;
@@ -87,10 +98,10 @@ void MonsterParent::Update()
 	//
 	D3DXVECTOR3 UIPos = *m_pModel->GetPosition();
 	//UIPos.x -= m_fUIMoveX;
-	//UIPos.y += m_fUIMoveY;
+	UIPos.y += m_fUIMoveY;
 
 	auto temp = Convert3DTo2D(UIPos);
-	UIPos.x = temp.x;
+	UIPos.x = temp.x - m_fUIMoveX;
 	UIPos.y = temp.y;
 	UIPos.z = 0;
 	m_pHPBar->SetPosition(UIPos);

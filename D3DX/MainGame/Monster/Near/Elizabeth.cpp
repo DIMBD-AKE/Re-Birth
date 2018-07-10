@@ -18,8 +18,8 @@ void Elizabeth::Setup(Map* map, D3DXVECTOR3 spawnPos)
 	MODELMANAGER->AddModel("엘리자베스", "Model/Enemy/Elizabeth/", "Elizabeth.x", MODELTYPE_X);
 	m_pModel = MODELMANAGER->GetModel("엘리자베스", MODELTYPE_X);
 
-	m_fUIMoveX = 100.0f;
-	m_fUIMoveY = 100.0f;
+	m_fUIMoveX = 50.0f;
+	m_fUIMoveY = 5.0f;
 
 	//부모의 셋업을 호출해라
 	NearMonster::Setup(map, spawnPos);
