@@ -123,20 +123,19 @@ void ParticleSystem::Update()
 	{
 		if (!(*iter)->isAlive) continue;
 
-		D3DXVECTOR3 grav = D3DXVECTOR3(0, 0, 0);
-
 		float dist = D3DXVec3Length(&((*iter)->vGravityPos - (*iter)->vPos));
-		if (dist < (*iter)->fGravityRadius)
+		if (dist > 1.0f && dist < (*iter)->fGravityRadius)
 		{
 			D3DXVECTOR3 dir = (*iter)->vGravityPos - (*iter)->vPos;
 			D3DXVec3Normalize(&dir, &dir);
-			grav += dir * (sqrt((*iter)->fGravityForce) * (pow((*iter)->fGravityRadius, 2) - pow(dist, 2))) * 0.1;
+			float f = (*iter)->fGravityForce * (m_fParticleSize / pow(dist, 2));
+			(*iter)->vGravity += dir * f;
 		}
 
 		(*iter)->vPos +=
 			(*iter)->vVelocity * TIME->GetElapsedTime() +
 			(*iter)->vAcceleration * TIME->GetElapsedTime() +
-			grav * TIME->GetElapsedTime();
+			(*iter)->vGravity * TIME->GetElapsedTime();
 
 		(*iter)->vAcceleration += (*iter)->vAcceleration * TIME->GetElapsedTime();
 

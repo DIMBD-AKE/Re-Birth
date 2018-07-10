@@ -46,6 +46,7 @@ struct ST_PARTICLE_ATTRIBUTE
 	D3DXVECTOR3 vPos;
 	D3DXVECTOR3 vVelocity;
 	D3DXVECTOR3 vAcceleration;
+	D3DXVECTOR3	vGravity;
 	D3DXVECTOR3 vGravityPos;
 	float		fGravityForce;
 	float		fGravityRadius;
