@@ -114,6 +114,13 @@ void CharacterParant::Move()
 		m_Status->chr.nCurrentHP = 0;
 	}
 	
+	//m_pParticle->SetPosition(*m_pCharacter->GetPosition());
+	m_pParticle->World();
+	m_pParticle->Update();
+
+	m_pParticle2->World();
+	m_pParticle2->Update();
+
 }
 
 void CharacterParant::Controller()
@@ -126,8 +133,7 @@ void CharacterParant::Controller()
 	if (INPUT->KeyDown('P'))
 	{
 		m_pInventory->OpenEquip();
-	}
-	
+	}	
 }
 
 void CharacterParant::Debug()
@@ -141,7 +147,7 @@ void CharacterParant::Debug()
 		TEXT->Add(to_string(m_Status->chr.nCurrentStam), pos.x, pos.y, 30);*/
 		TEXT->Add(to_string(m_Status->chr.nCurrentHP), 300, 300, 30);
 
-	//	CAMERA->SetMode(CAMERA_FREE);
+		CAMERA->SetMode(CAMERA_FREE);
 	}
 }
 
@@ -192,6 +198,7 @@ void CharacterParant::UnderAttacked()
 			m_bIsDead = true;
 			m_eCondition = CHAR_DIE;
 			ChangeAnimation();
+			m_pParticle2->SetPosition(*m_pCharacter->GetPosition());
 		}
 }
 
@@ -244,10 +251,13 @@ void CharacterParant::Attack()
 		D3DXVECTOR3 rot = *m_pCharacter->GetRotation();														//플레이어 각도 받고 
 		
 		int MinIndex = -1;
+		int subMinIndex = -1;
+		int MINIndex2 = -1;
 		float MinDistance = 0.0f;
 		float radius;
 		D3DXVECTOR3 mosPos;
-		float distance; 
+		float distance;
+		float subDistance = 0.0f;
 
 	if (m_eChrType == CHRTYPE_SWORD || m_eChrType == CHRTYPE_GUN)
 	{
@@ -262,6 +272,7 @@ void CharacterParant::Attack()
 	
 			if (distance1 - radius1 > m_Status->chr.fRange) continue;
 			distance = distance1;
+			distance = subDistance;
 			//radius = radius1;
 
 			MinIndex = i;
@@ -272,22 +283,103 @@ void CharacterParant::Attack()
 			for (int i = MinIndex+1; i < m_pMonsterManager->GetMonsterVector().size(); ++i)
 			{
 				if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn())continue;	//리젠할때는 건드리지 않고 
-				radius = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().radius;
+				float radius2 = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().radius;
 				D3DXVECTOR3 mosPos2 = *(m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetPosition());
 				float distance2 = D3DXVec3Length(&(mosPos2 - pos));
-				if (distance2 - radius > m_Status->chr.fRange) continue;
+				if (distance2 - radius2 > m_Status->chr.fRange) continue;
 				if (distance > distance2)
 				{
 					distance = distance2;
 					MinIndex = i;
 				}
+				
 			}
-			m_pMonsterManager->GetMonsterVector()[MinIndex]->CalculDamage(10000000.0f);
+			
+			m_pMonsterManager->GetMonsterVector()[MinIndex]->CalculDamage(1.0f);
+			m_pParticle->SetPosition(D3DXVECTOR3(m_pMonsterManager->GetMonsterVector()[MinIndex]->GetModel()->GetPosition()->x, 
+				m_pMonsterManager->GetMonsterVector()[MinIndex]->GetModel()->GetPosition()->y+2.0f, 
+				m_pMonsterManager->GetMonsterVector()[MinIndex]->GetModel()->GetPosition()->z));
+			m_pParticle->TimeReset();
+
 		}
+		//============범위안에 있는 애들 다 공격하는 무기 skill용====================
+		//for (int i = 0; i < m_pMonsterManager->GetMonsterVector().size(); ++i)
+		//{
+		//	if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn())continue;
+		//	float radius1 = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().radius;		//몬스터의 바운드 스페어의 반지름 받고 
+		//	D3DXVECTOR3 mosPos1 = *(m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetPosition());		//몬스터 포지션 받고 
+		//	float distance1 = D3DXVec3Length(&(mosPos1 - pos));
+		//	if (distance1 - radius1 > m_Status->chr.fRange) continue;
+		//	else
+		//	{
+		//		m_pMonsterManager->GetMonsterVector()[i]->CalculDamage(1000000.0f);
+		//		m_pParticle->SetPosition(D3DXVECTOR3(m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetPosition()->x,
+		//			m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetPosition()->y + 2.0f,
+		//			m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetPosition()->z));
+		//		m_pParticle->TimeReset();
+		//	}
+		//}
+		//=========범위안에 있는 애들중 가까운애 그리고 두번째 가까운애 공격하는 무기 스킬용==================
+		//기준점이 되는 몬스터를 구하고 
+		//for (int i = 0; i < m_pMonsterManager->GetMonsterVector().size(); ++i)
+		//{
+		//	if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn())continue;								//리젠할때는 건드리지 않고 
 
-		
+		//	float radius1 = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().radius;		//몬스터의 바운드 스페어의 반지름 받고 
+		//	D3DXVECTOR3 mosPos1 = *(m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetPosition());		//몬스터 포지션 받고 
+		//	float distance1 = D3DXVec3Length(&(mosPos1 - pos));
 
-		
+		//	if (distance1 - radius1 > m_Status->chr.fRange) continue;
+		//	distance = distance1;
+		//	subDistance = FLT_MAX;
+
+		//	MinIndex = i;
+		//	subMinIndex = i;
+		//	break;
+		//}
+		//if (MinIndex != -1)//만약 기준점이 된 몬스터가 구해졌으면 
+		//{
+		//	for (int i = MinIndex + 1; i < m_pMonsterManager->GetMonsterVector().size(); ++i)
+		//	{
+		//		if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn())continue;	//리젠할때는 건드리지 않고 
+		//		float radius2 = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().radius;
+		//		D3DXVECTOR3 mosPos2 = *(m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetPosition());
+		//		float distance2 = D3DXVec3Length(&(mosPos2 - pos));
+		//		if (distance2 - radius2 > m_Status->chr.fRange) continue;
+		//		if (distance > distance2)
+		//		{
+		//			distance = distance2;
+		//			MinIndex = i;
+		//		}
+
+		//	}
+		//	for (int j = subMinIndex + 1; j < m_pMonsterManager->GetMonsterVector().size(); ++j)
+		//	{
+
+		//		if (m_pMonsterManager->GetMonsterVector()[j]->GetIsResPawn())continue;	//리젠할때는 건드리지 않고 
+		//		if (j == MinIndex) continue; //가장 최소값을 가진 인덱스여도 재끼고
+		//		float radius3 = m_pMonsterManager->GetMonsterVector()[j]->GetModel()->GetBoundSphere().radius;
+		//		D3DXVECTOR3 mosPos3 = *(m_pMonsterManager->GetMonsterVector()[j]->GetModel()->GetPosition());
+		//		float distance3 = D3DXVec3Length(&(mosPos3 - pos));
+		//		if (distance3 - radius3 > m_Status->chr.fRange) continue;
+		//		if (subDistance > distance3)
+		//		{
+		//			subDistance = distance3;
+		//			MINIndex2 = j;
+		//		}
+		//		
+		//	}
+		//	if (MINIndex2 != -1)
+		//	{
+		//		m_pMonsterManager->GetMonsterVector()[MINIndex2]->CalculDamage(100000.0f);
+		//	}
+		//	m_pMonsterManager->GetMonsterVector()[MinIndex]->CalculDamage(100000.0f);
+		//	m_pParticle->SetPosition(D3DXVECTOR3(m_pMonsterManager->GetMonsterVector()[MinIndex]->GetModel()->GetPosition()->x,
+		//		m_pMonsterManager->GetMonsterVector()[MinIndex]->GetModel()->GetPosition()->y + 2.0f,
+		//		m_pMonsterManager->GetMonsterVector()[MinIndex]->GetModel()->GetPosition()->z));
+		//	m_pParticle->TimeReset();
+
+		//}
 	}
 	else if (m_eChrType == CHRTYPE_MAGIC)
 	{
@@ -322,7 +414,12 @@ void CharacterParant::Attack()
 					MinIndex = i;
 				}
 			}
-			m_pMonsterManager->GetMonsterVector()[MinIndex]->CalculDamage(10000000.0f);
+			m_pMonsterManager->GetMonsterVector()[MinIndex]->CalculDamage(1.0f);
+			m_pParticle->SetPosition(D3DXVECTOR3(m_pMonsterManager->GetMonsterVector()[MinIndex]->GetModel()->GetPosition()->x,
+				m_pMonsterManager->GetMonsterVector()[MinIndex]->GetModel()->GetPosition()->y + 2.0f,
+				m_pMonsterManager->GetMonsterVector()[MinIndex]->GetModel()->GetPosition()->z));
+			m_pParticle->TimeReset();
+			
 		}
 	}
 }
@@ -346,6 +443,14 @@ CharacterParant::CharacterParant()
 	TEXTUREMANAGER->AddTexture("리아_사진", "Model/Character/Portrait/Portrait_PC_Riah_S_Icon.png");
 	TEXTUREMANAGER->AddTexture("스카디_사진", "Model/Character/Portrait/Portrait_PC_Skadi_S_Icon.png");
 	TEXTUREMANAGER->AddTexture("벨벳_사진", "Model/Character/Portrait/velvet.png");
+	//공격시 파티클
+	PARTICLE->AddParticle("ATTACK",
+		TEXTUREMANAGER->AddTexture("파티클1", "Texture/Particle/Sphere.png"),
+		"Particle/attack.ptc");
+	//플레이어 죽었을때 파티클
+	PARTICLE->AddParticle("Die",
+		TEXTUREMANAGER->AddTexture("파티클2", "Texture/Particle/Sphere.png"),
+		"Particle/PlayerDie.ptc");
 
 }
 
@@ -353,6 +458,8 @@ CharacterParant::CharacterParant()
 CharacterParant::~CharacterParant()
 {
 	SAFE_DELETE(m_pCharacter);
+	SAFE_DELETE(m_pParticle);
+	SAFE_DELETE(m_pParticle2);
 }
 
 void CharacterParant::Init(Map* map, CHARSELECT order, MonsterManager* pMonsterManager)
@@ -409,8 +516,11 @@ void CharacterParant::Init(Map* map, CHARSELECT order, MonsterManager* pMonsterM
 	//포트레이트 UI
 	m_pUIobj = new UIObject;
 
+	
 
 
+	m_pParticle = PARTICLE->GetParticle("ATTACK");
+	m_pParticle2 = PARTICLE->GetParticle("Die");
 }
 
 
@@ -419,6 +529,8 @@ void CharacterParant::Render()
 {
 	//포트레이트 
 	//m_pUIobj->Render();
+	m_pParticle->Render();
+	m_pParticle2->Render();
 }
 
 void CharacterParant::KeyControl()
@@ -536,29 +648,17 @@ void CharacterParant::KeyControl()
 	}
 	
 	//대쉬일때 애니메이션 스피드 제어
-	if (m_bIsDash)
+	if (m_eCondition == CHAR_DASH_FRONT || m_eCondition == CHAR_DASH_BACK)
 	{
-		m_pCharacter->SetAnimationSpeed(1.0f * 100);
-		float temp;
-		temp = m_pCharacter->GetAnimationPeriod("RUN");
-		int a = 0;
+		m_pCharacter->SetAnimationSpeed(5.0f);
 	}
-	else
-	{
-		m_pCharacter->SetAnimationSpeed(1.0f);
-		float temp;
-		temp = m_pCharacter->GetAnimationPeriod("RUN");
-		int a = 0;
-	}
+
 	//공격상태일때 애니메이션 스피드 제어
-	if (m_bIsAttack)
+	if (m_eCondition == CHAR_ATTACK)
 	{
 		m_pCharacter->SetAnimationSpeed(1.0f * m_Status->chr.fAtkSpeed);
 	}
-	else
-	{
-		m_pCharacter->SetAnimationSpeed(1.0f);
-	}
+	
 
 	//끄앙 주금
 	if (m_pCharacter->IsAnimationEnd() && m_eCondition == CHAR_DIE)
@@ -575,6 +675,7 @@ void CharacterParant::ChangeAnimation()
 	case CHAR_IDLE:
 			m_pCharacter->SetBlendAnimation("IDLE");
 			m_pCharacter->SetBlendTime(0.27f);
+			m_pCharacter->SetAnimationSpeed(1.0f);
 		break;
 	case CHAR_DASH_FRONT:
 		m_pCharacter->SetAnimation("RUN");
@@ -585,9 +686,11 @@ void CharacterParant::ChangeAnimation()
 		break;
 	case CHAR_RUN_FRONT:
 			m_pCharacter->SetAnimation("RUN");
+			m_pCharacter->SetAnimationSpeed(1.0f);
 		break;
 	case CHAR_RUN_BACK:
 		m_pCharacter->SetAnimation("RUN");
+		m_pCharacter->SetAnimationSpeed(1.0f);
 		break;
 	case CHAR_SKILL:
 			m_pCharacter->SetAnimation("SKILL");
