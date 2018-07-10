@@ -24,6 +24,7 @@ void EffectObject::Init(ST_EFFECT_IMAGE info, D3DXVECTOR3 pos, D3DXVECTOR3 dir)
 	float angle = GetAngle(zero.x, zero.z, dir.x, dir.z);
 	m_vRot.y = angle;
 	m_vRot.x = D3DX_PI / 2;
+	m_vRot.x = FRand(-D3DX_PI / 2, D3DX_PI / 2);
 
 	D3DSURFACE_DESC desc;
 	info.tex->GetLevelDesc(0, &desc);
@@ -99,11 +100,10 @@ void EffectObject::Render()
 	DEVICE->SetRenderState(D3DRS_LIGHTING, false);
 	DEVICE->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 	
-	DEVICE->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
-
 	DEVICE->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
 	DEVICE->SetTextureStageState(0, D3DTSS_ALPHAARG0, D3DTA_DIFFUSE);
 	DEVICE->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+	DEVICE->SetRenderState(D3DRS_ZWRITEENABLE, false);
 
 	DEVICE->SetFVF(ST_PCT_VERTEX::FVF);
 	DEVICE->SetStreamSource(0, m_pVB, 0, sizeof(ST_PCT_VERTEX));
@@ -115,6 +115,7 @@ void EffectObject::Render()
 	DEVICE->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG1);
 	DEVICE->SetTextureStageState(0, D3DTSS_ALPHAARG0, D3DTA_CURRENT);
 	DEVICE->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+	DEVICE->SetRenderState(D3DRS_ZWRITEENABLE, true);
 }
 
 bool EffectObject::IsFinish()
