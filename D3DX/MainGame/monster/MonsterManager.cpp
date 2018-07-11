@@ -231,6 +231,8 @@ void MonsterManager::MakeMiddleBoss(DropManager* pDropManager)
 
 	middleBoss = new MiddleBoss;
 	middleBoss->SetupBoss(m_pMap, m_pMap->GetSpawnBoss());
+	middleBoss->SetCharacter(m_ppCharacter);
+	middleBoss->SetDropManager(pDropManager);
 	//middleBoss->SetupBoss(m_pMap, m_vSpawnSpot[0]);
 
 	m_vMM.push_back(middleBoss);
@@ -243,6 +245,8 @@ void MonsterManager::MakeFinalBoss(DropManager* pDropManager)
 
 	finalBoss = new FinalBoss;
 	finalBoss->SetupBoss(m_pMap, m_pMap->GetSpawnBoss());
+	finalBoss->SetCharacter(m_ppCharacter);
+	finalBoss->SetDropManager(pDropManager);
 	//finalBoss->SetupBoss(m_pMap, m_vSpawnSpot[0]);
 
 	m_vMM.push_back(finalBoss);

@@ -21,7 +21,7 @@ protected :
 
 	bool m_bIsDead;
 
-	BOSS_STATE m_eState;
+	BOSS_STATE m_eBossState;
 	/*
 	
 	UIObject* m_pHPBar;
@@ -62,13 +62,18 @@ protected:
 	virtual void Move() override;
 
 	virtual void DropItemSetup() override;
+
+	virtual void ChangeAni() override;
+
+	virtual void Pattern();
+	
 public:
 	BossParent();
 	virtual ~BossParent();
 
-	
-
 	virtual void SetupBoss(Map* map, D3DXVECTOR3 pos) override;
+	virtual void Update() override;
+	virtual void Render() override;
 	//virtual void Update() override;
 };
 

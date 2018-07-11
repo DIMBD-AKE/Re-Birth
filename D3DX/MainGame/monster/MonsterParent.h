@@ -98,7 +98,7 @@ protected:
 		}
 	}
 
-	void ChangeAni();
+	virtual void ChangeAni();
 	
 
 public:
@@ -117,7 +117,7 @@ public:
 
 	void RespawnUpdate();
 
-	void Render();
+	virtual void Render();
 	
 	void Respawn(D3DXVECTOR3 spawnPos);
 };

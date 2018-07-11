@@ -79,6 +79,7 @@ void MonsterParent::SetupBoss(Map* map, D3DXVECTOR3 pos)
 {
 	m_pMap = map;
 	m_pModel->SetPosition(D3DXVECTOR3(pos.x, m_pMap->GetHeight(pos.x, pos.z), pos.z));
+	SetupStat();
 }
 
 void MonsterParent::SetupStat()
@@ -239,18 +240,7 @@ void MonsterParent::Render()
 			m_pAStar->Render(temp.y, temp.x, CHARACTER->GetPosition());
 		}
 
-		SPRITE_BEGIN;
 
-		D3DXVECTOR3 UIPos = *m_pModel->GetPosition();
-		//UIPos.x -= m_fUIMoveX;
-		//UIPos.y += m_fUIMoveY;
-
-		auto temp = Convert3DTo2D(UIPos);
-
-		RECT rc;
-		SetRect(&rc, temp.x, temp.y, 150, 20);
-
-		SPRITE_END;
 		//UIPos.x = temp.x - m_fUIMoveX;
 		//UIPos.y = temp.y - m_fUIMoveY;
 		//UIPos.z = 0;
@@ -285,6 +275,7 @@ void MonsterParent::ChangeAni()
 		break;
 	}
 }
+
 void MonsterParent::Respawn(D3DXVECTOR3 spawnPos)
 {
 	m_nResPawnCount = m_bIsRespawn = 0;
