@@ -40,7 +40,7 @@ void BossParent::DropItemSetup()
 }
 
 
-void BossParent::Setup(Map* map, D3DXVECTOR3 spawnPos)
+void BossParent::SetupBoss(Map* map, D3DXVECTOR3 pos)
 {
-
+	MonsterParent::SetupBoss(map, pos);
 }

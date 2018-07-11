@@ -5,3 +5,5 @@
 #include "Magic/NifilHeim.h"
 #include "Distance/Nerisa.h"
 #include "Distance/Nike.h"
+#include "Boss/FinalBoss.h"
+#include "Boss/MiddleBoss.h"

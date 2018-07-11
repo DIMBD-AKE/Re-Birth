@@ -90,17 +90,21 @@ void MonsterManager::Render()
 void MonsterManager::MakeMonster(DropManager* pDropManager)
 {
 
-	MakeElizabeth(pDropManager);
-	
-	MakeAssis(pDropManager);
+	//MakeElizabeth(pDropManager);
+	//
+	//MakeAssis(pDropManager);
+	//
+	//MakeDarkHell(pDropManager);
+	//
+	//MakeNifilHeim(pDropManager);
+	//
+	//MakeNerisa(pDropManager);
+	//
+	//MakeNike(pDropManager);
 
-	MakeDarkHell(pDropManager);
-	
-	MakeNifilHeim(pDropManager);
-	
-	MakeNerisa(pDropManager);
-	
-	MakeNike(pDropManager);
+	MakeMiddleBoss(pDropManager);
+
+	MakeFinalBoss(pDropManager);
 }
 //±ÙÁ¢
 void MonsterManager::MakeElizabeth(DropManager* pDropManager)
@@ -219,4 +223,28 @@ void MonsterManager::MakeNifilHeim(DropManager* pDropManager)
 	nifilHeim->SetDropManager(pDropManager);
 
 	m_vMM.push_back(nifilHeim);
+}
+
+void MonsterManager::MakeMiddleBoss(DropManager* pDropManager)
+{
+	MonsterParent* middleBoss;
+
+	middleBoss = new MiddleBoss;
+	middleBoss->SetupBoss(m_pMap, m_pMap->GetSpawnBoss());
+	//middleBoss->SetupBoss(m_pMap, m_vSpawnSpot[0]);
+
+	m_vMM.push_back(middleBoss);
+}
+
+void MonsterManager::MakeFinalBoss(DropManager* pDropManager)
+{
+
+	MonsterParent* finalBoss;
+
+	finalBoss = new FinalBoss;
+	finalBoss->SetupBoss(m_pMap, m_pMap->GetSpawnBoss());
+	//finalBoss->SetupBoss(m_pMap, m_vSpawnSpot[0]);
+
+	m_vMM.push_back(finalBoss);
+
 }

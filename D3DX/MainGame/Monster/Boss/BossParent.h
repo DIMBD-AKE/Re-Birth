@@ -1,6 +1,19 @@
 #pragma once
 #include "../MonsterParent.h"
 
+enum BOSS_STATE{
+	BS_ENTER,			//보스 등장상태
+	BS_IDLE,			//제자리에 있는 상태
+	BS_RUN,				//보스 뛰는 상태
+	BS_PASSIVE,			//보스 패시브 상태
+	BS_ATTACK,			//보스 공격 상태
+	BS_SKILL1,			//스킬1 상태
+	BS_SKILL2,			//스킬2 상태
+	BS_CASTING,			//스킬2 캐스팅중
+	BS_DIE,				//보스 사망상태
+	BS_NONE				//사망 애니메이션 끝나고 멈추기 위한 상태
+};
+
 class BossParent :
 	public MonsterParent
 {
@@ -8,6 +21,7 @@ protected :
 
 	bool m_bIsDead;
 
+	BOSS_STATE m_eState;
 	/*
 	
 	UIObject* m_pHPBar;
@@ -20,9 +34,6 @@ protected :
 	int				m_nCount;
 	//몬스터 스탯
 	STATUS m_uMonsterStat;
-
-	//리스폰될떄까지 시간
-	int m_nResPawnCount;
 
 	//공격카운트
 	//int m_nAttackDelay;
@@ -38,7 +49,6 @@ protected :
 	int m_nItemID[MAXITEMNUM];
 	*/
 
-public:
 
 protected:
 
@@ -56,6 +66,9 @@ public:
 	BossParent();
 	virtual ~BossParent();
 
-	virtual void Setup(Map* map, D3DXVECTOR3 spawnPos) override;
+	
+
+	virtual void SetupBoss(Map* map, D3DXVECTOR3 pos) override;
+	//virtual void Update() override;
 };
 

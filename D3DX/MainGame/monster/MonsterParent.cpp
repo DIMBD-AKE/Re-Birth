@@ -75,6 +75,12 @@ void MonsterParent::Setup(Map* map, D3DXVECTOR3 spawnPos)
 	//ST_SIZEBOX box;
 }
 
+void MonsterParent::SetupBoss(Map* map, D3DXVECTOR3 pos)
+{
+	m_pMap = map;
+	m_pModel->SetPosition(D3DXVECTOR3(pos.x, m_pMap->GetHeight(pos.x, pos.z), pos.z));
+}
+
 void MonsterParent::SetupStat()
 {
 

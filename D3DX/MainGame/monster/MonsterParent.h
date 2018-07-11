@@ -111,6 +111,8 @@ public:
 
 	virtual void Setup(Map* map, D3DXVECTOR3 spawnPos);
 
+	virtual void SetupBoss(Map* map, D3DXVECTOR3 pos);
+
 	void Update();
 
 	void RespawnUpdate();

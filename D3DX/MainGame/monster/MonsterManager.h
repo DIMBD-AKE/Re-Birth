@@ -31,6 +31,11 @@ private:
 	void MakeDarkHell(DropManager* pDropManager);
 	void MakeNifilHeim(DropManager* pDropManager);
 
+	//중간보스
+	void MakeMiddleBoss(DropManager* pDropManager);
+	//최종보스
+	void MakeFinalBoss(DropManager* pDropManager);
+
 public:
 	MonsterManager();
 	~MonsterManager();

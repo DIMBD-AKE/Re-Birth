@@ -7,5 +7,7 @@ class FinalBoss :
 public:
 	FinalBoss();
 	~FinalBoss();
+
+	virtual void SetupBoss(Map* map, D3DXVECTOR3 pos) override;
 };
 
