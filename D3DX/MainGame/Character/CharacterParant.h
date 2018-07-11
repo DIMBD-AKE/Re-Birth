@@ -54,7 +54,12 @@ enum CHAR_CONDITION			//캐릭터 컨디션
 	CHAR_NONE				//죽은뒤의 None상태
 };
 
-
+struct ST_DAMAGETEXT			//데미지 텍스트용 구조체
+{
+	int Damage;
+	float time;
+	float endTime;
+};
 
 class CharacterParant
 {
@@ -72,6 +77,7 @@ protected:
 	STATUS*					m_Status;			//스테이터스 유니온 변수 
 	UIObject*				m_pUIobj;			//UI오브젝트용 변수
 	UIObject*				m_pUIDamage[10];		//데미지용 UIObj변수
+	UIObject*				m_pUISkill;				//스킬 UIOBJ
 	
 	MonsterManager*			m_pMonsterManager;	//몬스터 매니저용 변수
 	
@@ -79,6 +85,9 @@ protected:
 
 	int						m_nCalAction;		//액션 프레임 계산용 변수
 	int						m_nDamage;			//데미지 띄우기용 변수 
+
+	vector<ST_DAMAGETEXT>		m_vecDamage;		//데미지 저장용 변수
+
 	bool					m_bIsFront;			//앞인지 뒤인지
 	bool					m_bIsDash;			//대쉬했늬
 	bool					m_bIsAttack;		//일반공격 했늬?
@@ -90,7 +99,7 @@ protected:
 	
 
 	vector<D3DXVECTOR3*>	m_vecVertex;		//디버그용 벡터
-	
+
 	
 	Particle*		m_pParticle;
 	Particle*		m_pParticle2;

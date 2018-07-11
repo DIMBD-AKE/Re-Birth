@@ -47,6 +47,9 @@ void Character_Sword::Init(Map* map, CHARSELECT order, MonsterManager* pMonsterM
 		m_pUIobj->SetTexture(TEXTUREMANAGER->GetTexture("베카_사진"));
 		m_pUIobj->SetPosition(D3DXVECTOR3(1300, 550, 0));
 
+		//스킬UI
+		m_pUISkill->SetTexture(TEXTUREMANAGER->GetTexture("베카_스킬"));
+		m_pUISkill->SetPosition(D3DXVECTOR3(1200, 730, 0));
 	}
 	else if (order == CHAR_TWO)
 	{
@@ -95,6 +98,8 @@ void Character_Sword::Init(Map* map, CHARSELECT order, MonsterManager* pMonsterM
 
 		m_pUIobj->SetTexture(TEXTUREMANAGER->GetTexture("벨벳_사진"));
 		m_pUIobj->SetPosition(D3DXVECTOR3(1300, 550, 0));
+
+		//m_pUISkill->SetTexture(TEXTUREMANAGER->GetTexture(""))
 	}
 
 }
@@ -113,6 +118,7 @@ void Character_Sword::Update()
 		m_pCharacter->World();
 		
 		m_pUIobj->Update();
+		m_pUISkill->Update();
 	}
 }
 
@@ -128,11 +134,12 @@ void Character_Sword::Render()
 
 		//포트레이트 
 		m_pUIobj->Render();
+		m_pUISkill->Render();
 		
-		if (m_bIsUnderAttacked)
-		{
+		//if (m_bIsUnderAttacked)
+		//{
 			AppearDamage();
-		}
+		//}
 		CharacterParant::Render();
 	}
 }
