@@ -50,7 +50,7 @@ void Nerisa::SetupStat()
 	ZeroMemory(&m_uMonsterStat, sizeof(m_uMonsterStat));
 
 	CURRENTHP(m_uMonsterStat) = MAXHP(m_uMonsterStat) = 80;
-	ATK(m_uMonsterStat) = 6;
+	ATK(m_uMonsterStat) = 14;
 	PHYRATE(m_uMonsterStat) = 0.9f;
 	MAGICRATE(m_uMonsterStat) = 0.9f;
 	CHERATE(m_uMonsterStat) = 1.3f;

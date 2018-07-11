@@ -56,7 +56,7 @@ void Elizabeth::SetupStat()
 	ZeroMemory(&m_uMonsterStat, sizeof(m_uMonsterStat));
 
 	CURRENTHP(m_uMonsterStat) = MAXHP(m_uMonsterStat)  = 100;
-	ATK(m_uMonsterStat) = 3;
+	ATK(m_uMonsterStat) = 25;
 	PHYRATE(m_uMonsterStat) = 0.9f;
 	MAGICRATE(m_uMonsterStat) = 1.3f;
 	CHERATE(m_uMonsterStat) = 1.0f;
