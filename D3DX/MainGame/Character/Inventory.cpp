@@ -547,7 +547,8 @@ void Inventory::Render()
 
 	for (int i = 0; i < EQUIP_END; i++)
 	{
-		m_pEquip[i].item->EffectRender(*m_pCharacter->GetCharacter()->GetPosition());
+		if (m_pEquip[i].item)
+			m_pEquip[i].item->EffectRender(*m_pCharacter->GetCharacter()->GetPosition());
 	}
 }
 
