@@ -743,8 +743,8 @@ void CharacterParant::Init(Map* map, CHARSELECT order, MonsterManager* pMonsterM
 
 	//인벤토리
 	m_pInventory = new Inventory;
-	m_pInventory->CreateInventory(5,3);
-	m_pInventory->SetStatus(m_Status);
+	m_pInventory->CreateInventory(5,3, this);
+
 
 	//TODO : 바운딩 박스 만들기 (캐릭터 크기마다 일일히 입력해주자
 	m_pCharacter->CreateBound(box);
