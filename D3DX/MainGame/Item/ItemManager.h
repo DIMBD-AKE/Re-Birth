@@ -22,6 +22,7 @@ private:
 	bool	IsEqual(IN const char* str1, IN const char* str2);
 
 public:
+	void SetUp();
 	void Load(IN const char* szFolder, IN const char* szFile);
 	ItemParent GetItem(int keyNum);
 
