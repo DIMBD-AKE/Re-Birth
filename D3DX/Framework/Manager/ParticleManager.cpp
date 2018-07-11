@@ -275,8 +275,6 @@ void ParticleManager::AddParticle(string keyName, LPDIRECT3DTEXTURE9 texture, fl
 	info.origAttribute = orig;
 	info.varAttribute = var;
 	info.pTexture = texture;
-	if (info.origAttribute.nMaxLoop > 0)
-		info.origAttribute.nMaxLoop++;
 	m_mapParticle.insert(make_pair(keyName, info));
 }
 
@@ -420,8 +418,6 @@ void ParticleManager::AddParticle(string keyName, LPDIRECT3DTEXTURE9 texture, st
 	info.origAttribute = orig;
 	info.varAttribute = var;
 
-	if (info.origAttribute.nMaxLoop > 0)
-		info.origAttribute.nMaxLoop++;
 	m_mapParticle.insert(make_pair(keyName, info));
 }
 
