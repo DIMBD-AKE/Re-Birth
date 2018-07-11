@@ -2,6 +2,7 @@
 #include "MonsterManager.h"
 #include "TotalMonster.h"
 
+static int overlapInt;
 
 MonsterManager::MonsterManager()
 {
@@ -89,6 +90,13 @@ void MonsterManager::Render()
 //몬스터 만드는 함수
 void MonsterManager::MakeMonster(DropManager* pDropManager)
 {
+	
+
+	int spotSize = m_vSpawnSpot.size();
+
+	//벡터에서 랜덤 인덱스 추출
+	//초기값 랜덤 설정
+	overlapInt = rand() % spotSize;
 
 	MakeElizabeth(pDropManager);
 	
@@ -116,6 +124,13 @@ void MonsterManager::MakeElizabeth(DropManager* pDropManager)
 	//벡터에서 랜덤 인덱스 추출
 	int spotIndex = rand() % spotSize;
 
+	while (overlapInt == spotIndex)
+	{
+		spotIndex = rand() % spotSize;
+	}
+	
+	overlapInt = spotIndex;
+
 	//몬스터 생성
 	MonsterParent* elizabeth;
 	elizabeth = new Elizabeth;
@@ -134,6 +149,13 @@ void MonsterManager::MakeAssis(DropManager* pDropManager)
 
 	//벡터에서 랜덤 인덱스 추출
 	int spotIndex = rand() % spotSize;
+
+	while (overlapInt == spotIndex)
+	{
+		spotIndex = rand() % spotSize;
+	}
+
+	overlapInt = spotIndex;
 
 	//몬스터 생성
 	MonsterParent* assis;
@@ -156,6 +178,13 @@ void MonsterManager::MakeNerisa(DropManager* pDropManager)
 	//벡터에서 랜덤 인덱스 추출
 	int spotIndex = rand() % spotSize;
 
+	while (overlapInt == spotIndex)
+	{
+		spotIndex = rand() % spotSize;
+	}
+
+	overlapInt = spotIndex;
+
 	//몬스터 생성
 	MonsterParent* nerisa;
 	nerisa = new Nerisa;
@@ -174,6 +203,13 @@ void MonsterManager::MakeNike(DropManager* pDropManager)
 
 	//벡터에서 랜덤 인덱스 추출
 	int spotIndex = rand() % spotSize;
+
+	while (overlapInt == spotIndex)
+	{
+		spotIndex = rand() % spotSize;
+	}
+
+	overlapInt = spotIndex;
 
 	//몬스터 생성
 	MonsterParent* nike;
@@ -196,6 +232,13 @@ void MonsterManager::MakeDarkHell(DropManager* pDropManager)
 	//벡터에서 랜덤 인덱스 추출
 	int spotIndex = rand() % spotSize;
 
+	while (overlapInt == spotIndex)
+	{
+		spotIndex = rand() % spotSize;
+	}
+
+	overlapInt = spotIndex;
+
 	//몬스터 생성
 	MonsterParent* darkHell;
 	darkHell = new DarkHell;
@@ -214,6 +257,13 @@ void MonsterManager::MakeNifilHeim(DropManager* pDropManager)
 
 	//벡터에서 랜덤 인덱스 추출
 	int spotIndex = rand() % spotSize;
+
+	while (overlapInt == spotIndex)
+	{
+		spotIndex = rand() % spotSize;
+	}
+
+	overlapInt = spotIndex;
 
 	//몬스터 생성
 	MonsterParent* nifilHeim;
