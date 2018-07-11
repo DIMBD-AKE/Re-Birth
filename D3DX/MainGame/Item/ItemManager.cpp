@@ -14,9 +14,10 @@ ItemManager::~ItemManager()
 
 void ItemManager::SetUp()
 {
-	PARTICLE->AddParticle("MAGIC", TEXTUREMANAGER->GetTexture("Aura"), "Particle/Particle/Magic effect.ptc");
-	PARTICLE->AddParticle("RARE", TEXTUREMANAGER->GetTexture("Aura"), "Particle/Particle/Rare effect.ptc");
-	PARTICLE->AddParticle("UNIQUE", TEXTUREMANAGER->GetTexture("Aura"), "Particle/Particle/Unique effect.ptc");
+	TEXTUREMANAGER->AddTexture("Star", "Texture/Particle/Star.png"),
+	PARTICLE->AddParticle("MAGIC", TEXTUREMANAGER->GetTexture("Star"), "Particle/Particle/Magic effect.ptc");
+	PARTICLE->AddParticle("RARE", TEXTUREMANAGER->GetTexture("Star"), "Particle/Particle/Rare effect.ptc");
+	PARTICLE->AddParticle("UNIQUE", TEXTUREMANAGER->GetTexture("Star"), "Particle/Particle/Unique effect.ptc");
 	Load("MainGame/Item/Data", "SwordManArmor.txt");
 	Load("MainGame/Item/Data", "BaBarianArmor.txt");
 	Load("MainGame/Item/Data", "KnightArmor.txt");
