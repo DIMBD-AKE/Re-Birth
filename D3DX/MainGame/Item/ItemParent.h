@@ -19,6 +19,7 @@ protected:
 	SYNTHESIZE(STATUS*, m_pItemStatus, ItemStat);						//아이템 스텟보정치
 	SYNTHESIZE(EQUIPTYPE, m_stEquipType, EquipType);					//아이템 장착슬롯
 	SYNTHESIZE(string, m_sRarity, Rarity);								
+	SYNTHESIZE(Particle*, m_pParticle, Particle);
 	GET(float, m_fRange, Range);
 	GET(float, m_fScale, Scale);
 
@@ -46,5 +47,6 @@ public:
 
 	//virtual void Drop();
 	void Render(D3DXVECTOR3 pos, float size);
+	void EffectRender(D3DXVECTOR3 pos);
 };
 

@@ -4,6 +4,15 @@
 
 ItemManager::ItemManager()
 {
+	PARTICLE->AddParticle("MAGIC", TEXTUREMANAGER->GetTexture("Aura"), "Texture/Particle/Particle/Magic effect.ptc");
+	PARTICLE->AddParticle("RARE", TEXTUREMANAGER->GetTexture("Aura"), "Texture/Particle/Particle/Rare effect.ptc");
+	PARTICLE->AddParticle("UNIQUE", TEXTUREMANAGER->GetTexture("Aura"), "Texture/Particle/Particle/Unique effect.ptc");
+	Load("MainGame/Item/Data", "SwordManArmor.txt");
+	Load("MainGame/Item/Data", "BaBarianArmor.txt");
+	Load("MainGame/Item/Data", "KnightArmor.txt");
+	Load("MainGame/Item/Data", "MageArmor.txt");
+	Load("MainGame/Item/Data", "ArcherArmor.txt");
+	Load("MainGame/Item/Data", "ValkyrieArmor.txt");
 }
 
 
@@ -84,6 +93,10 @@ void ItemManager::Load(IN const char * szFolder, IN const char * szFile)
 			sscanf_s(szTemp, " %s", rarity, 1024);
 			string rt(rarity);
 			Ap->SetRarity(rt);
+			if (rt == "Normal") Ap->SetParticle(NULL);
+			else if (rt == "Rare") Ap->SetParticle(PARTICLE->GetParticle("RARE"));
+			else if (rt == "Magic") Ap->SetParticle(PARTICLE->GetParticle("MAGIC"));
+			else if (rt == "Uique") Ap->SetParticle(PARTICLE->GetParticle("UNIQUE"));
 		}
 
 		else if (c == 'I')
@@ -126,6 +139,8 @@ void ItemManager::Load(IN const char * szFolder, IN const char * szFile)
 	}
 
 	fclose(m_fp);
+
+
 }
 
 ItemParent ItemManager::GetItem(int keyNum)

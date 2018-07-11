@@ -89,4 +89,19 @@ void ItemParent::Render(D3DXVECTOR3 pos, float size)
 	SPRITE->SetTransform(&mat);
 
 	SPRITE->Draw(m_pTexture, NULL, NULL, NULL, 0xffffffff);
+
+
+	if(m_pParticle) m_pParticle->Render();
+
+}
+
+void ItemParent::EffectRender(D3DXVECTOR3 pos)
+{
+	if (m_pParticle)
+	{
+		m_pParticle->SetPosition(pos);
+		m_pParticle->World();
+		m_pParticle->Update();
+		m_pParticle->Render();
+	}
 }
