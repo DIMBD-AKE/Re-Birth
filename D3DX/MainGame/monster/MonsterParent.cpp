@@ -475,6 +475,9 @@ void MonsterParent::DropItemSetup()
 
 void MonsterParent::ItemDrop()
 {
+	//최종보스같은경우 드랍하지 않으므로
+	if (m_vItemID.size() <= 0) return;
+
 	srand(time(NULL));
 
 	//0~99값

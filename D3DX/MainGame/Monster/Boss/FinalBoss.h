@@ -12,13 +12,22 @@ protected:
 	virtual void ChangeAni() override;
 
 	virtual void Pattern() override;
-	
+
+	virtual void SetupStat() override;
+
+
+	virtual void Attack() override;
+	virtual void Move() override;
+	void Skill1();
+	void Skill2();
+	void Casting();
+
 public:
 	FinalBoss();
-	~FinalBoss();
+	virtual ~FinalBoss();
 
 	virtual void SetupBoss(Map* map, D3DXVECTOR3 pos) override;
 
-	virtual void SetupStat() override;
+	
 };
 

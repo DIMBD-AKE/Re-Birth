@@ -76,6 +76,7 @@ protected:
 			CURRENTHP(m_uMonsterStat) = 0;
 			m_bIsDead = true;
 			m_eState = MS_DIE;
+			m_eBossState = BS_DIE;
 			ChangeAni();
 			ItemDrop();
 		}

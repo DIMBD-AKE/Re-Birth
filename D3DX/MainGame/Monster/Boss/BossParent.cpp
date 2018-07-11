@@ -23,7 +23,7 @@ void BossParent::SetupBoss(Map* map, D3DXVECTOR3 pos)
 
 void BossParent::Update()
 {
-	if (m_pModel)
+	if (m_pModel && (m_eState != MS_NONE && m_eBossState != BS_NONE))
 	{
 		m_pModel->World();
 		m_pModel->Update();
@@ -52,7 +52,7 @@ void BossParent::Update()
 		//1536
 void BossParent::Render()
 {
-	if (m_pModel && (m_eState != MS_NONE || m_eBossState != BS_NONE) )
+	if (m_pModel && (m_eState != MS_NONE && m_eBossState != BS_NONE) )
 	{
 		m_pModel->Render();
 		

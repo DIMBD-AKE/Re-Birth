@@ -1,5 +1,5 @@
 #pragma once
-#include "bossparent.h"
+#include "BossParent.h"
 
 class MiddleBoss :
 	public BossParent
@@ -18,7 +18,7 @@ protected:
 	virtual void Skill() override;
 public:
 	MiddleBoss();
-	~MiddleBoss();
+	virtual ~MiddleBoss();
 
 	virtual void SetupBoss(Map* map, D3DXVECTOR3 pos) override;
 

@@ -14,11 +14,13 @@ FinalBoss::~FinalBoss()
 void FinalBoss::SetupBoss(Map* map, D3DXVECTOR3 pos)
 {
 	//¸ðµ¨ ¹Ù²ã¾ßÇÔ
-	MODELMANAGER->AddModel("ÆÒÅÒ", "Model/Enemy/PhantomKnight/", "PhantomKnight.x", MODELTYPE_X);
-	m_pModel = MODELMANAGER->GetModel("ÆÒÅÒ", MODELTYPE_X);
+	MODELMANAGER->AddModel("º¸½º", "Model/Enemy/Boss/", "Boss.x", MODELTYPE_X);
+	m_pModel = MODELMANAGER->GetModel("º¸½º", MODELTYPE_X);
 
 	BossParent::SetupBoss(map, pos);
 
+	m_eBossState = BS_ENTER;
+	ChangeAni();
 	//ÆÇÁ¤ ¹Ú½º 
 	ST_SIZEBOX box;
 	box.highX = 50.0f;
@@ -29,7 +31,7 @@ void FinalBoss::SetupBoss(Map* map, D3DXVECTOR3 pos)
 	box.lowZ = -50.0f;
 
 
-	m_pModel->SetScale(D3DXVECTOR3(0.05f, 0.05f, 0.05f));
+	m_pModel->SetScale(D3DXVECTOR3(0.03f, 0.03f, 0.03f));
 
 	m_pModel->CreateBound(box);
 	m_pModel->SetBoundSphere(m_pModel->GetOrigBoundSphere().center, 100.0f);
@@ -55,42 +57,154 @@ void FinalBoss::SetupStat()
 	AGI(m_uMonsterStat) = 10.0f;
 	HIT(m_uMonsterStat) = 10.0f;
 	SPEED(m_uMonsterStat) = 0.08f;
-	RANGE(m_uMonsterStat) = 2.2f;
+	RANGE(m_uMonsterStat) = 15.0f;
 }
 
 void FinalBoss::DropItemSetup()
 {
-	//m_nItemID[0] = SWORDMAN_NORMAL_ARMOR;
-	//m_nItemID[1] = SWORDMAN_NORMAL_ARMOR;
-	//m_nItemID[2] = SWORDMAN_NORMAL_ARMOR;
-	//m_nItemID[3] = SWORDMAN_NORMAL_ARMOR;
+	
 }
 
 void FinalBoss::ChangeAni()
 {
-	//edd6switch (m_eState)
-	//edd6{
-	//edd6case MS_IDLE:
-	//edd6	m_pModel->SetAnimation("IDLE");
-	//edd6	break;
-	//edd6case MS_RUN: case MS_MOVEFORATTACK:
-	//edd6	m_pModel->SetAnimation("RUN");
-	//edd6	break;
-	//edd6case MS_SKILL:
-	//edd6	m_pModel->SetAnimation("SKILL");
-	//edd6	break;
-	//edd6case MS_ATTACK:
-	//edd6	m_pModel->SetAnimation("ATTACK");
-	//edd6	break;
-	//edd6case MS_DIE:
-	//edd6	m_pModel->SetAnimation("DIE");
-	//edd6	break;
-	//edd6default:
-	//edd6	break;
-	//edd6}
+	switch (m_eBossState)
+	{
+	case BS_ENTER:
+		m_pModel->SetAnimation("ENTER");
+		break;
+	case BS_IDLE:
+		m_pModel->SetAnimation("IDLE");
+		break;
+	case BS_RUN:
+		m_pModel->SetAnimation("RUN");
+		break;
+	case BS_PASSIVE:
+		m_pModel->SetAnimation("PASSIVE");
+		break;
+	case BS_ATTACK:
+		m_pModel->SetAnimation("ATTACK");
+		break;
+	case BS_SKILL1:
+		m_pModel->SetAnimation("SKILL1");
+		break;
+	case BS_SKILL2:
+		m_pModel->SetAnimation("SKILL2");
+		break;
+	case BS_CASTING:
+		m_pModel->SetAnimation("SKILL_CASTING");
+		break;
+	case BS_DIE:
+		m_pModel->SetAnimation("DIE");
+		break;
+	case BS_NONE:
+		break;
+	default:
+		break;
+	}
 }
 
 void FinalBoss::Pattern()
+{
+	switch (m_eBossState)
+	{
+	case BS_ENTER:
+	{
+		if (m_pModel->IsAnimationEnd())
+		{
+			m_eBossState = BS_RUN;
+			ChangeAni();
+		}
+	}
+		break;
+	case BS_RUN:
+	{
+		Move();
+	}
+		break;
+	case BS_PASSIVE:
+		break;
+	case BS_ATTACK:
+		Attack();
+		break;
+	case BS_SKILL1:
+		Skill1();
+		break;
+	case BS_SKILL2:
+		Skill2();
+		break;
+	case BS_CASTING:
+		Casting();
+		break;
+	case BS_DIE:
+	{
+				   if (m_pModel->IsAnimationEnd()) m_eBossState = BS_NONE;
+	}
+	default:
+		break;
+	}
+}
+
+void FinalBoss::Attack()
+{
+	if (PCHARACTER->GetIsDead())
+	{
+		m_eState = MS_IDLE;
+		ChangeAni();
+		return;
+	}
+
+	D3DXVECTOR3 dir =
+		*CHARACTER->GetPosition() - *m_pModel->GetPosition();
+
+	float angle = GetAngle(0, 0, dir.x, dir.z);
+
+	angle -= D3DX_PI / 2;
+
+	m_pModel->SetRotation(D3DXVECTOR3(0, angle, 0));
+	//ÇÃ·¹ÀÌ¾î °ø°Ý±â´É ¼³Á¤
+	if (m_pModel->IsAnimationPercent(ATKSPEED(m_uMonsterStat)))
+	{
+		float tatalRate = PHYRATE(m_uMonsterStat) + MAGICRATE(m_uMonsterStat) + CHERATE(m_uMonsterStat);
+		float tatalDamage = tatalRate * ATK(m_uMonsterStat);
+		PCHARACTER->CalculDamage(tatalDamage);
+	}
+}
+
+void FinalBoss::Move()
+{
+	if (m_eBossState == BS_RUN)
+	{
+		m_vDir = *CHARACTER->GetPosition() - *m_pModel->GetPosition();
+		D3DXVECTOR3 tempPos = *m_pModel->GetPosition() + m_vDir* SPEED(m_uMonsterStat);
+		tempPos.y = m_pMap->GetHeight(tempPos.x, tempPos.z);
+
+		float angle = GetAngle(0, 0, m_vDir.x, m_vDir.z);
+		angle -= D3DX_PI / 2;
+
+		m_pModel->SetRotation(D3DXVECTOR3(0, angle, 0));
+		m_pModel->SetPosition(tempPos);
+
+		float length = GetDistance(*m_pModel->GetPosition(), *CHARACTER->GetPosition());
+
+		if (length < RANGE(m_uMonsterStat) - 4)
+		{
+			m_eBossState = BS_ATTACK;
+			ChangeAni();
+		}
+	}
+}
+
+void FinalBoss::Skill1()
+{
+
+}
+
+void FinalBoss::Skill2()
+{
+
+}
+
+void FinalBoss::Casting()
 {
 
 }
