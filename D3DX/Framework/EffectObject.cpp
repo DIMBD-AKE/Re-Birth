@@ -13,18 +13,30 @@ EffectObject::~EffectObject()
 	SAFE_RELEASE(m_pVB);
 }
 
-void EffectObject::Init(ST_EFFECT_IMAGE info, D3DXVECTOR3 pos, D3DXVECTOR3 dir)
+void EffectObject::Init(ST_EFFECT info, D3DXVECTOR3 pos)
 {
 	m_stInfo = info;
 	m_vPos = pos;
-	m_vDir = dir;
-	D3DXVec3Normalize(&dir, &dir);
+	D3DXVec3Normalize(&m_stInfo.dir, &m_stInfo.dir);
 
-	D3DXVECTOR3 zero = D3DXVECTOR3(0, 0, 0);
-	float angle = GetAngle(zero.x, zero.z, dir.x, dir.z);
-	m_vRot.y = angle;
-	m_vRot.x = D3DX_PI / 2;
-	m_vRot.x = FRand(-D3DX_PI / 2, D3DX_PI / 2);
+	if (D3DXVec3Length(&m_stInfo.dir) < 0.1)
+		m_isFlash = true;
+	else
+		m_isFlash = false;
+
+	if (m_stInfo.isRX)
+		m_stInfo.rot.x = FRand(-D3DX_PI / 2, D3DX_PI);
+	if (m_stInfo.isRY)
+		m_stInfo.rot.y = FRand(-D3DX_PI / 2, D3DX_PI);
+	if (m_stInfo.isRZ)
+		m_stInfo.rot.z = FRand(-D3DX_PI / 2, D3DX_PI);
+
+	if (!m_isFlash && !m_stInfo.isRY)
+	{
+		D3DXVECTOR3 zero = D3DXVECTOR3(0, 0, 0);
+		float angle = GetAngle(zero.x, zero.z, m_stInfo.dir.x, m_stInfo.dir.z);
+		m_stInfo.rot.y = angle;
+	}
 
 	D3DSURFACE_DESC desc;
 	info.tex->GetLevelDesc(0, &desc);
@@ -76,7 +88,9 @@ void EffectObject::Update()
 		pow(t, 2) * m_stInfo.a2;
 
 	m_fElapse += TIME->GetElapsedTime();
-	m_vPos += m_vDir * speed;
+
+	if (!m_isFlash)
+		m_vPos += m_stInfo.dir * speed;
 
 	for (int i = 0; i < m_vecVertex.size(); i++)
 		m_vecVertex[i].c = D3DCOLOR_ARGB(alpha, 255, 255, 255);
@@ -86,7 +100,7 @@ void EffectObject::Update()
 	m_pVB->Unlock();
 
 	D3DXMATRIX matS, matR, matT;
-	D3DXMatrixRotationYawPitchRoll(&matR, m_vRot.y, m_vRot.x, m_vRot.z);
+	D3DXMatrixRotationYawPitchRoll(&matR, m_stInfo.rot.y, m_stInfo.rot.x, m_stInfo.rot.z);
 	D3DXMatrixTranslation(&matT, m_vPos.x, m_vPos.y + m_stInfo.height / 2, m_vPos.z);
 	D3DXMatrixScaling(&matS, scale, scale, scale);
 

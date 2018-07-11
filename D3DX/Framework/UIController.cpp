@@ -81,7 +81,7 @@ void UIObject::Render()
 		if (PtInRect(&rc, MOUSE_POS))
 		{
 			SPRITE->SetTransform(&m_matWorld);
-			SPRITE->Draw(m_pTex[UITEX_DOWN], NULL, NULL, NULL, 0xFFFFFFFF);
+			SPRITE->Draw(m_pTex[UITEX_DOWN], NULL, NULL, NULL, D3DCOLOR_ARGB(m_nAlpha, 255, 255, 255));
 			draw = true;
 		}
 	}
@@ -93,7 +93,7 @@ void UIObject::Render()
 		if (PtInRect(&rc, MOUSE_POS))
 		{
 			SPRITE->SetTransform(&m_matWorld);
-			SPRITE->Draw(m_pTex[UITEX_OVER], NULL, NULL, NULL, 0xFFFFFFFF);
+			SPRITE->Draw(m_pTex[UITEX_OVER], NULL, NULL, NULL, D3DCOLOR_ARGB(m_nAlpha, 255, 255, 255));
 			draw = true;
 		}
 	}
@@ -104,7 +104,7 @@ void UIObject::Render()
 		rc.bottom = rc.top + m_ptTexWH[UITEX_NORMAL].y;
 
 		SPRITE->SetTransform(&m_matWorld);
-		SPRITE->Draw(m_pTex[UITEX_NORMAL], NULL, NULL, NULL, 0xFFFFFFFF);
+		SPRITE->Draw(m_pTex[UITEX_NORMAL], NULL, NULL, NULL, D3DCOLOR_ARGB(m_nAlpha, 255, 255, 255));
 	}
 
 	SPRITE_END;
@@ -124,6 +124,8 @@ void UIObject::SetTexture(LPDIRECT3DTEXTURE9 normal, LPDIRECT3DTEXTURE9 over, LP
 	m_pTex[UITEX_NORMAL] = normal;
 	m_pTex[UITEX_OVER] = over;
 	m_pTex[UITEX_DOWN] = down;
+
+	m_nAlpha = 255;
 
 	D3DSURFACE_DESC desc;
 	normal->GetLevelDesc(0, &desc);

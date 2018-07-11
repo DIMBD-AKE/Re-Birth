@@ -94,14 +94,39 @@ struct ST_PARTICLE_INFO
 	int			nParticleCount;
 };
 
-struct ST_EFFECT_IMAGE
+struct ST_EFFECT
 {
 	LPDIRECT3DTEXTURE9 tex;
+	D3DXVECTOR3 dir;
+	D3DXVECTOR3 rot;
+	bool isRX;
+	bool isRY;
+	bool isRZ;
 	float height;
 	float time;
 	float sc0, sc1, sc2;
 	float sp0, sp1, sp2;
 	int a0, a1, a2;
+
+	void SetScale(float f0, float f1, float f2)
+	{
+		sc0 = f0; sc1 = f1; sc2 = f2;
+	}
+
+	void SetSpeed(float f0, float f1, float f2)
+	{
+		sp0 = f0; sp1 = f1; sp2 = f2;
+	}
+
+	void SetAlpha(int n0, int n1, int n2)
+	{
+		a0 = n0; a1 = n1; a2 = n2;
+	}
+
+	void SetRandomRot(bool x, bool y, bool z)
+	{
+		isRX = x; isRY = y; isRZ = z;
+	}
 };
 
 struct ST_SPHERE

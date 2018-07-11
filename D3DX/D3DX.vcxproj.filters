@@ -189,12 +189,6 @@
     <ClInclude Include="MainGame\Monster\Magic\MagicCircle.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="MainGame\Item\SkillParent.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="MainGame\Item\SkillManager.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="Framework\EffectObject.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -220,6 +214,9 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="MainGame\Item\ItemParent\WandParent.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="MainGame\SkillManager.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
@@ -350,12 +347,6 @@
     <ClCompile Include="MainGame\Monster\Magic\MagicCircle.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="MainGame\Item\SkillParent.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="MainGame\Item\SkillManager.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="Framework\EffectObject.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
@@ -381,6 +372,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="MainGame\Item\ItemParent\WandParent.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="MainGame\SkillManager.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
