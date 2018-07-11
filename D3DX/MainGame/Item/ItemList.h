@@ -2,6 +2,7 @@
 
 enum ITEMLIST
 {
+	ITEM_NULL				= -1,
 	//포션류 절대값회복
 	NORMAL_HEALTHPOTION		= 301,
 	MAGIC_HEALTHHIGHPOTION	= 201,
