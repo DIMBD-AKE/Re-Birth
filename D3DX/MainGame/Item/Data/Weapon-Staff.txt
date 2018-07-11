@@ -1,0 +1,87 @@
+// N 장비명
+// R 레어도
+// D 설명
+// I ID
+// S 스테이터스
+// (AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
+// E EquipType
+// K KeyName
+// T Texture
+//enum EQUIPTYPE
+//{
+//	EQUIP_FIRSTWEAPON,
+//	EQUIP_HELMET,
+//	EQUIP_CHEST,
+//	EQUIP_GLOVES,
+//	EQUIP_BOOTS,
+//	EQUIP_POTION,
+//	EQUIP_END
+//};
+
+# Staff
+N Staff
+R Normal
+D "d"
+I 341
+//(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
+S 0.0 0.0 0.0 0 0 0 0 0 0.0 0.0 0.0
+E 0
+K NormalStaff
+T "Texture/Item/Item Num 341 Normal Staff.jpg"
+
+# Staff
+N Staff
+R Magic
+D "d"
+I 241
+//(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
+S 0.0 0.0 0.0 0 0 0 0 0 0.0 0.0 0.0
+E 0
+K MagicStaff
+T "Texture/Item/Item Num 241 Magic Staff.jpg"
+
+# Staff
+N Staff
+R Rare
+D "d"
+I 141
+//(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
+S 0.0 0.0 0.0 0 0 0 0 0 0.0 0.0 0.0
+E 0
+K RareStaff
+T "Texture/Item/Item Num 141 Rare Staff.jpg"
+
+# Staff
+N Staff
+R Unique
+D "d"
+I 041
+//(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
+S 0.0 0.0 0.0 0 0 0 0 0 0.0 0.0 0.0
+E 0
+K UniqueStaff
+T "Texture/Item/Item Num 1401 Unique Staff.jpg"
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+# Staff
+N Ove
+R Rare
+D "d"
+I 142
+//(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
+S 0.0 0.0 0.0 0 0 0 0 0 0.0 0.0 0.0
+E 0
+K RareOve
+T "Texture/Item/Item Num 142 Rare Ove.jpg"
+
+# Staff
+N Ove
+R Unique
+D "d"
+I 041
+//(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
+S 0.0 0.0 0.0 0 0 0 0 0 0.0 0.0 0.0
+E 0
+K UniqueOve
+T "Texture/Item/Item Num 1401 Unique Ove.jpg"

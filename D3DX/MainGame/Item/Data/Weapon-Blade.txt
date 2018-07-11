@@ -1,0 +1,64 @@
+// N 장비명
+// R 레어도
+// D 설명
+// I ID
+// S 스테이터스
+// (AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
+// E EquipType
+// K KeyName
+// T Texture
+//enum EQUIPTYPE
+//{
+//	EQUIP_FIRSTWEAPON,
+//	EQUIP_HELMET,
+//	EQUIP_CHEST,
+//	EQUIP_GLOVES,
+//	EQUIP_BOOTS,
+//	EQUIP_POTION,
+//	EQUIP_END
+//};
+# Blade
+N Blade
+R Normal
+D "d"
+I 321
+//(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
+S 0.0 0.0 0.0 0 0 0 0 0 0.0 0.0 0.0
+E 0
+K NormalBlade
+T "Texture/Item/Item Num 321 Normal Blade.jpg"
+
+# Blade
+N Blade
+R Magic
+D "d"
+I 221
+//(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
+S 0.0 0.0 0.0 0 0 0 0 0 0.0 0.0 0.0
+E 0
+K MagicBlade
+T "Texture/Item/Item Num 221 Magic Blade.jpg"
+
+# Blade
+N Blade
+R Rare
+D "d"
+I 121
+//(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
+S 0.0 0.0 0.0 0 0 0 0 0 0.0 0.0 0.0
+E 0
+K RareBlade
+T "Texture/Item/Item Num 121 Rare Blade.jpg"
+
+# Blade
+N Blade
+R Unique
+D "d"
+I 021
+//(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
+S 0.0 0.0 0.0 0 0 0 0 0 0.0 0.0 0.0
+E 0
+K UniqueBlade
+T "Texture/Item/Item Num 021 Unique Blade.jpg"
+
+////////////////////////////////////////////////////////////////////////////////////////////////////

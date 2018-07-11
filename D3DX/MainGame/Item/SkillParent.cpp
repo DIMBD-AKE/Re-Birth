@@ -1,6 +1,11 @@
 #include "../../stdafx.h"
 #include "SkillParent.h"
 
+#include "ItemParent.h"
+#include "../Status.h"
+#include "../monster/MonsterManager.h"
+#include "../monster/MonsterParent.h"
+#include "../Character/CharacterParant.h"
 
 
 SkillParent::SkillParent()

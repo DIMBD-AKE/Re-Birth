@@ -1,8 +1,8 @@
-#include "../../stdafx.h"
+#include "../../../stdafx.h"
 #include "GunParent.h"
-#include "../Status.h"
-#include "../monster/MonsterManager.h"
-#include "../monster/MonsterParent.h"
+#include "../../Status.h"
+#include "../../monster/MonsterManager.h"
+#include "../../monster/MonsterParent.h"
 
 GunParent::GunParent()
 {

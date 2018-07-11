@@ -1,0 +1,43 @@
+// N 장비명
+// R 레어도
+// D 설명
+// I ID
+// S 스테이터스
+// (AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
+// E EquipType
+// K KeyName
+// T Texture
+//enum EQUIPTYPE
+//{
+//	EQUIP_FIRSTWEAPON,
+//	EQUIP_HELMET,
+//	EQUIP_CHEST,
+//	EQUIP_GLOVES,
+//	EQUIP_BOOTS,
+//	EQUIP_POTION,
+//	EQUIP_END
+//};
+
+# TwoHandSword
+N TwoHandsword
+R Rare
+D "d"
+I 111
+//(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
+S 0.0 0.0 0.0 0 0 0 0 0 0.0 0.0 0.0
+E 0
+K RareTwoHandSword
+T "Texture/Item/Item Num 111 Rare TwoHandSword.jpg"
+
+# TwoHandSword
+N TwoHandsword
+R Unique
+D "d"
+I 011
+//(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
+S 0.0 0.0 0.0 0 0 0 0 0 0.0 0.0 0.0
+E 0
+K UniqueTwoHandSword
+T "Texture/Item/Item Num 111 Unique TwoHandSword.jpg"
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
