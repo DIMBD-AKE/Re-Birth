@@ -36,7 +36,7 @@ private:
 	POINT			m_ptEquipSize;
 
 	// 캐릭터 정보
-	STATUS*			m_pChrStatus;
+	CharacterParant*	m_pCharacter;
 
 	// 창 이동
 	POINT			m_ptPrevMouse;
@@ -74,7 +74,7 @@ public:
 	~Inventory();
 
 	// 인벤토리 생성
-	void CreateInventory(int col, int row);
+	void CreateInventory(int col, int row, CharacterParant * character);
 
 	void OpenInventory() { m_isInvShow = !m_isInvShow; }
 	void OpenEquip() { m_isEquipShow = !m_isEquipShow; }
@@ -86,6 +86,5 @@ public:
 	ItemParent * GetPotion();
 	STATUS GetEquipStat();
 	bool AddItem(ItemParent item);
-	void SetStatus(STATUS * status) { m_pChrStatus = status; }
 };
 

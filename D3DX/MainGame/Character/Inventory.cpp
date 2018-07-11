@@ -325,7 +325,7 @@ Inventory::~Inventory()
 		SAFE_DELETE(m_pEquip[i].item);
 }
 
-void Inventory::CreateInventory(int col, int row)
+void Inventory::CreateInventory(int col, int row, CharacterParant * character)
 {
 	InitPos();
 
@@ -350,6 +350,8 @@ void Inventory::CreateInventory(int col, int row)
 	m_ptInvBGSize.y = m_fSlotSpacing + (m_fSlotSize + m_fSlotSpacing) * m_ptInvSize.y;
 	m_ptEquipSize.x = TEXTUREMANAGER->GetInfo("UI Inventory Equip").Width * m_fSlotResize;
 	m_ptEquipSize.y = TEXTUREMANAGER->GetInfo("UI Inventory Equip").Height * m_fSlotResize;
+
+	m_pCharacter = character;
 }
 
 void Inventory::Update()
@@ -413,7 +415,7 @@ void Inventory::Render()
 		SPRITE->Draw(m_pEquipTex, NULL, NULL, NULL, 0xFFFFFFFF);
 
 		STATUS item = GetEquipStat();
-		STATUS chr = *m_pChrStatus;
+		STATUS chr = *m_pCharacter->Getstatus();
 		chr.chr.nMaxHp += item.item.nHp;
 		chr.chr.nAtk += item.item.nAtk;
 		chr.chr.fAtkSpeed *= item.item.fAtkSpeed;
@@ -542,6 +544,11 @@ void Inventory::Render()
 	}
 
 	SPRITE_END;
+
+	for (int i = 0; i < EQUIP_END; i++)
+	{
+		m_pEquip[i].item->EffectRender(*m_pCharacter->GetCharacter()->GetPosition());
+	}
 }
 
 ItemParent * Inventory::GetWeapon()
