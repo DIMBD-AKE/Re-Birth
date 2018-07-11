@@ -133,6 +133,10 @@ void MiddleBoss::Move()
 		D3DXVECTOR3 tempPos = *m_pModel->GetPosition() + m_vDir* SPEED(m_uMonsterStat);
 		tempPos.y = m_pMap->GetHeight(tempPos.x, tempPos.z);
 
+		float angle = GetAngle(0, 0, m_vDir.x, m_vDir.z);
+		angle -= D3DX_PI / 2;
+
+		m_pModel->SetRotation(D3DXVECTOR3(0, angle, 0));
 		m_pModel->SetPosition(tempPos);
 
 		//tempPos.y = m_pMap->GetHeight(tempPos.x, tempPos.z);

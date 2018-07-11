@@ -23,8 +23,28 @@ void BossParent::SetupBoss(Map* map, D3DXVECTOR3 pos)
 
 void BossParent::Update()
 {
-	m_pModel->World();
-	m_pModel->Update();
+	if (m_pModel)
+	{
+		m_pModel->World();
+		m_pModel->Update();
+	}
+
+	if (INPUT->KeyDown('L'))
+	{
+		CURRENTHP(m_uMonsterStat) -= 100;
+	}
+
+	if (m_pHPBar)
+	{
+		float tempF = (float)CURRENTHP(m_uMonsterStat) / MAXHP(m_uMonsterStat);
+
+
+		m_pHPBar->SetScale(D3DXVECTOR3(tempF, 1, 1));
+
+		m_pHPBar->Update();
+	}
+
+
 	Pattern();
 
 }
@@ -37,6 +57,8 @@ void BossParent::Render()
 		
 		if (m_bIsTargeting) m_pHPBar->Render();
 	}
+
+	if (m_pHPBar) m_pHPBar->Render();
 
 }
 
