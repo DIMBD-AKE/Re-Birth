@@ -50,7 +50,7 @@ void Nike::SetupStat()
 	ZeroMemory(&m_uMonsterStat, sizeof(m_uMonsterStat));
 
 	CURRENTHP(m_uMonsterStat) = MAXHP(m_uMonsterStat) = 90;
-	ATK(m_uMonsterStat) = 6;
+	ATK(m_uMonsterStat) = 20;
 	PHYRATE(m_uMonsterStat) = 0.9f;
 	MAGICRATE(m_uMonsterStat) = 0.9f;
 	CHERATE(m_uMonsterStat) = 1.3f;

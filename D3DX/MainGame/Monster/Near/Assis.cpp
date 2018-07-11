@@ -57,7 +57,7 @@ void Assis::SetupStat()
 	ZeroMemory(&m_uMonsterStat, sizeof(m_uMonsterStat));
 
 	CURRENTHP(m_uMonsterStat) = MAXHP(m_uMonsterStat) = 150;
-	ATK(m_uMonsterStat) = 5;
+	ATK(m_uMonsterStat) = 20;
 	PHYRATE(m_uMonsterStat) = 1.3f;
 	MAGICRATE(m_uMonsterStat) = 0.8f;
 	CHERATE(m_uMonsterStat) = 1.1f;

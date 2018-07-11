@@ -9,12 +9,7 @@ protected :
 	bool m_bIsDead;
 
 	/*
-	float m_fUIMoveX;
-	float m_fUIMoveY;
-
-	bool m_bIsTargeting;
-	int m_nTargetingCount;
-
+	
 	UIObject* m_pHPBar;
 
 	D3DXVECTOR3		m_vDir;
