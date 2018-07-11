@@ -31,7 +31,8 @@ void BossParent::Update()
 
 	if (INPUT->KeyDown('L'))
 	{
-		CURRENTHP(m_uMonsterStat) -= 100;
+		SetCurrentHP(100);
+		//CURRENTHP(m_uMonsterStat) -= 100;
 	}
 
 	if (m_pHPBar)

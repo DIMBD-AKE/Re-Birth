@@ -78,6 +78,7 @@ void MiddleBoss::DropItemSetup()
 
 void MiddleBoss::ChangeAni()
 {
+	MonsterParent::ChangeAni();
 	//switch (m_eState)
 	//{
 	//case MS_IDLE:
@@ -112,10 +113,14 @@ void MiddleBoss::Pattern()
 	case MS_SKILL:
 		break;
 	case MS_ATTACK:
+		Attack();
 		break;
 	case MS_MOVEFORATTACK:
 		break;
 	case MS_DIE:
+	{
+				   if (m_pModel->IsAnimationEnd()) m_eState = MS_NONE;
+	}
 		break;
 	case MS_NONE:
 		break;

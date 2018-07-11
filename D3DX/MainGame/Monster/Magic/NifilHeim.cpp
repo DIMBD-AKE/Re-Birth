@@ -85,7 +85,7 @@ void NifilHeim::Skill()
 
 void NifilHeim::DropItemSetup()
 {
-	m_vItemID.push_back(RARE_OVE);
+	m_vItemID.push_back(ITEM_NULL);
 	m_vItemID.push_back(NORMAL_RECOVERYBOOK);
 	m_vItemID.push_back(NORMAL_STAFF);
 	m_vItemID.push_back(SWORDMAN_NORMAL_ARMOR);

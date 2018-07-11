@@ -83,7 +83,7 @@ void DarkHell::Skill()
 
 void DarkHell::DropItemSetup()
 {
-	m_vItemID.push_back(RARE_OVE);
+	m_vItemID.push_back(ITEM_NULL);
 	m_vItemID.push_back(NORMAL_HEALTHPOTION);
 	m_vItemID.push_back(NORMAL_WAND);
 	m_vItemID.push_back(MAGE_NORMAL_ARMOR);

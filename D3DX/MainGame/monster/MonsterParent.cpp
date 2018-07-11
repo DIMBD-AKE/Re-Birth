@@ -306,7 +306,7 @@ void MonsterParent::Respawn(D3DXVECTOR3 spawnPos)
 
 void MonsterParent::CalculDamage(float damage)
 {
-	m_eState = MS_ATTACK;
+	
 	/*
 	float	fPhyRate;		//물리계수
 	float	fMagicRate;		//마법계수

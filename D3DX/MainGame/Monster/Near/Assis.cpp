@@ -129,7 +129,7 @@ void Assis::Skill()
 void Assis::DropItemSetup()
 {
 	//≥Î≈€
-	m_vItemID.push_back(RARE_OVE);
+	m_vItemID.push_back(ITEM_NULL);
 	m_vItemID.push_back(NORMAL_HEALTHPOTION);
 	m_vItemID.push_back(RARE_TWOHANDEDSWORD);
 	m_vItemID.push_back(SWORDMAN_NORMAL_HELMET);

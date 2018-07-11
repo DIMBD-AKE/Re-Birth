@@ -85,7 +85,7 @@ void Nerisa::Skill()
 
 void Nerisa::DropItemSetup()
 {
-	m_vItemID.push_back(RARE_OVE);
+	m_vItemID.push_back(ITEM_NULL);
 	m_vItemID.push_back(NORMAL_RECOVERYBOOK);
 	m_vItemID.push_back(NORMAL_BLADE);
 	m_vItemID.push_back(ARCHER_NORMAL_GAUNTLET);

@@ -85,7 +85,7 @@ void Nike::Skill()
 
 void Nike::DropItemSetup()
 {
-	m_vItemID.push_back(RARE_OVE);
+	m_vItemID.push_back(ITEM_NULL);
 	m_vItemID.push_back(NORMAL_HEALTHPOTION);
 	m_vItemID.push_back(NORMAL_ARROW);
 	m_vItemID.push_back(ARCHER_NORMAL_HELMET);

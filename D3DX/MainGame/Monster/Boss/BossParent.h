@@ -66,6 +66,20 @@ protected:
 	virtual void ChangeAni() override;
 
 	virtual void Pattern();
+
+	virtual void SetCurrentHP(int hp)
+	{
+		CURRENTHP(m_uMonsterStat) -= hp;
+
+		if (CURRENTHP(m_uMonsterStat) <= 0)
+		{
+			CURRENTHP(m_uMonsterStat) = 0;
+			m_bIsDead = true;
+			m_eState = MS_DIE;
+			ChangeAni();
+			ItemDrop();
+		}
+	}
 	
 public:
 	BossParent();

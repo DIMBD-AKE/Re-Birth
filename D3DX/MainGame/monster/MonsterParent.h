@@ -84,8 +84,9 @@ protected:
 	POINT MoveForAttack();
 	void ItemDrop();
 
-	void SetCurrentHP(int hp)
+	virtual void SetCurrentHP(int hp)
 	{
+		m_eState = MS_ATTACK;
 		CURRENTHP(m_uMonsterStat) -= hp;
 		m_bIsTargeting = true;
 		m_nTargetingCount = 0;
