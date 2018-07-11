@@ -26,5 +26,6 @@ public:
 	void Load(IN const char* szFolder, IN const char* szFile);
 	ItemParent GetItem(int keyNum);
 
+	int FindItem(int keyNum);
 };
 

@@ -212,3 +212,14 @@ bool ItemManager::IsEqual(IN const char* str1, IN const char* str2)
 {
 	return strcmp(str1, str2) == 0;
 }
+
+int ItemManager::FindItem(int keyNum)
+{
+	//아이템이 없는거면 1값 반환
+	if (m_mIdItem.find(keyNum) == m_mIdItem.end())
+	{
+		return 1;
+	}
+	//아이템이 있으면 0 반환
+	return 0;
+}

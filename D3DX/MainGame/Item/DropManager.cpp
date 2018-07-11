@@ -3,6 +3,7 @@
 #include "../Character/Inventory.h"
 #include "../Character/CharacterParant.h"
 #include "ItemManager.h"
+#include <time.h>
 
 DropManager::DropManager()
 	: m_pModel(NULL)
@@ -23,6 +24,16 @@ void DropManager::Init()
 
 void DropManager::AddDropItem(int itemID, D3DXVECTOR3 pos)
 {
+	srand(time(NULL));
+
+	int tempItemID = ( rand() % 4) * 100 + itemID % 100;
+
+	while (ITEMMANAGER->FindItem(tempItemID))
+	{
+		break;
+		tempItemID = (rand() % 4) * 100 + itemID % 100;
+	}
+
 	ST_DROPBOX box;
 	box.itemID = itemID;
 	box.pos = pos;
