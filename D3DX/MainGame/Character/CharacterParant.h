@@ -71,6 +71,8 @@ protected:
 	GET(Inventory*,m_pInventory,m_Inventory);		//인벤토리용 변수
 	STATUS*					m_Status;			//스테이터스 유니온 변수 
 	UIObject*				m_pUIobj;			//UI오브젝트용 변수
+	UIObject*				m_pUIDamage[10];		//데미지용 UIObj변수
+	
 	MonsterManager*			m_pMonsterManager;	//몬스터 매니저용 변수
 	
 	D3DXVECTOR3				m_vfront;			//이동을 위한 프론트벡터

@@ -17,7 +17,7 @@ void CharacterParant::Move()
 {
 	Debug();
 	
-	if(m_bIsUnderAttacked) AppearDamage();
+	//if(m_bIsUnderAttacked) AppearDamage();
 	CountAppearDamage();
 	
 
@@ -149,8 +149,154 @@ void CharacterParant::AppearDamage()
 	D3DXVECTOR3 tempPos;
 	tempPos = *m_pCharacter->GetPosition();
 	tempPos.y += 4.0f;
-	D3DXVECTOR2 pos =  Convert3DTo2D(tempPos);
-	TEXT->Add(to_string(m_nDamage), pos.x, pos.y, 30);
+	//D3DXVECTOR2 pos =  Convert3DTo2D(tempPos);
+	//TEXT->Add(to_string(m_nDamage), pos.x, pos.y, 30);
+
+	//1~9에서 뜨는 포지션
+	auto temp = Convert3DTo2D(tempPos);
+
+	tempPos.x = temp.x;
+	tempPos.y = temp.y;
+	tempPos.z = 0;
+
+
+	char damageChar[16];
+	sprintf_s(damageChar, 16, "%d", m_nDamage);
+
+	for (int i = 0; i < strlen(damageChar); i++)
+	{
+		if (damageChar[i] == '0')
+		{
+			m_pUIDamage[0]->SetPosition(D3DXVECTOR3(tempPos.x + 35 * i, tempPos.y, tempPos.z));
+			m_pUIDamage[0]->Update();
+			m_pUIDamage[0]->Render();
+		}
+		else if (damageChar[i] == '1')
+		{
+			m_pUIDamage[1]->SetPosition(D3DXVECTOR3(tempPos.x + 35 * i, tempPos.y, tempPos.z));
+			m_pUIDamage[1]->Update();
+			m_pUIDamage[1]->Render();
+		}
+		else if (damageChar[i] == '2')
+		{
+			m_pUIDamage[2]->SetPosition(D3DXVECTOR3(tempPos.x + 35 * i, tempPos.y, tempPos.z));
+			m_pUIDamage[2]->Update();
+			m_pUIDamage[2]->Render();
+		}
+		else if (damageChar[i] == '3')
+		{
+			m_pUIDamage[3]->SetPosition(D3DXVECTOR3(tempPos.x + 35 * i, tempPos.y, tempPos.z));
+			m_pUIDamage[3]->Update();
+			m_pUIDamage[3]->Render();
+		}
+		else if (damageChar[i] == '4')
+		{
+			m_pUIDamage[4]->SetPosition(D3DXVECTOR3(tempPos.x + 35 * i, tempPos.y, tempPos.z));
+			m_pUIDamage[4]->Update();
+			m_pUIDamage[4]->Render();
+		}
+		else if (damageChar[i] == '5')
+		{
+			m_pUIDamage[5]->SetPosition(D3DXVECTOR3(tempPos.x + 35 * i, tempPos.y, tempPos.z));
+			m_pUIDamage[5]->Update();
+			m_pUIDamage[5]->Render();
+		}
+		else if (damageChar[i] == '6')
+		{
+			m_pUIDamage[6]->SetPosition(D3DXVECTOR3(tempPos.x + 35 * i, tempPos.y, tempPos.z));
+			m_pUIDamage[6]->Update();
+			m_pUIDamage[6]->Render();
+		}
+		else if (damageChar[i] == '7')
+		{
+			m_pUIDamage[7]->SetPosition(D3DXVECTOR3(tempPos.x + 35 * i, tempPos.y, tempPos.z));
+			m_pUIDamage[7]->Update();
+			m_pUIDamage[7]->Render();
+		}
+		else if (damageChar[i] == '8')
+		{
+			m_pUIDamage[8]->SetPosition(D3DXVECTOR3(tempPos.x + 35 * i, tempPos.y, tempPos.z));
+			m_pUIDamage[8]->Update();
+			m_pUIDamage[8]->Render();
+		}
+		else if (damageChar[i] == '9')
+		{
+			m_pUIDamage[9]->SetPosition(D3DXVECTOR3(tempPos.x + 35 * i, tempPos.y, tempPos.z));
+			m_pUIDamage[9]->Update();
+			m_pUIDamage[9]->Render();
+		}
+	}
+
+	
+
+	////10자리에서 뜨는 포지션
+	//D3DXVECTOR3 temp10Pos;
+	//temp10Pos = *m_pCharacter->GetPosition();
+	//temp10Pos.y += 4.0f;
+	//temp10Pos.x += 2.0f;
+
+	//auto temp10 = Convert3DTo2D(temp10Pos);
+
+	//temp10Pos.x = temp10.x;
+	//temp10Pos.y = temp10.y;
+	//temp10Pos.z = 0;
+
+
+	////100자리에서 뜨는 포지션
+	//D3DXVECTOR3 temp100Pos;
+	//temp100Pos = *m_pCharacter->GetPosition();
+	//temp100Pos.y += 4.0f;
+	//
+	////m_pUIDamage[1]->SetPosition(tempPos);
+
+	//if (m_nDamage >= 100 && m_nDamage <= 999)
+	//{
+	//	//100데미지
+	//	if (m_nDamage / 100 != 0)
+	//	{
+	//		m_bISUIDamageAppear[m_nDamage / 100] = true;
+	//		m_bISUIDamageAppear[(m_nDamage % 100) / 10] = true;
+	//		m_bISUIDamageAppear[(m_nDamage % 100) % 10] = true;
+	//		m_pUIDamage[m_nDamage / 100]->SetPosition(tempPos);
+	//		m_pUIDamage[(m_nDamage % 100) / 10]->SetPosition(tempPos);
+	//		m_pUIDamage[(m_nDamage % 100) % 10]->SetPosition(tempPos);
+	//	}
+	//	//10데미지
+	//	else if (m_nDamage / 10 != 0)
+	//	{
+	//		m_bISUIDamageAppear[m_nDamage / 10] = true;
+	//		m_bISUIDamageAppear[(m_nDamage % 100) % 10] = true;
+	//		m_pUIDamage[m_nDamage / 10]->SetPosition(tempPos);
+	//		m_pUIDamage[(m_nDamage % 100) % 10]->SetPosition(tempPos);
+	//	}
+	//	//0~9데미지
+	//	else
+	//	{
+	//		m_bISUIDamageAppear[(m_nDamage % 100) % 10] = true;
+	//		m_pUIDamage[(m_nDamage % 100) % 10]->SetPosition(tempPos);
+	//	}
+	//}
+	//else if (m_nDamage >= 10 && m_nDamage <= 99)
+	//{
+	//	 if (m_nDamage / 10 != 0)
+	//	{
+	//		m_bISUIDamageAppear[m_nDamage / 10] = true;
+	//		m_bISUIDamageAppear[(m_nDamage % 100) % 10] = true;
+	//		m_pUIDamage[m_nDamage / 10]->SetPosition(tempPos);
+	//		m_pUIDamage[(m_nDamage % 100) % 10]->SetPosition(tempPos);
+	//	}
+	//	//0~9데미지
+	//	else
+	//	{
+	//		m_bISUIDamageAppear[(m_nDamage % 100) % 10] = true;
+	//		m_pUIDamage[(m_nDamage % 100) % 10]->SetPosition(tempPos);
+	//	}
+	//}
+	//else if ((m_nDamage >= 1 && m_nDamage <= 9))
+	//{
+	//	m_bISUIDamageAppear[(m_nDamage % 100) % 10] = true;
+	//	m_pUIDamage[(m_nDamage % 100) % 10]->SetPosition(tempPos);
+	//}
 
 }
 
@@ -324,8 +470,7 @@ void CharacterParant::Attack()
 				}
 				
 			}
-			m_pMonsterManager->GetMonsterVector()[MinIndex]->CalculDamage(100000.0f);
-
+			m_pMonsterManager->GetMonsterVector()[MinIndex]->CalculDamage(100.0f);
 		}
 		//============범위안에 있는 애들 다 공격하는 무기 skill용====================
 		//for (int i = 0; i < m_pMonsterManager->GetMonsterVector().size(); ++i)
@@ -459,7 +604,7 @@ void CharacterParant::CountAppearDamage()
 		{
 			m_eCondition = CHAR_HIT;
 			ChangeAnimation();
-		}
+		} 
 	}
 
 	if (m_nDamageCount < 10 && m_bIsUnderAttacked)
@@ -470,10 +615,11 @@ void CharacterParant::CountAppearDamage()
 		
 	}
 
-	if (m_nDamageCount >= 20)
+	if (m_nDamageCount >= 10)
 	{
 		m_nDamageCount = 0;
 		m_bIsUnderAttacked = false;
+		
 	}
 
 }
@@ -506,6 +652,19 @@ CharacterParant::CharacterParant()
 		TEXTUREMANAGER->AddTexture("파티클2", "Texture/Particle/Sphere.png"),
 		"Particle/PlayerDie.ptc");
 
+	//데미지 이미지 
+	TEXTUREMANAGER->AddTexture("숫자0", "Model/Character/Damage/0.png");
+	TEXTUREMANAGER->AddTexture("숫자1", "Model/Character/Damage/1.png");
+	TEXTUREMANAGER->AddTexture("숫자2", "Model/Character/Damage/2.png");
+	TEXTUREMANAGER->AddTexture("숫자3", "Model/Character/Damage/3.png");
+	TEXTUREMANAGER->AddTexture("숫자4", "Model/Character/Damage/4.png");
+	TEXTUREMANAGER->AddTexture("숫자5", "Model/Character/Damage/5.png");
+	TEXTUREMANAGER->AddTexture("숫자6", "Model/Character/Damage/6.png");
+	TEXTUREMANAGER->AddTexture("숫자7", "Model/Character/Damage/7.png");
+	TEXTUREMANAGER->AddTexture("숫자8", "Model/Character/Damage/8.png");
+	TEXTUREMANAGER->AddTexture("숫자9", "Model/Character/Damage/9.png");
+
+	
 }
 
 
@@ -572,8 +731,23 @@ void CharacterParant::Init(Map* map, CHARSELECT order, MonsterManager* pMonsterM
 	//포트레이트 UI
 	m_pUIobj = new UIObject;
 
-	
+	//데미지 UI
+	for (int i = 0; i < 10; i++)
+	{
+		m_pUIDamage[i] = new UIObject;
+	}
 
+	m_pUIDamage[0]->SetTexture(TEXTUREMANAGER->GetTexture("숫자0"));
+	m_pUIDamage[1]->SetTexture(TEXTUREMANAGER->GetTexture("숫자1"));
+	m_pUIDamage[2]->SetTexture(TEXTUREMANAGER->GetTexture("숫자2"));
+	m_pUIDamage[3]->SetTexture(TEXTUREMANAGER->GetTexture("숫자3"));
+	m_pUIDamage[4]->SetTexture(TEXTUREMANAGER->GetTexture("숫자4"));
+	m_pUIDamage[5]->SetTexture(TEXTUREMANAGER->GetTexture("숫자5"));
+	m_pUIDamage[6]->SetTexture(TEXTUREMANAGER->GetTexture("숫자6"));
+	m_pUIDamage[7]->SetTexture(TEXTUREMANAGER->GetTexture("숫자7"));
+	m_pUIDamage[8]->SetTexture(TEXTUREMANAGER->GetTexture("숫자8"));
+	m_pUIDamage[9]->SetTexture(TEXTUREMANAGER->GetTexture("숫자9"));
+	
 
 	m_pParticle = PARTICLE->GetParticle("ATTACK");
 	m_pParticle2 = PARTICLE->GetParticle("Die");

@@ -29,13 +29,13 @@ void Character_Sword::Init(Map* map, CHARSELECT order, MonsterManager* pMonsterM
 		m_Status->chr.fAtkSpeed = 1.0f;
 		m_Status->chr.fCheRate = 5.0f;
 		m_Status->chr.fHit = 70.0f;
-		m_Status->chr.fMagicRate = 25.0f;
-		m_Status->chr.fPhyRate = 60.0f;
+		m_Status->chr.fMagicRate = 1.0f;
+		m_Status->chr.fPhyRate = 1.0f;
 		m_Status->chr.fSpeed = 0.32f;
 		m_Status->chr.nAtk = 60;
 		m_Status->chr.nCurrentHP = 10000;
 		m_Status->chr.nCurrentStam = 50;
-		m_Status->chr.nDef = 26;
+		m_Status->chr.nDef = 2;
 		m_Status->chr.nMaxHp = 10000;
 		m_Status->chr.nMaxStam = 50;
 		m_Status->chr.fRange = 3.0f;
@@ -46,6 +46,7 @@ void Character_Sword::Init(Map* map, CHARSELECT order, MonsterManager* pMonsterM
 		//포트레이트 UI
 		m_pUIobj->SetTexture(TEXTUREMANAGER->GetTexture("베카_사진"));
 		m_pUIobj->SetPosition(D3DXVECTOR3(1300, 550, 0));
+
 	}
 	else if (order == CHAR_TWO)
 	{
@@ -111,10 +112,7 @@ void Character_Sword::Update()
 		
 		m_pCharacter->World();
 		
-
-
 		m_pUIobj->Update();
-		
 	}
 }
 
@@ -130,9 +128,11 @@ void Character_Sword::Render()
 
 		//포트레이트 
 		m_pUIobj->Render();
-
 		
-
+		if (m_bIsUnderAttacked)
+		{
+			AppearDamage();
+		}
 		CharacterParant::Render();
 	}
 }
