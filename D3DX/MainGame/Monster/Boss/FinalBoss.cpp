@@ -29,7 +29,7 @@ void FinalBoss::SetupBoss(Map* map, D3DXVECTOR3 pos)
 	box.lowZ = -50.0f;
 
 
-	m_pModel->SetScale(D3DXVECTOR3(0.2f, 0.2f, 0.2f));
+	m_pModel->SetScale(D3DXVECTOR3(0.05f, 0.05f, 0.05f));
 
 	m_pModel->CreateBound(box);
 	m_pModel->SetBoundSphere(m_pModel->GetOrigBoundSphere().center, 100.0f);

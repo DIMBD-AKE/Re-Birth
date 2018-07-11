@@ -113,7 +113,7 @@ public:
 
 	virtual void SetupBoss(Map* map, D3DXVECTOR3 pos);
 
-	void Update();
+	virtual void Update();
 
 	void RespawnUpdate();
 
