@@ -21,7 +21,7 @@
 # Armor
 N ArcherHelmet
 R Normal
-D "d"
+D "힘세고강한아침//힘/세/고/강/한/아/침//힘/세/"
 I 365
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 10 5 0.0 1.0 0.0

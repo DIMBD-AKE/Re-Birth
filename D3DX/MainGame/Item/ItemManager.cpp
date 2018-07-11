@@ -35,9 +35,6 @@ void ItemManager::Load(IN const char * szFolder, IN const char * szFile)
 			else if (path == "Sword") Ap = new SwordParent;
 			else if (path == "Arrow") Ap = new GunParent;
 			else if (path == "Staff") Ap = new WandParent;
-			char szTemp[1024];
-			fgets(szTemp, 1024, m_fp);
-
 			ZeroMemory(Ap, sizeof(ItemParent*));
 		}
 

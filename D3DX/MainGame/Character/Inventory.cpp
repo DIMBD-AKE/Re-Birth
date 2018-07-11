@@ -264,11 +264,11 @@ void Inventory::ShowInfo(ItemParent * pItem, D3DXVECTOR3 pos)
 			pos.y + vItemPos.y + m_fSlotSize + 20 * m_fSlotResize,
 			36 * m_fSlotResize, "³ª´®½ºÄù¾î Regular", 0xFFFFFFFF);
 
-		TEXT->Add("¹æ¾î·Â " + to_string(pItem->GetItemStat()->item.nAtk),
+		TEXT->Add("¹æ¾î·Â " + to_string(pItem->GetItemStat()->item.nDef),
 			pos.x + vItemPos.x,
 			pos.y + vItemPos.y + m_fSlotSize + 65 * m_fSlotResize,
 			36 * m_fSlotResize, "³ª´®½ºÄù¾î Regular", 0xFFFFFFFF);
-		TEXT->Add("Ã¼·Â " + to_string(pItem->GetItemStat()->item.nDef),
+		TEXT->Add("Ã¼·Â " + to_string(pItem->GetItemStat()->item.nHp),
 			pos.x + vItemPos.x + 200 * m_fSlotResize,
 			pos.y + vItemPos.y + m_fSlotSize + 65 * m_fSlotResize,
 			36 * m_fSlotResize, "³ª´®½ºÄù¾î Regular", 0xFFFFFFFF);

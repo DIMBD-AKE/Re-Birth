@@ -1,0 +1,65 @@
+// N 장비명
+// R 레어도
+// D 설명
+// I ID
+// S 스테이터스
+// (AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
+// E EquipType
+// K KeyName
+// T Texture
+//enum EQUIPTYPE
+//{
+//	EQUIP_FIRSTWEAPON,
+//	EQUIP_HELMET,
+//	EQUIP_CHEST,
+//	EQUIP_GLOVES,
+//	EQUIP_BOOTS,
+//	EQUIP_POTION,
+//	EQUIP_END
+//};
+
+# Arrow
+N Arrow
+R Normal
+D "d"
+I 331
+//(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
+S 0.0 0.0 0.0 0 0 0 0 0 0.0 0.0 0.0
+E 0
+K NormalArrow
+T "Texture/Item/Item Num 331 Normal Arrow.jpg"
+
+# Arrow
+N Arrow
+R Magic
+D "d"
+I 231
+//(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
+S 0.0 0.0 0.0 0 0 0 0 0 0.0 0.0 0.0
+E 0
+K MagicArrow
+T "Texture/Item/Item Num 231 Magic Arrow.jpg"
+
+# Arrow
+N Arrow
+R Rare
+D "d"
+I 131
+//(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
+S 0.0 0.0 0.0 0 0 0 0 0 0.0 0.0 0.0
+E 0
+K RareArrow
+T "Texture/Item/Item Num 131 Rare Arrow.jpg"
+
+# Arrow
+N Arrow
+R Unique
+D "d"
+I 031
+//(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
+S 0.0 0.0 0.0 0 0 0 0 0 0.0 0.0 0.0
+E 0
+K UniqueArrow
+T "Texture/Item/Item Num 031 Unique Arrow.jpg"
+
+////////////////////////////////////////////////////////////////////////////////////////////////////

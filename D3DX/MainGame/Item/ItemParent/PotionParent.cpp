@@ -1,7 +1,7 @@
-#include "../../stdafx.h"
+#include "../../../stdafx.h"
 #include "PotionParent.h"
-#include "../Status.h"
-#include "../Character/CharacterParant.h"
+#include "../../Status.h"
+#include "../../Character/CharacterParant.h"
 
 PotionParent::PotionParent()
 {

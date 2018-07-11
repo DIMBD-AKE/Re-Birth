@@ -120,16 +120,7 @@
     <ClInclude Include="MainGame\Item\ItemParent.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="MainGame\Item\PotionParent.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="MainGame\Item\SwordParent.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="MainGame\Item\WandParent.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="MainGame\Item\GunParent.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="MainGame\AStar\PathFind.h">
@@ -145,42 +136,6 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Framework\UIController.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="MainGame\Item\ArmorParent.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="MainGame\Item\Potion\HealthPotion.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="MainGame\Item\Potion\HealthHighPotion.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="MainGame\Item\Sword\BasicSword.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="MainGame\Item\Arrow\NormalArrow.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="MainGame\Item\Arrow\RareArrow.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="MainGame\Item\Arrow\MagicArrow.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="MainGame\Item\Arrow\UniqueArrow.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="MainGame\Item\Blade\MagicBlade.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="MainGame\Item\Blade\NormalBlade.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="MainGame\Item\Blade\RareBlade.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="MainGame\Item\Blade\UniqueBlade.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="MainGame\monster\Magic\DarkHell.h">
@@ -250,6 +205,21 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="MainGame\Monster\Boss\FinalBoss.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="MainGame\Item\ItemParent\ArmorParent.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="MainGame\Item\ItemParent\GunParent.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="MainGame\Item\ItemParent\PotionParent.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="MainGame\Item\ItemParent\SwordParent.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="MainGame\Item\ItemParent\WandParent.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
@@ -329,18 +299,6 @@
     <ClCompile Include="MainGame\Item\ItemParent.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="MainGame\Item\PotionParent.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="MainGame\Item\SwordParent.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="MainGame\Item\WandParent.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="MainGame\Item\GunParent.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="MainGame\AStar\PathFind.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
@@ -351,42 +309,6 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Framework\UIController.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="MainGame\Item\ArmorParent.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="MainGame\Item\Potion\HealthPotion.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="MainGame\Item\Potion\HealthHighPotion.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="MainGame\Item\Sword\BasicSword.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="MainGame\Item\Arrow\NormalArrow.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="MainGame\Item\Arrow\RareArrow.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="MainGame\Item\Arrow\MagicArrow.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="MainGame\Item\Arrow\UniqueArrow.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="MainGame\Item\Blade\MagicBlade.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="MainGame\Item\Blade\NormalBlade.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="MainGame\Item\Blade\RareBlade.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="MainGame\Item\Blade\UniqueBlade.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="MainGame\monster\Magic\DarkHell.cpp">
@@ -446,6 +368,21 @@
     <ClCompile Include="MainGame\Monster\Boss\FinalBoss.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="MainGame\Item\ItemParent\ArmorParent.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="MainGame\Item\ItemParent\GunParent.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="MainGame\Item\ItemParent\PotionParent.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="MainGame\Item\ItemParent\SwordParent.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="MainGame\Item\ItemParent\WandParent.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="D3DX.rc">
@@ -459,5 +396,17 @@
     <Image Include="D3DX.ico">
       <Filter>리소스 파일</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="MainGame\Item\Data\Weapon-TwoHandSword.txt" />
+    <Text Include="MainGame\Item\Data\ArcherArmor.txt" />
+    <Text Include="MainGame\Item\Data\BabarianArmor.txt" />
+    <Text Include="MainGame\Item\Data\KnightArmor.txt" />
+    <Text Include="MainGame\Item\Data\MageArmor.txt" />
+    <Text Include="MainGame\Item\Data\SwordManArmor.txt" />
+    <Text Include="MainGame\Item\Data\ValkyrieArmor.txt" />
+    <Text Include="MainGame\Item\Data\Weapon-Arrow.txt" />
+    <Text Include="MainGame\Item\Data\Weapon-Blade.txt" />
+    <Text Include="MainGame\Item\Data\Weapon-Staff.txt" />
   </ItemGroup>
 </Project>

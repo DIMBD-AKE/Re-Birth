@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -150,18 +150,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="MainGame\Item\ItemParent\ArmorParent.h" />
+    <ClInclude Include="MainGame\Item\ItemParent\GunParent.h" />
+    <ClInclude Include="MainGame\Item\ItemParent\PotionParent.h" />
+    <ClInclude Include="MainGame\Item\ItemParent\SwordParent.h" />
+    <ClInclude Include="MainGame\Item\ItemParent\WandParent.h" />
     <ClInclude Include="MainGame\Monster\Boss\FinalBoss.h" />
     <ClInclude Include="MainGame\Monster\Boss\BossParent.h" />
     <ClInclude Include="Framework\EffectObject.h" />
     <ClInclude Include="Framework\Manager\ParticleManager.h" />
     <ClInclude Include="MainGame\Monster\Magic\MagicCircle.h" />
     <ClInclude Include="MainGame\Item\DropManager.h" />
-    <ClInclude Include="MainGame\Item\Blade\MagicBlade.h" />
-    <ClInclude Include="MainGame\Item\Arrow\MagicArrow.h" />
-    <ClInclude Include="MainGame\Item\ArmorParent.h" />
     <ClInclude Include="MainGame\Item\ItemList.h" />
     <ClInclude Include="MainGame\Item\ItemManager.h" />
-    <ClInclude Include="MainGame\Item\Sword\BasicSword.h" />
     <ClInclude Include="Framework\UIController.h" />
     <ClInclude Include="MainGame\AStar\Cell.h" />
     <ClInclude Include="MainGame\AStar\AStar.h" />
@@ -179,9 +180,6 @@
     <ClInclude Include="Framework\Util.h" />
     <ClInclude Include="Framework\Vertex.h" />
     <ClInclude Include="MainGame\GameEnum.h" />
-    <ClInclude Include="MainGame\Item\Potion\HealthHighPotion.h" />
-    <ClInclude Include="MainGame\Item\Potion\HealthPotion.h" />
-    <ClInclude Include="MainGame\Item\GunParent.h" />
     <ClInclude Include="MainGame\Item\ItemParent.h" />
     <ClInclude Include="MainGame\Character\CharacterParant.h" />
     <ClInclude Include="MainGame\Character\Character_Gun.h" />
@@ -189,7 +187,6 @@
     <ClInclude Include="MainGame\Character\Character_Sword.h" />
     <ClInclude Include="MainGame\Character\Inventory.h" />
     <ClInclude Include="MainGame\Item\SwordParent.h" />
-    <ClInclude Include="MainGame\Item\WandParent.h" />
     <ClInclude Include="MainGame\MainGame.h" />
     <ClInclude Include="D3DX.h" />
     <ClInclude Include="Framework\Manager\DeviceManager.h" />
@@ -211,11 +208,6 @@
     <ClInclude Include="MainGame\Monster\TotalMonster.h" />
     <ClInclude Include="MainGame\Status.h" />
     <ClInclude Include="MainGame\AStar\PathFind.h" />
-    <ClInclude Include="MainGame\Item\PotionParent.h" />
-    <ClInclude Include="MainGame\Item\Arrow\NormalArrow.h" />
-    <ClInclude Include="MainGame\Item\Arrow\RareArrow.h" />
-    <ClInclude Include="MainGame\Item\Blade\NormalBlade.h" />
-    <ClInclude Include="MainGame\Item\Blade\RareBlade.h" />
     <ClInclude Include="MainGame\Monster\Boss\MiddleBoss.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Framework\Manager\SceneManager.h" />
@@ -226,22 +218,21 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Framework\Manager\TextureManager.h" />
     <ClInclude Include="Framework\Manager\TimeManager.h" />
-    <ClInclude Include="MainGame\Item\Arrow\UniqueArrow.h" />
-    <ClInclude Include="MainGame\Item\Blade\UniqueBlade.h" />
     <ClInclude Include="MainGame\Item\ItemHeaderIndex.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="MainGame\Item\ItemParent\ArmorParent.cpp" />
+    <ClCompile Include="MainGame\Item\ItemParent\GunParent.cpp" />
+    <ClCompile Include="MainGame\Item\ItemParent\PotionParent.cpp" />
+    <ClCompile Include="MainGame\Item\ItemParent\SwordParent.cpp" />
+    <ClCompile Include="MainGame\Item\ItemParent\WandParent.cpp" />
     <ClCompile Include="MainGame\Monster\Boss\FinalBoss.cpp" />
     <ClCompile Include="MainGame\Monster\Boss\BossParent.cpp" />
     <ClCompile Include="Framework\EffectObject.cpp" />
     <ClCompile Include="Framework\Manager\ParticleManager.cpp" />
     <ClCompile Include="MainGame\Monster\Magic\MagicCircle.cpp" />
     <ClCompile Include="MainGame\Item\DropManager.cpp" />
-    <ClCompile Include="MainGame\Item\Blade\MagicBlade.cpp" />
-    <ClCompile Include="MainGame\Item\Arrow\MagicArrow.cpp" />
-    <ClCompile Include="MainGame\Item\ArmorParent.cpp" />
     <ClCompile Include="MainGame\Item\ItemManager.cpp" />
-    <ClCompile Include="MainGame\Item\Sword\BasicSword.cpp" />
     <ClCompile Include="Framework\UIController.cpp" />
     <ClCompile Include="MainGame\AStar\Cell.cpp" />
     <ClCompile Include="MainGame\AStar\AStar.cpp" />
@@ -252,17 +243,12 @@
     <ClCompile Include="Framework\Parser\AseLoader.cpp" />
     <ClCompile Include="Framework\Parser\ObjLoader.cpp" />
     <ClCompile Include="Framework\Parser\SkinnedMesh.cpp" />
-    <ClCompile Include="MainGame\Item\Potion\HealthHighPotion.cpp" />
-    <ClCompile Include="MainGame\Item\Potion\HealthPotion.cpp" />
-    <ClCompile Include="MainGame\Item\GunParent.cpp" />
     <ClCompile Include="MainGame\Item\ItemParent.cpp" />
     <ClCompile Include="MainGame\Character\CharacterParant.cpp" />
     <ClCompile Include="MainGame\Character\Character_Gun.cpp" />
     <ClCompile Include="MainGame\Character\Character_Magic.cpp" />
     <ClCompile Include="MainGame\Character\Character_Sword.cpp" />
     <ClCompile Include="MainGame\Character\Inventory.cpp" />
-    <ClCompile Include="MainGame\Item\SwordParent.cpp" />
-    <ClCompile Include="MainGame\Item\WandParent.cpp" />
     <ClCompile Include="MainGame\MainGame.cpp" />
     <ClCompile Include="D3DX.cpp" />
     <ClCompile Include="Framework\Manager\DeviceManager.cpp" />
@@ -282,11 +268,6 @@
     <ClCompile Include="MainGame\Monster\MonsterParent.cpp" />
     <ClCompile Include="MainGame\Monster\MonsterManager.cpp" />
     <ClCompile Include="MainGame\AStar\PathFind.cpp" />
-    <ClCompile Include="MainGame\Item\PotionParent.cpp" />
-    <ClCompile Include="MainGame\Item\Arrow\NormalArrow.cpp" />
-    <ClCompile Include="MainGame\Item\Arrow\RareArrow.cpp" />
-    <ClCompile Include="MainGame\Item\Blade\NormalBlade.cpp" />
-    <ClCompile Include="MainGame\Item\Blade\RareBlade.cpp" />
     <ClCompile Include="MainGame\Item\SkillParent.cpp" />
     <ClCompile Include="MainGame\Item\SkillManager.cpp" />
     <ClCompile Include="MainGame\Monster\Boss\MiddleBoss.cpp" />
@@ -298,8 +279,6 @@
     </ClCompile>
     <ClCompile Include="Framework\Manager\TextureManager.cpp" />
     <ClCompile Include="Framework\Manager\TimeManager.cpp" />
-    <ClCompile Include="MainGame\Item\Arrow\UniqueArrow.cpp" />
-    <ClCompile Include="MainGame\Item\Blade\UniqueBlade.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="D3DX.rc" />
@@ -307,6 +286,18 @@
   <ItemGroup>
     <Image Include="D3DX.ico" />
     <Image Include="small.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="MainGame\Item\Data\ArcherArmor.txt" />
+    <Text Include="MainGame\Item\Data\BabarianArmor.txt" />
+    <Text Include="MainGame\Item\Data\KnightArmor.txt" />
+    <Text Include="MainGame\Item\Data\MageArmor.txt" />
+    <Text Include="MainGame\Item\Data\SwordManArmor.txt" />
+    <Text Include="MainGame\Item\Data\ValkyrieArmor.txt" />
+    <Text Include="MainGame\Item\Data\Weapon-Arrow.txt" />
+    <Text Include="MainGame\Item\Data\Weapon-Blade.txt" />
+    <Text Include="MainGame\Item\Data\Weapon-Staff.txt" />
+    <Text Include="MainGame\Item\Data\Weapon-TwoHandSword.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

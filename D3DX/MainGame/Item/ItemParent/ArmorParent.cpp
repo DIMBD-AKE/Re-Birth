@@ -1,6 +1,6 @@
-#include "../../stdafx.h"
+#include "../../../stdafx.h"
 #include "ArmorParent.h"
-#include "../Status.h"
+#include "../../Status.h"
 
 
 
