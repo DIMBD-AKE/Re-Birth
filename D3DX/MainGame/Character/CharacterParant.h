@@ -59,6 +59,8 @@ struct ST_DAMAGETEXT			//데미지 텍스트용 구조체
 	int Damage;
 	float time;
 	float endTime;
+	float angle;
+
 };
 
 class CharacterParant
@@ -74,7 +76,7 @@ protected:
 	GET(Model*,m_pCharacter,Character);			//캐릭터 맴버 변수 
 	Map*					m_pSampleMap;		//맵정보 받는 맴버 변수
 	GET(Inventory*,m_pInventory,m_Inventory);		//인벤토리용 변수
-	STATUS*					m_Status;			//스테이터스 유니온 변수 
+	GET(STATUS*,m_Status, status);			//스테이터스 유니온 변수 
 	UIObject*				m_pUIobj;			//UI오브젝트용 변수
 	UIObject*				m_pUIDamage[10];		//데미지용 UIObj변수
 	UIObject*				m_pUISkill;				//스킬 UIOBJ
@@ -93,6 +95,7 @@ protected:
 	bool					m_bIsAttack;		//일반공격 했늬?
 	bool					m_bIsUnderAttacked; //공격받았니?
 	int						m_nDamageCount;		//데미지 띄우는 카운트
+	float					m_fDamageAngle;		//데미지 앵글
 
 	GET(bool,m_bIsDead,IsDead);			//죽었늬
 	float					m_fStamina;			//스테미나 게이지

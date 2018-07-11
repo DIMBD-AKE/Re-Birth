@@ -167,8 +167,16 @@ void CharacterParant::AppearDamage()
 		m_vecDamage[i].time += TIME->GetElapsedTime();
 
 		tempPos = *m_pCharacter->GetPosition();
-		tempPos.y += m_vecDamage[i].time + 4.0f;
+		//tempPos.y += m_vecDamage[i].time + 4.0f;
+		
+		//y= a(x-b)^2 (a<0,b>0)
+
+
+		tempPos.y -= -4.0f + m_vecDamage[i].time * -sinf(m_vecDamage[i].angle * D3DX_PI / 180)*3.0f;
+		tempPos.x += 0.5f + m_vecDamage[i].time * cosf(m_vecDamage[i].angle * D3DX_PI / 180)*3.0f;
+		
 		auto temp = Convert3DTo2D(tempPos);
+		
 
 		tempPos.x = temp.x;
 		tempPos.y = temp.y;
@@ -176,65 +184,66 @@ void CharacterParant::AppearDamage()
 
 		if (m_vecDamage[i].time < m_vecDamage[i].endTime)
 		{
+			m_vecDamage[i].angle++;
 			for (int j = 0; j < strlen(damageChar); j++)
 			{
 				if (damageChar[j] == '0')
 				{
-					m_pUIDamage[0]->SetPosition(D3DXVECTOR3(tempPos.x + 35 * j, tempPos.y , tempPos.z));
+					m_pUIDamage[0]->SetPosition(D3DXVECTOR3(tempPos.x + 30 * j, tempPos.y , tempPos.z));
 					m_pUIDamage[0]->Update();
 					m_pUIDamage[0]->Render();
 				}
 				else if (damageChar[j] == '1')
 				{
-					m_pUIDamage[1]->SetPosition(D3DXVECTOR3(tempPos.x + 35 * j, tempPos.y , tempPos.z));
+					m_pUIDamage[1]->SetPosition(D3DXVECTOR3(tempPos.x + 30 * j, tempPos.y , tempPos.z));
 					m_pUIDamage[1]->Update();
 					m_pUIDamage[1]->Render();
 				}
 				else if (damageChar[j] == '2')
 				{
-					m_pUIDamage[2]->SetPosition(D3DXVECTOR3(tempPos.x + 35 * j, tempPos.y , tempPos.z));
+					m_pUIDamage[2]->SetPosition(D3DXVECTOR3(tempPos.x + 30 * j, tempPos.y , tempPos.z));
 					m_pUIDamage[2]->Update();
 					m_pUIDamage[2]->Render();
 				}
 				else if (damageChar[j] == '3')
 				{
-					m_pUIDamage[3]->SetPosition(D3DXVECTOR3(tempPos.x + 35 * j, tempPos.y , tempPos.z));
+					m_pUIDamage[3]->SetPosition(D3DXVECTOR3(tempPos.x + 30 * j, tempPos.y , tempPos.z));
 					m_pUIDamage[3]->Update();
 					m_pUIDamage[3]->Render();
 				}
 				else if (damageChar[j] == '4')
 				{
-					m_pUIDamage[4]->SetPosition(D3DXVECTOR3(tempPos.x + 35 * j, tempPos.y , tempPos.z));
+					m_pUIDamage[4]->SetPosition(D3DXVECTOR3(tempPos.x + 30 * j, tempPos.y , tempPos.z));
 					m_pUIDamage[4]->Update();
 					m_pUIDamage[4]->Render();
 				}
 				else if (damageChar[j] == '5')
 				{
-					m_pUIDamage[5]->SetPosition(D3DXVECTOR3(tempPos.x + 35 * j, tempPos.y , tempPos.z));
+					m_pUIDamage[5]->SetPosition(D3DXVECTOR3(tempPos.x + 30 * j, tempPos.y , tempPos.z));
 					m_pUIDamage[5]->Update();
 					m_pUIDamage[5]->Render();
 				}
 				else if (damageChar[j] == '6')
 				{
-					m_pUIDamage[6]->SetPosition(D3DXVECTOR3(tempPos.x + 35 * j, tempPos.y , tempPos.z));
+					m_pUIDamage[6]->SetPosition(D3DXVECTOR3(tempPos.x + 30 * j, tempPos.y , tempPos.z));
 					m_pUIDamage[6]->Update();
 					m_pUIDamage[6]->Render();
 				}
 				else if (damageChar[j] == '7')
 				{
-					m_pUIDamage[7]->SetPosition(D3DXVECTOR3(tempPos.x + 35 * j, tempPos.y , tempPos.z));
+					m_pUIDamage[7]->SetPosition(D3DXVECTOR3(tempPos.x + 30 * j, tempPos.y , tempPos.z));
 					m_pUIDamage[7]->Update();
 					m_pUIDamage[7]->Render();
 				}
 				else if (damageChar[j] == '8')
 				{
-					m_pUIDamage[8]->SetPosition(D3DXVECTOR3(tempPos.x + 35 * j, tempPos.y , tempPos.z));
+					m_pUIDamage[8]->SetPosition(D3DXVECTOR3(tempPos.x + 30 * j, tempPos.y , tempPos.z));
 					m_pUIDamage[8]->Update();
 					m_pUIDamage[8]->Render();
 				}
 				else if (damageChar[j] == '9')
 				{
-					m_pUIDamage[9]->SetPosition(D3DXVECTOR3(tempPos.x + 35 * j, tempPos.y , tempPos.z));
+					m_pUIDamage[9]->SetPosition(D3DXVECTOR3(tempPos.x + 30 * j, tempPos.y , tempPos.z));
 					m_pUIDamage[9]->Update();
 					m_pUIDamage[9]->Render();
 				}
@@ -405,6 +414,7 @@ void CharacterParant::SetCurrentHP(int hp)
 	tempDMGTEXT.Damage = hp;
 	tempDMGTEXT.time = 0.0f;
 	tempDMGTEXT.endTime = 1.0f;
+	tempDMGTEXT.angle = 100;
 	m_vecDamage.push_back(tempDMGTEXT);
 	
 	m_Status->chr.nCurrentHP -= hp;
@@ -762,6 +772,7 @@ void CharacterParant::Init(Map* map, CHARSELECT order, MonsterManager* pMonsterM
 	m_fStamina = 10.0f;
 	m_nDamage = 0;
 	m_nDamageCount = 0;
+	m_fDamageAngle = 0.0f;
 
 	//포트레이트 UI
 	m_pUIobj = new UIObject;
