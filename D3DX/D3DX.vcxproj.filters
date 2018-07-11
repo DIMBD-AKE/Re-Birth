@@ -243,6 +243,15 @@
     <ClInclude Include="Framework\EffectObject.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="MainGame\Monster\Boss\BossParent.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="MainGame\Monster\Boss\MiddleBoss.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="MainGame\Monster\Boss\FinalBoss.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -426,6 +435,15 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Framework\EffectObject.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="MainGame\Monster\Boss\BossParent.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="MainGame\Monster\Boss\MiddleBoss.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="MainGame\Monster\Boss\FinalBoss.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

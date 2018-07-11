@@ -150,6 +150,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="MainGame\Monster\Boss\FinalBoss.h" />
+    <ClInclude Include="MainGame\Monster\Boss\BossParent.h" />
     <ClInclude Include="Framework\EffectObject.h" />
     <ClInclude Include="Framework\Manager\ParticleManager.h" />
     <ClInclude Include="MainGame\Monster\Magic\MagicCircle.h" />
@@ -214,6 +216,7 @@
     <ClInclude Include="MainGame\Item\Arrow\RareArrow.h" />
     <ClInclude Include="MainGame\Item\Blade\NormalBlade.h" />
     <ClInclude Include="MainGame\Item\Blade\RareBlade.h" />
+    <ClInclude Include="MainGame\Monster\Boss\MiddleBoss.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Framework\Manager\SceneManager.h" />
     <ClInclude Include="MainGame\Scene\SC_Test.h" />
@@ -228,6 +231,8 @@
     <ClInclude Include="MainGame\Item\ItemHeaderIndex.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="MainGame\Monster\Boss\FinalBoss.cpp" />
+    <ClCompile Include="MainGame\Monster\Boss\BossParent.cpp" />
     <ClCompile Include="Framework\EffectObject.cpp" />
     <ClCompile Include="Framework\Manager\ParticleManager.cpp" />
     <ClCompile Include="MainGame\Monster\Magic\MagicCircle.cpp" />
@@ -284,6 +289,7 @@
     <ClCompile Include="MainGame\Item\Blade\RareBlade.cpp" />
     <ClCompile Include="MainGame\Item\SkillParent.cpp" />
     <ClCompile Include="MainGame\Item\SkillManager.cpp" />
+    <ClCompile Include="MainGame\Monster\Boss\MiddleBoss.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
