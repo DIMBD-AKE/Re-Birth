@@ -128,8 +128,12 @@ void Assis::Skill()
 
 void Assis::DropItemSetup()
 {
-	m_nItemID[0] = SWORDMAN_NORMAL_ARMOR;
-	m_nItemID[1] = SWORDMAN_NORMAL_ARMOR;
-	m_nItemID[2] = SWORDMAN_NORMAL_ARMOR;
-	m_nItemID[3] = SWORDMAN_NORMAL_ARMOR;
+	//≥Î≈€
+	m_vItemID.push_back(RARE_OVE);
+	m_vItemID.push_back(NORMAL_HEALTHPOTION);
+	m_vItemID.push_back(RARE_TWOHANDEDSWORD);
+	m_vItemID.push_back(SWORDMAN_NORMAL_HELMET);
+	m_vItemID.push_back(SWORDMAN_NORMAL_BOOTS);
+	m_vItemID.push_back(KNIGHT_NORMAL_ARMOR);
+	m_vItemID.push_back(KNIGHT_NORMAL_GAUNTLET);
 }

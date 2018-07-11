@@ -85,8 +85,12 @@ void NifilHeim::Skill()
 
 void NifilHeim::DropItemSetup()
 {
-	m_nItemID[0] = SWORDMAN_NORMAL_ARMOR;
-	m_nItemID[1] = SWORDMAN_NORMAL_ARMOR;
-	m_nItemID[2] = SWORDMAN_NORMAL_ARMOR;
-	m_nItemID[3] = SWORDMAN_NORMAL_ARMOR;
+	m_vItemID.push_back(RARE_OVE);
+	m_vItemID.push_back(NORMAL_RECOVERYBOOK);
+	m_vItemID.push_back(NORMAL_STAFF);
+	m_vItemID.push_back(SWORDMAN_NORMAL_ARMOR);
+	m_vItemID.push_back(SWORDMAN_NORMAL_GAUNTLET);
+	m_vItemID.push_back(BABARIAN_RARE_ARMOR);
+	m_vItemID.push_back(KNIGHT_NORMAL_HELMET);
+	m_vItemID.push_back(VALKYRIE_RARE_HELMET);
 }

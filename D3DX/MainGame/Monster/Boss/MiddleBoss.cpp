@@ -67,10 +67,13 @@ void MiddleBoss::SetupStat()
 
 void MiddleBoss::DropItemSetup()
 {
-	m_nItemID[0] = SWORDMAN_NORMAL_ARMOR;
-	m_nItemID[1] = SWORDMAN_NORMAL_ARMOR;
-	m_nItemID[2] = SWORDMAN_NORMAL_ARMOR;
-	m_nItemID[3] = SWORDMAN_NORMAL_ARMOR;
+	m_vItemID.push_back(RARE_OVE);
+	m_vItemID.push_back(NORMAL_RECOVERYBOOK);
+	m_vItemID.push_back(NORMAL_SIDE);
+	m_vItemID.push_back(BABARIAN_RARE_HELMET);
+	m_vItemID.push_back(BABARIAN_RARE_ARMOR);
+	m_vItemID.push_back(NORMAL_HEALTHPOTION);
+	m_vItemID.push_back(NORMAL_RECOVERYBOOK);
 }
 
 void MiddleBoss::ChangeAni()

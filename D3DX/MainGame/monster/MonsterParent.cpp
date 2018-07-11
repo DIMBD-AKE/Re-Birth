@@ -480,33 +480,15 @@ void MonsterParent::ItemDrop()
 	//0~99값
 	int ranNum = rand() % 100;
 
-	//60퍼 확률
-	//if (ranNum < 60)
-	//{
-	//	//m_pDropManager->AddDropItem(m_nItemID[0], *m_pModel->GetPosition());
-	//	//드랍없음
-	//}
-
-	//20퍼 확률
-	if (ranNum < 80)
+	float chancePerNum = 100.0f / m_vItemID.size();
+	
+	for (int i = 0; i < m_vItemID.size(); i++)
 	{
-		m_pDropManager->AddDropItem(m_nItemID[1], *m_pModel->GetPosition());
-		//드랍1
+		if (ranNum < chancePerNum * (i + 1))
+		{
+			m_pDropManager->AddDropItem(m_vItemID[i], *m_pModel->GetPosition());
+			break;
+		}
 	}
-
-	//15퍼 확률
-	else if (ranNum < 95)
-	{
-		m_pDropManager->AddDropItem(m_nItemID[2], *m_pModel->GetPosition());
-		//드랍2
-	}
-
-	//5퍼 확률
-	else if (ranNum < 100)
-	{
-		m_pDropManager->AddDropItem(m_nItemID[3], *m_pModel->GetPosition());
-		//드랍3
-	}
-	//확률연산
 
 }

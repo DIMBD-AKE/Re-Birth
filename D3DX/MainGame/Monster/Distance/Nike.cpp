@@ -85,8 +85,11 @@ void Nike::Skill()
 
 void Nike::DropItemSetup()
 {
-	m_nItemID[0] = SWORDMAN_NORMAL_ARMOR;
-	m_nItemID[1] = SWORDMAN_NORMAL_ARMOR;
-	m_nItemID[2] = SWORDMAN_NORMAL_ARMOR;
-	m_nItemID[3] = SWORDMAN_NORMAL_ARMOR;
+	m_vItemID.push_back(RARE_OVE);
+	m_vItemID.push_back(NORMAL_HEALTHPOTION);
+	m_vItemID.push_back(NORMAL_ARROW);
+	m_vItemID.push_back(ARCHER_NORMAL_HELMET);
+	m_vItemID.push_back(ARCHER_NORMAL_ARMOR);
+	m_vItemID.push_back(BABARIAN_RARE_GAUNTLET);
+	m_vItemID.push_back(BABARIAN_RARE_BOOTS);
 }

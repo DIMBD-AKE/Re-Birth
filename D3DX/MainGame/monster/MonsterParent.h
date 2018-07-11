@@ -65,7 +65,8 @@ protected:
 	AStar* m_pAStar;
 
 	//드랍 아이템 목록
-	int m_nItemID[MAXITEMNUM];
+	//int m_nItemID[MAXITEMNUM];
+	vector<int> m_vItemID;
 
 protected:
 	virtual void SetupStat();

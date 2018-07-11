@@ -85,8 +85,11 @@ void Nerisa::Skill()
 
 void Nerisa::DropItemSetup()
 {
-	m_nItemID[0] = SWORDMAN_NORMAL_ARMOR;
-	m_nItemID[1] = SWORDMAN_NORMAL_ARMOR;
-	m_nItemID[2] = SWORDMAN_NORMAL_ARMOR;
-	m_nItemID[3] = SWORDMAN_NORMAL_ARMOR;
+	m_vItemID.push_back(RARE_OVE);
+	m_vItemID.push_back(NORMAL_RECOVERYBOOK);
+	m_vItemID.push_back(NORMAL_BLADE);
+	m_vItemID.push_back(ARCHER_NORMAL_GAUNTLET);
+	m_vItemID.push_back(ARCHER_NORMAL_BOOTS);
+	m_vItemID.push_back(KNIGHT_NORMAL_ARMOR);
+	m_vItemID.push_back(KNIGHT_NORMAL_GAUNTLET);
 }
