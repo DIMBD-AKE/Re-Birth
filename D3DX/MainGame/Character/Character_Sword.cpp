@@ -117,8 +117,9 @@ void Character_Sword::Update()
 		m_pCharacter->World();
 		
 		m_pUIobj->Update();
-		m_pUISkill->Update();
+	
 		SkillIconAlpha();
+		PlayerProgressBar();
 	}
 }
 
@@ -134,12 +135,10 @@ void Character_Sword::Render()
 
 		//포트레이트 
 		m_pUIobj->Render();
-		m_pUISkill->Render();
+		m_pHPBar->Render();
+
+		AppearDamage();
 		
-		//if (m_bIsUnderAttacked)
-		//{
-			AppearDamage();
-		//}
 		CharacterParant::Render();
 	}
 }

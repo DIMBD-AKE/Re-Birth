@@ -86,7 +86,7 @@ void Character_Gun::Update()
 		m_pCharacter->World();
 
 		m_pUIobj->Update();
-		m_pUISkill->Update();
+		
 		SkillIconAlpha();
 	}
 }
@@ -101,7 +101,6 @@ void Character_Gun::Render()
 
 		//포트레이트 
 		m_pUIobj->Render();
-		m_pUISkill->Render();
 
 		//if (m_bIsUnderAttacked)
 		//{
