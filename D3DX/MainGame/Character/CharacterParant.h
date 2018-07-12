@@ -136,7 +136,7 @@ protected:
 	void CountAppearDamage();
 	void SkillIconAlpha();
 	void PlayerProgressBar();
-	void mqskill();
+	void MGSKill();
 
 	int						m_temp;			//애니메이션 확인용 임시변수
 

@@ -17,7 +17,6 @@ void CharacterParant::Move()
 {
 	Debug();
 
-	mqskill();
 	
 	//if(m_bIsUnderAttacked) AppearDamage();
 	
@@ -32,17 +31,12 @@ void CharacterParant::Move()
 
 	TEXT->Add(to_string(m_Status->chr.nCurrentStam), pos1.x + 90, pos1.y, 30);
 	TEXT->Add(to_string(m_Status->chr.nMaxStam), pos1.x+90, pos1.y - 25.0f, 30);
-	//TEXT->Add(to_string(m_Status->chr.nCurrentHP), 300, 300, 30);
-	//포트레이트
-	//m_pUIobj->Update();
+
 
 	//전후좌우 점프 움직임
-
-
 	D3DXVECTOR3 pos = *m_pCharacter->GetPosition();
 	D3DXVECTOR3 rot = *m_pCharacter->GetRotation();
-	//if (INPUT->KeyPress(VK_LEFT))	rot.y -= 0.05;
-	//if (INPUT->KeyPress(VK_RIGHT))	rot.y += 0.05;
+
 
 	
 
@@ -69,8 +63,8 @@ void CharacterParant::Move()
 	{
 		m_pCharacter->GetRotation()->y += 0.05f;
 	}
+
 	//달리는모션
-	D3DXVECTOR3 vPos = *m_pCharacter->GetPosition();
 	if (m_eCondition == CHAR_RUN_FRONT)
 	{
 		float height = m_pSampleMap->GetHeight(pos.x - m_vfront.x * m_Status->chr.fSpeed, pos.z - m_vfront.z * m_Status->chr.fSpeed);
@@ -108,7 +102,7 @@ void CharacterParant::Move()
 			}
 
 		}
-		else
+		else if(height == -1)
 		{
 			return;
 		}
@@ -122,7 +116,7 @@ void CharacterParant::Move()
 			pos.y = height;
 			m_pCharacter->SetPosition(pos - m_vfront * 0.57);
 		}
-		else
+		else if (height == -1)
 		{
 			return;
 		}
@@ -148,49 +142,15 @@ void CharacterParant::Move()
 		m_Status->chr.nCurrentHP = 0;
 	}
 	
-	//m_pParticle->SetPosition(*m_pCharacter->GetPosition());
 	m_pParticle->World();
 	m_pParticle->Update();
 
 	m_pParticle2->World();
 	m_pParticle2->Update();
 
-	if (m_bIsPotal)
-	{
-		m_pParticle3->World();
-		m_pParticle3->Update();
-	}
-
-
-	D3DXVECTOR3 Potalpos = *m_pParticle3->GetPosition();
-	D3DXVECTOR3 Potalrot = *m_pParticle3->GetRotation();
-
-	D3DXMATRIX matPotalAngle;
-	D3DXMatrixRotationYawPitchRoll(&matPotalAngle, m_pParticle3->GetRotation()->y, m_pParticle3->GetRotation()->x, m_pParticle3->GetRotation()->z);
-
-	m_vPotalfront = D3DXVECTOR3(0, 0, 1);
-	D3DXVec3TransformNormal(&m_vPotalfront, &m_vPotalfront, &matPotalAngle);
-
-
-	//이동파티클 키보드 제어 
-	if (INPUT->KeyPress(VK_LEFT))
-	{
-		m_pParticle3->GetRotation()->y -= 0.05f;
-	}
-	if (INPUT->KeyPress(VK_RIGHT))
-	{
-		m_pParticle3->GetRotation()->y += 0.05f;
-	}
-	if (INPUT->KeyPress(VK_UP))
-	{
-		m_pParticle3->SetPosition(D3DXVECTOR3(m_pParticle3->GetPosition()->x, m_pParticle3->GetPosition()->y, m_pParticle3->GetPosition()->z+0.1));
-	}
-	if (INPUT->KeyPress(VK_DOWN))
-	{
-		m_pParticle3->SetPosition(Potalpos + m_vPotalfront * 0.3);
-	}
+	//순간이동
+	MGSKill();
 	
-
 }
 
 void CharacterParant::AppearDamage()
@@ -306,77 +266,6 @@ void CharacterParant::AppearDamage()
 			m_vecDamage.erase(m_vecDamage.begin() + i);
 		}
 	}
-
-
-	////10자리에서 뜨는 포지션
-	//D3DXVECTOR3 temp10Pos;
-	//temp10Pos = *m_pCharacter->GetPosition();
-	//temp10Pos.y += 4.0f;
-	//temp10Pos.x += 2.0f;
-
-	//auto temp10 = Convert3DTo2D(temp10Pos);
-
-	//temp10Pos.x = temp10.x;
-	//temp10Pos.y = temp10.y;
-	//temp10Pos.z = 0;
-
-
-	////100자리에서 뜨는 포지션
-	//D3DXVECTOR3 temp100Pos;
-	//temp100Pos = *m_pCharacter->GetPosition();
-	//temp100Pos.y += 4.0f;
-	//
-	////m_pUIDamage[1]->SetPosition(tempPos);
-
-	//if (m_nDamage >= 100 && m_nDamage <= 999)
-	//{
-	//	//100데미지
-	//	if (m_nDamage / 100 != 0)
-	//	{
-	//		m_bISUIDamageAppear[m_nDamage / 100] = true;
-	//		m_bISUIDamageAppear[(m_nDamage % 100) / 10] = true;
-	//		m_bISUIDamageAppear[(m_nDamage % 100) % 10] = true;
-	//		m_pUIDamage[m_nDamage / 100]->SetPosition(tempPos);
-	//		m_pUIDamage[(m_nDamage % 100) / 10]->SetPosition(tempPos);
-	//		m_pUIDamage[(m_nDamage % 100) % 10]->SetPosition(tempPos);
-	//	}
-	//	//10데미지
-	//	else if (m_nDamage / 10 != 0)
-	//	{
-	//		m_bISUIDamageAppear[m_nDamage / 10] = true;
-	//		m_bISUIDamageAppear[(m_nDamage % 100) % 10] = true;
-	//		m_pUIDamage[m_nDamage / 10]->SetPosition(tempPos);
-	//		m_pUIDamage[(m_nDamage % 100) % 10]->SetPosition(tempPos);
-	//	}
-	//	//0~9데미지
-	//	else
-	//	{
-	//		m_bISUIDamageAppear[(m_nDamage % 100) % 10] = true;
-	//		m_pUIDamage[(m_nDamage % 100) % 10]->SetPosition(tempPos);
-	//	}
-	//}
-	//else if (m_nDamage >= 10 && m_nDamage <= 99)
-	//{
-	//	 if (m_nDamage / 10 != 0)
-	//	{
-	//		m_bISUIDamageAppear[m_nDamage / 10] = true;
-	//		m_bISUIDamageAppear[(m_nDamage % 100) % 10] = true;
-	//		m_pUIDamage[m_nDamage / 10]->SetPosition(tempPos);
-	//		m_pUIDamage[(m_nDamage % 100) % 10]->SetPosition(tempPos);
-	//	}
-	//	//0~9데미지
-	//	else
-	//	{
-	//		m_bISUIDamageAppear[(m_nDamage % 100) % 10] = true;
-	//		m_pUIDamage[(m_nDamage % 100) % 10]->SetPosition(tempPos);
-	//	}
-	//}
-	//else if ((m_nDamage >= 1 && m_nDamage <= 9))
-	//{
-	//	m_bISUIDamageAppear[(m_nDamage % 100) % 10] = true;
-	//	m_pUIDamage[(m_nDamage % 100) % 10]->SetPosition(tempPos);
-	//}
-
 }
 
 void CharacterParant::Controller()
@@ -709,7 +598,7 @@ void CharacterParant::CountAppearDamage()
 	{
 		m_stDamaged.startDamageTime = 0.0f;
 		m_bIsUnderAttacked = false;
-		m_bIsInvincible = false;
+		//m_bIsInvincible = false;
 	}
 
 }
@@ -737,14 +626,69 @@ void CharacterParant::PlayerProgressBar()
 	m_pHPBar->Update();
 }
 
-void CharacterParant::mqskill()
+void CharacterParant::MGSKill()
 {
+	if (!m_bIsPotal) m_pParticle3->SetPosition(*m_pCharacter->GetPosition());
+
+
+	D3DXVECTOR3 Potalpos = *m_pParticle3->GetPosition();
+	D3DXVECTOR3	playerTempPos = *m_pCharacter->GetPosition();
+	D3DXVECTOR3 Potalrot = *m_pParticle3->GetRotation();
+
+	D3DXMATRIX matPotalAngle;
+	D3DXMatrixRotationYawPitchRoll(&matPotalAngle, m_pParticle3->GetRotation()->y, m_pParticle3->GetRotation()->x, m_pParticle3->GetRotation()->z);
+
+	m_vPotalfront = D3DXVECTOR3(0, 0, 1);
+	D3DXVec3TransformNormal(&m_vPotalfront, &m_vPotalfront, &matPotalAngle);
+	//이동파티클 키보드 제어 
+	if (INPUT->KeyPress(VK_LEFT))
+	{
+		m_pParticle3->GetRotation()->y -= 0.05f;
+	}
+	if (INPUT->KeyPress(VK_RIGHT))
+	{
+		m_pParticle3->GetRotation()->y += 0.05f;
+	}
+	if (INPUT->KeyPress(VK_UP))
+	{
+		float Potalheight = m_pSampleMap->GetHeight(Potalpos.x - m_vPotalfront.x *0.3, Potalpos.z - m_vPotalfront.z *0.3);
+		if (Potalheight >= 0)
+		{
+			Potalpos.y = Potalheight;
+			if (D3DXVec3Length(&(playerTempPos - Potalpos)) <= 7.0f)
+			{
+				m_pParticle3->SetPosition(Potalpos - m_vPotalfront * 0.3);
+			}
+		}
+		else if (Potalheight == - 1)
+		{
+			return;
+		}
+	}
+	if (INPUT->KeyPress(VK_DOWN))
+	{
+		float Potalheight = m_pSampleMap->GetHeight(Potalpos.x - m_vPotalfront.x *0.3, Potalpos.z - m_vPotalfront.z *0.3);
+		if (Potalheight >= 0)
+		{
+			Potalpos.y = Potalheight;
+			if (D3DXVec3Length(&(playerTempPos- Potalpos)) <= 14.0f)
+			{
+				m_pParticle3->SetPosition(Potalpos + m_vPotalfront * 0.3);
+			}
+		}
+		else if(Potalheight == -1)
+		{
+			return;
+		}
+	}
+
 	if (m_bIsPotal)
 	{
-		m_pParticle->World();
-		m_pParticle3->SetPosition(D3DXVECTOR3(m_pCharacter->GetPosition()->x, m_pCharacter->GetPosition()->y, m_pCharacter->GetPosition()->z+10.0f));
+		m_pParticle3->World();
+		m_pParticle3->Update();
 	}
 }
+
 
 CharacterParant::CharacterParant()
 {
@@ -927,6 +871,8 @@ void CharacterParant::Init(Map* map, CHARSELECT order, MonsterManager* pMonsterM
 	m_pParticle = PARTICLE->GetParticle("ATTACK");
 	m_pParticle2 = PARTICLE->GetParticle("Die");
 	m_pParticle3 = PARTICLE->GetParticle("Potal");
+
+	m_pParticle3->SetPosition(D3DXVECTOR3(m_pCharacter->GetPosition()->x, m_pCharacter->GetPosition()->y, m_pCharacter->GetPosition()->z + 5.0f));
 }
 
 
@@ -1042,6 +988,7 @@ void CharacterParant::KeyControl()
 		}
 	}
 
+	//순간이동 제어
 	if (INPUT->KeyDown('T'))
 	{
 		m_bIsPotal = true;
@@ -1049,7 +996,7 @@ void CharacterParant::KeyControl()
 	else if (INPUT->KeyUp('T'))
 	{
 		m_bIsPotal = false;
-		m_pCharacter->SetPosition(*m_pParticle3->GetPosition());
+		m_pCharacter->SetPosition(D3DXVECTOR3(m_pParticle3->GetPosition()->x+1.0f, m_pParticle3->GetPosition()->y, m_pParticle3->GetPosition()->z - 1.0f));
 	}
 
 
