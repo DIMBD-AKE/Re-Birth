@@ -715,15 +715,7 @@ CharacterParant::CharacterParant()
 	TEXTUREMANAGER->AddTexture("스카디_사진", "Texture/Portrait/Portrait_PC_Skadi_S_Icon.png");
 	TEXTUREMANAGER->AddTexture("벨벳_사진", "Texture/Portrait/velvet.png");
 
-	TEXTUREMANAGER->AddTexture("아카날_스킬", "Model/Character/SkillIMG/Skill_Aknal_Passive01_Icon.tga");
-	TEXTUREMANAGER->AddTexture("베카_스킬", "Model/Character/SkillIMG/Skill_Beakah_Active01_Icon.tga");
-	TEXTUREMANAGER->AddTexture("헤스티아_스킬", "Model/Character/SkillIMG/Skill_Hestia_Passive01_Icon.tga");
-	TEXTUREMANAGER->AddTexture("메그너스_스킬", "Model/Character/SkillIMG/Skill_Magnus_Mana01_Icon.tga");
-	TEXTUREMANAGER->AddTexture("리아_스킬", "Model/Character/SkillIMG/Skill_Riah_Passive01_Icon.tga");
-	TEXTUREMANAGER->AddTexture("스카디_스킬", "Model/Character/SkillIMG/Skill_Skadi_Mana01_Icon.tga");
-	TEXTUREMANAGER->AddTexture("벨벳_스킬", "Model/Character/SkillIMG/Skill_velvet_Active03_Icon.tga");
-
-
+	
 
 	//공격시 파티클
 	PARTICLE->AddParticle("ATTACK",
@@ -735,7 +727,7 @@ CharacterParant::CharacterParant()
 		"Particle/PlayerDie.ptc");
 
 
-//D:\MAKE\D3DPORT\Re - Birth\D3DX\Texture\Damage
+
 	//데미지 이미지 
 	TEXTUREMANAGER->AddTexture("숫자0", "Texture/Damage/0.png");
 	TEXTUREMANAGER->AddTexture("숫자1", "Texture/Damage/1.png");
