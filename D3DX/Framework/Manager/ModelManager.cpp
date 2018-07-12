@@ -392,7 +392,7 @@ bool Model::IsCollisionOBB(Model * target)
 	ST_OBB thisBox = GetBoundBox().obb;
 	ST_OBB targetBox = target->GetBoundBox().obb;
 
-	return UTIL::IsCollisionOBB(thisBox, targetBox);
+	return CollisionOBB(thisBox, targetBox);
 }
 
 ModelASE * ModelASE::Clone() const

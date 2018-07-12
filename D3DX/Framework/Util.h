@@ -208,7 +208,7 @@ namespace UTIL
 		return angle;
 	}
 
-	bool IsCollisionOBB(ST_OBB thisBox, ST_OBB targetBox)
+	static bool CollisionOBB(ST_OBB thisBox, ST_OBB targetBox)
 	{
 		double c[3][3];
 		double absC[3][3];
