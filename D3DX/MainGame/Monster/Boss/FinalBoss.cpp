@@ -221,10 +221,14 @@ void FinalBoss::Attack()
 				PCHARACTER->CalculDamage(tatalDamage);
 			}
 
-			m_bIsAttack = false;
+			
 			//float tatalRate = PHYRATE(m_uMonsterStat) + MAGICRATE(m_uMonsterStat) + CHERATE(m_uMonsterStat);
 			//float tatalDamage = tatalRate * ATK(m_uMonsterStat);
 			//PCHARACTER->CalculDamage(tatalDamage);
+		}
+		if (m_pModel->IsAnimationEnd())
+		{
+			m_bIsAttack = false;
 		}
 }
 
