@@ -17,7 +17,8 @@ enum SKILL_EFFECT
 	SKILLE_THIS,
 	SKILLE_TOTHIS,
 	SKILLE_TARGET,
-	SKILLE_TOTARGET
+	SKILLE_TOTARGET,
+	SKILLE_NONE
 };
 
 enum SKILL_OWNER
@@ -44,6 +45,7 @@ struct ST_SKILL
 	float		fYOffset;
 	bool		isAutoRot;
 	float		fParticleTime;
+	float		fParticleSpeed;
 	float		fEffectTime;
 };
 
@@ -63,7 +65,10 @@ private:
 	CharacterParant *		m_pCharacter;
 	MonsterParent *			m_pMonster;
 	vector<MonsterParent*>	m_vecMonster;
+	vector<void*>			m_vecTarget;
+	vector<D3DXVECTOR3>		m_vecTargetDir;
 	ST_SKILL				m_stSkill;
+	ST_SPHERE				m_stSphere;
 	SKILL_OWNER				m_eOwner;
 	int						m_nDamageCount;
 	float					m_fElapseTime;
@@ -92,6 +97,7 @@ private:
 	// 파티클 처리
 	void ParticleThis();
 	void ParticleTarget();
+	void ParticleDamage();
 
 	// 이펙트 처리
 	void EffectThis();
@@ -105,9 +111,11 @@ public:
 	~SkillParent();
 
 	void Prepare(CharacterParant * pCharacter, MonsterParent* pMonster, vector<MonsterParent*> vecMonster, ST_SKILL skill, SKILL_OWNER owner);
-	void Trigger() { m_isProcess = true; }
+	void Trigger();
 	void Update();
 	void Render();
+
+	void Debug();
 };
 
 class SkillManager

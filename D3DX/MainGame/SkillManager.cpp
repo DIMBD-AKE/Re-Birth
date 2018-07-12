@@ -10,30 +10,12 @@ void SkillParent::DamageSingle()
 
 	if (m_nDamageCount > 1) return;
 
-	if (m_eTargetProcess == SKILLP_SINGLE)
+	for (int i = 0; i < m_vecTarget.size(); i++)
 	{
-		void * pSingle = GetSingleTarget();
-
-		if (pSingle)
-		{
-			if (m_eOwner == SKILLO_CHARACTER)
-				((MonsterParent*)pSingle)->CalculDamage(m_stSkill.fDamage);
-			else
-				((CharacterParant*)pSingle)->CalculDamage(m_stSkill.fDamage);
-		}
-	}
-
-	if (m_eTargetProcess == SKILLP_MULTIPLE)
-	{
-		vector<void*> vecMultiple = GetMultipleTarget();
-
-		for (int i = 0; i < vecMultiple.size(); i++)
-		{
-			if (m_eOwner == SKILLO_CHARACTER)
-				((MonsterParent*)vecMultiple[i])->CalculDamage(m_stSkill.fDamage);
-			else
-				((CharacterParant*)vecMultiple[i])->CalculDamage(m_stSkill.fDamage);
-		}
+		if (m_eOwner == SKILLO_CHARACTER)
+			((MonsterParent*)m_vecTarget[i])->CalculDamage(m_stSkill.fDamage);
+		else
+			((CharacterParant*)m_vecTarget[i])->CalculDamage(m_stSkill.fDamage);
 	}
 }
 
@@ -45,30 +27,12 @@ void SkillParent::DamageMultiple()
 
 	m_nDamageCount++;
 
-	if (m_eTargetProcess == SKILLP_SINGLE)
+	for (int i = 0; i < m_vecTarget.size(); i++)
 	{
-		void * pSingle = GetSingleTarget();
-
-		if (pSingle)
-		{
-			if (m_eOwner == SKILLO_CHARACTER)
-				((MonsterParent*)pSingle)->CalculDamage(m_stSkill.fDamage);
-			else
-				((CharacterParant*)pSingle)->CalculDamage(m_stSkill.fDamage);
-		}
-	}
-
-	if (m_eTargetProcess == SKILLP_MULTIPLE)
-	{
-		vector<void*> vecMultiple = GetMultipleTarget();
-
-		for (int i = 0; i < vecMultiple.size(); i++)
-		{
-			if (m_eOwner == SKILLO_CHARACTER)
-				((MonsterParent*)vecMultiple[i])->CalculDamage(m_stSkill.fDamage);
-			else
-				((CharacterParant*)vecMultiple[i])->CalculDamage(m_stSkill.fDamage);
-		}
+		if (m_eOwner == SKILLO_CHARACTER)
+			((MonsterParent*)m_vecTarget[i])->CalculDamage(m_stSkill.fDamage);
+		else
+			((CharacterParant*)m_vecTarget[i])->CalculDamage(m_stSkill.fDamage);
 	}
 }
 
@@ -76,13 +40,17 @@ void SkillParent::Buff()
 {
 	if (m_stSkill.fBuffTime < 0)
 	{
-		if (m_eOwner == SKILLO_CHARACTER)
+		if (m_nDamageCount == 1)
 		{
-			m_pCharacter->Getstatus()->chr.nMaxHp += m_stSkill.buffStatus.chr.nMaxHp;
-		}
-		else
-		{
-
+			if (m_eOwner == SKILLO_CHARACTER)
+			{
+				m_pCharacter->Getstatus()->chr.nMaxHp += m_stSkill.buffStatus.chr.nMaxHp;
+				m_pCharacter->Getstatus()->chr.nCurrentHP += m_stSkill.buffStatus.chr.nCurrentHP;
+			}
+			else
+			{
+				//m_pMonster->get
+			}
 		}
 	}
 	else
@@ -102,10 +70,18 @@ void * SkillParent::GetSingleTarget()
 
 		if (length >= m_stSkill.fMinLength && length <= m_stSkill.fMaxLength)
 		{
-			float angle = GetAngle(posChr.x, posChr.z, posMon.x, posMon.z);
-			float curr = m_pMonster->GetModel()->GetRotation()->y;
-			// 각도 조건
-			return m_pCharacter;
+			// 시선
+			D3DXVECTOR3 front;
+			D3DXMATRIX matY;
+			D3DXMatrixRotationY(&matY, m_pMonster->GetModel()->GetRotation()->y);
+			D3DXVec3TransformNormal(&front, &D3DXVECTOR3(0, 0, -1), &matY);
+			D3DXVECTOR3 v0 = front;
+			// 대상방향
+			D3DXVECTOR3 v1 = posChr - posMon;
+			D3DXVec3Normalize(&v1, &v1);
+			float dot = D3DXVec3Dot(&v0, &v1) / D3DXVec3Length(&v0) * D3DXVec3Length(&v1);
+			if (dot >= cos(m_stSkill.fAngle / 2))
+				return m_pCharacter;
 		}
 	}
 
@@ -120,11 +96,23 @@ void * SkillParent::GetSingleTarget()
 
 			if (length >= m_stSkill.fMinLength && length <= m_stSkill.fMaxLength)
 			{
-				// 각도 조건
-				if (minLength > length)
+				// 시선
+				D3DXVECTOR3 front;
+				D3DXMATRIX matY;
+				D3DXMatrixRotationY(&matY, m_pCharacter->GetCharacter()->GetRotation()->y);
+				D3DXVec3TransformNormal(&front, &D3DXVECTOR3(0, 0, -1), &matY);
+				D3DXVECTOR3 v0 = front;
+				// 대상방향
+				D3DXVECTOR3 v1 = posMon - posChr;
+				D3DXVec3Normalize(&v1, &v1);
+				float dot = D3DXVec3Dot(&v0, &v1) / D3DXVec3Length(&v0) * D3DXVec3Length(&v1);
+				if (dot >= cos(m_stSkill.fAngle / 2))
 				{
-					minIndex = i;
-					minLength = length;
+					if (minLength > length)
+					{
+						minIndex = i;
+						minLength = length;
+					}
 				}
 			}
 		}
@@ -151,8 +139,18 @@ vector<void*> SkillParent::GetMultipleTarget()
 		{
 			float angle = GetAngle(posChr.x, posChr.z, posMon.x, posMon.z);
 			float curr = m_pMonster->GetModel()->GetRotation()->y;
-			// 각도 조건
-			vecTarget.push_back(m_pCharacter);
+			// 시선
+			D3DXVECTOR3 front;
+			D3DXMATRIX matY;
+			D3DXMatrixRotationY(&matY, m_pMonster->GetModel()->GetRotation()->y);
+			D3DXVec3TransformNormal(&front, &D3DXVECTOR3(0, 0, 1), &matY);
+			D3DXVECTOR3 v0 = front;
+			// 대상방향
+			D3DXVECTOR3 v1 = posChr - posMon;
+			D3DXVec3Normalize(&v1, &v1);
+			float dot = D3DXVec3Dot(&v0, &v1) / D3DXVec3Length(&v0) * D3DXVec3Length(&v1);
+			if (dot >= cos(m_stSkill.fAngle / 2))
+				vecTarget.push_back(m_pCharacter);
 		}
 	}
 
@@ -163,10 +161,21 @@ vector<void*> SkillParent::GetMultipleTarget()
 			posMon = *m_vecMonster[i]->GetModel()->GetPosition();
 			float length = D3DXVec3Length(&(posMon - posChr));
 
-			if (length >= m_stSkill.fMinLength && length <= m_stSkill.fMaxLength)
+			if (length >= m_stSkill.fMinLength && length <= m_stSkill.fMaxLength
+				&& m_stSkill.nMaxTarget > vecTarget.size())
 			{
-				// 각도 조건
-				vecTarget.push_back(m_vecMonster[i]);
+				// 시선
+				D3DXVECTOR3 front;
+				D3DXMATRIX matY;
+				D3DXMatrixRotationY(&matY, m_pCharacter->GetCharacter()->GetRotation()->y);
+				D3DXVec3TransformNormal(&front, &D3DXVECTOR3(0, 0, -1), &matY);
+				D3DXVECTOR3 v0 = front;
+				// 대상방향
+				D3DXVECTOR3 v1 = posMon - posChr;
+				D3DXVec3Normalize(&v1, &v1);
+				float dot = D3DXVec3Dot(&v0, &v1) / D3DXVec3Length(&v0) * D3DXVec3Length(&v1);
+				if (dot >= cos(m_stSkill.fAngle / 2))
+					vecTarget.push_back(m_vecMonster[i]);
 			}
 		}
 	}
@@ -176,7 +185,9 @@ vector<void*> SkillParent::GetMultipleTarget()
 
 void SkillParent::ParticleThis()
 {
-	if (m_nDamageCount >= m_stSkill.nDamageCount)
+	float fTimeOffset = m_stSkill.fDamageDelay + m_stSkill.fDamageInterval * m_stSkill.nDamageCount;
+
+	if (m_fElapseTime > fTimeOffset + m_stSkill.fParticleTime)
 	{
 		for (auto p : m_vecParticle)
 		{
@@ -222,37 +233,25 @@ void SkillParent::ParticleTarget()
 {
 	float fTimeOffset = m_stSkill.fDamageDelay + m_stSkill.fDamageInterval * m_stSkill.nDamageCount;
 
-	if (m_eTargetProcess == SKILLP_SINGLE)
+	if (m_fElapseTime > fTimeOffset + m_stSkill.fParticleTime)
 	{
-		void * target = GetSingleTarget();
-
-		if (!target || m_fElapseTime > fTimeOffset + m_stSkill.fParticleTime)
+		for (auto p : m_vecParticle)
+			p->SetRegen(false);
+	}
+	
+	for (int i = 0; i < m_vecTarget.size(); i++)
+	{
+		for (int j = 0; j < m_vecParticle.size(); j++)
 		{
-			for (auto p : m_vecParticle)
-				p->SetRegen(false);
-		}
-
-		if (m_vecParticle.empty())
-			m_vecParticle.push_back(PARTICLE->GetParticle(m_sParticle));
-
-		for (int i = 0; i < m_vecParticle.size(); i++)
-		{
+			float t = (m_fElapseTime - fTimeOffset) / m_stSkill.fParticleTime;
 			if (m_eOwner == SKILLO_CHARACTER)
 			{
-				D3DXVECTOR3 pos = *((MonsterParent*)target)->GetModel()->GetPosition();
+				D3DXVECTOR3 pos = *((MonsterParent*)m_vecTarget[i])->GetModel()->GetPosition();
 
 				if (m_eParticleProcess == SKILLE_TOTHIS && m_nDamageCount >= m_stSkill.nDamageCount)
 				{
-					float t = (m_fElapseTime - fTimeOffset) / m_stSkill.fParticleTime;
-					pos = Linear(*((MonsterParent*)target)->GetModel()->GetPosition(),
+					pos = Linear(*((MonsterParent*)m_vecTarget[i])->GetModel()->GetPosition(),
 						*m_pCharacter->GetCharacter()->GetPosition(), t);
-				}
-
-				if (m_eParticleProcess == SKILLE_TOTARGET)
-				{
-					float t = m_fElapseTime / m_stSkill.fDamageDelay;
-					pos = Linear(*m_pCharacter->GetCharacter()->GetPosition(),
-						*((MonsterParent*)target)->GetModel()->GetPosition(), t);
 				}
 
 				m_vecParticle[i]->SetPosition(pos + D3DXVECTOR3(0, m_stSkill.fYOffset, 0));
@@ -261,20 +260,12 @@ void SkillParent::ParticleTarget()
 			}
 			else
 			{
-				D3DXVECTOR3 pos = *((CharacterParant*)target)->GetCharacter()->GetPosition();
+				D3DXVECTOR3 pos = *((CharacterParant*)m_vecTarget[i])->GetCharacter()->GetPosition();
 
 				if (m_eParticleProcess == SKILLE_TOTHIS && m_nDamageCount >= m_stSkill.nDamageCount)
 				{
-					float t = (m_fElapseTime - fTimeOffset) / m_stSkill.fParticleTime;
-					pos = Linear(*((CharacterParant*)target)->GetCharacter()->GetPosition(),
+					pos = Linear(*((CharacterParant*)m_vecTarget[i])->GetCharacter()->GetPosition(),
 						*m_pMonster->GetModel()->GetPosition(), t);
-				}
-
-				if (m_eParticleProcess == SKILLE_TOTARGET)
-				{
-					float t = m_fElapseTime / m_stSkill.fDamageDelay;
-					pos = Linear(*m_pMonster->GetModel()->GetPosition(),
-						*((CharacterParant*)target)->GetCharacter()->GetPosition(), t);
 				}
 
 				m_vecParticle[i]->SetPosition(pos +	D3DXVECTOR3(0, m_stSkill.fYOffset, 0));
@@ -283,76 +274,49 @@ void SkillParent::ParticleTarget()
 			}
 		}
 	}
+}
 
-	if (m_eTargetProcess == SKILLP_MULTIPLE)
+void SkillParent::ParticleDamage()
+{
+	if (m_fElapseTime > m_stSkill.fDamageDelay + m_stSkill.fParticleTime ||
+		m_nDamageCount >= m_stSkill.nDamageCount)
 	{
-		vector<void*> vecTarget = GetMultipleTarget();
-		int delta;
+		for (auto p : m_vecParticle)
+			p->SetRegen(false);
+	}
 
-		if (vecTarget.empty() || m_fElapseTime > fTimeOffset + m_stSkill.fParticleTime)
+	for (int i = 0; i < m_vecParticle.size(); i++)
+	{
+		D3DXVECTOR3 pos = *m_vecParticle[i]->GetPosition() + m_vecTargetDir[i] * m_stSkill.fParticleSpeed;
+		m_vecParticle[i]->SetPosition(pos);
+		m_vecParticle[i]->World();
+		m_vecParticle[i]->Update();
+	}
+
+	for (int i = 0; i < m_vecTarget.size(); i++)
+	{
+		for (int j = 0; j < m_vecParticle.size(); j++)
 		{
-			for (auto p : m_vecParticle)
-				p->SetRegen(false);
-		}
-
-		if (m_vecParticle.size() < vecTarget.size())
-		{
-			delta = vecTarget.size() - m_vecParticle.size();
-			for (int i = 0; i < delta; i++)
-				m_vecParticle.push_back(PARTICLE->GetParticle(m_sParticle));
-		}
-
-		delta = m_vecParticle.size() - vecTarget.size();
-		for (int i = 0; i < delta; i++)
-			m_vecParticle.erase(m_vecParticle.begin());
-
-		for (int i = 0; i < vecTarget.size(); i++)
-		{
-			for (int j = 0; j < m_vecParticle.size(); j++)
+			ST_SPHERE sphere = m_stSphere;
+			sphere.center = *m_vecParticle[j]->GetPosition();
+			if (m_eOwner == SKILLO_CHARACTER)
 			{
-				if (m_eOwner == SKILLO_CHARACTER)
+				if (IntersectSphere(sphere, ((MonsterParent*)m_vecTarget[i])->GetModel()->GetBoundSphere()))
 				{
-					D3DXVECTOR3 pos = *((MonsterParent*)vecTarget[i])->GetModel()->GetPosition();
-
-					if (m_eParticleProcess == SKILLE_TOTHIS && m_nDamageCount >= m_stSkill.nDamageCount)
-					{
-						float t = (m_fElapseTime - fTimeOffset) / m_stSkill.fParticleTime;
-						pos = Linear(*((MonsterParent*)vecTarget[i])->GetModel()->GetPosition(),
-							*m_pCharacter->GetCharacter()->GetPosition(), t);
-					}
-
-					if (m_eParticleProcess == SKILLE_TOTARGET)
-					{
-						float t = m_fElapseTime / m_stSkill.fDamageDelay;
-						pos = Linear(*m_pCharacter->GetCharacter()->GetPosition(),
-							*((MonsterParent*)vecTarget[i])->GetModel()->GetPosition(),	t);
-					}
-
-					m_vecParticle[i]->SetPosition(pos + D3DXVECTOR3(0, m_stSkill.fYOffset, 0));
-					m_vecParticle[i]->World();
-					m_vecParticle[i]->Update();
+					if (m_fElapseTime < m_fPrevTime + m_stSkill.fDamageInterval) return;
+					m_fPrevTime = m_fElapseTime;
+					m_nDamageCount++;
+					((MonsterParent*)m_vecTarget[i])->CalculDamage(m_stSkill.fDamage);
 				}
-				else
+			}
+			else
+			{
+				if (IntersectSphere(sphere, ((CharacterParant*)m_vecTarget[i])->GetCharacter()->GetBoundSphere()))
 				{
-					D3DXVECTOR3 pos = *((CharacterParant*)vecTarget[i])->GetCharacter()->GetPosition();
-
-					if (m_eParticleProcess == SKILLE_TOTHIS && m_nDamageCount >= m_stSkill.nDamageCount)
-					{
-						float t = (m_fElapseTime - fTimeOffset) / m_stSkill.fParticleTime;
-						pos = Linear(*((CharacterParant*)vecTarget[i])->GetCharacter()->GetPosition(),
-							*m_pMonster->GetModel()->GetPosition(), t);
-					}
-
-					if (m_eParticleProcess == SKILLE_TOTARGET)
-					{
-						float t = m_fElapseTime / m_stSkill.fDamageDelay;
-						pos = Linear(*m_pMonster->GetModel()->GetPosition(),
-							*((CharacterParant*)vecTarget[i])->GetCharacter()->GetPosition(), t);
-					}
-
-					m_vecParticle[i]->SetPosition(pos +	D3DXVECTOR3(0, m_stSkill.fYOffset, 0));
-					m_vecParticle[i]->World();
-					m_vecParticle[i]->Update();
+					if (m_fElapseTime < m_fPrevTime + m_stSkill.fDamageInterval) return;
+					m_fPrevTime = m_fElapseTime;
+					m_nDamageCount++;
+					((CharacterParant*)m_vecTarget[i])->CalculDamage(m_stSkill.fDamage);
 				}
 			}
 		}
@@ -385,6 +349,9 @@ SkillParent::SkillParent(SKILL_PROCESS damage, SKILL_PROCESS target,
 	m_sSkillName = name;
 	m_pSkillIcon = iconTex;
 
+	m_stSphere.radius = 1;
+	m_stSphere.center = D3DXVECTOR3(0, 0, 0);
+
 	PARTICLE->AddParticle(m_sParticle,
 		TEXTUREMANAGER->AddTexture("Particle Sphere", "Texture/Particle/Sphere.png"), m_sParticle);
 }
@@ -407,6 +374,11 @@ void SkillParent::Prepare(CharacterParant * pCharacter, MonsterParent* pMonster,
 	m_stSkill = skill;
 	m_eOwner = owner;
 
+	if (m_eDamageProcess == SKILLP_SINGLE)
+		m_stSkill.nDamageCount = 1;
+
+	m_stSkill.fAngle = D3DXToRadian(m_stSkill.fAngle);
+
 	m_fElapseTime = 0;
 	m_fPrevTime = 0;
 	m_nDamageCount = 0;
@@ -418,20 +390,64 @@ void SkillParent::Prepare(CharacterParant * pCharacter, MonsterParent* pMonster,
 	for (auto e : m_vecEffect)
 		SAFE_DELETE(e);
 	m_vecEffect.clear();
+	m_vecTarget.clear();
+	m_vecTargetDir.clear();
+}
+
+void SkillParent::Trigger()
+{
+	if (!m_isProcess)
+	{
+		m_isProcess = true;
+		
+		if (m_eTargetProcess == SKILLP_SINGLE)
+		{
+			void * target = GetSingleTarget();
+			if (target)
+				m_vecTarget.push_back(target);
+		}
+		else
+			m_vecTarget = GetMultipleTarget();
+
+		for (int i = 0; i < m_vecTarget.size(); i++)
+		{
+			m_vecParticle.push_back(PARTICLE->GetParticle(m_sParticle));
+			if (m_eOwner == SKILLO_CHARACTER)
+				m_vecParticle.back()->SetPosition(*m_pCharacter->GetCharacter()->GetPosition());
+			else
+				m_vecParticle.back()->SetPosition(*m_pMonster->GetModel()->GetPosition());
+		}
+
+		if (m_eOwner == SKILLO_CHARACTER)
+		{
+			for (int i = 0; i < m_vecTarget.size(); i++)
+			{
+				D3DXVECTOR3 dir = *((MonsterParent*)m_vecTarget[i])->GetModel()->GetPosition() -
+					*m_pCharacter->GetCharacter()->GetPosition();
+				D3DXVec3Normalize(&dir, &dir);
+				m_vecTargetDir.push_back(dir);
+			}
+		}
+		else
+		{
+			D3DXVECTOR3 dir = *m_pCharacter->GetCharacter()->GetPosition() -
+				*m_pMonster->GetModel()->GetPosition();
+			D3DXVec3Normalize(&dir, &dir);
+			m_vecTargetDir.push_back(dir);
+		}
+	}
 }
 
 void SkillParent::Update()
 {
 	if (!m_isProcess) return;
 
-	TEXT->Add("진행시간 : " + to_string(m_fElapseTime), 10, 20, 20, "", 0xFFFFFFFF);
-	TEXT->Add("이전시간 : " + to_string(m_fPrevTime), 10, 40, 20, "", 0xFFFFFFFF);
-	TEXT->Add("데미지카운트 : " + to_string(m_nDamageCount), 10, 60, 20, "", 0xFFFFFFFF);
-
 	// 데미지 및 타겟 처리
-	if (m_nDamageCount < m_stSkill.nDamageCount)
+	if (m_stSkill.fDamageDelay < m_fElapseTime)
 	{
-		if (m_stSkill.fDamageDelay < m_fElapseTime)
+		if (m_eParticleProcess == SKILLE_TOTARGET)
+			ParticleDamage();
+		else if(m_nDamageCount < m_stSkill.nDamageCount)
 		{
 			if (m_eDamageProcess == SKILLP_SINGLE)
 				DamageSingle();
@@ -440,16 +456,13 @@ void SkillParent::Update()
 		}
 	}
 
-	if (m_stSkill.fDamageDelay < m_fElapseTime && m_nDamageCount == 1)
-	{
+	if (m_stSkill.fDamageDelay < m_fElapseTime)
 		Buff();
-	}
 
 	// 파티클 처리
 	if (m_eParticleProcess == SKILLE_THIS)
 		ParticleThis();
-	if (m_eParticleProcess == SKILLE_TARGET ||
-		m_eParticleProcess == SKILLE_TOTHIS || m_eParticleProcess == SKILLE_TOTARGET)
+	if (m_eParticleProcess == SKILLE_TARGET ||	m_eParticleProcess == SKILLE_TOTHIS)
 		ParticleTarget();
 
 	// 이펙트 처리
@@ -465,6 +478,9 @@ void SkillParent::Render()
 {
 	if (!m_isProcess) return;
 
+	if (DEBUG)
+		Debug();
+
 	if (m_pSkillIcon)
 	{
 		SPRITE_BEGIN;
@@ -479,6 +495,37 @@ void SkillParent::Render()
 
 	for (auto p : m_vecParticle)
 		p->Render();
+}
+
+void SkillParent::Debug()
+{
+	TEXT->Add("진행시간 : " + to_string(m_fElapseTime), 10, 20, 20, "", 0xFFFFFFFF);
+	TEXT->Add("이전시간 : " + to_string(m_fPrevTime), 10, 40, 20, "", 0xFFFFFFFF);
+	TEXT->Add("데미지카운트 : " + to_string(m_nDamageCount), 10, 60, 20, "", 0xFFFFFFFF);
+
+	DWORD prevFillMode;
+	DEVICE->GetRenderState(D3DRS_FILLMODE, &prevFillMode);
+	DEVICE->SetTexture(0, NULL);
+	DEVICE->SetRenderState(D3DRS_LIGHTING, false);
+	DEVICE->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+
+	// BoundSphere
+	if (m_nDamageCount < m_stSkill.nDamageCount)
+	{
+		LPD3DXMESH mesh;
+		D3DXMATRIX matT;
+		D3DXCreateSphere(DEVICE, m_stSphere.radius, 8, 8, &mesh, NULL);
+		for (int i = 0; i < m_vecParticle.size(); i++)
+		{
+			D3DXVECTOR3 pos = *m_vecParticle[i]->GetPosition();
+			D3DXMatrixTranslation(&matT, pos.x, pos.y, pos.z);
+			DEVICE->SetTransform(D3DTS_WORLD, &matT);
+			mesh->DrawSubset(0);
+		}
+		SAFE_RELEASE(mesh);
+	}
+
+	DEVICE->SetRenderState(D3DRS_FILLMODE, prevFillMode);
 }
 
 SkillManager::SkillManager()
@@ -574,6 +621,8 @@ SkillParent SkillManager::SkillParse(string name, string path)
 				particleP = SKILLE_TARGET;
 			if (strcmp(tok, "TOTARGET") == 0)
 				particleP = SKILLE_TOTARGET;
+			if (strcmp(tok, "NONE") == 0)
+				particleP = SKILLE_NONE;
 		}
 		if (strcmp(tok, "SKILL_EFFECT_EFFECT") == 0)
 		{
@@ -586,6 +635,8 @@ SkillParent SkillManager::SkillParse(string name, string path)
 				effectP = SKILLE_TARGET;
 			if (strcmp(tok, "TOTARGET") == 0)
 				effectP = SKILLE_TOTARGET;
+			if (strcmp(tok, "NONE") == 0)
+				effectP = SKILLE_NONE;
 		}
 		if (strcmp(tok, "PARTICLE") == 0)
 		{
