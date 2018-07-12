@@ -26,6 +26,7 @@ void CharacterParant::Move()
 	tempPos1.y += 3;
 	D3DXVECTOR2 pos1 = Convert3DTo2D(tempPos1);
 	TEXT->Add(to_string(m_Status->chr.nCurrentHP), pos1.x, pos1.y, 30);
+	TEXT->Add(to_string(m_Status->chr.nMaxHp), pos1.x, pos1.y-25.0f, 30);
 	//TEXT->Add(to_string(m_Status->chr.nCurrentHP), 300, 300, 30);
 	//포트레이트
 	//m_pUIobj->Update();
@@ -651,7 +652,6 @@ void CharacterParant::CountAppearDamage()
 
 	if (m_nDamageCount < 5 && m_bIsUnderAttacked)
 	{
-
 		m_pParticle->SetPosition(D3DXVECTOR3(m_pCharacter->GetPosition()->x, m_pCharacter->GetPosition()->y + 1.5f, m_pCharacter->GetPosition()->z));
 		m_pParticle->TimeReset();
 		
@@ -682,8 +682,12 @@ void CharacterParant::SkillIconAlpha()
 	{
 		m_bIsSkill = false;
 		m_stSKILL.startSkillTime = 0.0f;
-		m_pUISkill->SetAlpha(255);
-		
+		if (!m_bIsSkill && m_stSKILL.SkillAlpha < 255.0f)
+		{
+			m_stSKILL.SkillAlpha += 50.0f;
+			m_pUISkill->SetAlpha(m_stSKILL.SkillAlpha);
+		}
+	
 		
 	}
 }
