@@ -104,6 +104,7 @@ protected:
 	bool					m_bIsDash;			//대쉬했늬
 	bool					m_bIsAttack;		//일반공격 했늬?
 	bool					m_bIsUnderAttacked; //공격받았니?
+	bool					m_bIsSkill;			//스킬썼니?
 	int						m_nDamageCount;		//데미지 띄우는 카운트
 	float					m_fDamageAngle;		//데미지 앵글
 
@@ -112,7 +113,7 @@ protected:
 	
 
 	vector<D3DXVECTOR3*>	m_vecVertex;		//디버그용 벡터
-
+	ST_SKILLTIME			m_stSKILL;			//스킬타임용 구조체 변수
 	
 	Particle*		m_pParticle;
 	Particle*		m_pParticle2;

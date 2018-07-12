@@ -114,7 +114,7 @@ void Character_Sword::Update()
 	if (m_pCharacter && m_eCondition != CHAR_NONE)
 	{
 		Controller();
-		UnderAttacked();
+		//UnderAttacked();
 		KeyControl();
 		Move();
 		

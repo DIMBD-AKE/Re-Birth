@@ -668,26 +668,23 @@ void CharacterParant::CountAppearDamage()
 
 void CharacterParant::SkillIconAlpha()
 {
-	ST_SKILLTIME tempSkillTime;
-
-	tempSkillTime.startSkillTime = 0.0f;
-	tempSkillTime.endSkillTime = 5.0f;
-	tempSkillTime.SkillAlpha = 255;
-
-
-	if (m_eCondition == CHAR_SKILL)
+	if (m_bIsSkill)
 	{
-		tempSkillTime.startSkillTime += TIME->GetElapsedTime();
-		tempSkillTime.SkillAlpha -= 3.0f;
-		
-		if (tempSkillTime.startSkillTime < tempSkillTime.endSkillTime)
+		if (m_stSKILL.startSkillTime <= m_stSKILL.endSkillTime)
 		{
-			m_pUISkill->SetAlpha(tempSkillTime.SkillAlpha);
+			m_stSKILL.startSkillTime += TIME->GetElapsedTime();
+			m_stSKILL.SkillAlpha = 100.0f;
+
+			m_pUISkill->SetAlpha(m_stSKILL.SkillAlpha);
 		}
 	}
-	else
+	if(m_stSKILL.startSkillTime >= m_stSKILL.endSkillTime)
 	{
+		m_bIsSkill = false;
+		m_stSKILL.startSkillTime = 0.0f;
 		m_pUISkill->SetAlpha(255);
+		
+		
 	}
 }
 
@@ -812,6 +809,7 @@ void CharacterParant::Init(Map* map, CHARSELECT order, MonsterManager* pMonsterM
 	m_bIsDead = false;
 	m_bIsAttack = false;
 	m_bIsUnderAttacked = false;
+	m_bIsSkill = false;
 	m_fStamina = 10.0f;
 	m_nDamage = 0;
 	m_nDamageCount = 0;
@@ -821,6 +819,12 @@ void CharacterParant::Init(Map* map, CHARSELECT order, MonsterManager* pMonsterM
 	m_pUIobj = new UIObject;
 	//스킬아이콘UI
 	m_pUISkill = new UIObject;
+
+	m_stSKILL.SkillAlpha = 255.0f;
+	m_stSKILL.startSkillTime = 0.0f;
+	m_stSKILL.endSkillTime = 5.0f;
+
+
 
 	//데미지 UI
 	for (int i = 0; i < 10; i++)
@@ -951,6 +955,7 @@ void CharacterParant::KeyControl()
 		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_RUN_FRONT || m_eCondition == CHAR_RUN_BACK)
 		{
 			m_eCondition = CHAR_SKILL;
+			m_bIsSkill = true;
 			ChangeAnimation();
 		}
 	}
