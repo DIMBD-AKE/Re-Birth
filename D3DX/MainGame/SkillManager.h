@@ -41,6 +41,9 @@ struct ST_SKILL
 
 	float		fBuffTime;
 	STATUS		buffStatus;
+
+	float		fYOffset;
+	bool		isAutoRot;
 };
 
 class SkillParent

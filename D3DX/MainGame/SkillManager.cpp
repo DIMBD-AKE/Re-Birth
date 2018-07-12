@@ -161,6 +161,16 @@ vector<void*> SkillParent::GetMultipleTarget()
 
 void SkillParent::ParticleThis()
 {
+	if (m_nDamageCount >= m_stSkill.nDamageCount)
+	{
+		for (auto p : m_vecParticle)
+		{
+			p->SetRegen(false);
+			p->Update();
+		}
+		return;
+	}
+
 	if (m_vecParticle.empty())
 	{
 		PARTICLE->AddParticle(m_sParticle,
@@ -172,13 +182,21 @@ void SkillParent::ParticleThis()
 	{
 		if (m_eOwner == SKILLO_CHARACTER)
 		{
-			m_vecParticle[i]->SetPosition(*m_pCharacter->GetCharacter()->GetPosition());
+			m_vecParticle[i]->SetPosition(*m_pCharacter->GetCharacter()->GetPosition() + 
+				D3DXVECTOR3(0, m_stSkill.fYOffset, 0));
+			if (m_stSkill.isAutoRot)
+			{
+				D3DXVECTOR3 rot = *m_pCharacter->GetCharacter()->GetRotation();
+				rot.y += D3DX_PI;
+				m_vecParticle[i]->SetRotation(rot);
+			}
 			m_vecParticle[i]->World();
 			m_vecParticle[i]->Update();
 		}
 		else
 		{
-			m_vecParticle[i]->SetPosition(*m_pMonster->GetModel()->GetPosition());
+			m_vecParticle[i]->SetPosition(*m_pMonster->GetModel()->GetPosition() +
+				D3DXVECTOR3(0, m_stSkill.fYOffset, 0));
 			m_vecParticle[i]->World();
 			m_vecParticle[i]->Update();
 		}
@@ -187,40 +205,42 @@ void SkillParent::ParticleThis()
 
 void SkillParent::ParticleToThis()
 {
-}
-
-void SkillParent::ParticleTarget()
-{
 	if (m_eTargetProcess == SKILLP_SINGLE)
 	{
-		if (m_vecParticle.empty() && m_nDamageCount < m_stSkill.nDamageCount)
-		{
-			PARTICLE->AddParticle(m_sParticle,
-				TEXTUREMANAGER->AddTexture("Particle Sphere", "Texture/Particle/Sphere.png"), m_sParticle);
-			m_vecParticle.push_back(PARTICLE->GetParticle(m_sParticle));
-		}
-
 		void * target = GetSingleTarget();
 
-		if (!target)
+		if (!target || m_nDamageCount >= m_stSkill.nDamageCount)
 		{
 			for (auto p : m_vecParticle)
-				SAFE_DELETE(p);
-			m_vecParticle.clear();
+			{
+				p->SetRegen(false);
+				p->Update();
+			}
 			return;
+		}
+
+		if (m_vecParticle.empty())
+		{
+			m_vecParticle.push_back(PARTICLE->GetParticle(m_sParticle));
 		}
 
 		for (int i = 0; i < m_vecParticle.size(); i++)
 		{
 			if (m_eOwner == SKILLO_CHARACTER)
 			{
-				m_vecParticle[i]->SetPosition(*((MonsterParent*)target)->GetModel()->GetPosition());
+				D3DXVECTOR3 linear = Linear(*((MonsterParent*)target)->GetModel()->GetPosition(),
+					*m_pCharacter->GetCharacter()->GetPosition(),
+					m_nDamageCount / (float)m_stSkill.nDamageCount);
+				m_vecParticle[i]->SetPosition(linear + D3DXVECTOR3(0, m_stSkill.fYOffset, 0));
 				m_vecParticle[i]->World();
 				m_vecParticle[i]->Update();
 			}
 			else
 			{
-				m_vecParticle[i]->SetPosition(*((CharacterParant*)target)->GetCharacter()->GetPosition());
+				D3DXVECTOR3 linear = Linear(*((CharacterParant*)target)->GetCharacter()->GetPosition(),
+					*m_pMonster->GetModel()->GetPosition(),
+					m_nDamageCount / (float)m_stSkill.nDamageCount);
+				m_vecParticle[i]->SetPosition(linear + D3DXVECTOR3(0, m_stSkill.fYOffset, 0));
 				m_vecParticle[i]->World();
 				m_vecParticle[i]->Update();
 			}
@@ -229,12 +249,248 @@ void SkillParent::ParticleTarget()
 
 	if (m_eTargetProcess == SKILLP_MULTIPLE)
 	{
+		vector<void*> vecTarget = GetMultipleTarget();
+		int delta;
 
+		if (vecTarget.empty() || m_nDamageCount >= m_stSkill.nDamageCount)
+		{
+			for (auto p : m_vecParticle)
+			{
+				p->SetRegen(false);
+				p->Update();
+			}
+			return;
+		}
+
+		if (m_vecParticle.size() < vecTarget.size())
+		{
+			delta = vecTarget.size() - m_vecParticle.size();
+			for (int i = 0; i < delta; i++)
+				m_vecParticle.push_back(PARTICLE->GetParticle(m_sParticle));
+		}
+
+		delta = m_vecParticle.size() - vecTarget.size();
+		for (int i = 0; i < delta; i++)
+		{
+			m_vecParticle.erase(m_vecParticle.begin());
+		}
+
+		for (int i = 0; i < vecTarget.size(); i++)
+		{
+			for (int j = 0; j < m_vecParticle.size(); j++)
+			{
+				if (m_eOwner == SKILLO_CHARACTER)
+				{
+					D3DXVECTOR3 linear = Linear(*((MonsterParent*)vecTarget[i])->GetModel()->GetPosition(),
+						*m_pCharacter->GetCharacter()->GetPosition(),
+						m_nDamageCount / (float)m_stSkill.nDamageCount);
+					m_vecParticle[i]->SetPosition(linear + D3DXVECTOR3(0, m_stSkill.fYOffset, 0));
+					m_vecParticle[i]->SetScale(D3DXVECTOR3(0.5, 0.5, 0.5));
+					m_vecParticle[i]->World();
+					m_vecParticle[i]->Update();
+				}
+				else
+				{
+					D3DXVECTOR3 linear = Linear(*((CharacterParant*)vecTarget[i])->GetCharacter()->GetPosition(),
+						*m_pMonster->GetModel()->GetPosition(),
+						m_nDamageCount / (float)m_stSkill.nDamageCount);
+					m_vecParticle[i]->SetPosition(linear + D3DXVECTOR3(0, m_stSkill.fYOffset, 0));
+					m_vecParticle[i]->World();
+					m_vecParticle[i]->Update();
+				}
+			}
+		}
+	}
+}
+
+void SkillParent::ParticleTarget()
+{
+	if (m_eTargetProcess == SKILLP_SINGLE)
+	{
+		void * target = GetSingleTarget();
+
+		if (!target || m_nDamageCount >= m_stSkill.nDamageCount)
+		{
+			for (auto p : m_vecParticle)
+			{
+				p->SetRegen(false);
+				p->Update();
+			}
+			return;
+		}
+
+		if (m_vecParticle.empty())
+		{
+			m_vecParticle.push_back(PARTICLE->GetParticle(m_sParticle));
+		}
+
+		for (int i = 0; i < m_vecParticle.size(); i++)
+		{
+			if (m_eOwner == SKILLO_CHARACTER)
+			{
+				m_vecParticle[i]->SetPosition(*((MonsterParent*)target)->GetModel()->GetPosition() +
+					D3DXVECTOR3(0, m_stSkill.fYOffset, 0));
+				m_vecParticle[i]->World();
+				m_vecParticle[i]->Update();
+			}
+			else
+			{
+				m_vecParticle[i]->SetPosition(*((CharacterParant*)target)->GetCharacter()->GetPosition() +
+					D3DXVECTOR3(0, m_stSkill.fYOffset, 0));
+				m_vecParticle[i]->World();
+				m_vecParticle[i]->Update();
+			}
+		}
+	}
+
+	if (m_eTargetProcess == SKILLP_MULTIPLE)
+	{
+		vector<void*> vecTarget = GetMultipleTarget();
+		int delta;
+
+		if (vecTarget.empty() || m_nDamageCount >= m_stSkill.nDamageCount)
+		{
+			for (auto p : m_vecParticle)
+			{
+				p->SetRegen(false);
+				p->Update();
+			}
+			return;
+		}
+
+		if (m_vecParticle.size() < vecTarget.size() && m_nDamageCount < m_stSkill.nDamageCount)
+		{
+			delta = vecTarget.size() - m_vecParticle.size();
+			for (int i = 0; i < delta; i++)
+				m_vecParticle.push_back(PARTICLE->GetParticle(m_sParticle));
+		}
+
+		delta = m_vecParticle.size() - vecTarget.size();
+		for (int i = 0; i < delta; i++)
+		{
+			m_vecParticle.erase(m_vecParticle.begin());
+		}
+
+		for (int i = 0; i < vecTarget.size(); i++)
+		{
+			for (int j = 0; j < m_vecParticle.size(); j++)
+			{
+				if (m_eOwner == SKILLO_CHARACTER)
+				{
+					m_vecParticle[i]->SetPosition(*((MonsterParent*)vecTarget[i])->GetModel()->GetPosition() +
+						D3DXVECTOR3(0, m_stSkill.fYOffset, 0));
+					m_vecParticle[i]->World();
+					m_vecParticle[i]->Update();
+				}
+				else
+				{
+					m_vecParticle[i]->SetPosition(*((CharacterParant*)vecTarget[i])->GetCharacter()->GetPosition() +
+						D3DXVECTOR3(0, m_stSkill.fYOffset, 0));
+					m_vecParticle[i]->World();
+					m_vecParticle[i]->Update();
+				}
+			}
+		}
 	}
 }
 
 void SkillParent::ParticleToTarget()
 {
+	if (m_eTargetProcess == SKILLP_SINGLE)
+	{
+		void * target = GetSingleTarget();
+
+		if (!target || m_nDamageCount >= m_stSkill.nDamageCount)
+		{
+			for (auto p : m_vecParticle)
+			{
+				p->SetRegen(false);
+				p->Update();
+			}
+			return;
+		}
+
+		if (m_vecParticle.empty())
+		{
+			m_vecParticle.push_back(PARTICLE->GetParticle(m_sParticle));
+		}
+
+		for (int i = 0; i < m_vecParticle.size(); i++)
+		{
+			if (m_eOwner == SKILLO_CHARACTER)
+			{
+				D3DXVECTOR3 linear = Linear(*m_pCharacter->GetCharacter()->GetPosition(),
+					*((MonsterParent*)target)->GetModel()->GetPosition(), 
+					m_nDamageCount / (float)m_stSkill.nDamageCount);
+				m_vecParticle[i]->SetPosition(linear + D3DXVECTOR3(0, m_stSkill.fYOffset, 0));
+				m_vecParticle[i]->World();
+				m_vecParticle[i]->Update();
+			}
+			else
+			{
+				D3DXVECTOR3 linear = Linear(*m_pMonster->GetModel()->GetPosition(),
+					*((CharacterParant*)target)->GetCharacter()->GetPosition(),
+					m_nDamageCount / (float)m_stSkill.nDamageCount);
+				m_vecParticle[i]->SetPosition(linear + D3DXVECTOR3(0, m_stSkill.fYOffset, 0));
+				m_vecParticle[i]->World();
+				m_vecParticle[i]->Update();
+			}
+		}
+	}
+
+	if (m_eTargetProcess == SKILLP_MULTIPLE)
+	{
+		vector<void*> vecTarget = GetMultipleTarget();
+		int delta;
+
+		if (vecTarget.empty() || m_nDamageCount >= m_stSkill.nDamageCount)
+		{
+			for (auto p : m_vecParticle)
+			{
+				p->SetRegen(false);
+				p->Update();
+			}
+			return;
+		}
+
+		if (m_vecParticle.size() < vecTarget.size())
+		{
+			delta = vecTarget.size() - m_vecParticle.size();
+			for (int i = 0; i < delta; i++)
+				m_vecParticle.push_back(PARTICLE->GetParticle(m_sParticle));
+		}
+
+		delta = m_vecParticle.size() - vecTarget.size();
+		for (int i = 0; i < delta; i++)
+		{
+			m_vecParticle.erase(m_vecParticle.begin());
+		}
+
+		for (int i = 0; i < vecTarget.size(); i++)
+		{
+			for (int j = 0; j < m_vecParticle.size(); j++)
+			{
+				if (m_eOwner == SKILLO_CHARACTER)
+				{
+					D3DXVECTOR3 linear = Linear(*m_pCharacter->GetCharacter()->GetPosition(),
+						*((MonsterParent*)vecTarget[i])->GetModel()->GetPosition(),
+						m_nDamageCount / (float)m_stSkill.nDamageCount);
+					m_vecParticle[i]->SetPosition(linear + D3DXVECTOR3(0, m_stSkill.fYOffset, 0));
+					m_vecParticle[i]->World();
+					m_vecParticle[i]->Update();
+				}
+				else
+				{
+					D3DXVECTOR3 linear = Linear(*m_pMonster->GetModel()->GetPosition(),
+						*((CharacterParant*)vecTarget[i])->GetCharacter()->GetPosition(),
+						m_nDamageCount / (float)m_stSkill.nDamageCount);
+					m_vecParticle[i]->SetPosition(linear + D3DXVECTOR3(0, m_stSkill.fYOffset, 0));
+					m_vecParticle[i]->World();
+					m_vecParticle[i]->Update();
+				}
+			}
+		}
+	}
 }
 
 void SkillParent::EffectThis()
@@ -270,6 +526,9 @@ SkillParent::SkillParent(SKILL_PROCESS damage, SKILL_PROCESS target,
 	m_stEffect = effect;
 	m_sSkillName = name;
 	m_pSkillIcon = tex;
+
+	PARTICLE->AddParticle(m_sParticle,
+		TEXTUREMANAGER->AddTexture("Particle Sphere", "Texture/Particle/Sphere.png"), m_sParticle);
 }
 
 SkillParent::~SkillParent()
