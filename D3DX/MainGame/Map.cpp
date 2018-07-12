@@ -236,6 +236,7 @@ void Map::Load(string mapPath)
 
 	char line[256];
 	vector<Model*> vecModel;
+	int nTerrainDetail;
 	while (true)
 	{
 		fgets(line, 256, fp);
@@ -243,6 +244,13 @@ void Map::Load(string mapPath)
 
 		char * context;
 		char * tok = strtok_s(line, "\t", &context);
+		
+		if (tok[0] == 'd')
+		{
+			tok = strtok_s(NULL, "\t", &context);
+			sscanf_s(tok, "%d", &nTerrainDetail);
+		}
+
 		if (tok[0] == 'o')
 		{
 			tok = strtok_s(NULL, "\t", &context);
@@ -358,6 +366,18 @@ void Map::Load(string mapPath)
 			D3DXVec3Cross(&vN, &vDU, &vLR);
 			D3DXVec3Normalize(&vN, &vN);
 			m_vecTerrain[z * MAPSIZE + x].n = vN;
+		}
+	}
+
+	for (int i = 0; i < m_vecTerrain.size(); i++)
+	{
+		for (int j = 1; j <= nTerrainDetail; j++)
+		{
+			int x = i % MAPSIZE * j;
+			int z = i / MAPSIZE * j;
+			float u = x / (float)MAPSIZE;
+			float v = z / (float)MAPSIZE;
+			m_vecTerrain[i].t = D3DXVECTOR2(u, v);
 		}
 	}
 
