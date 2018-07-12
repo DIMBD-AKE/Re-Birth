@@ -120,6 +120,7 @@ void Character_Sword::Update()
 	
 		SkillIconAlpha();
 		PlayerProgressBar();
+		CountAppearDamage();
 	}
 }
 

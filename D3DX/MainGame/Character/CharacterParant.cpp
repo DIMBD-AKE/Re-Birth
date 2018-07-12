@@ -18,7 +18,7 @@ void CharacterParant::Move()
 	Debug();
 	
 	//if(m_bIsUnderAttacked) AppearDamage();
-	CountAppearDamage();
+	
 	
 
 	D3DXVECTOR3 tempPos1;
@@ -51,6 +51,8 @@ void CharacterParant::Move()
 	{
 		int a = rand() % 20;
 		SetCurrentHP(a);
+		m_eCondition = CHAR_HIT;
+		ChangeAnimation();
 	}
 
 	if (INPUT->KeyPress('A'))
@@ -443,6 +445,9 @@ void CharacterParant::CalculDamage(float damage)
 {
 	if (!m_bIsInvincible)
 	{
+		m_eCondition = CHAR_HIT;
+		ChangeAnimation();
+
 		m_bIsInvincible = true;
 		m_bIsUnderAttacked = true;
 		float totalRate =
@@ -649,11 +654,11 @@ void CharacterParant::CountAppearDamage()
 	{
 		m_stDamaged.startDamageTime += TIME->GetElapsedTime();
 
-		if (m_eCondition != CHAR_ATTACK && m_eCondition != CHAR_RUN_FRONT && m_eCondition != CHAR_RUN_BACK)
-		{
-			m_eCondition = CHAR_HIT;
-			ChangeAnimation();
-		} 
+		//if (m_eCondition != CHAR_ATTACK && m_eCondition != CHAR_RUN_FRONT && m_eCondition != CHAR_RUN_BACK)
+		//{
+			//m_eCondition = CHAR_HIT;
+			//ChangeAnimation();
+		//} 
 	}
 
 	if (m_stDamaged.startDamageTime < m_stDamaged.endDamageTime && m_bIsUnderAttacked)
@@ -662,7 +667,7 @@ void CharacterParant::CountAppearDamage()
 		m_pParticle->TimeReset();
 	}
 
-	if (m_stDamaged.startDamageTime >= 1.0f)
+	if (m_stDamaged.startDamageTime >= 0.3f)
 	{
 		m_stDamaged.startDamageTime = 0.0f;
 		m_bIsUnderAttacked = false;
