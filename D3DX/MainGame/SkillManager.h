@@ -115,6 +115,8 @@ public:
 	void Update();
 	void Render();
 
+	LPDIRECT3DTEXTURE9 GetIcon() { return m_pSkillIcon; }
+
 	void Debug();
 };
 
