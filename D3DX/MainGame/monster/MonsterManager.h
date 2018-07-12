@@ -20,16 +20,16 @@ class MonsterManager
 private:
 
 	//근접
-	void MakeElizabeth(DropManager* pDropManager);
-	void MakeAssis(DropManager* pDropManager);
+	void MakeElizabeth(DropManager* pDropManager, bool isSummon = false);
+	void MakeAssis(DropManager* pDropManager, bool isSummon = false);
 
 	//원거리
-	void MakeNerisa(DropManager* pDropManager);
-	void MakeNike(DropManager* pDropManager);
+	void MakeNerisa(DropManager* pDropManager, bool isSummon = false);
+	void MakeNike(DropManager* pDropManager, bool isSummon = false);
 
 	//마법
-	void MakeDarkHell(DropManager* pDropManager);
-	void MakeNifilHeim(DropManager* pDropManager);
+	void MakeDarkHell(DropManager* pDropManager, bool isSummon = false);
+	void MakeNifilHeim(DropManager* pDropManager, bool isSummon = false);
 
 	//중간보스
 	void MakeMiddleBoss(DropManager* pDropManager);

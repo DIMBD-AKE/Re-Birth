@@ -12,7 +12,7 @@ Nerisa::~Nerisa()
 
 }
 
-void Nerisa::Setup(Map* map, D3DXVECTOR3 spawnPos)
+void Nerisa::Setup(Map* map, D3DXVECTOR3 spawnPos, bool isSummon)
 {
 	//모델부터 만들고
 	MODELMANAGER->AddModel("너리사", "Model/Enemy/Nerisa/", "Nerisa.x", MODELTYPE_X);
@@ -24,7 +24,7 @@ void Nerisa::Setup(Map* map, D3DXVECTOR3 spawnPos)
 	//m_bIsTargeting = true;
 
 	//부모의 셋업을 호출해라
-	DistanceMonster::Setup(map, spawnPos);
+	DistanceMonster::Setup(map, spawnPos, isSummon);
 	
 	//판정 박스 
 	ST_SIZEBOX box;

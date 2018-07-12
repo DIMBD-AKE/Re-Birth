@@ -12,10 +12,10 @@ NearMonster::~NearMonster()
 
 }
 
-void NearMonster::Setup(Map* map, D3DXVECTOR3 spawnPos)
+void NearMonster::Setup(Map* map, D3DXVECTOR3 spawnPos, bool isSummon)
 {
 	//부모의 셋업을 호출해라
-	MonsterParent::Setup(map, spawnPos);
+	MonsterParent::Setup(map, spawnPos, isSummon);
 }
 
 void NearMonster::SetupStat()
@@ -36,13 +36,7 @@ void NearMonster::Attack()
 			ChangeAni();
 			return;
 		}
-		//char test1[111];
-		//sprintf_s(test1, sizeof(test1), "플레이어의 체력 : %d, 엘리자베스의 체력 : %d", m_nAttackDelay);
-		//
-		//TEXT->Add(test1, 10, 10, 30);
 		float length = GetDistance(*m_pModel->GetPosition(), *CHARACTER->GetPosition());
-		//D3DXVECTOR3 tempV = *m_pModel->GetPosition() - *CHARACTER->GetPosition();
-		//float length = D3DXVec3Length(&tempV);
 
 		int a = 10;
 		//공격 가능 사거리까지 하면 될듯
@@ -62,26 +56,10 @@ void NearMonster::Attack()
 
 			float angle = GetAngle(0, 0, dir.x, dir.z);
 
-			//float x = dir.x - 0;
-			//float y = dir.z - 0;
-			//
-			//float distance = sqrtf(x * x + y * y);
-			//
-			//float angle = acosf(x / distance);
-			//
-			//if (dir.z > 0)
-			//{
-			//	angle = D3DX_PI * 2 - angle;
-			//	if (angle >= D3DX_PI * 2) angle -= D3DX_PI * 2;
-			//}
 
 			angle -= D3DX_PI / 2;
 
 			m_pModel->SetRotation(D3DXVECTOR3(0, angle, 0));
-			//char test[111];
-			//sprintf_s(test, sizeof(test), "공격딜레이 : %d", m_nAttackDelay);
-
-			//TEXT->Add(test, 10, 10, 30);
 
 			if (m_eState == MS_MOVEFORATTACK)
 			{
@@ -90,7 +68,6 @@ void NearMonster::Attack()
 			}
 			//플레이어 공격기능 설정
 			m_eState = MS_ATTACK;
-			//if (m_nAttackDelay >= ATKSPEED(m_uMonsterStat))
 			if (m_pModel->IsAnimationPercent(ATKSPEED(m_uMonsterStat)))
 			{
 				float tatalRate = PHYRATE(m_uMonsterStat) + MAGICRATE(m_uMonsterStat) + CHERATE(m_uMonsterStat);
@@ -98,7 +75,6 @@ void NearMonster::Attack()
 				PCHARACTER->CalculDamage(tatalDamage);
 			}
 		}
-
 
 		//200이 될동안 더이상의 공격이 없다면
 		if (m_nTargetingCount >= 200)
@@ -118,13 +94,11 @@ void NearMonster::Skill()
 
 void NearMonster::Move()
 {
-	if (m_nCount == m_nPatternChangeCount/*INPUT->KeyDown('O')*/)
+
+	if (m_nCount == m_nPatternChangeCount)
 	{
 		MoveReset(false, m_nMaxMoveCount, m_nMinMoveCount);
 	}
-	//char ttest[111];
-	//sprintf_s(ttest, sizeof(ttest), "%f, %f, %f", m_vDir.x, m_vDir.y, m_vDir.z);
-	//TEXT->Add(ttest, 10, 10, 30);
 
 	if (m_eState == MS_RUN)
 	{
@@ -144,6 +118,31 @@ void NearMonster::Move()
 	}
 
 	m_nCount++;
+}
+
+void NearMonster::SummonMove()
+{
+	if (m_eState == MS_RUN)
+	{
+		m_vDir = *CHARACTER->GetPosition() - *m_pModel->GetPosition();
+		D3DXVec3Normalize(&m_vDir, &m_vDir);
+		D3DXVECTOR3 tempPos = *m_pModel->GetPosition() + m_vDir* SPEED(m_uMonsterStat);
+		tempPos.y = m_pMap->GetHeight(tempPos.x, tempPos.z);
+
+		float angle = GetAngle(0, 0, m_vDir.x, m_vDir.z);
+		angle -= D3DX_PI / 2;
+
+		m_pModel->SetRotation(D3DXVECTOR3(0, angle, 0));
+		m_pModel->SetPosition(tempPos);
+
+		float length = GetDistance(*m_pModel->GetPosition(), *CHARACTER->GetPosition());
+
+		if (length < RANGE(m_uMonsterStat))
+		{
+			m_eState = MS_ATTACK;
+			ChangeAni();
+		}
+	}
 }
 
 void NearMonster::DropItemSetup()

@@ -12,7 +12,7 @@ Nike::~Nike()
 
 }
 
-void Nike::Setup(Map* map, D3DXVECTOR3 spawnPos)
+void Nike::Setup(Map* map, D3DXVECTOR3 spawnPos, bool isSummon)
 {
 	//모델부터 만들고
 	MODELMANAGER->AddModel("니케", "Model/Enemy/Nike/", "Nike.x", MODELTYPE_X);
@@ -24,7 +24,7 @@ void Nike::Setup(Map* map, D3DXVECTOR3 spawnPos)
 	//m_bIsTargeting = true;
 
 	//부모의 셋업을 호출해라
-	DistanceMonster::Setup(map, spawnPos);
+	DistanceMonster::Setup(map, spawnPos, isSummon);
 
 	//판정 박스 
 	ST_SIZEBOX box;

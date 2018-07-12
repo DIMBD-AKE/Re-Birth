@@ -12,7 +12,7 @@ Elizabeth::~Elizabeth()
 	SAFE_DELETE(m_pModel);
 }
 
-void Elizabeth::Setup(Map* map, D3DXVECTOR3 spawnPos)
+void Elizabeth::Setup(Map* map, D3DXVECTOR3 spawnPos, bool isSummon)
 {
 	//모델부터 만들고
 	MODELMANAGER->AddModel("엘리자베스", "Model/Enemy/Elizabeth/", "Elizabeth.x", MODELTYPE_X);
@@ -22,7 +22,7 @@ void Elizabeth::Setup(Map* map, D3DXVECTOR3 spawnPos)
 	m_fUIMoveY = 5.0f;
 
 	//부모의 셋업을 호출해라
-	NearMonster::Setup(map, spawnPos);
+	NearMonster::Setup(map, spawnPos, isSummon);
 
 	
 	//MODELMANAGER->AddModel("엘리자베스", "Model/Enemy/Assis/", "Assis.x", MODELTYPE_X);

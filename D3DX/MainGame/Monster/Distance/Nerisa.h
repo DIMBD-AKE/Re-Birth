@@ -18,7 +18,7 @@ public:
 	Nerisa();
 	virtual ~Nerisa();
 
-	virtual void Setup(Map* map, D3DXVECTOR3 spawnPos) override;
+	virtual void Setup(Map* map, D3DXVECTOR3 spawnPos, bool isSummon = false) override;
 
 };
 

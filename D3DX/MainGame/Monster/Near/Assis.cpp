@@ -11,7 +11,7 @@ Assis::~Assis()
 
 }
 
-void Assis::Setup(Map* map, D3DXVECTOR3 spawnPos)
+void Assis::Setup(Map* map, D3DXVECTOR3 spawnPos, bool isSummon)
 {
 	//모델부터 만들고
 	MODELMANAGER->AddModel("아시스", "Model/Enemy/Assis/", "Assis.x", MODELTYPE_X);
@@ -22,7 +22,7 @@ void Assis::Setup(Map* map, D3DXVECTOR3 spawnPos)
 
 	//m_bIsTargeting = true;
 	//부모의 셋업을 호출해라
-	NearMonster::Setup(map, spawnPos);
+	NearMonster::Setup(map, spawnPos, isSummon);
 
 	
 

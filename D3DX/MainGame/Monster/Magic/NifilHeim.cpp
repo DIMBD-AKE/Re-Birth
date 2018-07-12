@@ -12,7 +12,7 @@ NifilHeim::~NifilHeim()
 
 }
 
-void NifilHeim::Setup(Map* map, D3DXVECTOR3 spawnPos)
+void NifilHeim::Setup(Map* map, D3DXVECTOR3 spawnPos, bool isSummon )
 {
 	//모델부터 만들고
 	MODELMANAGER->AddModel("니플하임", "Model/Enemy/NifilHeim/", "NifilHeim.x", MODELTYPE_X);
@@ -24,7 +24,7 @@ void NifilHeim::Setup(Map* map, D3DXVECTOR3 spawnPos)
 	//m_bIsTargeting = true;
 
 	//부모의 셋업을 호출해라
-	MagicMonster::Setup(map, spawnPos);
+	MagicMonster::Setup(map, spawnPos, isSummon);
 
 	//판정 박스 
 	ST_SIZEBOX box;

@@ -25,8 +25,10 @@ MonsterParent::~MonsterParent()
 	*/
 }
 
-void MonsterParent::Setup(Map* map, D3DXVECTOR3 spawnPos)
+void MonsterParent::Setup(Map* map, D3DXVECTOR3 spawnPos, bool isSummon)
 {
+	m_bIsSummon = isSummon;
+
 	m_vDir = D3DXVECTOR3(0, 0, 1);
 
 	m_nCount = 0;
@@ -107,11 +109,6 @@ void MonsterParent::SetupStat()
 void MonsterParent::Update()
 {
 	
-	//if (INPUT->KeyDown('K'))
-	//{
-	//	SetCurrentHP(10);
-	//}
-
 	if (m_bIsTargeting)
 	{
 		float tempF = (float)CURRENTHP(m_uMonsterStat) / MAXHP(m_uMonsterStat);
@@ -119,18 +116,7 @@ void MonsterParent::Update()
 
 		m_pHPBar->SetScale(D3DXVECTOR3(tempF, 1, 1));
 
-		//if (INPUT->KeyDown('L'))
-		//{
-		//	m_bIsRespawn = true;
-		//	m_eState = MS_DIE;
-		//	ChangeAni();
-		//	SetCurrentHP(1000);
-		//}
-
-		//m_pModel->GetBoundBox();
-		//
 		D3DXVECTOR3 UIPos = *m_pModel->GetPosition();
-		//UIPos.x -= m_fUIMoveX;
 		UIPos.y += m_fUIMoveY;
 
 		auto temp = Convert3DTo2D(UIPos);
@@ -142,29 +128,6 @@ void MonsterParent::Update()
 		m_pHPBar->Update();
 
 	}
-	//if (INPUT->KeyDown(VK_RIGHT))
-	//{
-	//	m_fUIMoveX -= 10;
-	//}
-	//
-	//if (INPUT->KeyDown(VK_LEFT))
-	//{
-	//	m_fUIMoveX += 10;
-	//}
-	//
-	//if (INPUT->KeyDown(VK_DOWN))
-	//{
-	//	m_fUIMoveY -= 10;
-	//}
-	//
-	//if (INPUT->KeyDown(VK_UP))
-	//{
-	//	m_fUIMoveY += 10;
-	//}
-	//char test[111];
-	//
-	//sprintf_s(test, sizeof(test), "%f, %f", m_fUIMoveX, m_fUIMoveY);
-	//TEXT->Add(test, 10, 10, 30);
 
 	if (!DEBUG)
 	{
@@ -177,7 +140,15 @@ void MonsterParent::Update()
 			//기본 및 움직이는 상태일때 move함수 호출해서 행동
 		case MS_IDLE: case MS_RUN:
 		{
-						  Move();
+			
+			if (!m_bIsSummon)	  Move();
+
+			//소환몹이면 소환몹 이동
+			else
+			{
+				int a = 10;
+				SummonMove();
+			}
 		}
 			break;
 			//스킬상태이면 스킬상태 함수 호출
@@ -342,6 +313,11 @@ void MonsterParent::Skill()
 }
 
 void MonsterParent::Move()
+{
+
+}
+
+void MonsterParent::SummonMove()
 {
 
 }

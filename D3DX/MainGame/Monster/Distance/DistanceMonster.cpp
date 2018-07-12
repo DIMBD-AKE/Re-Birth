@@ -11,10 +11,10 @@ DistanceMonster::~DistanceMonster()
 
 }
 
-void DistanceMonster::Setup(Map* map, D3DXVECTOR3 spawnPos)
+void DistanceMonster::Setup(Map* map, D3DXVECTOR3 spawnPos, bool isSummon)
 {
 	//부모의 셋업을 호출해라
-	MonsterParent::Setup(map, spawnPos);
+	MonsterParent::Setup(map, spawnPos, isSummon);
 
 
 }
@@ -147,6 +147,31 @@ void DistanceMonster::Move()
 	m_nCount++;
 }
 
+void DistanceMonster::SummonMove()
+{
+	if (m_eState == MS_RUN)
+	{
+		m_vDir = *CHARACTER->GetPosition() - *m_pModel->GetPosition();
+		D3DXVec3Normalize(&m_vDir, &m_vDir);
+
+		D3DXVECTOR3 tempPos = *m_pModel->GetPosition() + m_vDir* SPEED(m_uMonsterStat);
+		tempPos.y = m_pMap->GetHeight(tempPos.x, tempPos.z);
+
+		float angle = GetAngle(0, 0, m_vDir.x, m_vDir.z);
+		angle -= D3DX_PI / 2;
+
+		m_pModel->SetRotation(D3DXVECTOR3(0, angle, 0));
+		m_pModel->SetPosition(tempPos);
+
+		float length = GetDistance(*m_pModel->GetPosition(), *CHARACTER->GetPosition());
+
+		if (length < RANGE(m_uMonsterStat))
+		{
+			m_eState = MS_ATTACK;
+			ChangeAni();
+		}
+	}
+}
 
 void DistanceMonster::DropItemSetup()
 {

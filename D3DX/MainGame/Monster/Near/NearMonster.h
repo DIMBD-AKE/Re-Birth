@@ -14,13 +14,14 @@ protected:
 	virtual void Skill() override;
 	//근접 몬스터 기본 이동함수
 	virtual void Move() override;
+	virtual void SummonMove() override;
 
 	virtual void DropItemSetup() override;
 public:
 	NearMonster();
 	virtual ~NearMonster();
 
-	virtual void Setup(Map* map, D3DXVECTOR3 spawnPos) override;
+	virtual void Setup(Map* map, D3DXVECTOR3 spawnPos, bool isSummon = false) override;
 	
 };
 
