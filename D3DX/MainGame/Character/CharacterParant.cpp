@@ -426,7 +426,7 @@ void CharacterParant::SetCurrentHP(int hp)
 	m_vecDamage.push_back(tempDMGTEXT);
 	
 	m_Status->chr.nCurrentHP -= hp;
-	m_bIsUnderAttacked = true;
+	
 
 	if (m_Status->chr.nCurrentHP <= 0 && !m_bIsDead)
 	{
@@ -441,22 +441,27 @@ void CharacterParant::SetCurrentHP(int hp)
 
 void CharacterParant::CalculDamage(float damage)
 {
-	float totalRate =
-		m_Status->chr.fPhyRate +
-		m_Status->chr.fMagicRate +
-		m_Status->chr.fCheRate;
+	if (!m_bIsInvincible)
+	{
+		m_bIsInvincible = true;
+		m_bIsUnderAttacked = true;
+		float totalRate =
+			m_Status->chr.fPhyRate +
+			m_Status->chr.fMagicRate +
+			m_Status->chr.fCheRate;
 
-	float totalDamage = totalRate * m_Status->chr.nDef;
+		float totalDamage = totalRate * m_Status->chr.nDef;
 
-	totalDamage = damage - totalDamage;
+		totalDamage = damage - totalDamage;
 
-	totalDamage /= 3;
+		totalDamage /= 3;
 
-	if (totalDamage <= 1) totalDamage = 1;
+		if (totalDamage <= 1) totalDamage = 1;
 
-	totalDamage = round(totalDamage);
+		totalDamage = round(totalDamage);
 
-	SetCurrentHP(totalDamage);
+		SetCurrentHP(totalDamage);
+	}
 }
 
 void CharacterParant::Attack()
@@ -642,54 +647,51 @@ void CharacterParant::CountAppearDamage()
 
 	if (m_bIsUnderAttacked)
 	{
-		m_nDamageCount++;
-		if (m_eCondition != CHAR_ATTACK || m_eCondition != CHAR_RUN_FRONT || m_eCondition != CHAR_RUN_BACK)
+		m_stDamaged.startDamageTime += TIME->GetElapsedTime();
+
+		if (m_eCondition != CHAR_ATTACK && m_eCondition != CHAR_RUN_FRONT && m_eCondition != CHAR_RUN_BACK)
 		{
 			m_eCondition = CHAR_HIT;
 			ChangeAnimation();
 		} 
 	}
 
-	if (m_nDamageCount < 5 && m_bIsUnderAttacked)
+	if (m_stDamaged.startDamageTime < m_stDamaged.endDamageTime && m_bIsUnderAttacked)
 	{
 		m_pParticle->SetPosition(D3DXVECTOR3(m_pCharacter->GetPosition()->x, m_pCharacter->GetPosition()->y + 1.5f, m_pCharacter->GetPosition()->z));
 		m_pParticle->TimeReset();
-		
 	}
 
-	if (m_nDamageCount >= 5)
+	if (m_stDamaged.startDamageTime >= 1.0f)
 	{
-		m_nDamageCount = 0;
+		m_stDamaged.startDamageTime = 0.0f;
 		m_bIsUnderAttacked = false;
-		
+		m_bIsInvincible = false;
 	}
 
 }
 
 void CharacterParant::SkillIconAlpha()
 {
-	if (m_bIsSkill)
-	{
-		if (m_stSKILL.startSkillTime <= m_stSKILL.endSkillTime)
-		{
-			m_stSKILL.startSkillTime += TIME->GetElapsedTime();
-			m_stSKILL.SkillAlpha = 100.0f;
-
-			m_pUISkill->SetAlpha(m_stSKILL.SkillAlpha);
-		}
-	}
-	if(m_stSKILL.startSkillTime >= m_stSKILL.endSkillTime)
-	{
-		m_bIsSkill = false;
-		m_stSKILL.startSkillTime = 0.0f;
-		if (!m_bIsSkill && m_stSKILL.SkillAlpha < 255.0f)
-		{
-			m_stSKILL.SkillAlpha += 50.0f;
-			m_pUISkill->SetAlpha(m_stSKILL.SkillAlpha);
-		}
 	
-		
-	}
+}
+
+void CharacterParant::PlayerProgressBar()
+{
+	float tempF = (float)m_Status->chr.nCurrentHP / m_Status->chr.nMaxHp;
+
+
+	m_pHPBar->SetScale(D3DXVECTOR3(tempF, 1, 1));
+
+	D3DXVECTOR3 UIPos = *m_pCharacter->GetPosition();
+	
+	auto temp = Convert3DTo2D(UIPos);
+	UIPos.x = temp.x;
+	UIPos.y = temp.y;
+	UIPos.z = 0;
+	m_pHPBar->SetPosition(UIPos);
+
+	m_pHPBar->Update();
 }
 
 CharacterParant::CharacterParant()
@@ -750,6 +752,10 @@ CharacterParant::CharacterParant()
 	TEXTUREMANAGER->AddTexture("숫자7_r", "Texture/Damage/7_r.png");
 	TEXTUREMANAGER->AddTexture("숫자8_r", "Texture/Damage/8_r.png");
 	TEXTUREMANAGER->AddTexture("숫자9_r", "Texture/Damage/9_r.png");
+
+	//프로그래스바
+	TEXTUREMANAGER->AddTexture("플레이어_프론트바", "Texture/PlayerProgressBar/frontBar.jpg");
+	TEXTUREMANAGER->AddTexture("플레이어_백바", "Texture/PlayerProgressBar/backBar.jpg");
 }
 
 
@@ -810,21 +816,35 @@ void CharacterParant::Init(Map* map, CHARSELECT order, MonsterManager* pMonsterM
 	m_bIsAttack = false;
 	m_bIsUnderAttacked = false;
 	m_bIsSkill = false;
+	m_bIsInvincible = false;
 	m_fStamina = 10.0f;
 	m_nDamage = 0;
-	m_nDamageCount = 0;
+	m_fDamageCount = 0.0;
 	m_fDamageAngle = 0.0f;
+
+	m_stDamaged.startDamageTime = 0.0f;
+	m_stDamaged.endDamageTime = 1.0f;
+
 
 	//포트레이트 UI
 	m_pUIobj = new UIObject;
-	//스킬아이콘UI
-	m_pUISkill = new UIObject;
+	//프로그래스바
+	m_pHPBar = new UIObject;
 
-	m_stSKILL.SkillAlpha = 255.0f;
-	m_stSKILL.startSkillTime = 0.0f;
-	m_stSKILL.endSkillTime = 5.0f;
+	m_pHPBar->SetTexture(TEXTUREMANAGER->GetTexture("플레이어_프론트바"));
+	D3DXVECTOR3 UIPos = *m_pCharacter->GetPosition();
 
+	auto temp = Convert3DTo2D(UIPos);
+	UIPos.x = temp.x;
+	UIPos.y = temp.y;
+	UIPos.z = 0;
 
+	m_pHPBar->SetPosition(UIPos);
+	UIObject* backBar = new UIObject;
+	backBar->SetPosition(D3DXVECTOR3(0, 0, 0.1));
+	backBar->SetTexture(TEXTUREMANAGER->GetTexture("플레이어_백바"));
+
+	m_pHPBar->AddChild(backBar);
 
 	//데미지 UI
 	for (int i = 0; i < 10; i++)
@@ -991,8 +1011,6 @@ void CharacterParant::KeyControl()
 	{
 		m_pCharacter->SetAnimationSpeed(1.0f * m_Status->chr.fAtkSpeed);
 	}
-
-	
 
 	//끄앙 주금
 	if (m_pCharacter->IsAnimationEnd() && m_eCondition == CHAR_DIE)

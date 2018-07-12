@@ -88,7 +88,7 @@ void Character_Magic::Update()
 		m_pCharacter->World();
 
 		m_pUIobj->Update();
-		m_pUISkill->Update();
+	
 		SkillIconAlpha();
 	}
 }
@@ -98,13 +98,11 @@ void Character_Magic::Render()
 	if (m_pCharacter)
 	{
 		m_pCharacter->Render();
-		//CharacterParant::Render();
 		m_pInventory->Render();
 
 		//포트레이트 
 		m_pUIobj->Render();
-		m_pUISkill->Render();
-
+	
 		//if (m_bIsUnderAttacked)
 		//{
 		AppearDamage();

@@ -66,11 +66,10 @@ struct ST_DAMAGETEXT			//데미지 텍스트용 구조체
 };
 
 
-struct ST_SKILLTIME
+struct ST_PLAYERDAMAGED
 {
-	float startSkillTime;
-	float endSkillTime;
-	float SkillAlpha;
+	float startDamageTime;
+	float endDamageTime;
 };
 
 class CharacterParant
@@ -89,7 +88,7 @@ protected:
 	GET(STATUS*,m_Status, status);			//스테이터스 유니온 변수 
 	UIObject*				m_pUIobj;			//UI오브젝트용 변수
 	UIObject*				m_pUIDamage[10];		//데미지용 UIObj변수
-	UIObject*				m_pUISkill;				//스킬 UIOBJ
+	UIObject*				m_pHPBar;				//hp프로그래스바
 	
 	MonsterManager*			m_pMonsterManager;	//몬스터 매니저용 변수
 	
@@ -105,7 +104,8 @@ protected:
 	bool					m_bIsAttack;		//일반공격 했늬?
 	bool					m_bIsUnderAttacked; //공격받았니?
 	bool					m_bIsSkill;			//스킬썼니?
-	int						m_nDamageCount;		//데미지 띄우는 카운트
+	bool					m_bIsInvincible;		//무적이니
+	float					m_fDamageCount;		//데미지 띄우는 카운트
 	float					m_fDamageAngle;		//데미지 앵글
 
 	GET(bool,m_bIsDead,IsDead);			//죽었늬
@@ -113,7 +113,7 @@ protected:
 	
 
 	vector<D3DXVECTOR3*>	m_vecVertex;		//디버그용 벡터
-	ST_SKILLTIME			m_stSKILL;			//스킬타임용 구조체 변수
+	ST_PLAYERDAMAGED		m_stDamaged;			//스킬타임용 구조체 변수
 	
 	Particle*		m_pParticle;
 	Particle*		m_pParticle2;
@@ -132,6 +132,7 @@ protected:
 	void Attack();
 	void CountAppearDamage();
 	void SkillIconAlpha();
+	void PlayerProgressBar();
 
 	int						m_temp;			//애니메이션 확인용 임시변수
 
