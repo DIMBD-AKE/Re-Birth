@@ -56,7 +56,7 @@ bool DropManager::GetDropItem(CharacterParant * character)
 		if (character->GetCharacter()->IsCollisionSphere(m_pModel))
 			if (character->GetCharacter()->IsCollisionOBB(m_pModel))
 			{
-				ItemParent item = ITEMMANAGER->GetItem(m_vecDrop[i].itemID);
+				ItemParent item = *ITEMMANAGER->GetItem(m_vecDrop[i].itemID);
 				if (character->Getm_Inventory()->AddItem(item))
 				{
 					m_vecDrop.erase(m_vecDrop.begin() + i);
