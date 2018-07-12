@@ -47,9 +47,7 @@ void Character_Sword::Init(Map* map, CHARSELECT order, MonsterManager* pMonsterM
 		m_pUIobj->SetTexture(TEXTUREMANAGER->GetTexture("베카_사진"));
 		m_pUIobj->SetPosition(D3DXVECTOR3(1300, 550, 0));
 
-		//스킬UI
-		m_pUISkill->SetTexture(TEXTUREMANAGER->GetTexture("베카_스킬"));
-		m_pUISkill->SetPosition(D3DXVECTOR3(1200, 730, 0));
+	
 	}
 	else if (order == CHAR_TWO)
 	{
@@ -74,9 +72,7 @@ void Character_Sword::Init(Map* map, CHARSELECT order, MonsterManager* pMonsterM
 
 		m_pUIobj->SetTexture(TEXTUREMANAGER->GetTexture("리아_사진"));
 		m_pUIobj->SetPosition(D3DXVECTOR3(1300, 550, 0));
-		//스킬UI
-		m_pUISkill->SetTexture(TEXTUREMANAGER->GetTexture("리아_스킬"));
-		m_pUISkill->SetPosition(D3DXVECTOR3(1200, 730, 0));
+
 	}
 	else if (order == CHAR_THREE)
 	{
@@ -101,9 +97,7 @@ void Character_Sword::Init(Map* map, CHARSELECT order, MonsterManager* pMonsterM
 
 		m_pUIobj->SetTexture(TEXTUREMANAGER->GetTexture("벨벳_사진"));
 		m_pUIobj->SetPosition(D3DXVECTOR3(1300, 550, 0));
-		//스킬UI
-		m_pUISkill->SetTexture(TEXTUREMANAGER->GetTexture("벨벳_스킬"));
-		m_pUISkill->SetPosition(D3DXVECTOR3(1200, 730, 0));
+		
 
 	}
 

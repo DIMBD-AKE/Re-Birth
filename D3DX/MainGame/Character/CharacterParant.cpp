@@ -704,24 +704,18 @@ CharacterParant::CharacterParant()
 	MODELMANAGER->AddModel("베카", "Model/Character/Beakah/", "Beakah.x", MODELTYPE_X);
 	MODELMANAGER->AddModel("벨벳", "Model/Character/Velvet/", "Velvet.x", MODELTYPE_X);
 	
-	TEXTUREMANAGER->AddTexture("아카날_사진", "Model/Character/Portrait/Portrait_PC_Aknal_S_Icon.png");
-	TEXTUREMANAGER->AddTexture("아린_사진", "Model/Character/Portrait/Portrait_PC_Arin_S_Icon.png");
-	TEXTUREMANAGER->AddTexture("베카_사진", "Model/Character/Portrait/Portrait_PC_BeakAh_S_Icon.png");
-	TEXTUREMANAGER->AddTexture("헤스티아_사진", "Model/Character/Portrait/Portrait_PC_Hestia_S_Icon.png");
-	TEXTUREMANAGER->AddTexture("메그너스_사진", "Model/Character/Portrait/Portrait_Pc_Magnus_Icon.png");
-	TEXTUREMANAGER->AddTexture("리아_사진", "Model/Character/Portrait/Portrait_PC_Riah_S_Icon.png");
-	TEXTUREMANAGER->AddTexture("스카디_사진", "Model/Character/Portrait/Portrait_PC_Skadi_S_Icon.png");
-	TEXTUREMANAGER->AddTexture("벨벳_사진", "Model/Character/Portrait/velvet.png");
-
-	TEXTUREMANAGER->AddTexture("아카날_스킬", "Model/Character/SkillIMG/Skill_Aknal_Passive01_Icon.tga");
-	TEXTUREMANAGER->AddTexture("베카_스킬", "Model/Character/SkillIMG/Skill_Beakah_Active01_Icon.tga");
-	TEXTUREMANAGER->AddTexture("헤스티아_스킬", "Model/Character/SkillIMG/Skill_Hestia_Passive01_Icon.tga");
-	TEXTUREMANAGER->AddTexture("메그너스_스킬", "Model/Character/SkillIMG/Skill_Magnus_Mana01_Icon.tga");
-	TEXTUREMANAGER->AddTexture("리아_스킬", "Model/Character/SkillIMG/Skill_Riah_Passive01_Icon.tga");
-	TEXTUREMANAGER->AddTexture("스카디_스킬", "Model/Character/SkillIMG/Skill_Skadi_Mana01_Icon.tga");
-	TEXTUREMANAGER->AddTexture("벨벳_스킬", "Model/Character/SkillIMG/Skill_velvet_Active03_Icon.tga");
 
 
+	TEXTUREMANAGER->AddTexture("아카날_사진", "Texture/Portrait/Portrait_PC_Aknal_S_Icon.png");
+	TEXTUREMANAGER->AddTexture("아린_사진", "Texture/Portrait/Portrait_PC_Arin_S_Icon.png");
+	TEXTUREMANAGER->AddTexture("베카_사진", "Texture/Portrait/Portrait_PC_BeakAh_S_Icon.png");
+	TEXTUREMANAGER->AddTexture("헤스티아_사진", "Texture/Portrait/Portrait_PC_Hestia_S_Icon.png");
+	TEXTUREMANAGER->AddTexture("메그너스_사진", "Texture/Portrait/Portrait_Pc_Magnus_Icon.png");
+	TEXTUREMANAGER->AddTexture("리아_사진", "Texture/Portrait/Portrait_PC_Riah_S_Icon.png");
+	TEXTUREMANAGER->AddTexture("스카디_사진", "Texture/Portrait/Portrait_PC_Skadi_S_Icon.png");
+	TEXTUREMANAGER->AddTexture("벨벳_사진", "Texture/Portrait/velvet.png");
+
+	
 
 	//공격시 파티클
 	PARTICLE->AddParticle("ATTACK",
@@ -732,28 +726,30 @@ CharacterParant::CharacterParant()
 		TEXTUREMANAGER->AddTexture("파티클2", "Texture/Particle/Sphere.png"),
 		"Particle/PlayerDie.ptc");
 
-	//데미지 이미지 
-	TEXTUREMANAGER->AddTexture("숫자0", "Model/Character/Damage/0.png");
-	TEXTUREMANAGER->AddTexture("숫자1", "Model/Character/Damage/1.png");
-	TEXTUREMANAGER->AddTexture("숫자2", "Model/Character/Damage/2.png");
-	TEXTUREMANAGER->AddTexture("숫자3", "Model/Character/Damage/3.png");
-	TEXTUREMANAGER->AddTexture("숫자4", "Model/Character/Damage/4.png");
-	TEXTUREMANAGER->AddTexture("숫자5", "Model/Character/Damage/5.png");
-	TEXTUREMANAGER->AddTexture("숫자6", "Model/Character/Damage/6.png");
-	TEXTUREMANAGER->AddTexture("숫자7", "Model/Character/Damage/7.png");
-	TEXTUREMANAGER->AddTexture("숫자8", "Model/Character/Damage/8.png");
-	TEXTUREMANAGER->AddTexture("숫자9", "Model/Character/Damage/9.png");
 
-	TEXTUREMANAGER->AddTexture("숫자0_r", "Model/Character/Damage/0_r.png");
-	TEXTUREMANAGER->AddTexture("숫자1_r", "Model/Character/Damage/1_r.png");
-	TEXTUREMANAGER->AddTexture("숫자2_r", "Model/Character/Damage/2_r.png");
-	TEXTUREMANAGER->AddTexture("숫자3_r", "Model/Character/Damage/3_r.png");
-	TEXTUREMANAGER->AddTexture("숫자4_r", "Model/Character/Damage/4_r.png");
-	TEXTUREMANAGER->AddTexture("숫자5_r", "Model/Character/Damage/5_r.png");
-	TEXTUREMANAGER->AddTexture("숫자6_r", "Model/Character/Damage/6_r.png");
-	TEXTUREMANAGER->AddTexture("숫자7_r", "Model/Character/Damage/7_r.png");
-	TEXTUREMANAGER->AddTexture("숫자8_r", "Model/Character/Damage/8_r.png");
-	TEXTUREMANAGER->AddTexture("숫자9_r", "Model/Character/Damage/9_r.png");
+
+	//데미지 이미지 
+	TEXTUREMANAGER->AddTexture("숫자0", "Texture/Damage/0.png");
+	TEXTUREMANAGER->AddTexture("숫자1", "Texture/Damage/1.png");
+	TEXTUREMANAGER->AddTexture("숫자2", "Texture/Damage/2.png");
+	TEXTUREMANAGER->AddTexture("숫자3", "Texture/Damage/3.png");
+	TEXTUREMANAGER->AddTexture("숫자4", "Texture/Damage/4.png");
+	TEXTUREMANAGER->AddTexture("숫자5", "Texture/Damage/5.png");
+	TEXTUREMANAGER->AddTexture("숫자6", "Texture/Damage/6.png");
+	TEXTUREMANAGER->AddTexture("숫자7", "Texture/Damage/7.png");
+	TEXTUREMANAGER->AddTexture("숫자8", "Texture/Damage/8.png");
+	TEXTUREMANAGER->AddTexture("숫자9", "Texture/Damage/9.png");
+
+	TEXTUREMANAGER->AddTexture("숫자0_r", "Texture/Damage/0_r.png");
+	TEXTUREMANAGER->AddTexture("숫자1_r", "Texture/Damage/1_r.png");
+	TEXTUREMANAGER->AddTexture("숫자2_r", "Texture/Damage/2_r.png");
+	TEXTUREMANAGER->AddTexture("숫자3_r", "Texture/Damage/3_r.png");
+	TEXTUREMANAGER->AddTexture("숫자4_r", "Texture/Damage/4_r.png");
+	TEXTUREMANAGER->AddTexture("숫자5_r", "Texture/Damage/5_r.png");
+	TEXTUREMANAGER->AddTexture("숫자6_r", "Texture/Damage/6_r.png");
+	TEXTUREMANAGER->AddTexture("숫자7_r", "Texture/Damage/7_r.png");
+	TEXTUREMANAGER->AddTexture("숫자8_r", "Texture/Damage/8_r.png");
+	TEXTUREMANAGER->AddTexture("숫자9_r", "Texture/Damage/9_r.png");
 }
 
 
