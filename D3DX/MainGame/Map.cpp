@@ -344,8 +344,10 @@ void Map::Load(string mapPath)
 		{
 			int index = z * MAPSIZE + x;
 			D3DXCOLOR color = pColorSrc[index];
-			float gray = (color.r + color.g + color.b) / 3.0f;
-			m_vecTerrain[index].p.y = gray * 255.0f;
+			int b = color.r * 255.0f;
+			int f = color.g * 255.0f;
+			int s = color.b * 255.0f;
+			m_vecTerrain[index].p.y = b + f * 0.1 + s * 0.01;
 		}
 	}
 
