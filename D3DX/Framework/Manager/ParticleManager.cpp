@@ -32,12 +32,12 @@ void ParticleSystem::Init(LPDIRECT3DTEXTURE9 texture, float size, int count,
 	m_nParticleCount = count;
 
 	m_nVBSize = 2048;
-	m_nVBBatchSize = m_nVBBatchSize / 4;
+	m_nVBBatchSize = m_nVBSize / 4;
 	m_nVBOffset = 0;
 
 	SAFE_DELETE(m_pVB);
 	DEVICE->CreateVertexBuffer(
-		m_nParticleCount * sizeof(ST_PARTICLE),
+		m_nVBSize * sizeof(ST_PARTICLE),
 		D3DUSAGE_DYNAMIC | D3DUSAGE_POINTS | D3DUSAGE_WRITEONLY,
 		ST_PARTICLE::FVF,
 		D3DPOOL_DEFAULT,
@@ -64,7 +64,7 @@ ST_PARTICLE_ATTRIBUTE ParticleSystem::ResetParticle(int loop)
 
 	att.nLoop = loop;
 	att.nLoop++;
-	if (att.nLoop > att.nMaxLoop && att.nMaxLoop > 0)
+	if (att.nLoop > att.nMaxLoop && att.nMaxLoop > 0 || !m_isRegen)
 		att.isAlive = false;
 	else
 		att.isAlive = true;
@@ -143,7 +143,7 @@ void ParticleSystem::Update()
 
 		(*iter)->fAge += TIME->GetElapsedTime();
 
-		if ((*iter)->fAge > (*iter)->fLifeTime && m_isRegen)
+		if ((*iter)->fAge > (*iter)->fLifeTime)
 			*(*iter) = ResetParticle((*iter)->nLoop);
 	}
 }
