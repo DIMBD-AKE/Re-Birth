@@ -90,8 +90,6 @@ void MonsterManager::Render()
 //몬스터 만드는 함수
 void MonsterManager::MakeMonster(DropManager* pDropManager)
 {
-	
-
 	int spotSize = m_vSpawnSpot.size();
 
 	//벡터에서 랜덤 인덱스 추출
@@ -110,10 +108,26 @@ void MonsterManager::MakeMonster(DropManager* pDropManager)
 	
 	MakeNike(pDropManager);
 
-	MakeMiddleBoss(pDropManager);
-
-	MakeFinalBoss(pDropManager);
+	//MakeMiddleBoss(pDropManager);
+	//
+	//MakeFinalBoss(pDropManager);
 }
+
+void MonsterManager::MakeMonster()
+{
+	MakeElizabeth(NULL);
+
+	MakeAssis(NULL);
+
+	MakeDarkHell(NULL);
+
+	MakeNifilHeim(NULL);
+
+	MakeNerisa(NULL);
+
+	MakeNike(NULL);
+}
+
 //근접
 void MonsterManager::MakeElizabeth(DropManager* pDropManager)
 {
@@ -297,6 +311,7 @@ void MonsterManager::MakeFinalBoss(DropManager* pDropManager)
 	finalBoss->SetupBoss(m_pMap, m_pMap->GetSpawnBoss());
 	finalBoss->SetCharacter(m_ppCharacter);
 	finalBoss->SetDropManager(pDropManager);
+	dynamic_cast<FinalBoss*>(finalBoss)->SetMM(this);
 	//finalBoss->SetupBoss(m_pMap, m_vSpawnSpot[0]);
 
 	m_vMM.push_back(finalBoss);

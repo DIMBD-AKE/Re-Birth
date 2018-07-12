@@ -477,6 +477,8 @@ void MonsterParent::ItemDrop()
 {
 	//최종보스같은경우 드랍하지 않으므로
 	if (m_vItemID.size() <= 0) return;
+	//최종 보스가 소환하는 몹은 아이템을 떨구지 않는다.
+	if (!m_pDropManager) return;
 
 	srand(time(NULL));
 

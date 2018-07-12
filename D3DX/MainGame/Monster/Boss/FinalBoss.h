@@ -18,8 +18,15 @@ protected:
 
 	virtual void Attack() override;
 	virtual void Move() override;
+	//패시브스킬 함수
+	void Passive();
+	//패시브스킬 발동 조건 함수
+	bool AbleSummon();
+	//스킬1 함수
 	void Skill1();
+	//스킬 2 함수
 	void Skill2();
+	//스킬 2 캐스팅함수
 	void Casting();
 
 public:

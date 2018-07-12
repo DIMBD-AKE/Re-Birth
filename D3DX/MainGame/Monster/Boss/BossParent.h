@@ -22,6 +22,8 @@ protected :
 	bool m_bIsDead;
 
 	BOSS_STATE m_eBossState;
+
+	SET(MonsterManager*, m_pMM, MM);
 	/*
 	
 	UIObject* m_pHPBar;
@@ -52,6 +54,11 @@ protected :
 
 protected:
 
+	virtual void RespawnUpdate() override
+	{
+
+	}
+
 	virtual void SetupStat() override;
 
 	//근접 몬스터 공격함수
@@ -75,6 +82,7 @@ protected:
 		{
 			CURRENTHP(m_uMonsterStat) = 0;
 			m_bIsDead = true;
+			m_bIsRespawn = true;
 			m_eState = MS_DIE;
 			m_eBossState = BS_DIE;
 			ChangeAni();
