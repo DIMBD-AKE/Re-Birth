@@ -1,6 +1,8 @@
 #pragma once
 #include "../MonsterParent.h"
 
+class MagicCircle;
+
 enum BOSS_STATE{
 	BS_ENTER,			//보스 등장상태
 	BS_IDLE,			//제자리에 있는 상태
@@ -19,6 +21,11 @@ class BossParent :
 {
 protected : 
 
+	//공격시 생성되는 구
+	MagicCircle* m_pMagicCircle;
+
+	//마법타입은 공격중 멀어져도 지속적인 공격이 되어야 한다.
+	bool m_bIsAttack;
 	bool m_bIsDead;
 
 	BOSS_STATE m_eBossState;

@@ -1,5 +1,6 @@
 #include "../MonsterUseHeader.h"
 #include "BossParent.h"
+#include "../Magic/MagicCircle.h"
 
 
 BossParent::BossParent()
@@ -18,7 +19,7 @@ void BossParent::SetupBoss(Map* map, D3DXVECTOR3 pos)
 {
 	MonsterParent::SetupBoss(map, pos);
 
-
+	m_pMagicCircle = new MagicCircle;
 }
 
 void BossParent::Update()

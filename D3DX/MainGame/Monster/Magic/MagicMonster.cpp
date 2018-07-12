@@ -38,15 +38,8 @@ void MagicMonster::Attack()
 			ChangeAni();
 			return;
 		}
-		//char test1[111];
-		//sprintf_s(test1, sizeof(test1), "플레이어의 체력 : %d, 엘리자베스의 체력 : %d", m_nAttackDelay);
-		//
-		//TEXT->Add(test1, 10, 10, 30);
 		float length = GetDistance(*m_pModel->GetPosition(), *CHARACTER->GetPosition());
-
-		//D3DXVECTOR3 tempV = *m_pModel->GetPosition() - *CHARACTER->GetPosition();
-		//float length = D3DXVec3Length(&tempV);
-
+		
 		int a = 10;
 		//공격 가능 사거리까지 하면 될듯 && 공격중이냐
 		if (length > RANGE(m_uMonsterStat) && !m_bIsAttack)
@@ -67,26 +60,9 @@ void MagicMonster::Attack()
 
 			float angle = GetAngle(0, 0, dir.x, dir.z);
 
-			//float x = dir.x - 0;
-			//float y = dir.z - 0;
-			//
-			//float distance = sqrtf(x * x + y * y);
-			//
-			//float angle = acosf(x / distance);
-			//
-			//if (dir.z > 0)
-			//{
-			//	angle = D3DX_PI * 2 - angle;
-			//	if (angle >= D3DX_PI * 2) angle -= D3DX_PI * 2;
-			//}
-
 			angle -= D3DX_PI / 2;
 
 			m_pModel->SetRotation(D3DXVECTOR3(0, angle, 0));
-			//char test[111];
-			//sprintf_s(test, sizeof(test), "공격딜레이 : %d", m_nAttackDelay);
-			//
-			//TEXT->Add(test, 10, 10, 30);
 
 			//처음에 오면 이 값은 false이다.
 			if (!m_bIsAttack)

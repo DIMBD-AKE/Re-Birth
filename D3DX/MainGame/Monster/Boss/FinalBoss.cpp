@@ -1,6 +1,7 @@
 #include "../MonsterUseHeader.h"
 #include "../MonsterManager.h"
 #include "FinalBoss.h"
+#include "../Magic/MagicCircle.h"
 
 //90, 80, ... 10퍼가 될때마다 소환
 static int summonCount = 9;
@@ -39,6 +40,7 @@ void FinalBoss::SetupBoss(Map* map, D3DXVECTOR3 pos)
 	m_pModel->CreateBound(box);
 	m_pModel->SetBoundSphere(m_pModel->GetOrigBoundSphere().center, 100.0f);
 
+	
 
 }
 
@@ -166,22 +168,29 @@ void FinalBoss::Attack()
 		m_eBossState = BS_PASSIVE;
 		ChangeAni();
 		Passive();
+
+		//공격 스킵하고 패시브 발동
+		return;
 	}
 
 	float length = GetDistance(*m_pModel->GetPosition(), *CHARACTER->GetPosition());
 
-	if (length > RANGE(m_uMonsterStat))
+	//공격 모션중에 플레이어가 벗어나도 공격모션 및 판정진행해라
+	if (length > RANGE(m_uMonsterStat) && !m_bIsAttack)
 	{
-			if (m_eBossState == BS_ATTACK)
-			{
-				m_eBossState = BS_RUN;
-				ChangeAni();
-			}
-			return;
+		if (m_eBossState == BS_ATTACK)
+		{
+			m_eBossState = BS_RUN;
+			ChangeAni();
+		}
+		return;
 		
 	}
 
-
+	//사거리 안에 들어왔는데 이제 공격을 시작할려고 한다면
+	if (!m_bIsAttack)
+	{
+		//방향 및 각도를 구하고		
 		D3DXVECTOR3 dir =
 			*CHARACTER->GetPosition() - *m_pModel->GetPosition();
 
@@ -189,7 +198,16 @@ void FinalBoss::Attack()
 
 		angle -= D3DX_PI / 2;
 
+		//모델을 로테이션 해라
 		m_pModel->SetRotation(D3DXVECTOR3(0, angle, 0));
+
+		//첫 판정후 이제 공격중으로 바꿔줌으로서 보스의 회전을 막는다.
+		m_bIsAttack = true;
+
+		//플레이어 위치 기준으로 구 생성
+		m_pMagicCircle->SetPosAndRad(*CHARACTER->GetPosition(), 3);
+	}
+		
 		//플레이어 공격기능 설정
 		if (m_pModel->IsAnimationPercent(ATKSPEED(m_uMonsterStat)))
 		{
@@ -206,6 +224,9 @@ void FinalBoss::Move()
 		m_eBossState = BS_PASSIVE;
 		ChangeAni();
 		Passive();
+
+		//이동 멈추고 잡몹소환
+		return;
 	}
 	if (m_eBossState == BS_RUN)
 	{

@@ -28,7 +28,7 @@ class MonsterParent
 	GET(Model*, m_pModel, Model);
 	SET(CharacterParant**, m_ppCharacter, Character);
 	SET(DropManager*, m_pDropManager, DropManager);
-
+	SYNTHESIZE(STATUS, m_uMonsterStat, MosterStat);
 
 	
 
@@ -58,7 +58,7 @@ protected:
 
 	int				m_nCount;
 	//몬스터 스탯
-	STATUS m_uMonsterStat;
+	//STATUS m_uMonsterStat;
 
 	//리스폰될떄까지 시간
 	int m_nResPawnCount;
