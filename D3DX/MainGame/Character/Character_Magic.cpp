@@ -44,8 +44,7 @@ void Character_Magic::Init(Map * map, CHARSELECT order, MonsterManager* pMonster
 		m_pUIobj->SetTexture(TEXTUREMANAGER->GetTexture("아카날_사진"));
 		m_pUIobj->SetPosition(D3DXVECTOR3(1300, 550, 0));
 
-		m_pUISkill->SetTexture(TEXTUREMANAGER->GetTexture("아카날_스킬"));
-		m_pUISkill->SetPosition(D3DXVECTOR3(1200, 730, 0));
+	
 	}
 	else if (order == CHAR_TWO)
 	{
@@ -71,8 +70,7 @@ void Character_Magic::Init(Map * map, CHARSELECT order, MonsterManager* pMonster
 		m_pUIobj->SetTexture(TEXTUREMANAGER->GetTexture("헤스티아_사진"));
 		m_pUIobj->SetPosition(D3DXVECTOR3(1300, 550, 0));
 
-		m_pUISkill->SetTexture(TEXTUREMANAGER->GetTexture("헤스티아_스킬"));
-		m_pUISkill->SetPosition(D3DXVECTOR3(1200, 730, 0));
+	
 	}
 }
 
