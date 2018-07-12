@@ -148,6 +148,10 @@ void CharacterParant::Move()
 	m_pParticle2->World();
 	m_pParticle2->Update();
 
+
+	m_pParticle4->World();
+	m_pParticle4->Update();
+
 	//순간이동
 	MGSKill();
 	
@@ -728,6 +732,10 @@ CharacterParant::CharacterParant()
 	PARTICLE->AddParticle("Potal",
 		TEXTUREMANAGER->AddTexture("포오탈", "Texture/Particle/Sphere.png"),
 		"Particle/Test.ptc");
+	//텔레포트 자리에 나오는 파티클
+	PARTICLE->AddParticle("teleport",
+		TEXTUREMANAGER->AddTexture("포오탈2", "Texture/Particle/Sphere.png"),
+		"Particle/Teleport.ptc");
 
 
 	//데미지 이미지 
@@ -871,6 +879,7 @@ void CharacterParant::Init(Map* map, CHARSELECT order, MonsterManager* pMonsterM
 	m_pParticle = PARTICLE->GetParticle("ATTACK");
 	m_pParticle2 = PARTICLE->GetParticle("Die");
 	m_pParticle3 = PARTICLE->GetParticle("Potal");
+	m_pParticle4 = PARTICLE->GetParticle("teleport");
 
 	m_pParticle3->SetPosition(D3DXVECTOR3(m_pCharacter->GetPosition()->x, m_pCharacter->GetPosition()->y, m_pCharacter->GetPosition()->z + 5.0f));
 }
@@ -884,6 +893,7 @@ void CharacterParant::Render()
 	m_pParticle->Render();
 	m_pParticle2->Render();
 	if (m_bIsPotal) m_pParticle3->Render();
+	m_pParticle4->Render();
 }
 
 void CharacterParant::KeyControl()
@@ -997,6 +1007,8 @@ void CharacterParant::KeyControl()
 	{
 		m_bIsPotal = false;
 		m_pCharacter->SetPosition(D3DXVECTOR3(m_pParticle3->GetPosition()->x+1.0f, m_pParticle3->GetPosition()->y, m_pParticle3->GetPosition()->z - 1.0f));
+		m_pParticle4->SetPosition(*m_pCharacter->GetPosition());
+		m_pParticle4->TimeReset();
 	}
 
 

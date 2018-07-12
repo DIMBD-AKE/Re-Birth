@@ -120,6 +120,7 @@ protected:
 	Particle*		m_pParticle;
 	Particle*		m_pParticle2;
 	Particle*		m_pParticle3;
+	Particle*		m_pParticle4;
 
 	void SKill();
 	void Move();
