@@ -60,7 +60,17 @@ struct ST_DAMAGETEXT			//데미지 텍스트용 구조체
 	float time;
 	float endTime;
 	float angle;
+	float alpha;
+	float x;
 
+};
+
+
+struct ST_SKILLTIME
+{
+	float startSkillTime;
+	float endSkillTime;
+	float SkillAlpha;
 };
 
 class CharacterParant
@@ -120,6 +130,7 @@ protected:
 	void CalculDamage(float damage);
 	void Attack();
 	void CountAppearDamage();
+	void SkillIconAlpha();
 
 	int						m_temp;			//애니메이션 확인용 임시변수
 

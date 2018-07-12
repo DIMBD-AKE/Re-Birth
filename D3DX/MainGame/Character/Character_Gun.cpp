@@ -41,6 +41,10 @@ void Character_Gun::Init(Map * map, CHARSELECT order, MonsterManager* pMonsterMa
 
 		m_pUIobj->SetTexture(TEXTUREMANAGER->GetTexture("메그너스_사진"));
 		m_pUIobj->SetPosition(D3DXVECTOR3(1300, 550, 0));
+
+		//스킬UI
+		m_pUISkill->SetTexture(TEXTUREMANAGER->GetTexture("메그너스_스킬"));
+		m_pUISkill->SetPosition(D3DXVECTOR3(1200, 730, 0));
 	}
 	else if (order == CHAR_TWO)
 	{
@@ -65,6 +69,9 @@ void Character_Gun::Init(Map * map, CHARSELECT order, MonsterManager* pMonsterMa
 
 		m_pUIobj->SetTexture(TEXTUREMANAGER->GetTexture("스카디_사진"));
 		m_pUIobj->SetPosition(D3DXVECTOR3(1300, 550, 0));
+
+		m_pUISkill->SetTexture(TEXTUREMANAGER->GetTexture("스카디_스킬"));
+		m_pUISkill->SetPosition(D3DXVECTOR3(1200, 730, 0));
 	}
 }
 
@@ -73,7 +80,7 @@ void Character_Gun::Update()
 	if (m_pCharacter)
 	{
 		Controller();
-		UnderAttacked();
+		//UnderAttacked();
 		KeyControl();
 		Move();
 
@@ -82,6 +89,8 @@ void Character_Gun::Update()
 		m_pCharacter->World();
 
 		m_pUIobj->Update();
+		m_pUISkill->Update();
+		SkillIconAlpha();
 	}
 }
 
@@ -90,10 +99,17 @@ void Character_Gun::Render()
 	if (m_pCharacter)
 	{
 		m_pCharacter->Render();
+		//CharacterParant::Render();
 		m_pInventory->Render();
 
+		//포트레이트 
 		m_pUIobj->Render();
+		m_pUISkill->Render();
 
+		//if (m_bIsUnderAttacked)
+		//{
+		AppearDamage();
+		//}
 		CharacterParant::Render();
 	}
 }
