@@ -27,5 +27,7 @@ public:
 	ItemParent* GetItem(int keyNum);
 
 	int FindItem(int keyNum);
+
+	void Destroy();
 };
 

@@ -10,7 +10,7 @@ ItemManager::ItemManager()
 
 ItemManager::~ItemManager()
 {
-	m_mIdItem.clear();
+	
 }
 
 void ItemManager::SetUp()
@@ -225,4 +225,14 @@ int ItemManager::FindItem(int keyNum)
 	}
 	//아이템이 있으면 0 반환
 	return 0;
+}
+
+void ItemManager::Destroy()
+{
+	mItItemList mIterItem;
+
+	for (mIterItem = m_mIdItem.begin(); mIterItem != m_mIdItem.end(); ++mIterItem)
+	{
+		SAFE_DELETE(mIterItem->second);
+	}
 }
