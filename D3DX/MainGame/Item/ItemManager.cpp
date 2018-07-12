@@ -4,12 +4,13 @@
 
 ItemManager::ItemManager()
 {
-
+	SetUp();
 }
 
 
 ItemManager::~ItemManager()
 {
+	
 }
 
 void ItemManager::SetUp()
@@ -29,7 +30,7 @@ void ItemManager::SetUp()
 void ItemManager::Load(IN const char * szFolder, IN const char * szFile)
 {
 	ItemParent* Ap  = NULL;
-
+	
 	string	sFullPath(szFolder);
 	sFullPath += (string("/") + string(szFile));
 
@@ -50,7 +51,9 @@ void ItemManager::Load(IN const char * szFolder, IN const char * szFile)
 			else if (path == "Sword") Ap = new SwordParent;
 			else if (path == "Arrow") Ap = new GunParent;
 			else if (path == "Staff") Ap = new WandParent;
-			ZeroMemory(Ap, sizeof(ItemParent*));
+			Ap->SetUp();
+			//ZeroMemory(Ap, sizeof(ItemParent));
+			
 		}
 
 		else if (c == 'D')
@@ -68,7 +71,7 @@ void ItemManager::Load(IN const char * szFolder, IN const char * szFile)
 			char* path = GetToken();
 			Ap->m_pTexture = TEXTUREMANAGER->AddTexture(keyName, path);
 			Ap->m_imageInfo = TEXTUREMANAGER->GetInfo(keyName);
-			m_mIdItem.insert(make_pair(Ap->GetID(), *Ap));
+			m_mIdItem.insert(make_pair(Ap->GetID(), Ap));
 			int a = 0;
 		}
 		
@@ -102,7 +105,7 @@ void ItemManager::Load(IN const char * szFolder, IN const char * szFile)
 			if (rt == "Normal") Ap->SetParticle(NULL);
 			else if (rt == "Rare") Ap->SetParticle(PARTICLE->GetParticle("RARE"));
 			else if (rt == "Magic") Ap->SetParticle(PARTICLE->GetParticle("MAGIC"));
-			else if (rt == "Uique") Ap->SetParticle(PARTICLE->GetParticle("UNIQUE"));
+			else if (rt == "Unique") Ap->SetParticle(PARTICLE->GetParticle("UNIQUE"));
 		}
 
 		else if (c == 'I')
@@ -149,7 +152,7 @@ void ItemManager::Load(IN const char * szFolder, IN const char * szFile)
 
 }
 
-ItemParent ItemManager::GetItem(int keyNum)
+ItemParent* ItemManager::GetItem(int keyNum)
 {
 	mItItemList miterId = m_mIdItem.find(keyNum);
 
@@ -222,4 +225,14 @@ int ItemManager::FindItem(int keyNum)
 	}
 	//아이템이 있으면 0 반환
 	return 0;
+}
+
+void ItemManager::Destroy()
+{
+	mItItemList mIterItem;
+
+	for (mIterItem = m_mIdItem.begin(); mIterItem != m_mIdItem.end(); ++mIterItem)
+	{
+		SAFE_DELETE(mIterItem->second);
+	}
 }

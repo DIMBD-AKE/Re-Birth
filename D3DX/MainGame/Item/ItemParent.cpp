@@ -6,19 +6,21 @@
 #include "../Character/CharacterParant.h"
 
 ItemParent::ItemParent()
+	:m_pItemStatus(NULL)
+	,m_pTexture(NULL)
+	,m_pParticle(NULL)
 {
-	m_fScale = 0;
 }
 
 
 ItemParent::~ItemParent()
 {
+	SAFE_DELETE(m_pItemStatus);
+	SAFE_DELETE(m_pParticle);
 }
 
 void ItemParent::SetUp()
 {
-	m_pTexture = TEXTUREMANAGER->AddTexture("장검", "Texture/Item/Item Num 011 Unique TwoHand Sword.jpg");
-	m_imageInfo = TEXTUREMANAGER->GetInfo("장검");
 	m_pItemStatus = new STATUS;
 	SetStatusZero();
 }

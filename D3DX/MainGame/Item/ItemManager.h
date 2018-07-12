@@ -7,8 +7,8 @@ class ItemManager
 {
 	SINGLETONE(ItemManager);
 private:
-	typedef map<int, ItemParent> mItemList;
-	typedef map<int, ItemParent>::iterator mItItemList;
+	typedef map<int, ItemParent*> mItemList;
+	typedef map<int, ItemParent*>::iterator mItItemList;
 	
 	mItemList m_mIdItem;
 	FILE *	m_fp;
@@ -24,8 +24,10 @@ private:
 public:
 	void SetUp();
 	void Load(IN const char* szFolder, IN const char* szFile);
-	ItemParent GetItem(int keyNum);
+	ItemParent* GetItem(int keyNum);
 
 	int FindItem(int keyNum);
+
+	void Destroy();
 };
 
