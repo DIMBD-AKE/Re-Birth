@@ -93,6 +93,7 @@ protected:
 	MonsterManager*			m_pMonsterManager;	//몬스터 매니저용 변수
 	
 	D3DXVECTOR3				m_vfront;			//이동을 위한 프론트벡터
+	D3DXVECTOR3				m_vPotalfront;		//포탈 이동을 위한 프론트 벡터
 
 	int						m_nCalAction;		//액션 프레임 계산용 변수
 	int						m_nDamage;			//데미지 띄우기용 변수 
@@ -105,6 +106,7 @@ protected:
 	bool					m_bIsUnderAttacked; //공격받았니?
 	bool					m_bIsSkill;			//스킬썼니?
 	bool					m_bIsInvincible;		//무적이니
+	bool					m_bIsPotal;			//지금 포탈 눌렀니?
 	float					m_fDamageCount;		//데미지 띄우는 카운트
 	float					m_fDamageAngle;		//데미지 앵글
 
@@ -117,6 +119,7 @@ protected:
 	
 	Particle*		m_pParticle;
 	Particle*		m_pParticle2;
+	Particle*		m_pParticle3;
 
 	void SKill();
 	void Move();
@@ -133,6 +136,7 @@ protected:
 	void CountAppearDamage();
 	void SkillIconAlpha();
 	void PlayerProgressBar();
+	void mqskill();
 
 	int						m_temp;			//애니메이션 확인용 임시변수
 

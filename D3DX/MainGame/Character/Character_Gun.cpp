@@ -23,7 +23,7 @@ void Character_Gun::Init(Map * map, CHARSELECT order, MonsterManager* pMonsterMa
 		//총남캐
 		m_pCharacter = MODELMANAGER->GetModel("메그너스", MODELTYPE_X);
 		m_Status->chr.fAgi = 50.0f;
-		m_Status->chr.fAtkSpeed = 3.0f;
+		m_Status->chr.fAtkSpeed = 1.0f;
 		m_Status->chr.fCheRate = 70.0f;
 		m_Status->chr.fHit = 70.0f;
 		m_Status->chr.fMagicRate = 25.0f;
@@ -49,7 +49,7 @@ void Character_Gun::Init(Map * map, CHARSELECT order, MonsterManager* pMonsterMa
 		//활여캐
 		m_pCharacter = MODELMANAGER->GetModel("스카디", MODELTYPE_X);
 		m_Status->chr.fAgi = 50.0f;
-		m_Status->chr.fAtkSpeed = 2.0f;
+		m_Status->chr.fAtkSpeed = 4.0f;
 		m_Status->chr.fCheRate = 70.0f;
 		m_Status->chr.fHit = 70.0f;
 		m_Status->chr.fMagicRate = 25.0f;
@@ -86,8 +86,9 @@ void Character_Gun::Update()
 		m_pCharacter->World();
 
 		m_pUIobj->Update();
-		
-		SkillIconAlpha();
+
+		PlayerProgressBar();
+		CountAppearDamage();
 	}
 }
 

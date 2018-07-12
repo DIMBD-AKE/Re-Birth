@@ -16,17 +16,22 @@ void CharacterParant::SKill()
 void CharacterParant::Move()
 {
 	Debug();
+
+	mqskill();
 	
 	//if(m_bIsUnderAttacked) AppearDamage();
 	
 	
-
+	//화면에 띄우는 텍스트들
 	D3DXVECTOR3 tempPos1;
 	tempPos1 = *m_pCharacter->GetPosition();
 	tempPos1.y += 3;
 	D3DXVECTOR2 pos1 = Convert3DTo2D(tempPos1);
 	TEXT->Add(to_string(m_Status->chr.nCurrentHP), pos1.x, pos1.y, 30);
 	TEXT->Add(to_string(m_Status->chr.nMaxHp), pos1.x, pos1.y-25.0f, 30);
+
+	TEXT->Add(to_string(m_Status->chr.nCurrentStam), pos1.x + 90, pos1.y, 30);
+	TEXT->Add(to_string(m_Status->chr.nMaxStam), pos1.x+90, pos1.y - 25.0f, 30);
 	//TEXT->Add(to_string(m_Status->chr.nCurrentHP), 300, 300, 30);
 	//포트레이트
 	//m_pUIobj->Update();
@@ -54,6 +59,7 @@ void CharacterParant::Move()
 		m_eCondition = CHAR_HIT;
 		ChangeAnimation();
 	}
+
 
 	if (INPUT->KeyPress('A'))
 	{
@@ -118,7 +124,7 @@ void CharacterParant::Move()
 		}
 		else
 		{
-
+			return;
 		}
 	}
 	if (m_eCondition == CHAR_DASH_BACK)
@@ -131,7 +137,7 @@ void CharacterParant::Move()
 		}
 		else
 		{
-
+			return;
 		}
 	}
 	ControllStamina();
@@ -148,6 +154,42 @@ void CharacterParant::Move()
 
 	m_pParticle2->World();
 	m_pParticle2->Update();
+
+	if (m_bIsPotal)
+	{
+		m_pParticle3->World();
+		m_pParticle3->Update();
+	}
+
+
+	D3DXVECTOR3 Potalpos = *m_pParticle3->GetPosition();
+	D3DXVECTOR3 Potalrot = *m_pParticle3->GetRotation();
+
+	D3DXMATRIX matPotalAngle;
+	D3DXMatrixRotationYawPitchRoll(&matPotalAngle, m_pParticle3->GetRotation()->y, m_pParticle3->GetRotation()->x, m_pParticle3->GetRotation()->z);
+
+	m_vPotalfront = D3DXVECTOR3(0, 0, 1);
+	D3DXVec3TransformNormal(&m_vPotalfront, &m_vPotalfront, &matPotalAngle);
+
+
+	//이동파티클 키보드 제어 
+	if (INPUT->KeyPress(VK_LEFT))
+	{
+		m_pParticle3->GetRotation()->y -= 0.05f;
+	}
+	if (INPUT->KeyPress(VK_RIGHT))
+	{
+		m_pParticle3->GetRotation()->y += 0.05f;
+	}
+	if (INPUT->KeyPress(VK_UP))
+	{
+		m_pParticle3->SetPosition(D3DXVECTOR3(m_pParticle3->GetPosition()->x, m_pParticle3->GetPosition()->y, m_pParticle3->GetPosition()->z+0.1));
+	}
+	if (INPUT->KeyPress(VK_DOWN))
+	{
+		m_pParticle3->SetPosition(Potalpos + m_vPotalfront * 0.3);
+	}
+	
 
 }
 
@@ -443,10 +485,12 @@ void CharacterParant::SetCurrentHP(int hp)
 
 void CharacterParant::CalculDamage(float damage)
 {
-	if (!m_bIsInvincible)
-	{
+	//if (!m_bIsInvincible)
+	//{
+		
 		m_eCondition = CHAR_HIT;
 		ChangeAnimation();
+	
 
 		m_bIsInvincible = true;
 		m_bIsUnderAttacked = true;
@@ -466,7 +510,7 @@ void CharacterParant::CalculDamage(float damage)
 		totalDamage = round(totalDamage);
 
 		SetCurrentHP(totalDamage);
-	}
+	//}
 }
 
 void CharacterParant::Attack()
@@ -653,12 +697,6 @@ void CharacterParant::CountAppearDamage()
 	if (m_bIsUnderAttacked)
 	{
 		m_stDamaged.startDamageTime += TIME->GetElapsedTime();
-
-		//if (m_eCondition != CHAR_ATTACK && m_eCondition != CHAR_RUN_FRONT && m_eCondition != CHAR_RUN_BACK)
-		//{
-			//m_eCondition = CHAR_HIT;
-			//ChangeAnimation();
-		//} 
 	}
 
 	if (m_stDamaged.startDamageTime < m_stDamaged.endDamageTime && m_bIsUnderAttacked)
@@ -699,6 +737,15 @@ void CharacterParant::PlayerProgressBar()
 	m_pHPBar->Update();
 }
 
+void CharacterParant::mqskill()
+{
+	if (m_bIsPotal)
+	{
+		m_pParticle->World();
+		m_pParticle3->SetPosition(D3DXVECTOR3(m_pCharacter->GetPosition()->x, m_pCharacter->GetPosition()->y, m_pCharacter->GetPosition()->z+10.0f));
+	}
+}
+
 CharacterParant::CharacterParant()
 {
 	m_Status = new STATUS;
@@ -733,6 +780,10 @@ CharacterParant::CharacterParant()
 		TEXTUREMANAGER->AddTexture("파티클2", "Texture/Particle/Sphere.png"),
 		"Particle/PlayerDie.ptc");
 
+	//법사 전용스킬용 파티클
+	PARTICLE->AddParticle("Potal",
+		TEXTUREMANAGER->AddTexture("포오탈", "Texture/Particle/Sphere.png"),
+		"Particle/Test.ptc");
 
 
 	//데미지 이미지 
@@ -769,6 +820,7 @@ CharacterParant::~CharacterParant()
 	SAFE_DELETE(m_pCharacter);
 	SAFE_DELETE(m_pParticle);
 	SAFE_DELETE(m_pParticle2);
+	SAFE_DELETE(m_pParticle3);
 }
 
 void CharacterParant::Init(Map* map, CHARSELECT order, MonsterManager* pMonsterManager)
@@ -815,6 +867,7 @@ void CharacterParant::Init(Map* map, CHARSELECT order, MonsterManager* pMonsterM
 	//기본 상태세팅
 	m_eCondition = CHAR_IDLE;
 	ChangeAnimation();
+	
 	m_bIsFront = false;
 	m_bIsDash = false;
 	m_bIsDead = false;
@@ -822,6 +875,8 @@ void CharacterParant::Init(Map* map, CHARSELECT order, MonsterManager* pMonsterM
 	m_bIsUnderAttacked = false;
 	m_bIsSkill = false;
 	m_bIsInvincible = false;
+	m_bIsPotal = false;
+
 	m_fStamina = 10.0f;
 	m_nDamage = 0;
 	m_fDamageCount = 0.0;
@@ -871,6 +926,7 @@ void CharacterParant::Init(Map* map, CHARSELECT order, MonsterManager* pMonsterM
 
 	m_pParticle = PARTICLE->GetParticle("ATTACK");
 	m_pParticle2 = PARTICLE->GetParticle("Die");
+	m_pParticle3 = PARTICLE->GetParticle("Potal");
 }
 
 
@@ -881,6 +937,7 @@ void CharacterParant::Render()
 	//m_pUIobj->Render();
 	m_pParticle->Render();
 	m_pParticle2->Render();
+	if (m_bIsPotal) m_pParticle3->Render();
 }
 
 void CharacterParant::KeyControl()
@@ -984,6 +1041,17 @@ void CharacterParant::KeyControl()
 			ChangeAnimation();
 		}
 	}
+
+	if (INPUT->KeyDown('T'))
+	{
+		m_bIsPotal = true;
+	}
+	else if (INPUT->KeyUp('T'))
+	{
+		m_bIsPotal = false;
+		m_pCharacter->SetPosition(*m_pParticle3->GetPosition());
+	}
+
 
 	//공격상태에서 애니메이션 한바퀴 돌린후 대기상태로 돌려줌
 	if (m_pCharacter->IsAnimationEnd()&& m_eCondition == CHAR_ATTACK)

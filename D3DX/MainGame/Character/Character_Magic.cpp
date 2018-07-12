@@ -25,7 +25,7 @@ void Character_Magic::Init(Map * map, CHARSELECT order, MonsterManager* pMonster
 		m_pCharacter = MODELMANAGER->GetModel("아카날", MODELTYPE_X);
 		//
 		m_Status->chr.fAgi = 30.0f;
-		m_Status->chr.fAtkSpeed = 55.0f;
+		m_Status->chr.fAtkSpeed = 1.0f;
 		m_Status->chr.fCheRate = 5.0f;
 		m_Status->chr.fHit = 5.0f;
 		m_Status->chr.fMagicRate = 65.0f;
@@ -51,7 +51,7 @@ void Character_Magic::Init(Map * map, CHARSELECT order, MonsterManager* pMonster
 		//법사 여캐
 		m_pCharacter = MODELMANAGER->GetModel("헤스티아", MODELTYPE_X);
 		m_Status->chr.fAgi = 30.0f;
-		m_Status->chr.fAtkSpeed = 55.0f;
+		m_Status->chr.fAtkSpeed = 1.0f;
 		m_Status->chr.fCheRate = 5.0f;
 		m_Status->chr.fHit = 5.0f;
 		m_Status->chr.fMagicRate = 65.0f;
@@ -88,8 +88,13 @@ void Character_Magic::Update()
 		m_pCharacter->World();
 
 		m_pUIobj->Update();
-	
-		SkillIconAlpha();
+
+		
+
+		PlayerProgressBar();
+		CountAppearDamage();
+
+		
 	}
 }
 
@@ -103,12 +108,17 @@ void Character_Magic::Render()
 		//포트레이트 
 		m_pUIobj->Render();
 	
+	
 		//if (m_bIsUnderAttacked)
 		//{
 		AppearDamage();
 		//}
 		CharacterParant::Render();
 	}
+}
+
+void Character_Magic::MgSkill()
+{
 }
 
 

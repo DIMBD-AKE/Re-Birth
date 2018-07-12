@@ -118,7 +118,6 @@ void Character_Sword::Update()
 		
 		m_pUIobj->Update();
 	
-		SkillIconAlpha();
 		PlayerProgressBar();
 		CountAppearDamage();
 	}
