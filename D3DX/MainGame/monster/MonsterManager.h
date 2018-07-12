@@ -36,6 +36,9 @@ private:
 	//최종보스
 	void MakeFinalBoss(DropManager* pDropManager);
 
+	
+	
+
 public:
 	MonsterManager();
 	~MonsterManager();
@@ -46,7 +49,8 @@ public:
 
 	//몬스터 만드는 함수
 	void MakeMonster(DropManager* pDropManager);
-
+	//최종보스의 패시브통해 생성되는 함수
+	void MakeMonster();
 	//void SetSpawnSpot(vector<D3DXVECTOR3> spawnVec) { m_vSpawnSpot = spawnVec; }
 	//
 	//make(spawn[i])

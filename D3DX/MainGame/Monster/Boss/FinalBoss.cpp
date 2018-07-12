@@ -1,6 +1,9 @@
 #include "../MonsterUseHeader.h"
+#include "../MonsterManager.h"
 #include "FinalBoss.h"
 
+//90, 80, ... 10퍼가 될때마다 소환
+static int summonCount = 9;
 
 FinalBoss::FinalBoss()
 {
@@ -122,6 +125,11 @@ void FinalBoss::Pattern()
 	}
 		break;
 	case BS_PASSIVE:
+		if (m_pModel->IsAnimationEnd())
+		{
+			m_eBossState = BS_RUN;
+			ChangeAni();
+		}
 		break;
 	case BS_ATTACK:
 		Attack();
@@ -153,6 +161,14 @@ void FinalBoss::Attack()
 		return;
 	}
 
+	if (AbleSummon())
+	{
+		m_eBossState = BS_PASSIVE;
+		ChangeAni();
+		Passive();
+	}
+
+
 	D3DXVECTOR3 dir =
 		*CHARACTER->GetPosition() - *m_pModel->GetPosition();
 
@@ -172,6 +188,12 @@ void FinalBoss::Attack()
 
 void FinalBoss::Move()
 {
+	if (AbleSummon())
+	{
+		m_eBossState = BS_PASSIVE;
+		ChangeAni();
+		Passive();
+	}
 	if (m_eBossState == BS_RUN)
 	{
 		m_vDir = *CHARACTER->GetPosition() - *m_pModel->GetPosition();
@@ -194,6 +216,29 @@ void FinalBoss::Move()
 	}
 }
 
+void FinalBoss::Passive()
+{
+	
+	m_pMM->MakeMonster();
+
+	
+}
+
+bool FinalBoss::AbleSummon()
+{
+	if (summonCount <= 0) return false;
+	//현재 HP 비율
+	float HPRatio = (float)CURRENTHP(m_uMonsterStat) / MAXHP(m_uMonsterStat);
+	float summonRatio = (10 * summonCount / 100.0f);
+	//현재 피 비율이 소환카운트 비율보다 적어졌다면
+	if (HPRatio <= summonRatio)
+	{
+		summonCount--;
+		return true;
+	}
+
+	return false;
+}
 void FinalBoss::Skill1()
 {
 
@@ -206,5 +251,5 @@ void FinalBoss::Skill2()
 
 void FinalBoss::Casting()
 {
-
+	
 }

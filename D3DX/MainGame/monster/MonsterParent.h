@@ -117,7 +117,7 @@ public:
 
 	virtual void Update();
 
-	void RespawnUpdate();
+	virtual void RespawnUpdate();
 
 	virtual void Render();
 	
