@@ -9,8 +9,7 @@ class EffectObject;
 enum SKILL_PROCESS
 {
 	SKILLP_SINGLE,
-	SKILLP_MULTIPLE,
-	SKILLP_BUFF
+	SKILLP_MULTIPLE
 };
 
 enum SKILL_EFFECT
@@ -44,6 +43,8 @@ struct ST_SKILL
 
 	float		fYOffset;
 	bool		isAutoRot;
+	float		fParticleTime;
+	float		fEffectTime;
 };
 
 class SkillParent
@@ -80,7 +81,9 @@ private:
 	// 单固瘤 贸府
 	void DamageSingle();
 	void DamageMultiple();
-	void DamageBuff();
+
+	// 滚橇 贸府
+	void Buff();
 
 	// 鸥百 贸府
 	void * GetSingleTarget();
@@ -88,22 +91,17 @@ private:
 
 	// 颇萍努 贸府
 	void ParticleThis();
-	void ParticleToThis();
 	void ParticleTarget();
-	void ParticleToTarget();
 
 	// 捞棋飘 贸府
 	void EffectThis();
-	void EffectToThis();
 	void EffectTarget();
-	void EffectToTarget();
-
 
 public:
 	SkillParent();
 	SkillParent(SKILL_PROCESS damage, SKILL_PROCESS target, 
 		SKILL_EFFECT particleP, SKILL_EFFECT effectP, string particle, ST_EFFECT effect,
-		LPDIRECT3DTEXTURE9 tex, string name);
+		LPDIRECT3DTEXTURE9 iconTex, string name);
 	~SkillParent();
 
 	void Prepare(CharacterParant * pCharacter, MonsterParent* pMonster, vector<MonsterParent*> vecMonster, ST_SKILL skill, SKILL_OWNER owner);
