@@ -211,9 +211,20 @@ void FinalBoss::Attack()
 		//플레이어 공격기능 설정
 		if (m_pModel->IsAnimationPercent(ATKSPEED(m_uMonsterStat)))
 		{
-			float tatalRate = PHYRATE(m_uMonsterStat) + MAGICRATE(m_uMonsterStat) + CHERATE(m_uMonsterStat);
-			float tatalDamage = tatalRate * ATK(m_uMonsterStat);
-			PCHARACTER->CalculDamage(tatalDamage);
+			if (m_pMagicCircle->PlayerCollision(
+				*CHARACTER->GetPosition(),
+				CHARACTER->GetBoundSphere().radius))
+			{
+
+				float tatalRate = PHYRATE(m_uMonsterStat) + MAGICRATE(m_uMonsterStat) + CHERATE(m_uMonsterStat);
+				float tatalDamage = tatalRate * ATK(m_uMonsterStat);
+				PCHARACTER->CalculDamage(tatalDamage);
+			}
+
+			m_bIsAttack = false;
+			//float tatalRate = PHYRATE(m_uMonsterStat) + MAGICRATE(m_uMonsterStat) + CHERATE(m_uMonsterStat);
+			//float tatalDamage = tatalRate * ATK(m_uMonsterStat);
+			//PCHARACTER->CalculDamage(tatalDamage);
 		}
 }
 
