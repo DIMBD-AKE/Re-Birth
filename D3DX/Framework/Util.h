@@ -178,7 +178,6 @@ namespace UTIL
 	{
 		float distance = GetDistance(pos1, pos2);
 
-
 		if (radius1 + radius2 >= distance)
 		{
 			return true;
@@ -187,7 +186,16 @@ namespace UTIL
 		return false;
 	}
 
-	
+	static bool IntersectSphere(ST_SPHERE sphere1, ST_SPHERE sphere2)
+	{
+		float distance = GetDistance(sphere1.center, sphere2.center);
+
+		if (sphere1.radius + sphere2.radius >= distance)
+		{
+			return true;
+		}
+		return false;
+	}
 
 	//두 벡터간의 각도 -> 0,0, 방향벡터x, 방향벡터y
 	static float GetAngle(float x1, float z1, float x2, float z2)
