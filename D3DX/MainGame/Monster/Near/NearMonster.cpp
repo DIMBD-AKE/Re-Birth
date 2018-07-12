@@ -28,39 +28,62 @@ void NearMonster::Attack()
 	if (PCHARACTER)
 	{
 		//내가 타겟팅이 되었으면 공격함수가 실행이 될테니 카운트 증가 시작
-		m_nTargetingCount++;
+		//소환몹은 이런거 없다.
+		if (!m_bIsSummon)	m_nTargetingCount++;
 
+		//플레이어 죽으면 기본행동으로
 		if (PCHARACTER->GetIsDead())
 		{
 			m_eState = MS_IDLE;
 			ChangeAni();
 			return;
 		}
+
+		//플레이어와의 거리를 계산하고
 		float length = GetDistance(*m_pModel->GetPosition(), *CHARACTER->GetPosition());
 
-		int a = 10;
-		//공격 가능 사거리까지 하면 될듯
+		//사거리를 벗어나면
 		if (length > RANGE(m_uMonsterStat))
 		{
-			if (m_eState == MS_ATTACK)
+			//필드몹은 A*적용하여 이동
+			if (!m_bIsSummon)
 			{
-				m_eState = MS_MOVEFORATTACK;
-				ChangeAni();
+				if (m_eState == MS_ATTACK)
+				{
+					m_eState = MS_MOVEFORATTACK;
+					ChangeAni();
+				}
+				MoveForAttack();
 			}
-			MoveForAttack();
+			//소환몹은 
+			else
+			{
+				//스태이트와 애니메이션 교체 후 무브함수 실행을 위하여 함수 종료
+				if (m_eState == MS_ATTACK)
+				{
+					m_eState = MS_RUN;
+					ChangeAni();
+				}
+				return;
+			}
 		}
+		//사거리 안에 있으면
 		else
 		{
+			//플레이어와의 방향벡터를 구하고
 			D3DXVECTOR3 dir =
 				*CHARACTER->GetPosition() - *m_pModel->GetPosition();
 
+			//각도를 구하고
 			float angle = GetAngle(0, 0, dir.x, dir.z);
 
 
 			angle -= D3DX_PI / 2;
 
+			//각도만큼 로테이션
 			m_pModel->SetRotation(D3DXVECTOR3(0, angle, 0));
 
+			
 			if (m_eState == MS_MOVEFORATTACK)
 			{
 				m_eState = MS_ATTACK;

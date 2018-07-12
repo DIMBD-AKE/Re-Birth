@@ -168,22 +168,35 @@ void FinalBoss::Attack()
 		Passive();
 	}
 
+	float length = GetDistance(*m_pModel->GetPosition(), *CHARACTER->GetPosition());
 
-	D3DXVECTOR3 dir =
-		*CHARACTER->GetPosition() - *m_pModel->GetPosition();
-
-	float angle = GetAngle(0, 0, dir.x, dir.z);
-
-	angle -= D3DX_PI / 2;
-
-	m_pModel->SetRotation(D3DXVECTOR3(0, angle, 0));
-	//플레이어 공격기능 설정
-	if (m_pModel->IsAnimationPercent(ATKSPEED(m_uMonsterStat)))
+	if (length > RANGE(m_uMonsterStat))
 	{
-		float tatalRate = PHYRATE(m_uMonsterStat) + MAGICRATE(m_uMonsterStat) + CHERATE(m_uMonsterStat);
-		float tatalDamage = tatalRate * ATK(m_uMonsterStat);
-		PCHARACTER->CalculDamage(tatalDamage);
+			if (m_eBossState == BS_ATTACK)
+			{
+				m_eBossState = BS_RUN;
+				ChangeAni();
+			}
+			return;
+		
 	}
+
+
+		D3DXVECTOR3 dir =
+			*CHARACTER->GetPosition() - *m_pModel->GetPosition();
+
+		float angle = GetAngle(0, 0, dir.x, dir.z);
+
+		angle -= D3DX_PI / 2;
+
+		m_pModel->SetRotation(D3DXVECTOR3(0, angle, 0));
+		//플레이어 공격기능 설정
+		if (m_pModel->IsAnimationPercent(ATKSPEED(m_uMonsterStat)))
+		{
+			float tatalRate = PHYRATE(m_uMonsterStat) + MAGICRATE(m_uMonsterStat) + CHERATE(m_uMonsterStat);
+			float tatalDamage = tatalRate * ATK(m_uMonsterStat);
+			PCHARACTER->CalculDamage(tatalDamage);
+		}
 }
 
 void FinalBoss::Move()

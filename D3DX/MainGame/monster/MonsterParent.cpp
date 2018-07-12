@@ -370,6 +370,7 @@ POINT MonsterParent::MoveForAttack()
 	int myIndex = m_pAStar->GetCellIndex(*m_pModel->GetPosition());
 
 	if (DEBUG) { return{ playerIndex, myIndex }; }
+
 	D3DXVECTOR3 dir;
 	//같은 셀에 있으면
 	if (playerIndex == myIndex)
@@ -379,6 +380,10 @@ POINT MonsterParent::MoveForAttack()
 	}
 	else
 	{
+		//assert(playerIndex != -1 && "현재 플레이어가 갈 수 없는 곳을 가려고 합니다.");
+
+		if (playerIndex == -1) return{ -1, -1 };
+
 		m_pAStar->SetCell(myIndex, playerIndex);
 
 		D3DXVECTOR3 nextCell = m_pAStar->GetNextCell();
@@ -395,52 +400,15 @@ POINT MonsterParent::MoveForAttack()
 	D3DXVec3Normalize(&dir, &dir);
 	if (!DEBUG)
 	{
-		//D3DXVECTOR3 dirVector = *m_pModel->GetPosition() + dir;
-		//
-		//D3DXVECTOR3 test = *m_pModel->GetPosition();
 
 		float angle = GetAngle(0, 0, dir.x, dir.z);
 
-		//float x = dir.x - 0;
-		//float y = dir.z - 0;
-		//
-		//float distance = sqrtf(x * x + y * y);
-		//
-		//float angle = acosf(x / distance);
-		//
-		//if (dir.z > 0)
-		//{
-		//	angle = D3DX_PI * 2 - angle;
-		//	if (angle >= D3DX_PI * 2) angle -= D3DX_PI * 2;
-		//}
 
 		angle -= D3DX_PI / 2;
 
 		m_pModel->SetRotation(D3DXVECTOR3(0, angle, 0));
 		m_pModel->SetPosition(*m_pModel->GetPosition() + dir* SPEED(m_uMonsterStat));
 	}
-
-	//char ttest[111];
-	//sprintf_s(ttest, sizeof(ttest), "%f, %f, %f", dir.x, dir.y, dir.z);
-	//TEXT->Add(ttest, 10, 10, 30);
-
-
-	//if (m_eState == MS_RUN)
-	//{
-	//	D3DXVECTOR3 tempPos = *m_pModel->GetPosition() + m_vDir*0.03f;
-	//	tempPos.y = m_pMap->GetHeight(tempPos.x, tempPos.z);
-	//
-	//	//못가는 곳이다.
-	//	if (tempPos.y < 0)
-	//	{
-	//		MoveReset(true);
-	//	}
-	//	else
-	//	{
-	//		m_pModel->SetPosition(tempPos);
-	//	}
-	//
-	//}
 	return{ -1, -1 };
 }
 
