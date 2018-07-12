@@ -657,7 +657,7 @@ void CharacterParant::MGSKill()
 			Potalpos.y = Potalheight;
 			if (D3DXVec3Length(&(playerTempPos - Potalpos)) <= 7.0f)
 			{
-				m_pParticle3->SetPosition(Potalpos - m_vPotalfront * 0.3);
+				m_pParticle3->SetPosition(Potalpos + m_vPotalfront * 0.3);
 			}
 		}
 		else if (Potalheight == - 1)
@@ -673,7 +673,7 @@ void CharacterParant::MGSKill()
 			Potalpos.y = Potalheight;
 			if (D3DXVec3Length(&(playerTempPos- Potalpos)) <= 14.0f)
 			{
-				m_pParticle3->SetPosition(Potalpos + m_vPotalfront * 0.3);
+				m_pParticle3->SetPosition(Potalpos - m_vPotalfront * 0.3);
 			}
 		}
 		else if(Potalheight == -1)
