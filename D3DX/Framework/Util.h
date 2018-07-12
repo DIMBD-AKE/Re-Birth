@@ -208,5 +208,145 @@ namespace UTIL
 		return angle;
 	}
 
+	bool IsCollisionOBB(ST_OBB thisBox, ST_OBB targetBox)
+	{
+		double c[3][3];
+		double absC[3][3];
+		double d[3];
 
+		double r0, r1, r;
+		int i;
+
+		const double cutoff = 0.999999;
+		bool existsParallelPair = false;
+
+		D3DXVECTOR3 diff = thisBox.vCenterPos - targetBox.vCenterPos;
+
+		for (i = 0; i < 3; ++i)
+		{
+			c[0][i] = D3DXVec3Dot(&thisBox.vAxisDir[0], &targetBox.vAxisDir[i]);
+			absC[0][i] = abs(c[0][i]);
+			if (absC[0][i] > cutoff)
+				existsParallelPair = true;
+		}
+		d[0] = D3DXVec3Dot(&diff, &thisBox.vAxisDir[0]);
+		r = abs(d[0]);
+		r0 = thisBox.fAxisLen[0];
+		r1 = targetBox.fAxisLen[0] * absC[0][0] + targetBox.fAxisLen[1] * absC[0][1] + targetBox.fAxisLen[2] * absC[0][2];
+
+		if (r > r0 + r1)
+			return false;
+
+		for (i = 0; i < 3; ++i)
+		{
+			c[1][i] = D3DXVec3Dot(&thisBox.vAxisDir[1], &targetBox.vAxisDir[i]);
+			absC[1][i] = abs(c[1][i]);
+			if (absC[1][i] > cutoff)
+				existsParallelPair = true;
+		}
+
+		d[1] = D3DXVec3Dot(&diff, &thisBox.vAxisDir[1]);
+		r = abs(d[1]);
+		r0 = thisBox.fAxisLen[1];
+		r1 = targetBox.fAxisLen[0] * absC[1][0] + targetBox.fAxisLen[1] * absC[1][1] + targetBox.fAxisLen[2] * absC[1][2];
+
+		if (r > r0 + r1)
+			return false;
+
+		for (i = 0; i < 3; ++i)
+		{
+			c[2][i] = D3DXVec3Dot(&thisBox.vAxisDir[2], &targetBox.vAxisDir[i]);
+			absC[2][i] = abs(c[2][i]);
+			if (absC[2][i] > cutoff)
+				existsParallelPair = true;
+		}
+
+		d[2] = D3DXVec3Dot(&diff, &thisBox.vAxisDir[2]);
+		r = abs(d[2]);
+		r0 = thisBox.fAxisLen[2];
+		r1 = targetBox.fAxisLen[0] * absC[2][0] + targetBox.fAxisLen[1] * absC[2][1] + targetBox.fAxisLen[2] * absC[2][2];
+
+		if (r > r0 + r1)
+			return false;
+
+		r = abs(D3DXVec3Dot(&diff, &targetBox.vAxisDir[0]));
+		r0 = thisBox.fAxisLen[0] * absC[0][0] + thisBox.fAxisLen[1] * absC[1][0] + thisBox.fAxisLen[2] * absC[2][0];
+		r1 = targetBox.fAxisLen[0];
+
+		if (r > r0 + r1)
+			return false;
+
+		r = abs(D3DXVec3Dot(&diff, &targetBox.vAxisDir[1]));
+		r0 = thisBox.fAxisLen[0] * absC[0][1] + thisBox.fAxisLen[1] * absC[1][1] + thisBox.fAxisLen[2] * absC[2][1];
+		r1 = targetBox.fAxisLen[1];
+
+		if (r > r0 + r1)
+			return false;
+
+		r = abs(D3DXVec3Dot(&diff, &targetBox.vAxisDir[2]));
+		r0 = thisBox.fAxisLen[0] * absC[0][2] + thisBox.fAxisLen[1] * absC[1][2] + thisBox.fAxisLen[2] * absC[2][2];
+		r1 = targetBox.fAxisLen[2];
+
+		if (r > r0 + r1)
+			return false;
+
+		if (existsParallelPair == true)
+			return true;
+
+		r = abs(d[2] * c[1][0] - d[1] * c[2][0]);
+		r0 = thisBox.fAxisLen[1] * absC[2][0] + thisBox.fAxisLen[2] * absC[1][0];
+		r1 = targetBox.fAxisLen[1] * absC[0][2] + targetBox.fAxisLen[2] * absC[0][1];
+		if (r > r0 + r1)
+			return false;
+
+		r = abs(d[2] * c[1][1] - d[1] * c[2][1]);
+		r0 = thisBox.fAxisLen[1] * absC[2][1] + thisBox.fAxisLen[2] * absC[1][1];
+		r1 = targetBox.fAxisLen[0] * absC[0][2] + targetBox.fAxisLen[2] * absC[0][0];
+		if (r > r0 + r1)
+			return false;
+
+		r = abs(d[2] * c[1][2] - d[1] * c[2][2]);
+		r0 = thisBox.fAxisLen[1] * absC[2][2] + thisBox.fAxisLen[2] * absC[1][2];
+		r1 = targetBox.fAxisLen[0] * absC[0][1] + targetBox.fAxisLen[1] * absC[0][0];
+		if (r > r0 + r1)
+			return false;
+
+		r = abs(d[0] * c[2][0] - d[2] * c[0][0]);
+		r0 = thisBox.fAxisLen[0] * absC[2][0] + thisBox.fAxisLen[2] * absC[0][0];
+		r1 = targetBox.fAxisLen[1] * absC[1][2] + targetBox.fAxisLen[2] * absC[1][1];
+		if (r > r0 + r1)
+			return false;
+
+		r = abs(d[0] * c[2][1] - d[2] * c[0][1]);
+		r0 = thisBox.fAxisLen[0] * absC[2][1] + thisBox.fAxisLen[2] * absC[0][1];
+		r1 = targetBox.fAxisLen[0] * absC[1][2] + targetBox.fAxisLen[2] * absC[1][0];
+		if (r > r0 + r1)
+			return false;
+
+		r = abs(d[0] * c[2][2] - d[2] * c[0][2]);
+		r0 = thisBox.fAxisLen[0] * absC[2][2] + thisBox.fAxisLen[2] * absC[0][2];
+		r1 = targetBox.fAxisLen[0] * absC[1][1] + targetBox.fAxisLen[1] * absC[1][0];
+		if (r > r0 + r1)
+			return false;
+
+		r = abs(d[1] * c[0][0] - d[0] * c[1][0]);
+		r0 = thisBox.fAxisLen[0] * absC[1][0] + thisBox.fAxisLen[1] * absC[0][0];
+		r1 = targetBox.fAxisLen[1] * absC[2][2] + targetBox.fAxisLen[2] * absC[2][1];
+		if (r > r0 + r1)
+			return false;
+
+		r = abs(d[1] * c[0][1] - d[0] * c[1][1]);
+		r0 = thisBox.fAxisLen[0] * absC[1][1] + thisBox.fAxisLen[1] * absC[0][1];
+		r1 = targetBox.fAxisLen[0] * absC[2][2] + targetBox.fAxisLen[2] * absC[2][0];
+		if (r > r0 + r1)
+			return false;
+
+		r = abs(d[1] * c[0][2] - d[0] * c[1][2]);
+		r0 = thisBox.fAxisLen[0] * absC[1][2] + thisBox.fAxisLen[1] * absC[0][2];
+		r1 = targetBox.fAxisLen[0] * absC[2][1] + targetBox.fAxisLen[1] * absC[2][0];
+		if (r > r0 + r1)
+			return false;
+
+		return true;
+	}
 };
