@@ -150,6 +150,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Framework\Dialogue.h" />
     <ClInclude Include="MainGame\Monster\Boss\FinalBoss.h" />
     <ClInclude Include="MainGame\Monster\Boss\BossParent.h" />
     <ClInclude Include="Framework\EffectObject.h" />
@@ -215,6 +216,7 @@
     <ClInclude Include="MainGame\Item\ItemHeaderIndex.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Framework\Dialogue.cpp" />
     <ClCompile Include="MainGame\Monster\Boss\FinalBoss.cpp" />
     <ClCompile Include="MainGame\Monster\Boss\BossParent.cpp" />
     <ClCompile Include="Framework\EffectObject.cpp" />
