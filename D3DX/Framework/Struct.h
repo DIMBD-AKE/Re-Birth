@@ -102,6 +102,7 @@ struct ST_EFFECT
 	bool isRX;
 	bool isRY;
 	bool isRZ;
+	bool isSphere;
 	float height;
 	float time;
 	float sc0, sc1, sc2;

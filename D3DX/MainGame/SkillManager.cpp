@@ -717,10 +717,10 @@ SkillParent SkillManager::SkillParse(string name, string path)
 			tok = strtok_s(NULL, "\t\n", &context);
 			sscanf_s(tok, "%d %d %d", &effect.isRX, &effect.isRY, &effect.isRZ);
 		}
-		if (strcmp(tok, "EFFECT_SOLID") == 0)
+		if (strcmp(tok, "EFFECT_SPHERE") == 0)
 		{
 			tok = strtok_s(NULL, "\t\n", &context);
-			sscanf_s(tok, "%d", &effect.isSolid);
+			sscanf_s(tok, "%d", &effect.isSphere);
 		}
 		if (strcmp(tok, "EFFECT_HEIGHT") == 0)
 		{

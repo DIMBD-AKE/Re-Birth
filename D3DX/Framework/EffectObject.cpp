@@ -24,6 +24,10 @@ void EffectObject::Init(ST_EFFECT info, D3DXVECTOR3 pos)
 	else
 		m_isFlash = false;
 
+	m_stInfo.rot.x = D3DXToRadian(m_stInfo.rot.x);
+	m_stInfo.rot.y = D3DXToRadian(m_stInfo.rot.y);
+	m_stInfo.rot.z = D3DXToRadian(m_stInfo.rot.z);
+
 	if (m_stInfo.isRX)
 		m_stInfo.rot.x = FRand(-D3DX_PI / 2, D3DX_PI);
 	if (m_stInfo.isRY)
