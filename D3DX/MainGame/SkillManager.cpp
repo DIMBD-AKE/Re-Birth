@@ -419,6 +419,8 @@ void Skill::Prepare(CharacterParant * pCharacter, MonsterParent* pMonster, vecto
 
 	if (m_eDamageProcess == SKILLP_SINGLE)
 		m_stSkill.nDamageCount = 1;
+	if (m_stSkill.fDamageInterval < 0.01)
+		m_stSkill.fDamageInterval = 0.01;
 
 	m_stSkill.fAngle = D3DXToRadian(m_stSkill.fAngle);
 
