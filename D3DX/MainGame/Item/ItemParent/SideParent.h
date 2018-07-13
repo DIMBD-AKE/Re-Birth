@@ -5,5 +5,8 @@ class SideParent : public ItemParent
 public:
 	SideParent();
 	~SideParent();
+
+	virtual SideParent* Clone() override;
+
 };
 

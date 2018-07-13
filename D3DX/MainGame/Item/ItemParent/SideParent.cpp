@@ -14,3 +14,8 @@ SideParent::SideParent()
 SideParent::~SideParent()
 {
 }
+
+SideParent * SideParent::Clone()
+{
+	return new SideParent(*this);
+}

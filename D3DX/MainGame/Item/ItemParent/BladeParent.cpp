@@ -13,3 +13,8 @@ BladeParent::BladeParent()
 BladeParent::~BladeParent()
 {
 }
+
+BladeParent * BladeParent::Clone()
+{
+	return new BladeParent(*this);
+}

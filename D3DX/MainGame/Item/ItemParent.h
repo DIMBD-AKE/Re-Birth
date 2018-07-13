@@ -35,6 +35,7 @@ protected:
 public:
 	ItemParent();
 	virtual ~ItemParent();
+	virtual ItemParent* Clone() = 0;
 
 	virtual void SetUp();
 	virtual void Use(CharacterParant & pCharacter);

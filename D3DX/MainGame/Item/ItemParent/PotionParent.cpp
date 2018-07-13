@@ -12,6 +12,11 @@ PotionParent::~PotionParent()
 {
 }
 
+PotionParent * PotionParent::Clone()
+{
+	return new PotionParent(*this);
+}
+
 void PotionParent::Use(CharacterParant& pCharacter)
 {
 	//pCharacter.m_Status->chr.nCurrentHP += m_fHealAmount;

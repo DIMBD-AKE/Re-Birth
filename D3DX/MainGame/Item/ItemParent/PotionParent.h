@@ -8,8 +8,9 @@ protected:
 
 public:
 	PotionParent();
-
 	virtual ~PotionParent();
+
+	virtual PotionParent* Clone() override;
 
 	virtual void Use(CharacterParant& pCharacter);
 };

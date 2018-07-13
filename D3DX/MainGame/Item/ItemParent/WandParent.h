@@ -7,6 +7,8 @@ public:
 	WandParent();
 	virtual ~WandParent();
 
+	virtual WandParent* Clone() override;
+
 	virtual void Skill1(CharacterParant* pCharacter, ST_DAMAGE pStatus, MonsterManager* pMonsterManager) override;
 };
 

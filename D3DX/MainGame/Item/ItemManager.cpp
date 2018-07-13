@@ -167,7 +167,7 @@ ItemParent* ItemManager::GetItem(int keyNum)
 
 	assert(miterId != m_mIdItem.end() && "매니저에 없는 아이템입니다");
 
-	return miterId->second;
+	return miterId->second->Clone();
 }
 
 char* ItemManager::GetToken()
