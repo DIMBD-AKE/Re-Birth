@@ -8,7 +8,7 @@ class CharacterParant;
 class AStar;
 class DropManager;
 class UIObject;
-class SkillParent;
+class Skill;
 
 enum MON_STATE{
 	MS_IDLE,			//제자리에 있는 상태
@@ -76,7 +76,7 @@ protected:
 	vector<int> m_vItemID;
 
 	//각각의 몬스터 스킬
-	SkillParent * m_pSkill;
+	Skill * m_pSkill;
 
 	ST_SKILL m_stSkill;
 	/*
