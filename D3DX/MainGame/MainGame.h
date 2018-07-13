@@ -3,6 +3,7 @@
 class MainGame
 {
 private:
+	bool		m_isWire;
 
 public:
 	MainGame();
