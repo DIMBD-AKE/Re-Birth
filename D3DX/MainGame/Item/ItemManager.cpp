@@ -81,6 +81,10 @@ void ItemManager::Load(IN const char * szFolder, IN const char * szFile)
 			Ap->m_pTexture = TEXTUREMANAGER->AddTexture(keyName, path);
 			Ap->m_imageInfo = TEXTUREMANAGER->GetInfo(keyName);
 			m_mIdItem.insert(make_pair(Ap->GetID(), Ap));
+			if (Ap->GetRarity() == "Normal") m_mIdItem[Ap->GetID()]->SetParticle(NULL);
+			else if (Ap->GetRarity() == "Rare") m_mIdItem[Ap->GetID()]->SetParticle(PARTICLE->GetParticle("RARE"));
+			else if (Ap->GetRarity() == "Magic") m_mIdItem[Ap->GetID()]->SetParticle(PARTICLE->GetParticle("MAGIC"));
+			else if (Ap->GetRarity() == "Unique") m_mIdItem[Ap->GetID()]->SetParticle(PARTICLE->GetParticle("UNIQUE"));
 			int a = 0;
 		}
 		
@@ -111,10 +115,7 @@ void ItemManager::Load(IN const char * szFolder, IN const char * szFile)
 			sscanf_s(szTemp, " %s", rarity, 1024);
 			string rt(rarity);
 			Ap->SetRarity(rt);
-			if (rt == "Normal") Ap->SetParticle(NULL);
-			else if (rt == "Rare") Ap->SetParticle(PARTICLE->GetParticle("RARE"));
-			else if (rt == "Magic") Ap->SetParticle(PARTICLE->GetParticle("MAGIC"));
-			else if (rt == "Unique") Ap->SetParticle(PARTICLE->GetParticle("UNIQUE"));
+			
 		}
 
 		else if (c == 'I')
@@ -239,10 +240,9 @@ int ItemManager::FindItem(int keyNum)
 void ItemManager::Destroy()
 {
 	mItItemList mIterItem;
-	
+		
 	for (mIterItem = m_mIdItem.begin(); mIterItem != m_mIdItem.end(); ++mIterItem)
 	{
-		
-		SAFE_DELETE(mIterItem->second);
+ 		SAFE_DELETE(mIterItem->second);
 	}
 }
