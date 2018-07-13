@@ -5,7 +5,7 @@
 #include "../Framework/dirent.h"
 #include "../Framework/EffectObject.h"
 
-void SkillParent::DamageSingle()
+void Skill::DamageSingle()
 {
 	m_nDamageCount++;
 
@@ -20,7 +20,7 @@ void SkillParent::DamageSingle()
 	}
 }
 
-void SkillParent::DamageMultiple()
+void Skill::DamageMultiple()
 {
 	if (m_fElapseTime < m_fPrevTime + m_stSkill.fDamageInterval) return;
 
@@ -37,7 +37,7 @@ void SkillParent::DamageMultiple()
 	}
 }
 
-void SkillParent::Buff()
+void Skill::Buff()
 {
 	if (m_stSkill.fBuffTime < 0)
 	{
@@ -60,7 +60,7 @@ void SkillParent::Buff()
 	}
 }
 
-void * SkillParent::GetSingleTarget()
+void * Skill::GetSingleTarget()
 {
 	D3DXVECTOR3 posChr = *m_pCharacter->GetCharacter()->GetPosition();
 	D3DXVECTOR3 posMon = *m_pMonster->GetModel()->GetPosition();
@@ -125,7 +125,7 @@ void * SkillParent::GetSingleTarget()
 	return NULL;
 }
 
-vector<void*> SkillParent::GetMultipleTarget()
+vector<void*> Skill::GetMultipleTarget()
 {
 	D3DXVECTOR3 posChr = *m_pCharacter->GetCharacter()->GetPosition();
 	D3DXVECTOR3 posMon = *m_pMonster->GetModel()->GetPosition();
@@ -184,7 +184,7 @@ vector<void*> SkillParent::GetMultipleTarget()
 	return vecTarget;
 }
 
-void SkillParent::ParticleThis()
+void Skill::ParticleThis()
 {
 	float fTimeOffset = m_stSkill.fDamageDelay + m_stSkill.fDamageInterval * m_stSkill.nDamageCount;
 
@@ -230,7 +230,7 @@ void SkillParent::ParticleThis()
 	}
 }
 
-void SkillParent::ParticleTarget()
+void Skill::ParticleTarget()
 {
 	float fTimeOffset = m_stSkill.fDamageDelay + m_stSkill.fDamageInterval * m_stSkill.nDamageCount;
 
@@ -277,7 +277,7 @@ void SkillParent::ParticleTarget()
 	}
 }
 
-void SkillParent::ParticleDamage()
+void Skill::ParticleDamage()
 {
 	if (m_fElapseTime > m_stSkill.fDamageDelay + m_stSkill.fParticleTime ||
 		m_nDamageCount >= m_stSkill.nDamageCount)
@@ -324,19 +324,19 @@ void SkillParent::ParticleDamage()
 	}
 }
 
-void SkillParent::EffectDamage()
+void Skill::EffectDamage()
 {
 }
 
-SkillParent::SkillParent()
+Skill::Skill()
 {
 }
 
-SkillParent::SkillParent(SKILL_PROCESS damage, SKILL_PROCESS target,
+Skill::Skill(SKILL_PROCESS damage, SKILL_PROCESS target,
 	SKILL_EFFECT particleP, SKILL_EFFECT effectP, string particle, ST_EFFECT effect,
 	LPDIRECT3DTEXTURE9 iconTex, string name)
 {
-	ZeroMemory(this, sizeof(SkillParent));
+	ZeroMemory(this, sizeof(Skill));
 	m_eDamageProcess = damage;
 	m_eTargetProcess = target;
 	m_eParticleProcess = particleP;
@@ -353,7 +353,7 @@ SkillParent::SkillParent(SKILL_PROCESS damage, SKILL_PROCESS target,
 		TEXTUREMANAGER->AddTexture("Particle Sphere", "Texture/Particle/Sphere.png"), m_sParticle);
 }
 
-SkillParent::~SkillParent()
+Skill::~Skill()
 {
 	if (!m_vecParticle.empty())
 	{
@@ -369,7 +369,7 @@ SkillParent::~SkillParent()
 	}
 }
 
-void SkillParent::Prepare(CharacterParant * pCharacter, MonsterParent* pMonster, vector<MonsterParent*> vecMonster, ST_SKILL skill, SKILL_OWNER owner)
+void Skill::Prepare(CharacterParant * pCharacter, MonsterParent* pMonster, vector<MonsterParent*> vecMonster, ST_SKILL skill, SKILL_OWNER owner)
 {
 	m_pCharacter = pCharacter;
 	m_pMonster = pMonster;
@@ -400,7 +400,7 @@ void SkillParent::Prepare(CharacterParant * pCharacter, MonsterParent* pMonster,
 	m_vecTargetDir.clear();
 }
 
-void SkillParent::Trigger()
+void Skill::Trigger()
 {
 	if (!m_isProcess)
 	{
@@ -480,7 +480,7 @@ void SkillParent::Trigger()
 	}
 }
 
-void SkillParent::Update()
+void Skill::Update()
 {
 	if (!m_isProcess) return;
 
@@ -527,7 +527,7 @@ void SkillParent::Update()
 	m_fElapseTime += TIME->GetElapsedTime();
 }
 
-void SkillParent::Render()
+void Skill::Render()
 {
 	if (!m_isProcess) return;
 
@@ -553,7 +553,7 @@ void SkillParent::Render()
 		e->Render();
 }
 
-void SkillParent::Debug()
+void Skill::Debug()
 {
 	TEXT->Add("진행시간 : " + to_string(m_fElapseTime), 10, 20, 20, "", 0xFFFFFFFF);
 	TEXT->Add("이전시간 : " + to_string(m_fPrevTime), 10, 40, 20, "", 0xFFFFFFFF);
@@ -608,7 +608,7 @@ void SkillManager::LoadSkill()
 			{
 				if (strcmp(fileType, "sk") == 0)
 				{
-					SkillParent skill = SkillParse(ent->d_name, dirPath + ent->d_name + ".sk");
+					Skill skill = SkillParse(ent->d_name, dirPath + ent->d_name + ".sk");
 					m_mapSkill.insert(make_pair(ent->d_name, skill));
 				}
 			}
@@ -616,12 +616,12 @@ void SkillManager::LoadSkill()
 	}
 }
 
-SkillParent SkillManager::SkillParse(string name, string path)
+Skill SkillManager::SkillParse(string name, string path)
 {
 	FILE * fp;
 	fopen_s(&fp, path.c_str(), "r");
 
-	SkillParent skill;
+	Skill skill;
 
 	SKILL_PROCESS damage, target;
 	SKILL_EFFECT particleP = SKILLE_THIS, effectP = SKILLE_THIS;
@@ -749,17 +749,17 @@ SkillParent SkillManager::SkillParse(string name, string path)
 	if (effectP == SKILLE_TOTARGET || effectP == SKILLE_TOTHIS)
 		effect.dir = D3DXVECTOR3(0, 0, 1);
 
-	skill = SkillParent(damage, target, particleP, effectP, particle, effect, iconTex, name);
+	skill = Skill(damage, target, particleP, effectP, particle, effect, iconTex, name);
 
 	return skill;
 }
 
-SkillParent * SkillManager::GetSkill(string keyName)
+Skill * SkillManager::GetSkill(string keyName)
 {
 	if (m_mapSkill.find(keyName) == m_mapSkill.end())
 		return NULL;
 	
-	SkillParent * skill = new SkillParent;
+	Skill * skill = new Skill;
 	*skill = m_mapSkill[keyName];
 
 	return skill;
