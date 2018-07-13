@@ -17,6 +17,7 @@ ItemParent::~ItemParent()
 {
 	SAFE_DELETE(m_pItemStatus);
 	SAFE_DELETE(m_pParticle);
+	m_pTexture = NULL;
 	int a = 0;
 }
 

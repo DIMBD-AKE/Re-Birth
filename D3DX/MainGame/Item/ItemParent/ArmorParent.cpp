@@ -12,3 +12,8 @@ ArmorParent::ArmorParent()
 ArmorParent::~ArmorParent()
 {
 }
+
+ArmorParent * ArmorParent::Clone()
+{
+	return new ArmorParent(*this);
+}

@@ -5,5 +5,7 @@ class BladeParent : public ItemParent
 public:
 	BladeParent();
 	~BladeParent();
+
+	virtual BladeParent* Clone() override;
 };
 
