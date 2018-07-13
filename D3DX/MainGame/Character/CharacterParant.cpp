@@ -615,19 +615,19 @@ void CharacterParant::SkillIconAlpha()
 void CharacterParant::PlayerProgressBar()
 {
 	float tempF = (float)m_Status->chr.nCurrentHP / m_Status->chr.nMaxHp;
-
-
 	m_pHPBar->SetScale(D3DXVECTOR3(tempF, 1, 1));
-
-	D3DXVECTOR3 UIPos = *m_pCharacter->GetPosition();
-	
-	auto temp = Convert3DTo2D(UIPos);
-	UIPos.x = temp.x;
-	UIPos.y = temp.y;
-	UIPos.z = 0;
+	D3DXVECTOR3 UIPos = D3DXVECTOR3(1350, 520, 0);
 	m_pHPBar->SetPosition(UIPos);
-
 	m_pHPBar->Update();
+
+
+	float tempS = (float)m_Status->chr.nCurrentStam / m_Status->chr.nMaxStam;
+	m_pStaminaBar->SetScale(D3DXVECTOR3(tempS, 1, 1));
+	D3DXVECTOR3 StaPos = D3DXVECTOR3(1350, 535, 0);
+	m_pStaminaBar->SetPosition(StaPos);
+	m_pStaminaBar->Update();
+	
+
 }
 
 void CharacterParant::MGSKill()
@@ -764,6 +764,9 @@ CharacterParant::CharacterParant()
 	//프로그래스바
 	TEXTUREMANAGER->AddTexture("플레이어_프론트바", "Texture/PlayerProgressBar/frontBar.jpg");
 	TEXTUREMANAGER->AddTexture("플레이어_백바", "Texture/PlayerProgressBar/backBar.jpg");
+
+	TEXTUREMANAGER->AddTexture("스테미나_프론트바", "Texture/PlayerProgressBar/staminaFrontBar.jpg");
+	TEXTUREMANAGER->AddTexture("스테미나_백바", "Texture/PlayerProgressBar/staminaBackBar.jpg");
 }
 
 
@@ -773,6 +776,24 @@ CharacterParant::~CharacterParant()
 	SAFE_DELETE(m_pParticle);
 	SAFE_DELETE(m_pParticle2);
 	SAFE_DELETE(m_pParticle3);
+	SAFE_DELETE(m_pParticle4);
+
+	SAFE_DELETE(m_pUIobj);
+	SAFE_DELETE(m_pHPBar);
+	SAFE_DELETE(m_pStaminaBar);
+	SAFE_DELETE(m_pUIDamage[0]);
+	SAFE_DELETE(m_pUIDamage[1]);
+	SAFE_DELETE(m_pUIDamage[2]);
+	SAFE_DELETE(m_pUIDamage[3]);
+	SAFE_DELETE(m_pUIDamage[4]);
+	SAFE_DELETE(m_pUIDamage[5]);
+	SAFE_DELETE(m_pUIDamage[6]);
+	SAFE_DELETE(m_pUIDamage[7]);
+	SAFE_DELETE(m_pUIDamage[8]);
+	SAFE_DELETE(m_pUIDamage[9]);
+	SAFE_DELETE(m_pMonsterManager);
+	SAFE_DELETE(m_pInventory);
+	
 }
 
 void CharacterParant::Init(Map* map, CHARSELECT order, MonsterManager* pMonsterManager)
@@ -842,21 +863,23 @@ void CharacterParant::Init(Map* map, CHARSELECT order, MonsterManager* pMonsterM
 	m_pUIobj = new UIObject;
 	//프로그래스바
 	m_pHPBar = new UIObject;
+	m_pStaminaBar = new UIObject;
 
 	m_pHPBar->SetTexture(TEXTUREMANAGER->GetTexture("플레이어_프론트바"));
-	D3DXVECTOR3 UIPos = *m_pCharacter->GetPosition();
-
-	auto temp = Convert3DTo2D(UIPos);
-	UIPos.x = temp.x;
-	UIPos.y = temp.y;
-	UIPos.z = 0;
-
+	D3DXVECTOR3 UIPos = D3DXVECTOR3(1350, 520, 0);
 	m_pHPBar->SetPosition(UIPos);
 	UIObject* backBar = new UIObject;
 	backBar->SetPosition(D3DXVECTOR3(0, 0, 0.1));
 	backBar->SetTexture(TEXTUREMANAGER->GetTexture("플레이어_백바"));
-
 	m_pHPBar->AddChild(backBar);
+
+	m_pStaminaBar->SetTexture(TEXTUREMANAGER->GetTexture("스테미나_프론트바"));
+	D3DXVECTOR3 StaPos = D3DXVECTOR3(1350, 535, 0);
+	m_pStaminaBar->SetPosition(startPos);
+	UIObject* staBackBar = new UIObject;
+	staBackBar->SetPosition(D3DXVECTOR3(0, 0, 0.1));
+	staBackBar->SetTexture(TEXTUREMANAGER->GetTexture("스테미나_백바"));
+	m_pStaminaBar->AddChild(staBackBar);
 
 	//데미지 UI
 	for (int i = 0; i < 10; i++)

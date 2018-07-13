@@ -136,7 +136,7 @@ void Character_Sword::Render()
 		//포트레이트 
 		m_pUIobj->Render();
 		m_pHPBar->Render();
-
+		m_pStaminaBar->Render();
 		AppearDamage();
 		
 		CharacterParant::Render();
