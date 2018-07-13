@@ -37,7 +37,7 @@ public:
 
 	void TimeReset();
 	void Update();
-	void ForceUpdate(int count);
+	void ForceUpdate(int count, float time);
 
 	void PreRender();
 	void Render();
@@ -64,7 +64,7 @@ public:
 	void World();
 	void TimeReset() { m_pParticleSystem->TimeReset(); }
 	void Update() { m_pParticleSystem->Update(); }
-	void ForceUpdate(int count) { m_pParticleSystem->ForceUpdate(count); }
+	void ForceUpdate(int count, float time) { m_pParticleSystem->ForceUpdate(count, time); }
 	void Render() { m_pParticleSystem->Render(); }
 	void SetRegen(bool regen) { m_pParticleSystem->SetRegen(regen); }
 };

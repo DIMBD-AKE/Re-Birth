@@ -148,7 +148,7 @@ void ParticleSystem::Update()
 	}
 }
 
-void ParticleSystem::ForceUpdate(int count)
+void ParticleSystem::ForceUpdate(int count, float time)
 {
 	for (int i = 0; i < count; i++)
 	{
@@ -167,15 +167,15 @@ void ParticleSystem::ForceUpdate(int count)
 			}
 
 			(*iter)->vPos +=
-				(*iter)->vVelocity * 0.1f +
-				(*iter)->vAcceleration * 0.1f +
-				(*iter)->vGravity * 0.1f;
+				(*iter)->vVelocity * time +
+				(*iter)->vAcceleration * time +
+				(*iter)->vGravity * time;
 
-			(*iter)->vAcceleration += (*iter)->vAcceleration * 0.1f;
+			(*iter)->vAcceleration += (*iter)->vAcceleration * time;
 
-			(*iter)->fCurrentRadiusSpeed += (*iter)->fRadiusSpeed * 0.1f;
+			(*iter)->fCurrentRadiusSpeed += (*iter)->fRadiusSpeed * time;
 
-			(*iter)->fAge += 0.1f;
+			(*iter)->fAge += time;
 
 			if ((*iter)->fAge > (*iter)->fLifeTime)
 				*(*iter) = ResetParticle((*iter)->nLoop);
