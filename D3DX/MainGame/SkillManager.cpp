@@ -326,6 +326,33 @@ void Skill::ParticleDamage()
 
 void Skill::EffectDamage()
 {
+	for (int i = 0; i < m_vecTarget.size(); i++)
+	{
+		for (int j = 0; j < m_vecEffect.size(); j++)
+		{
+			ST_SPHERE sphere = m_vecEffect[j]->GetBoundSphere();
+			if (m_eOwner == SKILLO_CHARACTER)
+			{
+				if (IntersectSphere(sphere, ((MonsterParent*)m_vecTarget[i])->GetModel()->GetBoundSphere()))
+				{
+					if (m_fElapseTime < m_fPrevTime + m_stSkill.fDamageInterval) return;
+					m_fPrevTime = m_fElapseTime;
+					m_nDamageCount++;
+					((MonsterParent*)m_vecTarget[i])->CalculDamage(m_stSkill.fDamage);
+				}
+			}
+			else
+			{
+				if (IntersectSphere(sphere, ((CharacterParant*)m_vecTarget[i])->GetCharacter()->GetBoundSphere()))
+				{
+					if (m_fElapseTime < m_fPrevTime + m_stSkill.fDamageInterval) return;
+					m_fPrevTime = m_fElapseTime;
+					m_nDamageCount++;
+					((CharacterParant*)m_vecTarget[i])->CalculDamage(m_stSkill.fDamage);
+				}
+			}
+		}
+	}
 }
 
 Skill::Skill()

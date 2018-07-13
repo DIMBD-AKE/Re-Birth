@@ -49,6 +49,17 @@ void EffectObject::Init(ST_EFFECT info, D3DXVECTOR3 pos)
 	float widthH = desc.Width * rate / 2;
 	float heightH = desc.Height * rate / 2;
 
+	m_stSphere.radius = heightH;
+	m_stSphere.center = D3DXVECTOR3(0, heightH, 0);
+
+	m_stOBB.fAxisLen[0] = widthH;
+	m_stOBB.fAxisLen[1] = heightH;
+	m_stOBB.fAxisLen[2] = 0.5;
+	m_stOBB.vAxisDir[0] = D3DXVECTOR3(1, 0, 0);
+	m_stOBB.vAxisDir[1] = D3DXVECTOR3(0, 1, 0);
+	m_stOBB.vAxisDir[2] = D3DXVECTOR3(0, 0, 1);
+	m_stOBB.vCenterPos = D3DXVECTOR3(0, heightH, 0);
+
 	ST_PCT_VERTEX v;
 	v.c = 0xFFFFFFFF;
 	v.t = D3DXVECTOR2(0, 1);
@@ -113,6 +124,9 @@ void EffectObject::Update()
 
 void EffectObject::Render()
 {
+	if (DEBUG)
+		Debug();
+
 	DEVICE->SetTransform(D3DTS_WORLD, &m_matWorld);
 	DEVICE->SetTexture(0, m_stInfo.tex);
 	DEVICE->SetRenderState(D3DRS_LIGHTING, false);
@@ -139,4 +153,60 @@ void EffectObject::Render()
 bool EffectObject::IsFinish()
 {
 	return (m_stInfo.time <= m_fElapse);
+}
+
+void EffectObject::Debug()
+{
+	DWORD prevFillMode;
+	DEVICE->GetRenderState(D3DRS_FILLMODE, &prevFillMode);
+	DEVICE->SetTexture(0, NULL);
+	DEVICE->SetRenderState(D3DRS_LIGHTING, false);
+	DEVICE->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+
+	// BoundSphere
+	LPD3DXMESH mesh;
+	D3DXMATRIX matT;
+	D3DXCreateSphere(DEVICE, GetBoundSphere().radius, 8, 8, &mesh, NULL);
+	D3DXVECTOR3 pos = GetBoundSphere().center;
+	D3DXMatrixTranslation(&matT, pos.x, pos.y, pos.z);
+	DEVICE->SetTransform(D3DTS_WORLD, &matT);
+	mesh->DrawSubset(0);
+	SAFE_RELEASE(mesh);
+
+	DEVICE->SetRenderState(D3DRS_FILLMODE, prevFillMode);
+}
+
+ST_SPHERE EffectObject::GetBoundSphere()
+{
+	float t = m_fElapse / m_stInfo.time;
+	float scale = pow(1 - t, 2) * m_stInfo.sc0 +
+		2 * t *(1 - t) * m_stInfo.sc1 +
+		pow(t, 2) * m_stInfo.sc2;
+
+	ST_SPHERE sphere = m_stSphere;
+	sphere.radius *= scale;
+	sphere.center += m_vPos;
+
+	return sphere;
+}
+
+ST_OBB EffectObject::GetOBB()
+{
+	float t = m_fElapse / m_stInfo.time;
+	float scale = pow(1 - t, 2) * m_stInfo.sc0 +
+		2 * t *(1 - t) * m_stInfo.sc1 +
+		pow(t, 2) * m_stInfo.sc2;
+
+	D3DXMATRIX matR;
+	D3DXMatrixRotationYawPitchRoll(&matR, m_stInfo.rot.y, m_stInfo.rot.x, m_stInfo.rot.z);
+
+	ST_OBB obb = m_stOBB;
+	for (int i = 0; i < 3; i++)
+		obb.fAxisLen[i] *= scale;
+	for (int i = 0; i < 3; i++)
+		D3DXVec3TransformNormal(&obb.vAxisDir[i], &obb.vAxisDir[i], &matR);
+
+	obb.vCenterPos += m_vPos;
+
+	return obb;
 }

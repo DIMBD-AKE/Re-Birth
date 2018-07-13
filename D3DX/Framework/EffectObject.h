@@ -12,6 +12,9 @@ private:
 	D3DXMATRIX			m_matWorld;
 	float				m_fElapse;
 	bool				m_isFlash;
+	
+	ST_OBB				m_stOBB;
+	ST_SPHERE			m_stSphere;
 
 public:
 	EffectObject();
@@ -21,5 +24,10 @@ public:
 	void Update();
 	void Render();
 	bool IsFinish();
+
+	void Debug();
+
+	ST_SPHERE GetBoundSphere();
+	ST_OBB GetOBB();
 };
 
