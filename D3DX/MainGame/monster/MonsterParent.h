@@ -1,6 +1,6 @@
 #pragma once
 #include "../Status.h"
-#define MAXITEMNUM 4
+#include "../SkillManager.h"
 //몬스터들의 기본 틀이 되는 클래스이다.
 
 class Map;
@@ -8,6 +8,7 @@ class CharacterParant;
 class AStar;
 class DropManager;
 class UIObject;
+class SkillParent;
 
 enum MON_STATE{
 	MS_IDLE,			//제자리에 있는 상태
@@ -74,8 +75,32 @@ protected:
 	//드랍 아이템 목록
 	vector<int> m_vItemID;
 
+	//각각의 몬스터 스킬
+	SkillParent * m_pSkill;
+
+	ST_SKILL m_stSkill;
+	/*
+	int			nMaxTarget;
+	float		fMinLength;
+	float		fMaxLength;
+	float		fAngle;
+
+	float		fDamage;
+	int			nDamageCount;
+	float		fDamageInterval;
+	float		fDamageDelay;
+
+	float		fBuffTime;
+	STATUS		buffStatus;
+
+	float		fYOffset;
+	bool		isAutoRot;
+	float		fParticleTime;
+	float		fEffectTime;
+	*/
 protected:
 	virtual void SetupStat();
+	virtual void SetupSkill();
 
 	virtual void Attack();
 	//몬스터 스킬함수
@@ -85,6 +110,8 @@ protected:
 	virtual void SummonMove();
 	//몬스터 별 드랍아이템 세팅함수
 	virtual void DropItemSetup();
+	
+	
 	//움직임 관련 리셋함수 (반대편으로 가야하냐)
 	void MoveReset(bool isReverse, int max= 0 , int min= 0);
 	//공격할수 있는 거리까지 가는 함수

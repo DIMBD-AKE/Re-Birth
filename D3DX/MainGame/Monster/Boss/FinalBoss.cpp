@@ -18,7 +18,7 @@ FinalBoss::~FinalBoss()
 void FinalBoss::SetupBoss(Map* map, D3DXVECTOR3 pos)
 {
 	//모델 바꿔야함
-	MODELMANAGER->AddModel("보스", "Model/Enemy/Boss/", "Boss.x", MODELTYPE_X);
+	MODELMANAGER->AddModel("보스", "Model/Enemy/Boss/", "BOSS.x", MODELTYPE_X);
 	m_pModel = MODELMANAGER->GetModel("보스", MODELTYPE_X);
 
 	BossParent::SetupBoss(map, pos);

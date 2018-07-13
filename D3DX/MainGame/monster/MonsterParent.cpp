@@ -2,6 +2,7 @@
 #include "MonsterParent.h"
 #include "../AStar/AStar.h"
 #include "../Item/DropManager.h"
+#include "../SkillManager.h"
 
 MonsterParent::MonsterParent()
 : m_pModel(NULL)
@@ -18,6 +19,7 @@ MonsterParent::~MonsterParent()
 	m_pMap = NULL;
 	m_ppCharacter = NULL;
 	m_pDropManager = NULL;
+	m_pSkill = NULL;
 	/*
 	GET(Model*, m_pModel, Model);
 	SET(CharacterParant**, m_ppCharacter, Character);
@@ -45,7 +47,9 @@ void MonsterParent::Setup(Map* map, D3DXVECTOR3 spawnPos, bool isSummon)
 	m_pModel->SetPosition(D3DXVECTOR3(spawnPos.x, m_pMap->GetHeight(spawnPos.x, spawnPos.z), spawnPos.z));
 	ChangeAni();
 
+	
 	SetupStat();
+	SetupSkill();
 	DropItemSetup();
 
 	m_pHPBar = new UIObject;
@@ -108,7 +112,10 @@ void MonsterParent::SetupStat()
 
 void MonsterParent::Update()
 {
-	
+	if (INPUT->KeyDown('L'))
+	{
+		m_eState = MS_SKILL;
+	}
 	if (m_bIsTargeting)
 	{
 		float tempF = (float)CURRENTHP(m_uMonsterStat) / MAXHP(m_uMonsterStat);
@@ -439,5 +446,9 @@ void MonsterParent::ItemDrop()
 			break;
 		}
 	}
+
+}
+void MonsterParent::SetupSkill()
+{
 
 }

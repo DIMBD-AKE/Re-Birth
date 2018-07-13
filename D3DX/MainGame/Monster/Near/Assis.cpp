@@ -81,7 +81,7 @@ void Assis::SetupStat()
 //근접 몬스터 스킬함수
 void Assis::Skill()
 {
-
+	
 }
 
 //근접 몬스터 기본 이동함수

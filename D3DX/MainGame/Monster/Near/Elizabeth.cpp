@@ -47,6 +47,32 @@ void Elizabeth::Setup(Map* map, D3DXVECTOR3 spawnPos, bool isSummon)
 
 	m_pModel->CreateBound(box);
 	m_pModel->SetBoundSphere(m_pModel->GetOrigBoundSphere().center, 100.0f);
+
+	//스킬
+	m_pSkill = SKILL->GetSkill("Test Skill");
+
+	/*
+	if (INPUT->KeyDown('R'))
+	{
+		ST_SKILL skill;
+		ZeroMemory(&skill, sizeof(ST_SKILL));
+		skill.fDamage = 10;	//타당 데미지
+		skill.fDamageDelay = 0;	//첫타 시작시간
+		skill.fDamageInterval = 0.1; //주기
+		skill.fMaxLength = 10;	//사거리
+		skill.nDamageCount = 10;	//횟수
+		//스킬 사용후 바뀐 값들 처리
+		m_pSkill->Prepare(m_pCharacter,
+			m_pMM->GetMonsterVector()[0], 
+			m_pMM->GetMonsterVector(),	//
+			skill,			//내가 갖고 있는 스킬
+			SKILLO_MONSTER); //스킬 사용대상자
+	}
+
+	//스킬사용
+	if (INPUT->KeyDown('T'))
+		m_pSkill->Trigger();
+	*/
 }
 
 void Elizabeth::SetupStat()
@@ -93,6 +119,39 @@ void Elizabeth::SetupStat()
 		float	fScale;			//공격 범위
 	*/
 }
+
+void Elizabeth::SetupSkill()
+{
+	//m_pSkill = new SkillParent;
+	ZeroMemory(&m_stSkill, sizeof(ST_SKILL));
+	m_stSkill.fDamage = 10;
+	m_stSkill.fDamage = 0;
+	m_stSkill.fDamageInterval = 0.1;
+	m_stSkill.fMaxLength = 10;
+	m_stSkill.nDamageCount = 10;
+}
+	/*
+	if (INPUT->KeyDown('R'))
+	{
+		ST_SKILL skill;
+		ZeroMemory(&skill, sizeof(ST_SKILL));
+		skill.fDamage = 10;	//타당 데미지
+		skill.fDamageDelay = 0;	//첫타 시작시간
+		skill.fDamageInterval = 0.1; //주기
+		skill.fMaxLength = 10;	//사거리
+		skill.nDamageCount = 10;	//횟수
+		//스킬 사용후 바뀐 값들 처리
+		m_pSkill->Prepare(m_pCharacter,
+			m_pMM->GetMonsterVector()[0], 
+			m_pMM->GetMonsterVector(),	//
+			skill,			//내가 갖고 있는 스킬
+			SKILLO_MONSTER); //스킬 사용대상자
+	}
+
+	//스킬사용
+	if (INPUT->KeyDown('T'))
+		m_pSkill->Trigger();
+	*/
 
 //void Elizabeth::Attack()
 //{
@@ -153,7 +212,19 @@ void Elizabeth::SetupStat()
 
 void Elizabeth::Skill()
 {
+	vector<MonsterParent*> tt;
+	m_pSkill->Prepare(PCHARACTER,
+		this,
+		tt,
+		m_stSkill,
+		SKILLO_MONSTER);
 
+	m_pSkill->Trigger();
+
+	if (m_pModel->IsAnimationEnd())
+	{
+		m_eState = MS_IDLE;
+	}
 }
 
 //void Elizabeth::Move()

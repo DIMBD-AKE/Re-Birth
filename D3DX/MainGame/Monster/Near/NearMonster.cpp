@@ -23,6 +23,11 @@ void NearMonster::SetupStat()
 
 }
 
+void NearMonster::SetupSkill()
+{
+
+}
+
 void NearMonster::Attack()
 {
 	if (PCHARACTER)

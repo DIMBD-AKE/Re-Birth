@@ -10,7 +10,7 @@ MagicMonster::MagicMonster()
 
 MagicMonster::~MagicMonster()
 {
-
+	SAFE_DELETE(m_pMagicCircle);
 }
 
 void MagicMonster::Setup(Map* map, D3DXVECTOR3 spawnPos, bool isSummon)

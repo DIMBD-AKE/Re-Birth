@@ -7,6 +7,7 @@ class NearMonster :
 protected:
 
 	virtual void SetupStat() override;
+	virtual void SetupSkill() override;
 
 	//근접 몬스터 공격함수
 	virtual void Attack() override;

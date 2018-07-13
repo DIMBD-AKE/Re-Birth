@@ -30,6 +30,7 @@ MonsterManager::~MonsterManager()
 
 	m_pMap = NULL;
 	m_ppCharacter = NULL;
+
 }
 
 void MonsterManager::Setup(Map* map, CharacterParant** character)
@@ -107,7 +108,7 @@ void MonsterManager::MakeMonster(DropManager* pDropManager)
 	MakeNerisa(pDropManager);
 	
 	MakeNike(pDropManager);
-
+	
 	//MakeMiddleBoss(pDropManager);
 	//
 	MakeFinalBoss(pDropManager);

@@ -5,6 +5,7 @@
 #include "../Character/CharacterParant.h"
 #include "../Item/ItemList.h"
 #include "../../Framework/UIController.h"
+#include "../SkillManager.h"
 
 #define PCHARACTER (*m_ppCharacter)
 #define CHARACTER (*m_ppCharacter)->GetCharacter()
