@@ -40,6 +40,9 @@ void Nike::Setup(Map* map, D3DXVECTOR3 spawnPos, bool isSummon)
 
 	m_pModel->CreateBound(box);
 	m_pModel->SetBoundSphere(m_pModel->GetOrigBoundSphere().center, 100.0f);
+
+	//½ºÅ³
+	m_pSkill = SKILL->GetSkill("Nike Skill");
 }
 
 void Nike::SetupStat()
