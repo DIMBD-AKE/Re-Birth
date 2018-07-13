@@ -291,8 +291,18 @@ void Inventory::ShowInfo(ItemParent * pItem, D3DXVECTOR3 pos)
 	}
 
 	// ÀÌ¸§
-	TEXT->Add(pItem->GetName(), pos.x + vNamePos.x, pos.y + vNamePos.y, 40 * m_fSlotResize,
-		"³ª´®½ºÄù¾î Regular", 0xFFFFFFFF);
+	if (pItem->GetRarity() == RARITY_NORMAL)
+		TEXT->Add(pItem->GetName(), pos.x + vNamePos.x, pos.y + vNamePos.y, 40 * m_fSlotResize,
+			"³ª´®½ºÄù¾î Regular", 0xFFFFFFFF);
+	if (pItem->GetRarity() == RARITY_MAGIC)
+		TEXT->Add(pItem->GetName(), pos.x + vNamePos.x, pos.y + vNamePos.y, 40 * m_fSlotResize,
+			"³ª´®½ºÄù¾î Regular", 0xFFC3FCAB);
+	if (pItem->GetRarity() == RARITY_RARE)
+		TEXT->Add(pItem->GetName(), pos.x + vNamePos.x, pos.y + vNamePos.y, 40 * m_fSlotResize,
+			"³ª´®½ºÄù¾î Regular", 0xFF627DE0);
+	if (pItem->GetRarity() == RARITY_UNIQUE)
+		TEXT->Add(pItem->GetName(), pos.x + vNamePos.x, pos.y + vNamePos.y, 40 * m_fSlotResize,
+			"³ª´®½ºÄù¾î Regular", 0xFFF2CB68);
 
 	// ¼³¸í
 	char * desc = _strdup(pItem->GetDesc().c_str());
@@ -454,6 +464,7 @@ void Inventory::Render()
 				D3DXMatrixTranslation(&matT, rc.left, rc.top, 0.5);
 				SPRITE->SetTransform(&(matS * matT));
 				SPRITE->Draw(m_pSlotOverTex, NULL, NULL, NULL, 0xFFFFFFFF);
+				ShowInfo(m_pEquip[i].item, pos - D3DXVECTOR3(100 * m_fSlotResize, 50 * m_fSlotResize, 0.2));
 			}
 			// ½ºÅÝ
 			char temp[64];
