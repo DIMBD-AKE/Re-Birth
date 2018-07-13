@@ -32,14 +32,14 @@ void Character_Sword::Init(Map* map, CHARSELECT order, MonsterManager* pMonsterM
 		m_Status->chr.fMagicRate = 1.0f;
 		m_Status->chr.fPhyRate = 1.0f;
 		m_Status->chr.fSpeed = 0.32f;
-		m_Status->chr.nAtk = 60;
+		m_Status->chr.nAtk = 100;
 		m_Status->chr.nCurrentHP = 10000;
 		m_Status->chr.nCurrentStam = 50;
 		m_Status->chr.nDef = 2;
 		m_Status->chr.nMaxHp = 10000;
 		m_Status->chr.nMaxStam = 50;
 		m_Status->chr.fRange = 3.0f;
-		m_Status->chr.fScale = 5.0f;
+		m_Status->chr.fScale = 1.0f;
 		CharacterParant::Init(map, order, pMonsterManager);
 		
 		
