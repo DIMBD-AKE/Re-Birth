@@ -319,7 +319,8 @@ Inventory::~Inventory()
 {
 	for (int i = 0; i < m_ptInvSize.y; i++)
 		for (int j = 0; j < m_ptInvSize.x; j++)
-			SAFE_DELETE(m_vecInventory[i][j].item);
+			if (m_vecInventory[i][j].item)
+				SAFE_DELETE(m_vecInventory[i][j].item);
 
 	for (int i = 0; i < EQUIP_END; i++)
 		SAFE_DELETE(m_pEquip[i].item);
@@ -585,9 +586,6 @@ STATUS Inventory::GetEquipStat()
 
 bool Inventory::AddItem(ItemParent* item)
 {
-	ItemParent * pItem = item;
-	/*pItem = item;*/
-
 	// 중복 검사
 	for (int i = 0; i < m_ptInvSize.y; i++)
 	{
@@ -595,10 +593,11 @@ bool Inventory::AddItem(ItemParent* item)
 		{
 			if (m_vecInventory[i][j].item)
 			{
-				if (m_vecInventory[i][j].item->GetID() == pItem->GetID() &&
+				if (m_vecInventory[i][j].item->GetID() == item->GetID() &&
 					m_vecInventory[i][j].item->GetEquipType() == EQUIP_POTION)
 				{
 					m_vecInventory[i][j].count++;
+					SAFE_DELETE(item);
 					return true;
 				}
 			}
@@ -612,13 +611,14 @@ bool Inventory::AddItem(ItemParent* item)
 		{
 			if (!m_vecInventory[i][j].item)
 			{
-				m_vecInventory[i][j].item = pItem;
+				m_vecInventory[i][j].item = item;
 				m_vecInventory[i][j].count = 1;
 				return true;
 			}
 		}
 	}
 
-	SAFE_DELETE(pItem);
+	SAFE_DELETE(item);
+
 	return false;
 }

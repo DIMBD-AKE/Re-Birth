@@ -14,7 +14,10 @@ void Skill::DamageSingle()
 	for (int i = 0; i < m_vecTarget.size(); i++)
 	{
 		if (m_eOwner == SKILLO_CHARACTER)
-			((MonsterParent*)m_vecTarget[i])->CalculDamage(m_stSkill.fDamage);
+		{
+			if (!((MonsterParent*)m_vecTarget[i])->GetIsResPawn())
+				((MonsterParent*)m_vecTarget[i])->CalculDamage(m_stSkill.fDamage);
+		}
 		else
 			((CharacterParant*)m_vecTarget[i])->CalculDamage(m_stSkill.fDamage);
 	}
@@ -31,7 +34,10 @@ void Skill::DamageMultiple()
 	for (int i = 0; i < m_vecTarget.size(); i++)
 	{
 		if (m_eOwner == SKILLO_CHARACTER)
-			((MonsterParent*)m_vecTarget[i])->CalculDamage(m_stSkill.fDamage);
+		{
+			if (!((MonsterParent*)m_vecTarget[i])->GetIsResPawn())
+				((MonsterParent*)m_vecTarget[i])->CalculDamage(m_stSkill.fDamage);
+		}
 		else
 			((CharacterParant*)m_vecTarget[i])->CalculDamage(m_stSkill.fDamage);
 	}
@@ -304,7 +310,8 @@ void Skill::ParticleDamage()
 			{
 				if (IntersectSphere(sphere, ((MonsterParent*)m_vecTarget[i])->GetModel()->GetBoundSphere()))
 				{
-					if (m_fElapseTime < m_fPrevTime + m_stSkill.fDamageInterval) return;
+					if (m_fElapseTime < m_fPrevTime + m_stSkill.fDamageInterval ||
+						((MonsterParent*)m_vecTarget[i])->GetIsResPawn()) continue;
 					m_fPrevTime = m_fElapseTime;
 					m_nDamageCount++;
 					((MonsterParent*)m_vecTarget[i])->CalculDamage(m_stSkill.fDamage);
@@ -314,7 +321,7 @@ void Skill::ParticleDamage()
 			{
 				if (IntersectSphere(sphere, ((CharacterParant*)m_vecTarget[i])->GetCharacter()->GetBoundSphere()))
 				{
-					if (m_fElapseTime < m_fPrevTime + m_stSkill.fDamageInterval) return;
+					if (m_fElapseTime < m_fPrevTime + m_stSkill.fDamageInterval) continue;
 					m_fPrevTime = m_fElapseTime;
 					m_nDamageCount++;
 					((CharacterParant*)m_vecTarget[i])->CalculDamage(m_stSkill.fDamage);
@@ -335,17 +342,21 @@ void Skill::EffectDamage()
 			{
 				if (IntersectSphere(sphere, ((MonsterParent*)m_vecTarget[i])->GetModel()->GetBoundSphere()))
 				{
-					if (m_fElapseTime < m_fPrevTime + m_stSkill.fDamageInterval) return;
-					m_fPrevTime = m_fElapseTime;
-					m_nDamageCount++;
-					((MonsterParent*)m_vecTarget[i])->CalculDamage(m_stSkill.fDamage);
+					if (CollisionOBB(m_vecEffect[j]->GetOBB(), ((MonsterParent*)m_vecTarget[i])->GetModel()->GetBoundBox().obb))
+					{
+						if (m_fElapseTime < m_fPrevTime + m_stSkill.fDamageInterval ||
+							((MonsterParent*)m_vecTarget[i])->GetIsResPawn()) continue;
+						m_fPrevTime = m_fElapseTime;
+						m_nDamageCount++;
+						((MonsterParent*)m_vecTarget[i])->CalculDamage(m_stSkill.fDamage);
+					}
 				}
 			}
 			else
 			{
 				if (IntersectSphere(sphere, ((CharacterParant*)m_vecTarget[i])->GetCharacter()->GetBoundSphere()))
 				{
-					if (m_fElapseTime < m_fPrevTime + m_stSkill.fDamageInterval) return;
+					if (m_fElapseTime < m_fPrevTime + m_stSkill.fDamageInterval) continue;
 					m_fPrevTime = m_fElapseTime;
 					m_nDamageCount++;
 					((CharacterParant*)m_vecTarget[i])->CalculDamage(m_stSkill.fDamage);
