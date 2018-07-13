@@ -17,6 +17,7 @@ ItemParent::~ItemParent()
 {
 	SAFE_DELETE(m_pItemStatus);
 	SAFE_DELETE(m_pParticle);
+	int a = 0;
 }
 
 void ItemParent::SetUp()
@@ -91,9 +92,6 @@ void ItemParent::Render(D3DXVECTOR3 pos, float size)
 	SPRITE->SetTransform(&mat);
 
 	SPRITE->Draw(m_pTexture, NULL, NULL, NULL, 0xffffffff);
-
-
-	if(m_pParticle) m_pParticle->Render();
 
 }
 

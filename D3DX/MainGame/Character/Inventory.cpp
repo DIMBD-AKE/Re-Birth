@@ -583,10 +583,10 @@ STATUS Inventory::GetEquipStat()
 	return status;
 }
 
-bool Inventory::AddItem(ItemParent item)
+bool Inventory::AddItem(ItemParent* item)
 {
 	ItemParent * pItem = new ItemParent;
-	*pItem = item;
+	pItem = item;
 
 	// 중복 검사
 	for (int i = 0; i < m_ptInvSize.y; i++)

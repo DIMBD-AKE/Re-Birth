@@ -25,6 +25,12 @@ void ItemManager::SetUp()
 	Load("MainGame/Item/Data", "MageArmor.txt");
 	Load("MainGame/Item/Data", "ArcherArmor.txt");
 	Load("MainGame/Item/Data", "ValkyrieArmor.txt");
+	Load("MainGame/Item/Data", "Item-Potion.txt");
+	Load("MainGame/Item/Data", "Weapon-Arrow.txt");
+	Load("MainGame/Item/Data", "Weapon-Blade.txt");
+	Load("MainGame/Item/Data", "Weapon-Side.txt");
+	Load("MainGame/Item/Data", "Weapon-Staff.txt");
+	Load("MainGame/Item/Data", "Weapon-TwoHandSword.txt");	
 }
 
 void ItemManager::Load(IN const char * szFolder, IN const char * szFile)
@@ -48,9 +54,12 @@ void ItemManager::Load(IN const char * szFolder, IN const char * szFile)
 		{
 			string path = GetToken();
 			if(path == "Armor") Ap = new ArmorParent;
-			else if (path == "Sword") Ap = new SwordParent;
+			else if (path == "TwoHandSword") Ap = new SwordParent;
+			else if (path == "Blade") Ap = new BladeParent;
 			else if (path == "Arrow") Ap = new GunParent;
 			else if (path == "Staff") Ap = new WandParent;
+			else if (path == "Side") Ap = new SideParent;
+			else if (path == "Potion") Ap = new PotionParent;
 			Ap->SetUp();
 			//ZeroMemory(Ap, sizeof(ItemParent));
 			
@@ -230,9 +239,10 @@ int ItemManager::FindItem(int keyNum)
 void ItemManager::Destroy()
 {
 	mItItemList mIterItem;
-
+	
 	for (mIterItem = m_mIdItem.begin(); mIterItem != m_mIdItem.end(); ++mIterItem)
 	{
+		
 		SAFE_DELETE(mIterItem->second);
 	}
 }

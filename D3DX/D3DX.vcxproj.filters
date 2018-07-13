@@ -219,6 +219,12 @@
     <ClInclude Include="MainGame\SkillManager.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="MainGame\Item\ItemParent\SideParent.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="MainGame\Item\ItemParent\BladeParent.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -375,6 +381,12 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="MainGame\SkillManager.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="MainGame\Item\ItemParent\SideParent.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="MainGame\Item\ItemParent\BladeParent.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

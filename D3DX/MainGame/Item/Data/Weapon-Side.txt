@@ -18,70 +18,48 @@
 //	EQUIP_END
 //};
 
-# Staff
-N Staff
+# Side
+N Side
 R Normal
 D "d"
-I 341
+I 351
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 0 0 0.0 0.0 0.0
 E 0
-K NormalStaff
-T "Texture/Item/Item Num 341 Normal Staff.jpg"
+K NormalSide
+T "Texture/Item/Item Num 351 Normal Side.jpg"
 
-# Staff
-N Staff
+# Side
+N Side
 R Magic
 D "d"
-I 241
+I 251
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 0 0 0.0 0.0 0.0
 E 0
-K MagicStaff
-T "Texture/Item/Item Num 241 Magic Staff.jpg"
+K MagicSide
+T "Texture/Item/Item Num 251 Magic Side.jpg"
 
-# Staff
-N Staff
+# Side
+N Side
 R Rare
 D "d"
-I 141
+I 151
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 0 0 0.0 0.0 0.0
 E 0
-K RareStaff
-T "Texture/Item/Item Num 141 Rare Staff.jpg"
+K RareSide
+T "Texture/Item/Item Num 151 Rare Side.jpg"
 
-# Staff
-N Staff
+# Side
+N Side
 R Unique
 D "d"
-I 041
+I 051
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 0 0 0.0 0.0 0.0
 E 0
-K UniqueStaff
-T "Texture/Item/Item Num 041 Unique Staff.jpg"
+K UniqueSide
+T "Texture/Item/Item Num 051 Unique Side.jpg"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-
-# Staff
-N Ove
-R Rare
-D "d"
-I 142
-//(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 0.0 0.0 0.0 0 0 0 0 0 0.0 0.0 0.0
-E 0
-K RareOve
-T "Texture/Item/Item Num 143 Rare Ove.jpg"
-
-# Staff
-N Ove
-R Unique
-D "d"
-I 041
-//(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 0.0 0.0 0.0 0 0 0 0 0 0.0 0.0 0.0
-E 0
-K UniqueOve
-T "Texture/Item/Item Num 043 Unique Ove.jpg"

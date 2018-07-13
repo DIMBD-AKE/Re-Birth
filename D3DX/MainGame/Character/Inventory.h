@@ -85,6 +85,6 @@ public:
 	ItemParent * GetWeapon();
 	ItemParent * GetPotion();
 	STATUS GetEquipStat();
-	bool AddItem(ItemParent item);
+	bool AddItem(ItemParent* item);
 };
 

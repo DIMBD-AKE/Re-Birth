@@ -18,70 +18,74 @@
 //	EQUIP_END
 //};
 
-# Staff
-N Staff
+# Potion
+N Potion
 R Normal
 D "d"
-I 341
+I 301
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 0 0 0.0 0.0 0.0
-E 0
-K NormalStaff
-T "Texture/Item/Item Num 341 Normal Staff.jpg"
+E 5
+K Normal HealthPotion
+T "Texture/Item/Item Num 301 Normal HealthPotion.jpg"
 
-# Staff
-N Staff
+# Potion
+N HealthHighPoition
 R Magic
 D "d"
-I 241
+I 201
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 0 0 0.0 0.0 0.0
-E 0
-K MagicStaff
-T "Texture/Item/Item Num 241 Magic Staff.jpg"
-
-# Staff
-N Staff
-R Rare
-D "d"
-I 141
-//(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 0.0 0.0 0.0 0 0 0 0 0 0.0 0.0 0.0
-E 0
-K RareStaff
-T "Texture/Item/Item Num 141 Rare Staff.jpg"
-
-# Staff
-N Staff
-R Unique
-D "d"
-I 041
-//(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 0.0 0.0 0.0 0 0 0 0 0 0.0 0.0 0.0
-E 0
-K UniqueStaff
-T "Texture/Item/Item Num 041 Unique Staff.jpg"
+E 5
+K Magic HealthHighPoition
+T "Texture/Item/Item Num 201 Magic HealthHighPoition.jpg"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-# Staff
-N Ove
+# Potion
+N RecoveryBook
+R Normal
+D "d"
+I 303
+//(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
+S 0.0 0.0 0.0 0 0 0 0 0 0.0 0.0 0.0
+E 5
+K Normal Recovery Book
+T "Texture/Item/Item Num 303 Normal RecoveryBook.jpg"
+
+# Potion
+N RecoveryBook
+R Magic
+D "d"
+I 203
+//(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
+S 0.0 0.0 0.0 0 0 0 0 0 0.0 0.0 0.0
+E 5
+K Magic Recovery Book
+T "Texture/Item/Item Num 203 Magic RecoveryBook.jpg"
+
+# Potion
+N RecoveryBook
 R Rare
 D "d"
-I 142
+I 103
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 0 0 0.0 0.0 0.0
-E 0
-K RareOve
-T "Texture/Item/Item Num 143 Rare Ove.jpg"
+E 5
+K Rare Recovery Book
+T "Texture/Item/Item Num 103 Rare RecoveryBook.jpg"
 
-# Staff
-N Ove
-R Unique
+# Potion
+N RecoveryBook
+R Unique 
 D "d"
-I 041
+I 3
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 0 0 0.0 0.0 0.0
-E 0
-K UniqueOve
-T "Texture/Item/Item Num 043 Unique Ove.jpg"
+E 5
+K Unique Recovery Book
+T "Texture/Item/Item Num 003 Unique RecoveryBook.jpg"
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
