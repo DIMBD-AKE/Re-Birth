@@ -82,6 +82,21 @@ void ItemParent::SetStatusZero()
 	ZeroMemory(m_pItemStatus, sizeof(STATUS));
 }
 
+void ItemParent::SetStatus(STATUS stat)
+{
+		m_pItemStatus->item.fAgi = stat.item.fAgi;
+		m_pItemStatus->item.fAtkSpeed = stat.item.fAtkSpeed;
+		m_pItemStatus->item.fCoolTime1 = stat.item.fCoolTime1;
+		m_pItemStatus->item.fCoolTime2 = stat.item.fCoolTime2;
+		m_pItemStatus->item.fHit = stat.item.fHit;
+		m_pItemStatus->item.fSpeed = stat.item.fSpeed;
+		m_pItemStatus->item.nAtk = stat.item.nAtk;
+		m_pItemStatus->item.nDef = stat.item.nDef;
+		m_pItemStatus->item.nHp = stat.item.nHp;
+		m_pItemStatus->item.nSkillAtk1 = stat.item.nSkillAtk1;
+		m_pItemStatus->item.nSkillAtk2 = stat.item.nSkillAtk2;
+}
+
 void ItemParent::Render(D3DXVECTOR3 pos, float size)
 {
 	D3DXMATRIX	mat;

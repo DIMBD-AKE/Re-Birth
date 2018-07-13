@@ -109,10 +109,13 @@ void ItemManager::Load(IN const char * szFolder, IN const char * szFile)
 			fgets(szTemp, 1024, m_fp);
 
 			char rarity[1024];
-			sscanf_s(szTemp, " %s", rarity, 1024);
+			sscanf_s(szTemp, " %s", rarity, 1024);			
 			string rt(rarity);
-			Ap->SetRarity(rt);
-			
+			if (rt == "Normal") Ap->SetRarity(RARITY_NORMAL);
+			else if (rt == "Magic") Ap->SetRarity(RARITY_MAGIC);
+			else if (rt == "Rare") Ap->SetRarity(RARITY_RARE);
+			else if (rt == "Unique") Ap->SetRarity(RARITY_UNIQUE);
+	
 		}
 
 		else if (c == 'I')
@@ -134,7 +137,7 @@ void ItemManager::Load(IN const char * szFolder, IN const char * szFile)
 				&st->item.fAtkSpeed, &st->item.fCoolTime1, &st->item.fCoolTime2,
 				&st->item.nSkillAtk1, &st->item.nSkillAtk2, &st->item.nAtk, &st->item.nDef,
 				&st->item.nHp, &st->item.fAgi, &st->item.fHit, &st->item.fSpeed);
-			Ap->SetItemStat(st);
+			Ap->SetStatus(*st);
 		}
 		else if (c == 'E')
 		{
@@ -167,11 +170,12 @@ ItemParent* ItemManager::GetItem(int keyNum)
 
 	
 	ItemParent* rt = miterId->second->Clone();
-
-	if (miterId->second->GetRarity() == "Normal") 	rt->SetParticle(NULL);
-	else if (miterId->second->GetRarity() == "Rare") rt->SetParticle(PARTICLE->GetParticle("RARE"));
-	else if (miterId->second->GetRarity() == "Magic") rt->SetParticle(PARTICLE->GetParticle("MAGIC"));
-	else if (miterId->second->GetRarity() == "Unique") rt->SetParticle(PARTICLE->GetParticle("UNIQUE"));
+	rt->SetUp();
+	if (miterId->second->GetRarity() == RARITY_NORMAL) 	rt->SetParticle(NULL);
+	else if (miterId->second->GetRarity() == RARITY_RARE) rt->SetParticle(PARTICLE->GetParticle("RARE"));
+	else if (miterId->second->GetRarity() == RARITY_MAGIC) rt->SetParticle(PARTICLE->GetParticle("MAGIC"));
+	else if (miterId->second->GetRarity() == RARITY_UNIQUE) rt->SetParticle(PARTICLE->GetParticle("UNIQUE"));
+	rt->SetStatus(*(miterId->second->GetItemStat()));
 
 	return rt;
 }

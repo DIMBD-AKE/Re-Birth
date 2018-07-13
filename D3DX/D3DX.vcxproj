@@ -150,12 +150,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="MainGame\Item\ItemParent\BladeParent.h" />
-    <ClInclude Include="MainGame\Item\ItemParent\ArmorParent.h" />
-    <ClInclude Include="MainGame\Item\ItemParent\GunParent.h" />
-    <ClInclude Include="MainGame\Item\ItemParent\PotionParent.h" />
-    <ClInclude Include="MainGame\Item\ItemParent\SwordParent.h" />
-    <ClInclude Include="MainGame\Item\ItemParent\WandParent.h" />
     <ClInclude Include="MainGame\Monster\Boss\FinalBoss.h" />
     <ClInclude Include="MainGame\Monster\Boss\BossParent.h" />
     <ClInclude Include="Framework\EffectObject.h" />
@@ -214,7 +208,6 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Framework\Manager\SceneManager.h" />
     <ClInclude Include="MainGame\Scene\SC_Test.h" />
-    <ClInclude Include="MainGame\Item\ItemParent\SideParent.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Framework\Manager\TextureManager.h" />
@@ -222,12 +215,6 @@
     <ClInclude Include="MainGame\Item\ItemHeaderIndex.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="MainGame\Item\ItemParent\BladeParent.cpp" />
-    <ClCompile Include="MainGame\Item\ItemParent\ArmorParent.cpp" />
-    <ClCompile Include="MainGame\Item\ItemParent\GunParent.cpp" />
-    <ClCompile Include="MainGame\Item\ItemParent\PotionParent.cpp" />
-    <ClCompile Include="MainGame\Item\ItemParent\SwordParent.cpp" />
-    <ClCompile Include="MainGame\Item\ItemParent\WandParent.cpp" />
     <ClCompile Include="MainGame\Monster\Boss\FinalBoss.cpp" />
     <ClCompile Include="MainGame\Monster\Boss\BossParent.cpp" />
     <ClCompile Include="Framework\EffectObject.cpp" />
@@ -272,7 +259,6 @@
     <ClCompile Include="MainGame\AStar\PathFind.cpp" />
     <ClCompile Include="MainGame\Monster\Boss\MiddleBoss.cpp" />
     <ClCompile Include="MainGame\SkillManager.cpp" />
-    <ClCompile Include="MainGame\Item\ItemParent\SideParent.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
