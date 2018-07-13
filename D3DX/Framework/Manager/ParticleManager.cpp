@@ -148,6 +148,41 @@ void ParticleSystem::Update()
 	}
 }
 
+void ParticleSystem::ForceUpdate(int count, float time)
+{
+	for (int i = 0; i < count; i++)
+	{
+		auto iter = m_lAttribute.begin();
+		for (; iter != m_lAttribute.end(); iter++)
+		{
+			if (!(*iter)->isAlive) continue;
+
+			float dist = D3DXVec3Length(&((*iter)->vGravityPos - (*iter)->vPos));
+			if (dist > 1.0f && dist < (*iter)->fGravityRadius)
+			{
+				D3DXVECTOR3 dir = (*iter)->vGravityPos - (*iter)->vPos;
+				D3DXVec3Normalize(&dir, &dir);
+				float f = (*iter)->fGravityForce * (m_fParticleSize / pow(dist, 2));
+				(*iter)->vGravity += dir * f;
+			}
+
+			(*iter)->vPos +=
+				(*iter)->vVelocity * time +
+				(*iter)->vAcceleration * time +
+				(*iter)->vGravity * time;
+
+			(*iter)->vAcceleration += (*iter)->vAcceleration * time;
+
+			(*iter)->fCurrentRadiusSpeed += (*iter)->fRadiusSpeed * time;
+
+			(*iter)->fAge += time;
+
+			if ((*iter)->fAge > (*iter)->fLifeTime)
+				*(*iter) = ResetParticle((*iter)->nLoop);
+		}
+	}
+}
+
 void ParticleSystem::PreRender()
 {
 	DEVICE->SetRenderState(D3DRS_LIGHTING, false);

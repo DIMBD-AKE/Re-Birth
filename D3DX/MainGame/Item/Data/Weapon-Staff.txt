@@ -65,10 +65,60 @@ T "Texture/Item/Item Num 041 Unique Staff.jpg"
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 # Staff
-N Ove
+N Wand
+R Normal
+D "d"
+I 342
+//(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
+S 0.0 0.0 0.0 0 0 0 0 0 0.0 0.0 0.0
+E 0
+K NormalWand
+T "Texture/Item/Item Num 341 Normal Staff.jpg"
+
+# Staff
+N Wand
+R Magic
+D "d"
+I 242
+//(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
+S 0.0 0.0 0.0 0 0 0 0 0 0.0 0.0 0.0
+E 0
+K MagicWand
+T "Texture/Item/Item Num 241 Magic Staff.jpg"
+
+# Staff
+N Wand
 R Rare
 D "d"
 I 142
+//(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
+S 0.0 0.0 0.0 0 0 0 0 0 0.0 0.0 0.0
+E 0
+K RareWand
+T "Texture/Item/Item Num 141 Rare Staff.jpg"
+
+# Staff
+N Wand
+R Unique
+D "d"
+I 042
+//(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
+S 0.0 0.0 0.0 0 0 0 0 0 0.0 0.0 0.0
+E 0
+K UniqueWand
+T "Texture/Item/Item Num 041 Unique Staff.jpg"
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+# Staff
+N Ove
+R Rare
+D "d"
+I 143
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 0 0 0.0 0.0 0.0
 E 0
@@ -79,7 +129,7 @@ T "Texture/Item/Item Num 143 Rare Ove.jpg"
 N Ove
 R Unique
 D "d"
-I 041
+I 043
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 0 0 0.0 0.0 0.0
 E 0
