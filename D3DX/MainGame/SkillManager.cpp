@@ -3,6 +3,7 @@
 #include "monster\MonsterParent.h"
 #include "Character\CharacterParant.h"
 #include "../Framework/dirent.h"
+#include "../Framework/EffectObject.h"
 
 void SkillParent::DamageSingle()
 {
@@ -323,11 +324,7 @@ void SkillParent::ParticleDamage()
 	}
 }
 
-void SkillParent::EffectThis()
-{
-}
-
-void SkillParent::EffectTarget()
+void SkillParent::EffectDamage()
 {
 }
 
@@ -358,12 +355,18 @@ SkillParent::SkillParent(SKILL_PROCESS damage, SKILL_PROCESS target,
 
 SkillParent::~SkillParent()
 {
-	for (auto p : m_vecParticle)
-		SAFE_DELETE(p);
-	m_vecParticle.clear();
-	for (auto e : m_vecEffect)
-		SAFE_DELETE(e);
-	m_vecEffect.clear();
+	if (!m_vecParticle.empty())
+	{
+		for (auto p : m_vecParticle)
+			SAFE_DELETE(p);
+		m_vecParticle.clear();
+	}
+	if (!m_vecEffect.empty())
+	{
+		for (auto e : m_vecEffect)
+			SAFE_DELETE(e);
+		m_vecEffect.clear();
+	}
 }
 
 void SkillParent::Prepare(CharacterParant * pCharacter, MonsterParent* pMonster, vector<MonsterParent*> vecMonster, ST_SKILL skill, SKILL_OWNER owner)
@@ -379,6 +382,8 @@ void SkillParent::Prepare(CharacterParant * pCharacter, MonsterParent* pMonster,
 
 	m_stSkill.fAngle = D3DXToRadian(m_stSkill.fAngle);
 
+	m_stEffect.time = m_stSkill.fEffectTime;
+
 	m_fElapseTime = 0;
 	m_fPrevTime = 0;
 	m_nDamageCount = 0;
@@ -390,6 +395,7 @@ void SkillParent::Prepare(CharacterParant * pCharacter, MonsterParent* pMonster,
 	for (auto e : m_vecEffect)
 		SAFE_DELETE(e);
 	m_vecEffect.clear();
+
 	m_vecTarget.clear();
 	m_vecTargetDir.clear();
 }
@@ -411,11 +417,47 @@ void SkillParent::Trigger()
 
 		for (int i = 0; i < m_vecTarget.size(); i++)
 		{
-			m_vecParticle.push_back(PARTICLE->GetParticle(m_sParticle));
-			if (m_eOwner == SKILLO_CHARACTER)
-				m_vecParticle.back()->SetPosition(*m_pCharacter->GetCharacter()->GetPosition());
-			else
-				m_vecParticle.back()->SetPosition(*m_pMonster->GetModel()->GetPosition());
+			if (m_eParticleProcess != SKILLE_NONE)
+			{
+				m_vecParticle.push_back(PARTICLE->GetParticle(m_sParticle));
+				if (m_eOwner == SKILLO_CHARACTER)
+					m_vecParticle.back()->SetPosition(*m_pCharacter->GetCharacter()->GetPosition());
+				else
+					m_vecParticle.back()->SetPosition(*m_pMonster->GetModel()->GetPosition());
+			}
+			if (m_eEffectProcess != SKILLE_NONE)
+			{
+				EffectObject * object = new EffectObject;
+				if (m_eOwner == SKILLO_CHARACTER)
+				{
+					if (m_eEffectProcess == SKILLE_TOTARGET)
+						m_stEffect.dir = *((MonsterParent*)m_vecTarget[i])->GetModel()->GetPosition() -
+							*m_pCharacter->GetCharacter()->GetPosition();
+					if (m_eEffectProcess == SKILLE_TOTHIS)
+						m_stEffect.dir = *m_pCharacter->GetCharacter()->GetPosition() - 
+						*((MonsterParent*)m_vecTarget[i])->GetModel()->GetPosition();
+
+					if (m_eEffectProcess == SKILLE_THIS || m_eEffectProcess == SKILLE_TOTARGET)
+						object->Init(m_stEffect, *m_pCharacter->GetCharacter()->GetPosition());
+					else
+						object->Init(m_stEffect, *((MonsterParent*)m_vecTarget[i])->GetModel()->GetPosition());
+				}
+				else
+				{
+					if (m_eEffectProcess == SKILLE_TOTARGET)
+						m_stEffect.dir = *((CharacterParant*)m_vecTarget[i])->GetCharacter()->GetPosition() -
+							*m_pMonster->GetModel()->GetPosition();
+					if (m_eEffectProcess == SKILLE_TOTHIS)
+						m_stEffect.dir = *m_pMonster->GetModel()->GetPosition() - 
+						*((CharacterParant*)m_vecTarget[i])->GetCharacter()->GetPosition();
+
+					if (m_eEffectProcess == SKILLE_THIS || m_eEffectProcess == SKILLE_TOTARGET)
+						object->Init(m_stEffect, *m_pMonster->GetModel()->GetPosition());
+					else
+						object->Init(m_stEffect, *((CharacterParant*)m_vecTarget[i])->GetCharacter()->GetPosition());
+				}
+				m_vecEffect.push_back(object);
+			}
 		}
 
 		if (m_eOwner == SKILLO_CHARACTER)
@@ -445,8 +487,13 @@ void SkillParent::Update()
 	// 单固瘤 棺 鸥百 贸府
 	if (m_stSkill.fDamageDelay < m_fElapseTime)
 	{
-		if (m_eParticleProcess == SKILLE_TOTARGET)
-			ParticleDamage();
+		if (m_eParticleProcess == SKILLE_TOTARGET || m_eEffectProcess == SKILLE_TOTARGET)
+		{
+			if (m_eParticleProcess == SKILLE_TOTARGET)
+				ParticleDamage();
+			if (m_eEffectProcess == SKILLE_TOTARGET)
+				EffectDamage();
+		}
 		else if(m_nDamageCount < m_stSkill.nDamageCount)
 		{
 			if (m_eDamageProcess == SKILLP_SINGLE)
@@ -466,10 +513,16 @@ void SkillParent::Update()
 		ParticleTarget();
 
 	// 捞棋飘 贸府
-	if (m_eEffectProcess == SKILLE_THIS)
-		EffectThis();
-	if (m_eEffectProcess == SKILLE_TARGET)
-		EffectTarget();
+	for (int i = 0; i < m_vecEffect.size();)
+	{
+		if (!m_vecEffect[i]->IsFinish())
+		{
+			m_vecEffect[i]->Update();
+			i++;
+		}
+		else
+			m_vecEffect.erase(m_vecEffect.begin() + i);
+	}
 
 	m_fElapseTime += TIME->GetElapsedTime();
 }
@@ -495,6 +548,9 @@ void SkillParent::Render()
 
 	for (auto p : m_vecParticle)
 		p->Render();
+
+	for (auto e : m_vecEffect)
+		e->Render();
 }
 
 void SkillParent::Debug()
@@ -594,6 +650,7 @@ SkillParent SkillManager::SkillParse(string name, string path)
 			tok = strtok_s(NULL, "\t\n", &context);
 			iconTex = TEXTUREMANAGER->AddTexture(name + " Icon", tok);
 		}
+
 		if (strcmp(tok, "SKILL_PROCESS_DAMAGE") == 0)
 		{
 			tok = strtok_s(NULL, "\t\n", &context);
@@ -638,18 +695,59 @@ SkillParent SkillManager::SkillParse(string name, string path)
 			if (strcmp(tok, "NONE") == 0)
 				effectP = SKILLE_NONE;
 		}
+
 		if (strcmp(tok, "PARTICLE") == 0)
 		{
 			tok = strtok_s(NULL, "\t\n", &context);
 			particle = string(tok);
 		}
-		if (strcmp(tok, "EFFECT_") == 0)
+
+		if (strcmp(tok, "EFFECT_TEXTURE") == 0)
 		{
 			tok = strtok_s(NULL, "\t\n", &context);
+			effect.tex = TEXTUREMANAGER->AddTexture(name + " Effect", tok);
+		}
+		if (strcmp(tok, "EFFECT_ROTATION") == 0)
+		{
+			tok = strtok_s(NULL, "\t\n", &context);
+			sscanf_s(tok, "%f %f %f", &effect.rot.x, &effect.rot.y, &effect.rot.z);
+		}
+		if (strcmp(tok, "EFFECT_RANDOM") == 0)
+		{
+			tok = strtok_s(NULL, "\t\n", &context);
+			sscanf_s(tok, "%d %d %d", &effect.isRX, &effect.isRY, &effect.isRZ);
+		}
+		if (strcmp(tok, "EFFECT_SOLID") == 0)
+		{
+			tok = strtok_s(NULL, "\t\n", &context);
+			sscanf_s(tok, "%d", &effect.isSolid);
+		}
+		if (strcmp(tok, "EFFECT_HEIGHT") == 0)
+		{
+			tok = strtok_s(NULL, "\t\n", &context);
+			sscanf_s(tok, "%f", &effect.height);
+		}
+		if (strcmp(tok, "EFFECT_SCALE") == 0)
+		{
+			tok = strtok_s(NULL, "\t\n", &context);
+			sscanf_s(tok, "%f %f %f", &effect.sc0, &effect.sc1, &effect.sc2);
+		}
+		if (strcmp(tok, "EFFECT_SPEED") == 0)
+		{
+			tok = strtok_s(NULL, "\t\n", &context);
+			sscanf_s(tok, "%f %f %f", &effect.sp0, &effect.sp1, &effect.sp2);
+		}
+		if (strcmp(tok, "EFFECT_ALPHA") == 0)
+		{
+			tok = strtok_s(NULL, "\t\n", &context);
+			sscanf_s(tok, "%d %d %d", &effect.a0, &effect.a1, &effect.a2);
 		}
 	}
 
 	fclose(fp);
+
+	if (effectP == SKILLE_TOTARGET || effectP == SKILLE_TOTHIS)
+		effect.dir = D3DXVECTOR3(0, 0, 1);
 
 	skill = SkillParent(damage, target, particleP, effectP, particle, effect, iconTex, name);
 

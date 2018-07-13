@@ -100,8 +100,7 @@ private:
 	void ParticleDamage();
 
 	// ¿Ã∆Â∆Æ √≥∏Æ
-	void EffectThis();
-	void EffectTarget();
+	void EffectDamage();
 
 public:
 	SkillParent();
