@@ -778,20 +778,15 @@ CharacterParant::~CharacterParant()
 	SAFE_DELETE(m_pParticle3);
 	SAFE_DELETE(m_pParticle4);
 
-	SAFE_DELETE(m_pUIobj);
-	SAFE_DELETE(m_pHPBar);
-	SAFE_DELETE(m_pStaminaBar);
-	SAFE_DELETE(m_pUIDamage[0]);
-	SAFE_DELETE(m_pUIDamage[1]);
-	SAFE_DELETE(m_pUIDamage[2]);
-	SAFE_DELETE(m_pUIDamage[3]);
-	SAFE_DELETE(m_pUIDamage[4]);
-	SAFE_DELETE(m_pUIDamage[5]);
-	SAFE_DELETE(m_pUIDamage[6]);
-	SAFE_DELETE(m_pUIDamage[7]);
-	SAFE_DELETE(m_pUIDamage[8]);
-	SAFE_DELETE(m_pUIDamage[9]);
-	SAFE_DELETE(m_pMonsterManager);
+	SAFE_RELEASE(m_pUIobj);
+	SAFE_RELEASE(m_pHPBar);
+	SAFE_RELEASE(m_pStaminaBar);
+	for (int i = 0; i < 10; i++)
+	{
+		SAFE_RELEASE(m_pUIDamage[i]);
+	}
+	
+	m_pMonsterManager = NULL;
 	SAFE_DELETE(m_pInventory);
 	
 }
