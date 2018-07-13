@@ -15,14 +15,16 @@ MainGame::~MainGame()
 	SCENE->Destroy();
 	TEXT->Release();
 	TEXTUREMANAGER->Release();
+	ITEMMANAGER->Destroy();
 	MODELMANAGER->Release();
 	PARTICLE->Release();
-	ITEMMANAGER->Destroy();
 	DEVICEMANAGER->Destroy();
 }
 
 void MainGame::Setup()
 {
+	ITEMMANAGER->SetUp();
+
 	SCENE->AddScene("Test", new SC_Test);
 	SCENE->ChangeScene("Test", true);
 
