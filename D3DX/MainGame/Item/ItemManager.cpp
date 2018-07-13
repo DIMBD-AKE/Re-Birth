@@ -52,13 +52,14 @@ void ItemManager::Load(IN const char * szFolder, IN const char * szFile)
 		if (c == '#')
 		{
 			string path = GetToken();
-			if(path == "Armor") Ap = new ArmorParent;
+			/*if(path == "Armor") Ap = new ArmorParent;
 			else if (path == "TwoHandSword") Ap = new SwordParent;
 			else if (path == "Blade") Ap = new BladeParent;
 			else if (path == "Arrow") Ap = new GunParent;
 			else if (path == "Staff") Ap = new WandParent;
 			else if (path == "Side") Ap = new SideParent;
-			else if (path == "Potion") Ap = new PotionParent;
+			else if (path == "Potion") Ap = new PotionParent;*/
+			Ap = new ItemParent;
 			Ap->SetUp();
 			//ZeroMemory(Ap, sizeof(ItemParent));
 			
@@ -80,10 +81,7 @@ void ItemManager::Load(IN const char * szFolder, IN const char * szFile)
 			Ap->m_pTexture = TEXTUREMANAGER->AddTexture(keyName, path);
 			Ap->m_imageInfo = TEXTUREMANAGER->GetInfo(keyName);
 			m_mIdItem.insert(make_pair(Ap->GetID(), Ap));
-			if (Ap->GetRarity() == "Normal") m_mIdItem[Ap->GetID()]->SetParticle(NULL);
-			else if (Ap->GetRarity() == "Rare") m_mIdItem[Ap->GetID()]->SetParticle(PARTICLE->GetParticle("RARE"));
-			else if (Ap->GetRarity() == "Magic") m_mIdItem[Ap->GetID()]->SetParticle(PARTICLE->GetParticle("MAGIC"));
-			else if (Ap->GetRarity() == "Unique") m_mIdItem[Ap->GetID()]->SetParticle(PARTICLE->GetParticle("UNIQUE"));
+			
 			int a = 0;
 		}
 		
@@ -167,7 +165,15 @@ ItemParent* ItemManager::GetItem(int keyNum)
 
 	assert(miterId != m_mIdItem.end() && "매니저에 없는 아이템입니다");
 
-	return miterId->second->Clone();
+	
+	ItemParent* rt = miterId->second->Clone();
+
+	if (miterId->second->GetRarity() == "Normal") 	rt->SetParticle(NULL);
+	else if (miterId->second->GetRarity() == "Rare") rt->SetParticle(PARTICLE->GetParticle("RARE"));
+	else if (miterId->second->GetRarity() == "Magic") rt->SetParticle(PARTICLE->GetParticle("MAGIC"));
+	else if (miterId->second->GetRarity() == "Unique") rt->SetParticle(PARTICLE->GetParticle("UNIQUE"));
+
+	return rt;
 }
 
 char* ItemManager::GetToken()

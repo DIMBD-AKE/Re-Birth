@@ -21,6 +21,11 @@ ItemParent::~ItemParent()
 	int a = 0;
 }
 
+ItemParent * ItemParent::Clone()
+{
+	return new ItemParent(*this);
+}
+
 void ItemParent::SetUp()
 {
 	m_pItemStatus = new STATUS;
