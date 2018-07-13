@@ -98,6 +98,7 @@ void * Skill::GetSingleTarget()
 		float minLength = m_stSkill.fMaxLength;
 		for (int i = 0; i < m_vecMonster.size(); i++)
 		{
+			if (m_vecMonster[i]->GetIsResPawn()) continue;
 			posMon = *m_vecMonster[i]->GetModel()->GetPosition();
 			float length = D3DXVec3Length(&(posMon - posChr));
 
@@ -165,6 +166,7 @@ vector<void*> Skill::GetMultipleTarget()
 	{
 		for (int i = 0; i < m_vecMonster.size(); i++)
 		{
+			if (m_vecMonster[i]->GetIsResPawn()) continue;
 			posMon = *m_vecMonster[i]->GetModel()->GetPosition();
 			float length = D3DXVec3Length(&(posMon - posChr));
 
