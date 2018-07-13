@@ -49,7 +49,7 @@ struct ST_SKILL
 	float		fEffectTime;
 };
 
-class SkillParent
+class Skill
 {
 private:
 	LPDIRECT3DTEXTURE9	m_pSkillIcon;
@@ -103,11 +103,11 @@ private:
 	void EffectDamage();
 
 public:
-	SkillParent();
-	SkillParent(SKILL_PROCESS damage, SKILL_PROCESS target, 
+	Skill();
+	Skill(SKILL_PROCESS damage, SKILL_PROCESS target, 
 		SKILL_EFFECT particleP, SKILL_EFFECT effectP, string particle, ST_EFFECT effect,
 		LPDIRECT3DTEXTURE9 iconTex, string name);
-	~SkillParent();
+	~Skill();
 
 	void Prepare(CharacterParant * pCharacter, MonsterParent* pMonster, vector<MonsterParent*> vecMonster, ST_SKILL skill, SKILL_OWNER owner);
 	void Trigger();
@@ -124,13 +124,13 @@ class SkillManager
 	SINGLETONE(SkillManager);
 
 private:
-	map<string, SkillParent>	m_mapSkill;
+	map<string, Skill>	m_mapSkill;
 
 	void LoadSkill();
-	SkillParent SkillParse(string name, string path);
+	Skill SkillParse(string name, string path);
 
 public:
-	SkillParent * GetSkill(string keyName);
+	Skill * GetSkill(string keyName);
 };
 
 #define SKILL SkillManager::GetInstance()
