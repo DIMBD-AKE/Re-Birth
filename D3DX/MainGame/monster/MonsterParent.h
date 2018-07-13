@@ -120,7 +120,12 @@ protected:
 
 	virtual void SetCurrentHP(int hp)
 	{
-		m_eState = MS_ATTACK;
+		if (m_eState != MS_ATTACK && m_eState != MS_DIE)
+		{
+			m_eState = MS_ATTACK;
+			ChangeAni();
+		}
+
 		CURRENTHP(m_uMonsterStat) -= hp;
 		m_bIsTargeting = true;
 		m_nTargetingCount = 0;
