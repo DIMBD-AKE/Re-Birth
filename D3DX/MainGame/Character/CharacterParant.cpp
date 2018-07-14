@@ -1003,6 +1003,17 @@ void CharacterParant::KeyControl()
 		m_eCondition = CHAR_IDLE;
 		ChangeAnimation();
 	}
+
+	if(m_eCondition == CHAR_HIT)
+	{
+		if (INPUT->KeyDown(VK_SPACE))
+		{
+			m_eCondition = CHAR_ATTACK;
+			m_bIsAttack = true;
+			Attack();
+			ChangeAnimation();	
+		}
+	}
 	
 	//대쉬일때 애니메이션 스피드 제어
 	if (m_eCondition == CHAR_DASH_FRONT || m_eCondition == CHAR_DASH_BACK)
@@ -1023,6 +1034,7 @@ void CharacterParant::KeyControl()
 		m_bIsDead = false;
 	}
 
+	
 
 }
 
