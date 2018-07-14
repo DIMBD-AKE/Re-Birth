@@ -19,7 +19,7 @@ MonsterParent::~MonsterParent()
 	m_pMap = NULL;
 	m_ppCharacter = NULL;
 	m_pDropManager = NULL;
-	m_pSkill = NULL;
+	SAFE_DELETE(m_pSkill);
 	/*
 	GET(Model*, m_pModel, Model);
 	SET(CharacterParant**, m_ppCharacter, Character);
@@ -114,7 +114,15 @@ void MonsterParent::Update()
 {
 	if (INPUT->KeyDown('L'))
 	{
+		vector<MonsterParent*> tt;
+		m_pSkill->Prepare(PCHARACTER,
+			this,
+			tt,
+			m_stSkill,
+			SKILLO_MONSTER);
+
 		m_eState = MS_SKILL;
+		ChangeAni();
 	}
 	if (m_bIsTargeting)
 	{
@@ -183,6 +191,8 @@ void MonsterParent::Update()
 				m_pModel->Update();
 			}
 		}
+
+		m_pSkill->Update();
 	}
 	//ChangeAni();
 }
@@ -235,6 +245,10 @@ void MonsterParent::Render()
 			m_pAStar->Render(temp.y, temp.x, CHARACTER->GetPosition());
 		}
 
+		if (m_eState == MS_SKILL)
+		{
+			m_pSkill->Render();
+		}
 
 		//UIPos.x = temp.x - m_fUIMoveX;
 		//UIPos.y = temp.y - m_fUIMoveY;

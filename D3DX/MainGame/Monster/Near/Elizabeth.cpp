@@ -129,6 +129,8 @@ void Elizabeth::SetupSkill()
 	m_stSkill.fDamageInterval = 0.1;
 	m_stSkill.fMaxLength = 10;
 	m_stSkill.nDamageCount = 10;
+	m_stSkill.fEffectTime = 3;
+
 }
 	/*
 	if (INPUT->KeyDown('R'))
@@ -212,18 +214,14 @@ void Elizabeth::SetupSkill()
 
 void Elizabeth::Skill()
 {
-	vector<MonsterParent*> tt;
-	m_pSkill->Prepare(PCHARACTER,
-		this,
-		tt,
-		m_stSkill,
-		SKILLO_MONSTER);
+	
 
 	m_pSkill->Trigger();
 
 	if (m_pModel->IsAnimationEnd())
 	{
 		m_eState = MS_IDLE;
+		ChangeAni();
 	}
 }
 
