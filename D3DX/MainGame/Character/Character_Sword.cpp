@@ -113,11 +113,16 @@ void Character_Sword::Update()
 		Move();
 		
 		m_pInventory->Update();
-		
 		m_pCharacter->World();
-		
 		m_pUIobj->Update();
 	
+		if (m_bIsSubChr)
+		{
+			m_pShieldChr->World();
+			shield();
+			//subAniContorl();
+		}
+
 		PlayerProgressBar();
 		CountAppearDamage();
 	}
@@ -132,6 +137,12 @@ void Character_Sword::Render()
 		m_pCharacter->Render();
 		//CharacterParant::Render();
 		m_pInventory->Render();
+
+
+		if (m_bIsSubChr)
+		{
+			m_pShieldChr->Render();
+		}
 
 		//포트레이트 
 		m_pUIobj->Render();
