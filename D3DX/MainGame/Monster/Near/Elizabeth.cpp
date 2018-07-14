@@ -9,7 +9,8 @@ Elizabeth::Elizabeth()
 
 Elizabeth::~Elizabeth()
 {
-	SAFE_DELETE(m_pModel);
+	//SAFE_DELETE(m_pModel);
+	//SAFE_DELETE(m_pSkill);
 }
 
 void Elizabeth::Setup(Map* map, D3DXVECTOR3 spawnPos, bool isSummon)
@@ -124,13 +125,26 @@ void Elizabeth::SetupSkill()
 {
 	//m_pSkill = new SkillParent;
 	ZeroMemory(&m_stSkill, sizeof(ST_SKILL));
-	m_stSkill.fDamage = 10;
-	m_stSkill.fDamage = 0;
+	m_stSkill.fDamage = 200;
+	m_stSkill.fDamageDelay = 0;
 	m_stSkill.fDamageInterval = 0.1;
-	m_stSkill.fMaxLength = 10;
-	m_stSkill.nDamageCount = 10;
+	m_stSkill.fMaxLength = 100;
+	m_stSkill.fAngle = 360;
+	m_stSkill.nMaxTarget = 5;
+	m_stSkill.nDamageCount = 100;
+	m_stSkill.isAutoRot = true;
+	m_stSkill.fYOffset = 1;
+	m_stSkill.fBuffTime = -1;
+	m_stSkill.fParticleTime = 10;
+	m_stSkill.fParticleSpeed = 0.05;
 	m_stSkill.fEffectTime = 3;
 
+	//m_stSkill.fDamage = 10;
+	//m_stSkill.fDamageInterval = 0.1;
+	//m_stSkill.fMaxLength = 10;
+	//m_stSkill.nDamageCount = 10;
+	//m_stSkill.fEffectTime = 3;
+	//m_stSkill.fAngle = 60;
 }
 	/*
 	if (INPUT->KeyDown('R'))
