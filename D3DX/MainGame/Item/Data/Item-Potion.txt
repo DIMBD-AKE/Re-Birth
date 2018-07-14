@@ -21,23 +21,23 @@
 # Potion
 N Potion
 R Normal
-D "d"
+D "체력을 150 회복시키는 물약 //사과맛이 난다"
 I 301
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 0 0 0.0 0.0 0.0
 E 5
-K Normal HealthPotion
+K NormalHealthPotion
 T "Texture/Item/Item Num 301 Normal HealthPotion.jpg"
 
 # Potion
 N HealthHighPoition
 R Magic
-D "d"
+D "체력을 300 회복시키는 물약 //딸기맛이 난다"
 I 201
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 0 0 0.0 0.0 0.0
 E 5
-K Magic HealthHighPoition
+K MagicHealthHighPoition
 T "Texture/Item/Item Num 201 Magic HealthHighPoition.jpg"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -45,7 +45,7 @@ T "Texture/Item/Item Num 201 Magic HealthHighPoition.jpg"
 # Potion
 N RecoveryBook
 R Normal
-D "d"
+D "최대체력의 15퍼센트를 회복시킨다"
 I 303
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 0 0 0.0 0.0 0.0
@@ -56,7 +56,7 @@ T "Texture/Item/Item Num 303 Normal RecoveryBook.jpg"
 # Potion
 N RecoveryBook
 R Magic
-D "d"
+D "최대체력의 30퍼센트를 회복시킨다"
 I 203
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 0 0 0.0 0.0 0.0
@@ -67,23 +67,23 @@ T "Texture/Item/Item Num 203 Magic RecoveryBook.jpg"
 # Potion
 N RecoveryBook
 R Rare
-D "d"
+D "최대체력의 50퍼센트를 회복시킨다"
 I 103
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 0 0 0.0 0.0 0.0
 E 5
-K Rare Recovery Book
+K RareRecoveryBook
 T "Texture/Item/Item Num 103 Rare RecoveryBook.jpg"
 
 # Potion
 N RecoveryBook
 R Unique 
-D "d"
+D "최대체력의 75퍼센트를 회복시킨다"
 I 3
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 S 0.0 0.0 0.0 0 0 0 0 0 0.0 0.0 0.0
 E 5
-K Unique Recovery Book
+K UniqueRecoveryBook
 T "Texture/Item/Item Num 003 Unique RecoveryBook.jpg"
 
 

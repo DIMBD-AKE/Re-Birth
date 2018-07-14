@@ -24,7 +24,7 @@ R Normal
 D "d"
 I 361
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 0.0 0.0 0.0 0 0 0 10 5 0.0 1.0 0.0
+S 0.0 0.0 0.0 0 0 0 0 400 0.0 0.2 0.0
 E 1
 K NormalSwordManHelmet
 T "Texture/Item/Item Num 361 Normal SwordManHelmet.jpg"
@@ -35,7 +35,7 @@ R Magic
 D "Çï¸ä"
 I 261
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 0.0 0.0 0.0 0 0 0 11 6 0.1 1.5 0.0
+S 0.0 0.0 0.0 0 0 0 20 500 0.0 0.3 0.0
 E 1
 K MagicSwordManHelmet
 T "Texture/Item/Item Num 261 Magic SwordManHelmet.jpg"
@@ -45,7 +45,7 @@ R Rare
 D "Çï¸ä"
 I 161
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 0.0 0.0 0.0 0 0 0 12 7 0.2 2.0 0.0
+S 0.0 0.0 0.0 0 0 0 40 600 0.0 0.4 0.0
 E 1
 K RareSwordManHelmet
 T "Texture/Item/Item Num 161 Rare SwordManHelmet.jpg"
@@ -55,7 +55,7 @@ R Unique
 D "Çï¸ä"
 I 061
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 0.0 0.0 0.0 0 0 0 13 10 0.3 2.5 0.0
+S 0.0 0.0 0.0 0 0 0 60 700 0.0 0.5 0.0
 E 1
 K UniqueSwordManHelmet
 T "Texture/Item/Item Num 061 Unique SwordManHelmet.jpg"
@@ -65,7 +65,7 @@ R Normal
 D "°©¿Ê"
 I 371
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 0.0 0.0 0.0 0 0 0 20 10 1.0 1.0 0.0
+S 0.0 0.0 0.0 0 0 0 20 500 0.0 0.0 0.0
 E 2
 K NormalSwordManArmor
 T "Texture/Item/Item Num 371 Normal SwordManArmor.jpg"
@@ -75,7 +75,7 @@ R Magic
 D "°©¿Ê"
 I 271
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 0.0 0.0 0.0 0 0 0 21 12 1.1 1.1 0.0
+S 0.0 0.0 0.0 0 0 0 40 600 0.0 0.0 0.0
 E 2
 K MagicSwordManArmor
 T "Texture/Item/Item Num 271 Magic SwordManArmor.jpg"
@@ -85,7 +85,7 @@ R Rare
 D "°©¿Ê"
 I 171
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 0.0 0.0 0.0 0 0 0 22 14 1.2 1.2 0.0
+S 0.0 0.0 0.0 0 0 0 60 700 0.0 0.0 0.0
 E 2
 K RareSwordManArmor
 T "Texture/Item/Item Num 171 Rare SwordManArmor.jpg"
@@ -95,7 +95,7 @@ R Unique
 D "°©¿Ê"
 I 071
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 0.0 0.0 0.0 0 0 0 25 16 1.3 1.3 0.0
+S 0.0 0.0 0.0 0 0 0 80 800 0.0 0.0 0.0
 E 2
 K UniqueSwordManArmor
 T "Texture/Item/Item Num 071 Unique SwordManArmor.jpg"
@@ -105,7 +105,7 @@ R Normal
 D "°ÇÆ²¸´"
 I 381
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 0.0 0.0 0.0 0 0 0 10 10 1.0 1.0 0.0
+S 0.0 0.0 0.0 0 0 0 0 400 0.0 0.0 0.0
 E 3
 K NormalSwordManGauntlet
 T "Texture/Item/Item Num 381 Normal SwordManGauntlet.jpg"
@@ -116,7 +116,7 @@ R Magic
 D "°ÇÆ²¸´"
 I 281
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 0.0 0.0 0.0 0 0 0 11 11 1.1 1.1 0.0
+S 0.0 0.0 0.0 0 0 0 20 500 0.0 0.0 0.0
 E 3
 K MagicSwordManGauntlet
 T "Texture/Item/Item Num 281 Magic SwordManGauntlet.jpg"
@@ -127,7 +127,7 @@ R Rare
 D "°ÇÆ²¸´"
 I 181
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 0.0 0.0 0.0 0 0 0 12 12 1.2 1.2 0.0
+S 0.0 0.0 0.0 0 0 0 40 600 0.0 0.0 0.0
 E 3
 K RareSwordManGauntlet
 T "Texture/Item/Item Num 181 Rare SwordManGauntlet.jpg"
@@ -138,7 +138,7 @@ R Unique
 D "°ÇÆ²¸´"
 I 081
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 0.0 0.0 0.0 0 0 0 13 13 1.3 1.3 0.0
+S 0.0 0.0 0.0 0 0 0 60 700 0.0 0.0 0.0
 E 3
 K UniqueSwordManGauntlet
 T "Texture/Item/Item Num 081 Unique SwordManGauntlet.jpg"
@@ -149,7 +149,7 @@ R Normal
 D "ºÎÃ÷"
 I 391
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 0.0 0.0 0.0 0 0 0 10 10 2.0 0.0 0.05
+S 0.0 0.0 0.0 0 0 0 0 400 0.0 0.0 0.02
 E 4
 K NormalSwordManBoots
 T "Texture/Item/Item Num 291 Magic SwordManBoots.jpg"
@@ -160,7 +160,7 @@ R Magic
 D "ºÎÃ÷"
 I 291
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 0.0 0.0 0.0 0 0 0 11 11 2.5 0.1 0.06
+S 0.0 0.0 0.0 0 0 0 20 500 0.0 0.0 0.04
 E 4 
 K MagicSwordManBoots
 T "Texture/Item/Item Num 291 Magic SwordManBoots.jpg"
@@ -171,7 +171,7 @@ R Rare
 D "ºÎÃ÷"
 I 191
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 0.0 0.0 0.0 0 0 0 12 12 3.0 0.2 0.07
+S 0.0 0.0 0.0 0 0 0 40 600 0.0 0.0 0.06
 E 4
 K RareSwordManBoots
 T "Texture/Item/Item Num 191 Rare SwordManBoots.jpg"
@@ -182,7 +182,7 @@ R Unique
 D "ºÎÃ÷"
 I 091
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 0.0 0.0 0.0 0 0 0 13 13 3.5 0.3 0.10
+S 0.0 0.0 0.0 0 0 0 60 700 0.0 0.0 0.08
 E 4
 K UniqueSwordManBoots
 T "Texture/Item/Item Num 091 Unique SwordManBoots.jpg"
