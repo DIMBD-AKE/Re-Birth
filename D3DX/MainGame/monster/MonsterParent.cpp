@@ -13,7 +13,7 @@ MonsterParent::MonsterParent()
 MonsterParent::~MonsterParent()
 {
 	SAFE_DELETE(m_pAStar);
-	SAFE_DELETE(m_pModel);
+	//SAFE_DELETE(m_pModel);
 
 
 	m_pMap = NULL;
@@ -464,5 +464,18 @@ void MonsterParent::ItemDrop()
 }
 void MonsterParent::SetupSkill()
 {
-
+	ZeroMemory(&m_stSkill, sizeof(ST_SKILL));
+	m_stSkill.fDamage = 200;
+	m_stSkill.fDamageDelay = 0;
+	m_stSkill.fDamageInterval = 0.1;
+	m_stSkill.fMaxLength = 100;
+	m_stSkill.fAngle = 360;
+	m_stSkill.nMaxTarget = 5;
+	m_stSkill.nDamageCount = 100;
+	m_stSkill.isAutoRot = true;
+	m_stSkill.fYOffset = 1;
+	m_stSkill.fBuffTime = -1;
+	m_stSkill.fParticleTime = 10;
+	m_stSkill.fParticleSpeed = 0.05;
+	m_stSkill.fEffectTime = 3;
 }
