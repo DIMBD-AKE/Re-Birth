@@ -480,9 +480,9 @@ void Skill::Trigger()
 						*((MonsterParent*)m_vecTarget[i])->GetModel()->GetPosition();
 
 					if (m_eEffectProcess == SKILLE_THIS || m_eEffectProcess == SKILLE_TOTARGET)
-						object->Init(m_stEffect, *m_pCharacter->GetCharacter()->GetPosition());
+						object->Init(m_stEffect, *m_pCharacter->GetCharacter()->GetPosition() + D3DXVECTOR3(0, m_stSkill.fYOffset, 0));
 					else
-						object->Init(m_stEffect, *((MonsterParent*)m_vecTarget[i])->GetModel()->GetPosition());
+						object->Init(m_stEffect, *((MonsterParent*)m_vecTarget[i])->GetModel()->GetPosition() + D3DXVECTOR3(0, m_stSkill.fYOffset, 0));
 				}
 				else
 				{
@@ -494,9 +494,9 @@ void Skill::Trigger()
 						*((CharacterParant*)m_vecTarget[i])->GetCharacter()->GetPosition();
 
 					if (m_eEffectProcess == SKILLE_THIS || m_eEffectProcess == SKILLE_TOTARGET)
-						object->Init(m_stEffect, *m_pMonster->GetModel()->GetPosition());
+						object->Init(m_stEffect, *m_pMonster->GetModel()->GetPosition() + D3DXVECTOR3(0, m_stSkill.fYOffset, 0));
 					else
-						object->Init(m_stEffect, *((CharacterParant*)m_vecTarget[i])->GetCharacter()->GetPosition());
+						object->Init(m_stEffect, *((CharacterParant*)m_vecTarget[i])->GetCharacter()->GetPosition() + D3DXVECTOR3(0, m_stSkill.fYOffset, 0));
 				}
 				m_vecEffect.push_back(object);
 			}
@@ -563,7 +563,10 @@ void Skill::Update()
 			i++;
 		}
 		else
+		{
+			SAFE_DELETE(m_vecEffect[i]);
 			m_vecEffect.erase(m_vecEffect.begin() + i);
+		}
 	}
 
 	m_fElapseTime += TIME->GetElapsedTime();
@@ -749,6 +752,11 @@ Skill SkillManager::SkillParse(string name, string path)
 			tok = strtok_s(NULL, "\t\n", &context);
 			effect.tex = TEXTUREMANAGER->AddTexture(name + " Effect", tok);
 		}
+		if (strcmp(tok, "EFFECT_DIRECTION") == 0)
+		{
+			tok = strtok_s(NULL, "\t\n", &context);
+			sscanf_s(tok, "%f %f %f", &effect.dir.x, &effect.dir.y, &effect.dir.z);
+		}
 		if (strcmp(tok, "EFFECT_ROTATION") == 0)
 		{
 			tok = strtok_s(NULL, "\t\n", &context);
@@ -787,9 +795,6 @@ Skill SkillManager::SkillParse(string name, string path)
 	}
 
 	fclose(fp);
-
-	if (effectP == SKILLE_TOTARGET || effectP == SKILLE_TOTHIS)
-		effect.dir = D3DXVECTOR3(0, 0, 1);
 
 	skill = Skill(damage, target, particleP, effectP, particle, effect, iconTex, name);
 
