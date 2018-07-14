@@ -13,6 +13,7 @@
 #include "Manager\ParticleManager.h"
 #include "UIController.h"
 #include "EffectObject.h"
+#include "Dialogue.h"
 #include "Util.h"
 
 using namespace UTIL;
