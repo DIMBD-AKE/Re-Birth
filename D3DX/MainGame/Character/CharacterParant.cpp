@@ -330,20 +330,19 @@ void CharacterParant::ControllStamina()
 
 }
 
-//void CharacterParant::UnderAttacked()
-//{
-//	if (INPUT->KeyDown('Z'))
-//	{
-//		m_Status->chr.nCurrentHP -= 50;
-//	}
-//		if (m_Status->chr.nCurrentHP <= 0 && !m_bIsDead)
-//		{
-//			m_bIsDead = true;
-//			m_eCondition = CHAR_DIE;
-//			ChangeAnimation();
-//			if (m_eCondition == CHAR_DIE) m_pParticle2->SetPosition(*m_pCharacter->GetPosition());
-//		}
-//}
+void CharacterParant::shield()
+{
+	//TODO::
+	//방패캐릭을 소환시켜 플레이어 앞에 유지. 
+	//소환시 방패캐릭의 체력이 차감
+	//체력 0시 역소환
+	//D3DXVECTOR3 tempAngle;
+	
+	m_pShieldChr->SetRotation(*m_pCharacter->GetRotation());
+	m_pShieldChr->SetPosition(*m_pCharacter->GetPosition() - m_vfront * 5.0f );
+
+	
+}
 
 void CharacterParant::SetCurrentHP(int hp)
 {
@@ -375,9 +374,11 @@ void CharacterParant::CalculDamage(float damage)
 	//if (!m_bIsInvincible)
 	//{
 		
+	if (m_eCondition != CHAR_HIT)
+	{	
 		m_eCondition = CHAR_HIT;
 		ChangeAnimation();
-	
+	}
 
 	//	m_bIsInvincible = true;
 		m_bIsUnderAttacked = true;
@@ -636,8 +637,6 @@ void CharacterParant::MGSKill()
 }
 
 
-
-
 CharacterParant::CharacterParant()
 {
 	m_Status = new STATUS;
@@ -649,6 +648,7 @@ CharacterParant::CharacterParant()
 	MODELMANAGER->AddModel("스카디", "Model/Character/Skadi/", "Skadi.x", MODELTYPE_X);
 	MODELMANAGER->AddModel("베카", "Model/Character/Beakah/", "Beakah.x", MODELTYPE_X);
 	MODELMANAGER->AddModel("벨벳", "Model/Character/Velvet/", "Velvet.x", MODELTYPE_X);
+	MODELMANAGER->AddModel("렘논", "Model/Character/Lemnon/", "Lemnon.x", MODELTYPE_X);
 	
 
 
@@ -717,6 +717,7 @@ CharacterParant::CharacterParant()
 CharacterParant::~CharacterParant()
 {
 	SAFE_DELETE(m_pCharacter);
+	SAFE_DELETE(m_pShieldChr);
 	SAFE_DELETE(m_pParticle);
 	SAFE_DELETE(m_pParticle2);
 	SAFE_DELETE(m_pParticle3);
@@ -730,7 +731,8 @@ CharacterParant::~CharacterParant()
 		SAFE_RELEASE(m_pUIDamage[i]);
 	}
 	
-	m_pMonsterManager = NULL;
+	m_pMonsterManager = NULL; 
+	m_pSampleMap = NULL;
 	SAFE_DELETE(m_pInventory);
 	
 }
@@ -788,6 +790,7 @@ void CharacterParant::Init(Map* map, CHARSELECT order, MonsterManager* pMonsterM
 	m_bIsSkill = false;
 	m_bIsInvincible = false;
 	m_bIsPotal = false;
+	m_bIsSubChr = false;
 
 	m_fStamina = 10.0f;
 	m_nDamage = 0;
@@ -797,6 +800,7 @@ void CharacterParant::Init(Map* map, CHARSELECT order, MonsterManager* pMonsterM
 	m_stDamaged.startDamageTime = 0.0f;
 	m_stDamaged.endDamageTime = 1.0f;
 
+	m_nAppear = 0;
 
 	//포트레이트 UI
 	m_pUIobj = new UIObject;
@@ -844,6 +848,28 @@ void CharacterParant::Init(Map* map, CHARSELECT order, MonsterManager* pMonsterM
 	m_pParticle4 = PARTICLE->GetParticle("teleport");
 
 	m_pParticle3->SetPosition(D3DXVECTOR3(m_pCharacter->GetPosition()->x, m_pCharacter->GetPosition()->y, m_pCharacter->GetPosition()->z + 5.0f));
+
+
+	// 쉴드 캐릭터 
+	ST_SIZEBOX box1;
+	box1.highX = 50.0f;
+	box1.highY = 180.0f;
+	box1.highZ = 50.0f;
+	box1.lowX = -50.0f;
+	box1.lowY = 10.0f;
+	box1.lowZ = -50.0f;
+
+	m_pShieldChr = MODELMANAGER->GetModel("렘논", MODELTYPE_X);
+	m_pShieldChr->SetScale(D3DXVECTOR3(0.02, 0.02, 0.02));
+	m_pShieldChr->SetPosition(*m_pCharacter->GetPosition());
+
+	//TODO : 바운딩 박스 만들기 (캐릭터 크기마다 일일히 입력해주자
+	m_pShieldChr->CreateBound(box1);
+	m_pShieldChr->SetBoundSphere(m_pShieldChr->GetOrigBoundSphere().center, 100.0f);
+
+	m_eSubCondition = SUB_IDLE;
+	ChangeSubChrAni();
+	
 }
 
 
@@ -866,7 +892,9 @@ void CharacterParant::KeyControl()
 		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_HIT)
 		{
 			m_eCondition = CHAR_RUN_FRONT;
+			m_eSubCondition = SUB_RUN;
 			ChangeAnimation();
+			ChangeSubChrAni();
 		}
 	}
 	else if (INPUT->KeyUp('W'))
@@ -874,7 +902,9 @@ void CharacterParant::KeyControl()
 		if (m_eCondition == CHAR_RUN_FRONT)
 		{
 			m_eCondition = CHAR_IDLE;
+			m_eSubCondition = SUB_IDLE;
 			ChangeAnimation();
+			ChangeSubChrAni();
 		}
 	}
 	//뒤로 달리기
@@ -883,7 +913,9 @@ void CharacterParant::KeyControl()
 		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_HIT)
 		{
 			m_eCondition = CHAR_RUN_BACK;
+			m_eSubCondition = SUB_RUN;
 			ChangeAnimation();
+			ChangeSubChrAni();
 		}
 	}
 	else if (INPUT->KeyUp('S'))
@@ -891,7 +923,9 @@ void CharacterParant::KeyControl()
 		if (m_eCondition == CHAR_RUN_BACK)
 		{
 			m_eCondition = CHAR_IDLE;
+			m_eSubCondition = SUB_IDLE;
 			ChangeAnimation();
+			ChangeSubChrAni();
 		}
 	}
 	//앞으로 대쉬
@@ -900,8 +934,10 @@ void CharacterParant::KeyControl()
 		if (m_eCondition == CHAR_RUN_FRONT)
 		{
 			m_eCondition = CHAR_DASH_FRONT;
+			m_eSubCondition = SUB_RUN;
 			m_bIsDash = true;
 			ChangeAnimation();
+			ChangeSubChrAni();
 		}
 	}
 	else if (INPUT->KeyUp('Q'))
@@ -909,8 +945,10 @@ void CharacterParant::KeyControl()
 		if (m_eCondition == CHAR_DASH_FRONT)
 		{
 			m_eCondition = CHAR_RUN_FRONT;
+			m_eSubCondition = SUB_RUN;
 			m_bIsDash = false;
 			ChangeAnimation();
+			ChangeSubChrAni();
 		}
 	}
 	//뒤로 대쉬
@@ -919,8 +957,10 @@ void CharacterParant::KeyControl()
 		if (m_eCondition == CHAR_RUN_BACK)
 		{
 			m_eCondition = CHAR_DASH_BACK;
+			m_eSubCondition = SUB_RUN;
 			m_bIsDash = true;
 			ChangeAnimation();
+			ChangeSubChrAni();
 		}
 	}
 	else if (INPUT->KeyUp('E'))
@@ -928,8 +968,10 @@ void CharacterParant::KeyControl()
 		if (m_eCondition == CHAR_DASH_BACK)
 		{
 			m_eCondition = CHAR_RUN_BACK;
+			m_eSubCondition = SUB_RUN;
 			m_bIsDash = false;
 			ChangeAnimation();
+			ChangeSubChrAni();
 		}
 	}
 
@@ -939,9 +981,11 @@ void CharacterParant::KeyControl()
 		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_RUN_FRONT || m_eCondition == CHAR_RUN_BACK)
 		{
 			m_eCondition = CHAR_ATTACK;
+			m_eSubCondition = SUB_IDLE;
 			m_bIsAttack = true;
 			Attack();
 			ChangeAnimation();
+			ChangeSubChrAni();
 		}
 	}
 	else if (INPUT->KeyUp(VK_SPACE))
@@ -955,8 +999,10 @@ void CharacterParant::KeyControl()
 		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_RUN_FRONT || m_eCondition == CHAR_RUN_BACK)
 		{
 			m_eCondition = CHAR_SKILL;
+			m_eSubCondition = SUB_IDLE;
 			m_bIsSkill = true;
 			ChangeAnimation();
+			ChangeSubChrAni();
 		}
 	}
 
@@ -973,6 +1019,12 @@ void CharacterParant::KeyControl()
 		m_pParticle4->TimeReset();
 	}
 
+	//서브캐릭터 제어
+	if (INPUT->KeyDown('N'))
+	{
+		m_bIsSubChr = true;
+	}
+
 	if (m_bIsPotal)
 	{
 		if (INPUT->KeyDown(VK_LBUTTON))
@@ -984,24 +1036,39 @@ void CharacterParant::KeyControl()
 		}
 	}
 
-	//공격상태에서 애니메이션 한바퀴 돌린후 대기상태로 돌려줌
-	if (m_pCharacter->IsAnimationEnd()&& m_eCondition == CHAR_ATTACK)
+	//애니메이션 한바퀴 돌고나서 상태제어
+	if (m_pCharacter->IsAnimationEnd())
 	{
-  		m_eCondition = CHAR_IDLE;
+		switch (m_eCondition)
+		{
+		case CHAR_SKILL:
+			m_eCondition = CHAR_IDLE;
+			m_eSubCondition = SUB_IDLE;
+			break;
+		case CHAR_ATTACK:
+			m_eCondition = CHAR_IDLE;
+			m_eSubCondition = SUB_IDLE;
+			break;
+		case CHAR_HIT:
+			m_eCondition = CHAR_IDLE;
+			m_eSubCondition = SUB_IDLE;
+			break;
+		}
 		ChangeAnimation();
-	}
-	//스킬상태에서 애니메이션 한바퀴 돌린후 대기상태로 돌려줌
-	if (m_pCharacter->IsAnimationEnd() && m_eCondition == CHAR_SKILL)
-	{
-		m_eCondition = CHAR_IDLE;
-		ChangeAnimation();
+		ChangeSubChrAni();
 	}
 
-	//피격상태에서 애니메이션 한바퀴 돌린후 대기상태로 돌려줌
-	if (m_pCharacter->IsAnimationEnd() && m_eCondition == CHAR_HIT)
+	if (m_nAppear == 0)
 	{
-		m_eCondition = CHAR_IDLE;
-		ChangeAnimation();
+		m_eSubCondition = SUB_BATTLEREADY;
+		ChangeSubChrAni();
+	}
+	m_nAppear = 1;
+	//실드 캐릭터 애니메이션 배틀래디후 대기상태로 제어.
+	if (m_pShieldChr->IsAnimationEnd() && m_eSubCondition == SUB_BATTLEREADY)
+	{
+		m_eSubCondition = SUB_IDLE;
+		ChangeSubChrAni();
 	}
 
 	if(m_eCondition == CHAR_HIT)
@@ -1009,9 +1076,11 @@ void CharacterParant::KeyControl()
 		if (INPUT->KeyDown(VK_SPACE))
 		{
 			m_eCondition = CHAR_ATTACK;
+			m_eSubCondition = SUB_IDLE;
 			m_bIsAttack = true;
 			Attack();
 			ChangeAnimation();	
+			ChangeSubChrAni();
 		}
 	}
 	
@@ -1019,6 +1088,7 @@ void CharacterParant::KeyControl()
 	if (m_eCondition == CHAR_DASH_FRONT || m_eCondition == CHAR_DASH_BACK)
 	{
 		m_pCharacter->SetAnimationSpeed(5.0f);
+		m_pShieldChr->SetAnimationSpeed(5.0f);
 	}
 
 	//공격상태일때 애니메이션 스피드 제어
@@ -1033,9 +1103,32 @@ void CharacterParant::KeyControl()
 		m_eCondition = CHAR_NONE;
 		m_bIsDead = false;
 	}
+}
 
-	
 
+void CharacterParant::ChangeSubChrAni()
+{
+	switch (m_eSubCondition)
+	{
+	case SUB_IDLE:
+		m_pShieldChr->SetBlendAnimation("IDLE");
+		m_pShieldChr->SetBlendTime(0.27);
+		m_pShieldChr->SetAnimationSpeed(1.0f);
+		break;
+	case SUB_RUN:
+		m_pShieldChr->SetAnimation("MOVE");
+		break;
+	case SUB_DIE:
+		m_pShieldChr->SetAnimation("DIE");
+		m_pShieldChr->SetAnimationSpeed(1.0f);
+		break;
+	case SUB_BATTLEREADY:
+		m_pShieldChr->SetAnimation("BATTLEREADY");
+		m_pShieldChr->SetAnimationSpeed(1.0f);
+		break;
+	case CHAR_NONE:
+		break;
+	}
 }
 
 void CharacterParant::ChangeAnimation()

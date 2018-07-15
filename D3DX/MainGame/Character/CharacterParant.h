@@ -39,28 +39,32 @@ protected:
 	GET(CHRTYPE,m_eChrType, CharType);				//캐릭터 타입
 	SYNTHESIZE(CHARSELECT, m_eCharSelect, CharSelect);	 //해당 클래스 캐릭터의 1번째 혹은 2번째
 	GET(CHAR_CONDITION,	m_eCondition, Condition);		//캐릭터 상태
+	GET(CHAR_SUBCONDITION, m_eSubCondition, SubCondition); //서브 캐릭터 상태
 
 	TestItem*				m_pFirstItem;			//첫번쨰 스킬 장비
 
 
 	GET(Model*,m_pCharacter,Character);				//캐릭터 맴버 변수 
+	GET(Model*, m_pShieldChr, ShiedldChr);			//쉴드 캐릭터 변수
 	Map*					m_pSampleMap;			//맵정보 받는 맴버 변수
 	GET(Inventory*,m_pInventory,m_Inventory);		//인벤토리용 변수
 	GET(STATUS*,m_Status, status);					//스테이터스 유니온 변수 
 	UIObject*				m_pUIobj;				//UI오브젝트용 변수
-	UIObject*				m_pUIDamage[10];			//데미지용 UIObj변수
-	UIObject*				m_pHPBar;					//hp프로그래스바
-	UIObject*				m_pStaminaBar;				//스테미너 프로그래스바
+	UIObject*				m_pUIDamage[10];		//데미지용 UIObj변수
+	UIObject*				m_pHPBar;				//hp프로그래스바
+	UIObject*				m_pStaminaBar;			//스테미너 프로그래스바
 	
 	MonsterManager*			m_pMonsterManager;		//몬스터 매니저용 변수
 	
 	D3DXVECTOR3				m_vfront;				//이동을 위한 프론트벡터
 	D3DXVECTOR3				m_vPotalfront;			//포탈 이동을 위한 프론트 벡터
+	//D3DXVECTOR3				m_vSubChrFront;			//서브캐 이동을 위한 프론트 벡터
 
 	int						m_nCalAction;			//액션 프레임 계산용 변수
 	int						m_nDamage;				//데미지 띄우기용 변수 
+	int						m_nAppear;				//서브캐릭터 나오나 
 
-	vector<ST_DAMAGETEXT>		m_vecDamage;			//데미지 저장용 변수
+	vector<ST_DAMAGETEXT>		m_vecDamage;		//데미지 저장용 변수
 
 	bool					m_bIsFront;				//앞인지 뒤인지
 	bool					m_bIsDash;				//대쉬했늬
@@ -69,6 +73,7 @@ protected:
 	bool					m_bIsSkill;				//스킬썼니?
 	bool					m_bIsInvincible;			//무적이니
 	bool					m_bIsPotal;				//지금 포탈 눌렀니?
+	bool					m_bIsSubChr;			//서브캐릭터 나왔늬?
 	float					m_fDamageCount;			//데미지 띄우는 카운트
 	float					m_fDamageAngle;			//데미지 앵글
 
@@ -91,7 +96,9 @@ protected:
 	void Debug();
 	void CheckDirection();
 	void ControllStamina();
-	void UnderAttacked();
+
+	void shield();
+
 	
 	void SetCurrentHP(int hp);
 	void CalculDamage(float damage);
@@ -100,6 +107,8 @@ protected:
 	void SkillIconAlpha();
 	void PlayerProgressBar();
 	void MGSKill();
+	void ChangeSubChrAni();
+
 	
 
 	int						m_temp;			//애니메이션 확인용 임시변수

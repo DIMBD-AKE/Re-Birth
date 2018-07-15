@@ -114,6 +114,12 @@ void EffectObject::Update()
 	memcpy(m_pV, &m_vecVertex[0], sizeof(ST_PCT_VERTEX) * m_vecVertex.size());
 	m_pVB->Unlock();
 
+	if (m_stInfo.isSphere)
+	{
+		m_stInfo.rot.x = CAMERA->GetRotation().x;
+		m_stInfo.rot.y = CAMERA->GetRotation().y;
+	}
+
 	D3DXMATRIX matS, matR, matT;
 	D3DXMatrixRotationYawPitchRoll(&matR, m_stInfo.rot.y, m_stInfo.rot.x, m_stInfo.rot.z);
 	D3DXMatrixTranslation(&matT, m_vPos.x, m_vPos.y + m_stInfo.height / 2, m_vPos.z);
