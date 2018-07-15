@@ -1,23 +1,12 @@
 #include "../../stdafx.h"
 #include "SC_Test.h"
 #include "../Map.h"
-#include "../Character/Inventory.h"
-#include "../Character/Character_Sword.h"
-#include "../Character/Character_Gun.h"
-#include "../Character/Character_Magic.h"
-
-//몬스터 관련 헤더
-#include "../Astar/PathFind.h"
 #include "../monster/MonsterManager.h"
-
-//아이템 관련 헤더
-#include "../Item/ItemParent.h"
-#include "../Item/Potion/HealthPotion.h"
+#include "../monster/MonsterParent.h"
+#include "../Character/Character_Sword.h"
 #include "../Item/DropManager.h"
-
-
-DWORD FtoDw(float f) { return *((DWORD*)&f); }
-
+#include "../../Framework/EffectObject.h"
+#include "../SkillManager.h"
 
 SC_Test::SC_Test()
 {
@@ -30,173 +19,83 @@ SC_Test::~SC_Test()
 
 void SC_Test::Release()
 {
-	SAFE_DELETE(m_pTestModel);
 	SAFE_DELETE(m_pSampleMap);
-	SAFE_DELETE(m_pPathFind);
-	SAFE_DELETE(m_pMM);
-	SAFE_DELETE(m_pItem);
-	SAFE_DELETE(m_pPotion);
+	SAFE_DELETE(m_pCharacter);
 	SAFE_DELETE(m_pDropManager);
+	SAFE_DELETE(m_pMM);
+	SAFE_DELETE(m_pSkill);
 }
 
 void SC_Test::Init()
 {
-
 	m_pSampleMap = new Map;
 	m_pSampleMap->Load("Map/Sample.map");
-	//m_pSampleMap->Load("Map/Nav.map");
-
-
-	m_pTestModel = new Character_Sword;
-
-
-	
-	
-	D3DXVECTOR3 startPos = m_pSampleMap->GetSpawnPlayer();
-	float y = m_pSampleMap->GetHeight(startPos.x, startPos.z);
-	
-
-	
-	Inventory inv;
-	inv.CreateInventory(3, 5);
-
-	//m_pPathFind = new PathFind;
-	//m_pPathFind->Setup(m_pSampleMap->GetNavMesh());
 
 	m_pDropManager = new DropManager;
 	m_pDropManager->Init();
 
+	m_pCharacter = new Character_Sword;
 	m_pMM = new MonsterManager;
-	m_pMM->Setup(m_pSampleMap, m_pTestModel);
-	m_pTestModel->Init(m_pSampleMap, CHAR_ONE, m_pMM);
 
+	m_pCharacter->Init(m_pSampleMap, CHAR_ONE, m_pMM);
+
+	m_pMM->Setup(m_pSampleMap, &m_pCharacter);
 	m_pMM->SetSpawnSpat(m_pSampleMap->GetSpawnEnemy());
 	m_pMM->MakeMonster(m_pDropManager);
 
-	m_pItem = new ItemParent;
-	m_pItem->SetUp();
+	//CAMERA->SetMode(CAMERA_FOLLOW_FREE);
+	CAMERA->SetTargetOffset(D3DXVECTOR3(0, 4, 0));
+	CAMERA->SetCamOffset(D3DXVECTOR3(0, 3, 17));
+	CAMERA->SetFog(true, 50, 100, D3DCOLOR_XRGB(255, 255, 255), 1.0f);
 
-	m_pPotion = new HealthPotion;
-	m_pPotion->SetUp();
-
+	m_pSkill = SKILL->GetSkill("Test Skill");
 }
 
 void SC_Test::Update()
 {
-	if (m_pTestModel && m_pTestModel->GetCondition() != CHAR_NONE)
+	if (INPUT->KeyDown('R'))
 	{
-		m_pTestModel->Update();
-
-
-		if (INPUT->KeyPress('0'))
-		{
-			CharacterParant* L_TestModel = m_pTestModel;
-			CharacterParant* L_TestModel2;
-			L_TestModel2 = new Character_Sword;
-			L_TestModel2->Init(m_pSampleMap, CHAR_ONE, m_pMM);
-			m_pTestModel = L_TestModel2;
-			L_TestModel2 = NULL;
-			SAFE_DELETE(L_TestModel);
-		}
-		if (INPUT->KeyPress('1'))
-		{
-			CharacterParant* L_TestModel = m_pTestModel;
-			CharacterParant* L_TestModel2;
-			L_TestModel2 = new Character_Sword;
-			L_TestModel2->Init(m_pSampleMap, CHAR_TWO, m_pMM);
-			m_pTestModel = L_TestModel2;
-			L_TestModel2 = NULL;
-			SAFE_DELETE(L_TestModel);
-		}
-		if (INPUT->KeyPress('2'))
-		{
-			CharacterParant* L_TestModel = m_pTestModel;
-			CharacterParant* L_TestModel2;
-			L_TestModel2 = new Character_Gun;
-			L_TestModel2->Init(m_pSampleMap, CHAR_ONE, m_pMM);
-			m_pTestModel = L_TestModel2;
-			L_TestModel2 = NULL;
-			SAFE_DELETE(L_TestModel);
-		}
-		if (INPUT->KeyPress('3'))
-		{
-			CharacterParant* L_TestModel = m_pTestModel;
-			CharacterParant* L_TestModel2;
-			L_TestModel2 = new Character_Gun;
-			L_TestModel2->Init(m_pSampleMap, CHAR_TWO, m_pMM);
-			m_pTestModel = L_TestModel2;
-			L_TestModel2 = NULL;
-			SAFE_DELETE(L_TestModel);
-		}
-		if (INPUT->KeyPress('4'))
-		{
-			CharacterParant* L_TestModel = m_pTestModel;
-			CharacterParant* L_TestModel2;
-			L_TestModel2 = new Character_Magic;
-			L_TestModel2->Init(m_pSampleMap, CHAR_ONE, m_pMM);
-			m_pTestModel = L_TestModel2;
-			L_TestModel2 = NULL;
-			SAFE_DELETE(L_TestModel);
-		}
-		if (INPUT->KeyPress('5'))
-		{
-			CharacterParant* L_TestModel = m_pTestModel;
-			CharacterParant* L_TestModel2;
-			L_TestModel2 = new Character_Magic;
-			L_TestModel2->Init(m_pSampleMap, CHAR_TWO, m_pMM);
-			m_pTestModel = L_TestModel2;
-			L_TestModel2 = NULL;
-			SAFE_DELETE(L_TestModel);
-		}
-		if (INPUT->KeyPress('6'))
-		{
-			CharacterParant* L_TestModel = m_pTestModel;
-			CharacterParant* L_TestModel2;
-			L_TestModel2 = new Character_Sword;
-			L_TestModel2->Init(m_pSampleMap, CHAR_THREE, m_pMM);
-			m_pTestModel = L_TestModel2;
-			L_TestModel2 = NULL;
-			SAFE_DELETE(L_TestModel);
-		}
+		ST_SKILL skill;
+		ZeroMemory(&skill, sizeof(ST_SKILL));
+		skill.fDamage = 200;
+		skill.fDamageDelay = 0;
+		skill.fDamageInterval = 0.1;
+		skill.fMaxLength = 15;
+		skill.fAngle = 60;
+		skill.nMaxTarget = 5;
+		skill.nDamageCount = 100;
+		skill.isAutoRot = true;
+		skill.fYOffset = 1;
+		skill.fBuffTime = -1;
+		skill.fParticleTime = 10;
+		skill.fParticleSpeed = 0.05;
+		skill.fEffectTime = 3;
+		m_pSkill->Prepare(m_pCharacter, m_pMM->GetMonsterVector()[0], m_pMM->GetMonsterVector(),
+			skill, SKILLO_CHARACTER);
 	}
-	if (m_pTestModel->GetCondition() == CHAR_NONE)
-	{
-		CharacterParant* L_TestModel = m_pTestModel;
-		CharacterParant* L_TestModel2;
-		L_TestModel2 = new Character_Sword;
-		L_TestModel2->Init(m_pSampleMap, CHAR_TWO, m_pMM);
-		m_pTestModel = L_TestModel2;
-		L_TestModel2 = NULL;
-		SAFE_DELETE(L_TestModel);
-	}
-	//여기 한줄
-	if (m_pMM) m_pMM->Update();
+
+	if (INPUT->KeyDown('F'))
+		m_pSkill->Trigger();
+
+	m_pSkill->Update();
+	
+	m_pCharacter->Update();
+	m_pMM->Update();
+	m_pDropManager->GetDropItem(m_pCharacter);
+
+	TEXT->Add(to_string(TIME->GetFPS()), 0, 0, 20);
 }
 
 void SC_Test::Render()
 {
-	if (m_pTestModel)
-		m_pTestModel->Render();
-
-
 	if (m_pSampleMap)
-	{
-		DEVICE->SetRenderState(D3DRS_FOGENABLE, true);
-		DEVICE->SetRenderState(D3DRS_FOGCOLOR, 0xffffffff);
-		DEVICE->SetRenderState(D3DRS_FOGDENSITY, FtoDw(0.1f));         // 안개의 강도
-		DEVICE->SetRenderState(D3DRS_FOGSTART, FtoDw(50.0f));         // 안개의 시작 위치
-		DEVICE->SetRenderState(D3DRS_FOGEND, FtoDw(100.0f));         // 안개 강도의 최대값 위치
-		DEVICE->SetRenderState(D3DRS_FOGTABLEMODE, D3DFOG_LINEAR);      // 안개 중간 보간값
-		
-
 		m_pSampleMap->Render();
-		//여기 한줄
-		if (m_pMM) m_pMM->Render();
 
-		if (m_pItem)m_pItem->Render(D3DXVECTOR3(0, 0, 0), 50);
-		if (m_pPotion)m_pPotion->Render(D3DXVECTOR3(0, 0, 0), 50);
-		m_pDropManager->Render();
-		
-		DEVICE->SetRenderState(D3DRS_FOGENABLE, false);
-	}
+	m_pDropManager->Render();
+	m_pCharacter->Render();
+	m_pMM->Render();
+
+	m_pSkill->Render();
+
+	TEXT->Render();
 }

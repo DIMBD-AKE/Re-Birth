@@ -2,33 +2,21 @@
 
 class Map;
 class CharacterParant;
-//Jae
-class PathFind;
 class MonsterManager;
-//Youn
-class ItemParent;
-class HealthPotion;
-class ItemManager;
 class DropManager;
-
+class EffectObject;
+class Skill;
 
 class SC_Test : public Scene
 {
 private:
-	CharacterParant*	m_pTestModel;
+	Map *				m_pSampleMap;
+	CharacterParant *	m_pCharacter;
+	MonsterManager *	m_pMM;
+	DropManager *		m_pDropManager;
 
-	Map *		m_pSampleMap;
-
-	//Jae
-	PathFind* m_pPathFind;
-	MonsterManager* m_pMM;
-	//youn
-	ItemParent* m_pItem;
-	HealthPotion* m_pPotion;
-	ItemManager* m_pIm;
-
-	DropManager* m_pDropManager;
-
+	Skill * m_pSkill;
+		
 public:
 	SC_Test();
 	~SC_Test();
