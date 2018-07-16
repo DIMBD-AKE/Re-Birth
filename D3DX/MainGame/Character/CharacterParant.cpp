@@ -372,7 +372,7 @@ void CharacterParant::SetCurrentHP(int hp)
 
 void CharacterParant::CalculDamage(float damage)
 {
-	
+
 	if (!m_bIsSubChr)
 	{
 		if (m_eCondition != CHAR_HIT)
@@ -399,15 +399,13 @@ void CharacterParant::CalculDamage(float damage)
 	else
 	{
 		float Shield = round(damage);
-		m_pShieldChr->SetShieldCurHp(m_pShieldChr->GetShieldCurHp() -Shield);
+		m_pShieldChr->SetShieldCurHp(m_pShieldChr->GetShieldCurHp() - Shield);
 	}
 
 	if (m_pShieldChr->GetShieldCurHp() <= 0)
 	{
-		m_pShieldChr->SetShieldCondition(SUB_DIE);
-		m_pShieldChr->ChangeSubChrAni();
+		//m_pShieldChr->Die();
 		m_bIsSubChr = false;
-
 		m_pShieldChr->SetShieldCurHp(m_pShieldChr->GetShieldMaxHp());
 	}
 }

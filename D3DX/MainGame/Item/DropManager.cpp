@@ -6,13 +6,15 @@
 #include <time.h>
 
 DropManager::DropManager()
-	: m_pModel(NULL)
+	//: m_pModel(NULL)
 {
+	
 }
 
 
 DropManager::~DropManager()
 {
+	SAFE_DELETE(m_pModel);
 }
 
 void DropManager::Init()
