@@ -50,20 +50,20 @@ void Nerisa::SetupStat()
 	m_nMinMoveCount = 444;
 	m_nMaxMoveCount = 333;
 
-	ZeroMemory(&m_uMonsterStat, sizeof(m_uMonsterStat));
+	ZeroMemory(m_pMonsterStat, sizeof(STATUS));
 
-	CURRENTHP(m_uMonsterStat) = MAXHP(m_uMonsterStat) = 80;
-	ATK(m_uMonsterStat) = 14;
-	PHYRATE(m_uMonsterStat) = 0.9f;
-	MAGICRATE(m_uMonsterStat) = 0.9f;
-	CHERATE(m_uMonsterStat) = 1.3f;
-	ATKSPEED(m_uMonsterStat) = 0.8f;
+	CURRENTHP(m_pMonsterStat) = MAXHP(m_pMonsterStat) = 80;
+	ATK(m_pMonsterStat) = 14;
+	PHYRATE(m_pMonsterStat) = 0.9f;
+	MAGICRATE(m_pMonsterStat) = 0.9f;
+	CHERATE(m_pMonsterStat) = 1.3f;
+	ATKSPEED(m_pMonsterStat) = 0.8f;
 
-	DEF(m_uMonsterStat) = 3;
-	AGI(m_uMonsterStat) = 20.0f;
-	HIT(m_uMonsterStat) = 20.0f;
-	SPEED(m_uMonsterStat) = 0.09f;
-	RANGE(m_uMonsterStat) = 6.5f;
+	DEF(m_pMonsterStat) = 3;
+	AGI(m_pMonsterStat) = 20.0f;
+	HIT(m_pMonsterStat) = 20.0f;
+	SPEED(m_pMonsterStat) = 0.09f;
+	RANGE(m_pMonsterStat) = 6.5f;
 }
 
 

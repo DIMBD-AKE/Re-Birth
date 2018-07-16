@@ -48,7 +48,7 @@ void DistanceMonster::Attack()
 
 		int a = 10;
 		//공격 가능 사거리까지 하면 될듯
-		if (length > RANGE(m_uMonsterStat))
+		if (length > RANGE(m_pMonsterStat))
 		{
 			if (m_bIsSummon)
 			{
@@ -109,10 +109,10 @@ void DistanceMonster::Attack()
 				}
 				//플레이어 공격기능 설정
 				m_eState = MS_ATTACK;
-				if (m_pModel->IsAnimationPercent(ATKSPEED(m_uMonsterStat)))
+				if (m_pModel->IsAnimationPercent(ATKSPEED(m_pMonsterStat)))
 				{
-					float tatalRate = PHYRATE(m_uMonsterStat) + MAGICRATE(m_uMonsterStat) + CHERATE(m_uMonsterStat);
-					float tatalDamage = tatalRate * ATK(m_uMonsterStat);
+					float tatalRate = PHYRATE(m_pMonsterStat) + MAGICRATE(m_pMonsterStat) + CHERATE(m_pMonsterStat);
+					float tatalDamage = tatalRate * ATK(m_pMonsterStat);
 					(*m_ppCharacter)->CalculDamage(tatalDamage);
 				}
 
@@ -142,7 +142,7 @@ void DistanceMonster::Move()
 
 	if (m_eState == MS_RUN)
 	{
-		D3DXVECTOR3 tempPos = *m_pModel->GetPosition() + m_vDir* SPEED(m_uMonsterStat);
+		D3DXVECTOR3 tempPos = *m_pModel->GetPosition() + m_vDir* SPEED(m_pMonsterStat);
 		tempPos.y = m_pMap->GetHeight(tempPos.x, tempPos.z);
 
 		//못가는 곳이다.
@@ -167,7 +167,7 @@ void DistanceMonster::SummonMove()
 		m_vDir = *CHARACTER->GetPosition() - *m_pModel->GetPosition();
 		D3DXVec3Normalize(&m_vDir, &m_vDir);
 
-		D3DXVECTOR3 tempPos = *m_pModel->GetPosition() + m_vDir* SPEED(m_uMonsterStat);
+		D3DXVECTOR3 tempPos = *m_pModel->GetPosition() + m_vDir* SPEED(m_pMonsterStat);
 		tempPos.y = m_pMap->GetHeight(tempPos.x, tempPos.z);
 
 		float angle = GetAngle(0, 0, m_vDir.x, m_vDir.z);
@@ -178,7 +178,7 @@ void DistanceMonster::SummonMove()
 
 		float length = GetDistance(*m_pModel->GetPosition(), *CHARACTER->GetPosition());
 
-		if (length < RANGE(m_uMonsterStat))
+		if (length < RANGE(m_pMonsterStat))
 		{
 			m_eState = MS_ATTACK;
 			ChangeAni();

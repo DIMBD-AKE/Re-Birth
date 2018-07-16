@@ -49,20 +49,20 @@ void MiddleBoss::SetupStat()
 	m_nMinMoveCount = 0;
 	m_nMaxMoveCount = 0;
 
-	ZeroMemory(&m_uMonsterStat, sizeof(m_uMonsterStat));
+	ZeroMemory(m_pMonsterStat, sizeof(STATUS));
 
-	CURRENTHP(m_uMonsterStat) = MAXHP(m_uMonsterStat) = 1000;
-	ATK(m_uMonsterStat) = 20;
-	PHYRATE(m_uMonsterStat) = 1.3f;
-	MAGICRATE(m_uMonsterStat) = 0.8f;
-	CHERATE(m_uMonsterStat) = 1.1f;
-	ATKSPEED(m_uMonsterStat) = 0.75f;
+	CURRENTHP(m_pMonsterStat) = MAXHP(m_pMonsterStat) = 1000;
+	ATK(m_pMonsterStat) = 20;
+	PHYRATE(m_pMonsterStat) = 1.3f;
+	MAGICRATE(m_pMonsterStat) = 0.8f;
+	CHERATE(m_pMonsterStat) = 1.1f;
+	ATKSPEED(m_pMonsterStat) = 0.75f;
 
-	DEF(m_uMonsterStat) = 5;
-	AGI(m_uMonsterStat) = 10.0f;
-	HIT(m_uMonsterStat) = 10.0f;
-	SPEED(m_uMonsterStat) = 0.08f;
-	RANGE(m_uMonsterStat) = 2.2f;
+	DEF(m_pMonsterStat) = 5;
+	AGI(m_pMonsterStat) = 10.0f;
+	HIT(m_pMonsterStat) = 10.0f;
+	SPEED(m_pMonsterStat) = 0.08f;
+	RANGE(m_pMonsterStat) = 2.2f;
 }
 
 void MiddleBoss::DropItemSetup()
@@ -138,7 +138,7 @@ void MiddleBoss::Move()
 	if (m_eState == MS_RUN)
 	{
 		m_vDir = *CHARACTER->GetPosition() - *m_pModel->GetPosition();
-		D3DXVECTOR3 tempPos = *m_pModel->GetPosition() + m_vDir* SPEED(m_uMonsterStat);
+		D3DXVECTOR3 tempPos = *m_pModel->GetPosition() + m_vDir* SPEED(m_pMonsterStat);
 		tempPos.y = m_pMap->GetHeight(tempPos.x, tempPos.z);
 
 		float angle = GetAngle(0, 0, m_vDir.x, m_vDir.z);

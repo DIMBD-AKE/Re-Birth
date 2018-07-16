@@ -20,6 +20,7 @@ MonsterParent::~MonsterParent()
 	m_ppCharacter = NULL;
 	m_pDropManager = NULL;
 	SAFE_DELETE(m_pSkill);
+	SAFE_DELETE(m_pMonsterStat);
 	/*
 	GET(Model*, m_pModel, Model);
 	SET(CharacterParant**, m_ppCharacter, Character);
@@ -50,7 +51,7 @@ void MonsterParent::Setup(Map* map, D3DXVECTOR3 spawnPos, bool isSummon)
 	m_pModel->SetPosition(D3DXVECTOR3(spawnPos.x, m_pMap->GetHeight(spawnPos.x, spawnPos.z), spawnPos.z));
 	ChangeAni();
 
-	
+	m_pMonsterStat = new STATUS;
 	SetupStat();
 	SetupSkill();
 	DropItemSetup();
@@ -88,6 +89,7 @@ void MonsterParent::SetupBoss(Map* map, D3DXVECTOR3 pos)
 {
 	m_pMap = map;
 	m_pModel->SetPosition(D3DXVECTOR3(pos.x, m_pMap->GetHeight(pos.x, pos.z), pos.z));
+	m_pMonsterStat = new STATUS;
 	SetupStat();
 
 	m_pHPBar = new UIObject;
@@ -129,7 +131,7 @@ void MonsterParent::Update()
 	}
 	if (m_bIsTargeting)
 	{
-		float tempF = (float)CURRENTHP(m_uMonsterStat) / MAXHP(m_uMonsterStat);
+		float tempF = (float)CURRENTHP(m_pMonsterStat) / MAXHP(m_pMonsterStat);
 
 
 		m_pHPBar->SetScale(D3DXVECTOR3(tempF, 1, 1));
@@ -293,7 +295,7 @@ void MonsterParent::Respawn(D3DXVECTOR3 spawnPos)
 	m_nResPawnCount = m_bIsRespawn = 0;
 	m_eState = MS_IDLE;
 	ChangeAni();
-	CURRENTHP(m_uMonsterStat) = MAXHP(m_uMonsterStat);
+	CURRENTHP(m_pMonsterStat) = MAXHP(m_pMonsterStat);
 
 
 	m_pModel->SetPosition(D3DXVECTOR3(spawnPos.x, m_pMap->GetHeight(spawnPos.x, spawnPos.z), spawnPos.z));
@@ -308,11 +310,11 @@ void MonsterParent::CalculDamage(float damage)
 	float	fCheRate;		//화학계수
 	*/
 	float totalRate =
-		PHYRATE(m_uMonsterStat) +
-		CHERATE(m_uMonsterStat) +
-		MAGICRATE(m_uMonsterStat);
+		PHYRATE(m_pMonsterStat) +
+		CHERATE(m_pMonsterStat) +
+		MAGICRATE(m_pMonsterStat);
 
-	float totalDamage = totalRate * DEF(m_uMonsterStat);
+	float totalDamage = totalRate * DEF(m_pMonsterStat);
 
 	totalDamage = damage - totalDamage;
 
@@ -445,7 +447,7 @@ POINT MonsterParent::MoveForAttack()
 		angle -= D3DX_PI / 2;
 
 		m_pModel->SetRotation(D3DXVECTOR3(0, angle, 0));
-		m_pModel->SetPosition(*m_pModel->GetPosition() + dir* SPEED(m_uMonsterStat));
+		m_pModel->SetPosition(*m_pModel->GetPosition() + dir* SPEED(m_pMonsterStat));
 
 		if (playerIndex !=myIndex && m_vPath[0] != D3DXVECTOR3(-1, -1, -1))
 		{

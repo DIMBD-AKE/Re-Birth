@@ -48,20 +48,20 @@ void DarkHell::SetupStat()
 	m_nMinMoveCount = 555;
 	m_nMaxMoveCount = 222;
 
-	ZeroMemory(&m_uMonsterStat, sizeof(m_uMonsterStat));
+	ZeroMemory(m_pMonsterStat, sizeof(STATUS));
 
-	CURRENTHP(m_uMonsterStat) = MAXHP(m_uMonsterStat) = 150;
-	ATK(m_uMonsterStat) = 35;
-	PHYRATE(m_uMonsterStat) = 0.8f;
-	MAGICRATE(m_uMonsterStat) = 1.3f;
-	CHERATE(m_uMonsterStat) = 0.8f;
-	ATKSPEED(m_uMonsterStat) = 0.7f;
+	CURRENTHP(m_pMonsterStat) = MAXHP(m_pMonsterStat) = 150;
+	ATK(m_pMonsterStat) = 35;
+	PHYRATE(m_pMonsterStat) = 0.8f;
+	MAGICRATE(m_pMonsterStat) = 1.3f;
+	CHERATE(m_pMonsterStat) = 0.8f;
+	ATKSPEED(m_pMonsterStat) = 0.7f;
 
-	DEF(m_uMonsterStat) = 4;
-	AGI(m_uMonsterStat) = 5.0f;
-	HIT(m_uMonsterStat) = 5.0f;
-	SPEED(m_uMonsterStat) = 0.03f;
-	RANGE(m_uMonsterStat) = 10.0f;
+	DEF(m_pMonsterStat) = 4;
+	AGI(m_pMonsterStat) = 5.0f;
+	HIT(m_pMonsterStat) = 5.0f;
+	SPEED(m_pMonsterStat) = 0.03f;
+	RANGE(m_pMonsterStat) = 10.0f;
 }
 
 

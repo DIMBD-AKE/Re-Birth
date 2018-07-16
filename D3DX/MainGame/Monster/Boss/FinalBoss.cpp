@@ -51,20 +51,20 @@ void FinalBoss::SetupStat()
 	m_nMinMoveCount = 0;
 	m_nMaxMoveCount = 0;
 
-	ZeroMemory(&m_uMonsterStat, sizeof(m_uMonsterStat));
+	ZeroMemory(m_pMonsterStat, sizeof(STATUS));
 
-	CURRENTHP(m_uMonsterStat) = MAXHP(m_uMonsterStat) = 1500;
-	ATK(m_uMonsterStat) = 20;
-	PHYRATE(m_uMonsterStat) = 1.3f;
-	MAGICRATE(m_uMonsterStat) = 0.8f;
-	CHERATE(m_uMonsterStat) = 1.1f;
-	ATKSPEED(m_uMonsterStat) = 0.75f;
+	CURRENTHP(m_pMonsterStat) = MAXHP(m_pMonsterStat) = 1500;
+	ATK(m_pMonsterStat) = 20;
+	PHYRATE(m_pMonsterStat) = 1.3f;
+	MAGICRATE(m_pMonsterStat) = 0.8f;
+	CHERATE(m_pMonsterStat) = 1.1f;
+	ATKSPEED(m_pMonsterStat) = 0.75f;
 
-	DEF(m_uMonsterStat) = 5;
-	AGI(m_uMonsterStat) = 10.0f;
-	HIT(m_uMonsterStat) = 10.0f;
-	SPEED(m_uMonsterStat) = 0.08f;
-	RANGE(m_uMonsterStat) = 13.0f;
+	DEF(m_pMonsterStat) = 5;
+	AGI(m_pMonsterStat) = 10.0f;
+	HIT(m_pMonsterStat) = 10.0f;
+	SPEED(m_pMonsterStat) = 0.08f;
+	RANGE(m_pMonsterStat) = 13.0f;
 }
 
 void FinalBoss::DropItemSetup()
@@ -178,7 +178,7 @@ void FinalBoss::Attack()
 	float length = GetDistance(*m_pModel->GetPosition(), *CHARACTER->GetPosition());
 
 	//공격 모션중에 플레이어가 벗어나도 공격모션 및 판정진행해라
-	if (length > RANGE(m_uMonsterStat) && !m_bIsAttack)
+	if (length > RANGE(m_pMonsterStat) && !m_bIsAttack)
 	{
 		if (m_eBossState == BS_ATTACK)
 		{
@@ -211,21 +211,21 @@ void FinalBoss::Attack()
 	}
 		
 		//플레이어 공격기능 설정
-		if (m_pModel->IsAnimationPercent(ATKSPEED(m_uMonsterStat)))
+		if (m_pModel->IsAnimationPercent(ATKSPEED(m_pMonsterStat)))
 		{
 			if (m_pMagicCircle->PlayerCollision(
 				*CHARACTER->GetPosition(),
 				CHARACTER->GetBoundSphere().radius))
 			{
 
-				float tatalRate = PHYRATE(m_uMonsterStat) + MAGICRATE(m_uMonsterStat) + CHERATE(m_uMonsterStat);
-				float tatalDamage = tatalRate * ATK(m_uMonsterStat);
+				float tatalRate = PHYRATE(m_pMonsterStat) + MAGICRATE(m_pMonsterStat) + CHERATE(m_pMonsterStat);
+				float tatalDamage = tatalRate * ATK(m_pMonsterStat);
 				PCHARACTER->CalculDamage(tatalDamage);
 			}
 
 			
-			//float tatalRate = PHYRATE(m_uMonsterStat) + MAGICRATE(m_uMonsterStat) + CHERATE(m_uMonsterStat);
-			//float tatalDamage = tatalRate * ATK(m_uMonsterStat);
+			//float tatalRate = PHYRATE(m_pMonsterStat) + MAGICRATE(m_pMonsterStat) + CHERATE(m_pMonsterStat);
+			//float tatalDamage = tatalRate * ATK(m_pMonsterStat);
 			//PCHARACTER->CalculDamage(tatalDamage);
 		}
 		if (m_pModel->IsAnimationEnd())
@@ -248,7 +248,7 @@ void FinalBoss::Move()
 	if (m_eBossState == BS_RUN)
 	{
 		m_vDir = *CHARACTER->GetPosition() - *m_pModel->GetPosition();
-		D3DXVECTOR3 tempPos = *m_pModel->GetPosition() + m_vDir* SPEED(m_uMonsterStat);
+		D3DXVECTOR3 tempPos = *m_pModel->GetPosition() + m_vDir* SPEED(m_pMonsterStat);
 		tempPos.y = m_pMap->GetHeight(tempPos.x, tempPos.z);
 
 		float angle = GetAngle(0, 0, m_vDir.x, m_vDir.z);
@@ -259,7 +259,7 @@ void FinalBoss::Move()
 
 		float length = GetDistance(*m_pModel->GetPosition(), *CHARACTER->GetPosition());
 
-		if (length < RANGE(m_uMonsterStat) - 4)
+		if (length < RANGE(m_pMonsterStat) - 4)
 		{
 			m_eBossState = BS_ATTACK;
 			ChangeAni();
@@ -279,7 +279,7 @@ bool FinalBoss::AbleSummon()
 {
 	if (summonCount <= 0) return false;
 	//현재 HP 비율
-	float HPRatio = (float)CURRENTHP(m_uMonsterStat) / MAXHP(m_uMonsterStat);
+	float HPRatio = (float)CURRENTHP(m_pMonsterStat) / MAXHP(m_pMonsterStat);
 	float summonRatio = (10 * summonCount / 100.0f);
 	//현재 피 비율이 소환카운트 비율보다 적어졌다면
 	if (HPRatio <= summonRatio)

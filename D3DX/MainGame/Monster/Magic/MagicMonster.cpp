@@ -42,7 +42,7 @@ void MagicMonster::Attack()
 		
 		int a = 10;
 		//공격 가능 사거리까지 하면 될듯 && 공격중이냐
-		if (length > RANGE(m_uMonsterStat) && !m_bIsAttack)
+		if (length > RANGE(m_pMonsterStat) && !m_bIsAttack)
 		{
 			//피드몹은 A*적용
 			if (!m_bIsSummon)
@@ -98,7 +98,7 @@ void MagicMonster::Attack()
 			//플레이어 공격기능 설정
 
 			//공격 딜레이가 오면
-			if (m_pModel->IsAnimationPercent(ATKSPEED(m_uMonsterStat)))
+			if (m_pModel->IsAnimationPercent(ATKSPEED(m_pMonsterStat)))
 			{
 
 				//마법타입 공격방식 수정해야함
@@ -110,8 +110,8 @@ void MagicMonster::Attack()
 					CHARACTER->GetBoundSphere().radius))
 				{
 
-					float tatalRate = PHYRATE(m_uMonsterStat) + MAGICRATE(m_uMonsterStat) + CHERATE(m_uMonsterStat);
-					float tatalDamage = tatalRate * ATK(m_uMonsterStat);
+					float tatalRate = PHYRATE(m_pMonsterStat) + MAGICRATE(m_pMonsterStat) + CHERATE(m_pMonsterStat);
+					float tatalDamage = tatalRate * ATK(m_pMonsterStat);
 					PCHARACTER->CalculDamage(tatalDamage);
 				}
 				
@@ -141,7 +141,7 @@ void MagicMonster::Move()
 
 	if (m_eState == MS_RUN)
 	{
-		D3DXVECTOR3 tempPos = *m_pModel->GetPosition() + m_vDir* SPEED(m_uMonsterStat);
+		D3DXVECTOR3 tempPos = *m_pModel->GetPosition() + m_vDir* SPEED(m_pMonsterStat);
 		tempPos.y = m_pMap->GetHeight(tempPos.x, tempPos.z);
 
 		//못가는 곳이다.
@@ -166,7 +166,7 @@ void MagicMonster::SummonMove()
 		m_vDir = *CHARACTER->GetPosition() - *m_pModel->GetPosition();
 		D3DXVec3Normalize(&m_vDir, &m_vDir);
 
-		D3DXVECTOR3 tempPos = *m_pModel->GetPosition() + m_vDir* SPEED(m_uMonsterStat);
+		D3DXVECTOR3 tempPos = *m_pModel->GetPosition() + m_vDir* SPEED(m_pMonsterStat);
 		tempPos.y = m_pMap->GetHeight(tempPos.x, tempPos.z);
 
 		float angle = GetAngle(0, 0, m_vDir.x, m_vDir.z);
@@ -177,7 +177,7 @@ void MagicMonster::SummonMove()
 
 		float length = GetDistance(*m_pModel->GetPosition(), *CHARACTER->GetPosition());
 
-		if (length < RANGE(m_uMonsterStat))
+		if (length < RANGE(m_pMonsterStat))
 		{
 			m_eState = MS_ATTACK;
 			ChangeAni();

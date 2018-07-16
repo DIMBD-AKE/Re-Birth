@@ -29,7 +29,7 @@ class MonsterParent
 	GET(Model*, m_pModel, Model);
 	SET(CharacterParant**, m_ppCharacter, Character);
 	SET(DropManager*, m_pDropManager, DropManager);
-	SYNTHESIZE(STATUS, m_uMonsterStat, MosterStat);
+	SYNTHESIZE(STATUS*, m_pMonsterStat, MosterStat);
 
 	
 
@@ -59,7 +59,7 @@ protected:
 
 	int				m_nCount;
 	//몬스터 스탯
-	//STATUS m_uMonsterStat;
+	//STATUS m_pMonsterStat;
 
 	//리스폰될떄까지 시간
 	int m_nResPawnCount;
@@ -129,12 +129,13 @@ protected:
 			ChangeAni();
 		}
 
-		CURRENTHP(m_uMonsterStat) -= hp;
+		
+		CURRENTHP(m_pMonsterStat) -= hp;
 		m_bIsTargeting = true;
 		m_nTargetingCount = 0;
-		if (CURRENTHP(m_uMonsterStat) <= 0)
+		if (CURRENTHP(m_pMonsterStat) <= 0)
 		{
-			CURRENTHP(m_uMonsterStat) = 0;
+			CURRENTHP(m_pMonsterStat) = 0;
 			m_bIsRespawn = true;
 			m_eState = MS_DIE;
 			ChangeAni();

@@ -42,7 +42,7 @@ protected :
 
 	int				m_nCount;
 	//몬스터 스탯
-	STATUS m_uMonsterStat;
+	STATUS m_pMonsterStat;
 
 	//공격카운트
 	//int m_nAttackDelay;
@@ -83,11 +83,11 @@ protected:
 
 	virtual void SetCurrentHP(int hp)
 	{
-		CURRENTHP(m_uMonsterStat) -= hp;
+		CURRENTHP(m_pMonsterStat) -= hp;
 
-		if (CURRENTHP(m_uMonsterStat) <= 0)
+		if (CURRENTHP(m_pMonsterStat) <= 0)
 		{
-			CURRENTHP(m_uMonsterStat) = 0;
+			CURRENTHP(m_pMonsterStat) = 0;
 			m_bIsDead = true;
 			m_bIsRespawn = true;
 			m_eState = MS_DIE;

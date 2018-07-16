@@ -35,12 +35,12 @@ void BossParent::Update()
 	if (INPUT->KeyDown('L'))
 	{
 		SetCurrentHP(100);
-		//CURRENTHP(m_uMonsterStat) -= 100;
+		//CURRENTHP(m_pMonsterStat) -= 100;
 	}
 
 	if (m_pHPBar)
 	{
-		float tempF = (float)CURRENTHP(m_uMonsterStat) / MAXHP(m_uMonsterStat);
+		float tempF = (float)CURRENTHP(m_pMonsterStat) / MAXHP(m_pMonsterStat);
 
 
 		m_pHPBar->SetScale(D3DXVECTOR3(tempF, 1, 1));
