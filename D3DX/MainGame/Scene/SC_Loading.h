@@ -13,6 +13,7 @@ private:
 	void SingletoneInit();
 	void AddModel();
 	void AddTexture();
+	void AddSound();
 
 public:
 	SC_Loading();

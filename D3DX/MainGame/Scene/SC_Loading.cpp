@@ -32,6 +32,7 @@ void SC_Loading::Init()
 	SingletoneInit();
 	AddModel();
 	AddTexture();
+	AddSound();
 
 	//SCENE->ChangeScene("Test", true);
 }
@@ -131,6 +132,11 @@ void SC_Loading::AddTexture()
 
 }
 
+void SC_Loading::AddSound()
+{
+	m_pLoading->LoadSound("Main Theme", "Sound/01. Premonition.mp3", true);
+}
+
 void SC_Loading::Update()
 {
 	m_pLoading->Update();
@@ -138,6 +144,7 @@ void SC_Loading::Update()
 	if (m_pLoading->loadingDone())
 	{
 		SCENE->ChangeScene("Test", true);
+		SOUND->Play("Main Theme");
 	}
 }
 

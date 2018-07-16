@@ -5,6 +5,7 @@ enum LOAD_KIND
 	LK_MODEL,		//모델
 	LK_TEXTURE,		//텍스쳐
 	LK_SINGLETONE,	//싱글톤
+	LK_SOUND,
 	LK_END			//끝났냐
 };
 
@@ -14,6 +15,7 @@ struct RESOURCE
 	string folderPath;	//텍스쳐는 이 변수가 path다
 	string fileName;
 	MODELTYPE type;
+	bool loop;
 };
 
 class LoadItem
@@ -27,6 +29,7 @@ public:
 
 	void LoadModel(string keyName, string folderPath, string fileName, MODELTYPE type);
 	void LoadTexture(string keyName, string path);
+	void LoadSound(string keyName, string path, bool loop);
 
 	LOAD_KIND GetLoadKind() { return m_eKind; }
 
@@ -62,6 +65,7 @@ public:
 	
 	void LoadModel(string keyName, string folderPath, string fileName, MODELTYPE type);
 	void LoadTexture(string keyName, string path);
+	void LoadSound(string keyName, string path, bool loop);
 
 	void LoadSingletone(string keyName, const char* fileName);
 

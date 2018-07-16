@@ -41,6 +41,14 @@ void LoadItem::LoadTexture(string keyName, string path)
 	m_stResource.folderPath = path;
 }
 
+void LoadItem::LoadSound(string keyName, string path, bool loop)
+{
+	m_eKind = LK_SOUND;
+	m_stResource.keyName = keyName;
+	m_stResource.folderPath = path;
+	m_stResource.loop = loop;
+}
+
 
 //로딩할 전체 클래스 함수들
 Loading::Loading()
@@ -82,9 +90,7 @@ void Loading::Render()
 BOOL Loading::loadingDone()
 {
 	if (m_nCurrentGauge >= m_vLoadItem.size())
-	{
 		return true;
-	}
 
 	LoadItem* item = m_vLoadItem[m_nCurrentGauge];
 
@@ -108,7 +114,11 @@ BOOL Loading::loadingDone()
 	}
 		break;
 
-	default:
+	case LK_SOUND:
+	{
+		RESOURCE resource = item->GetItemResource();
+		SOUND->AddSound(resource.keyName, resource.folderPath, resource.loop);
+	}
 		break;
 	}
 
@@ -130,6 +140,14 @@ void Loading::LoadTexture(string keyName, string path)
 {
 	LoadItem* item = new LoadItem;
 	item->LoadTexture(keyName, path);
+
+	m_vLoadItem.push_back(item);
+}
+
+void Loading::LoadSound(string keyName, string path, bool loop)
+{
+	LoadItem* item = new LoadItem;
+	item->LoadSound(keyName, path, loop);
 
 	m_vLoadItem.push_back(item);
 }

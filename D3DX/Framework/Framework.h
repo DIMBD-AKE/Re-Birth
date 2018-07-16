@@ -2,6 +2,7 @@
 #include "Macro.h"
 #include "Struct.h"
 #include "Manager\DeviceManager.h"
+#include "Manager\SoundManager.h"
 #include "Manager\TextManager.h"
 #include "Manager\TimeManager.h"
 #include "Manager\SceneManager.h"

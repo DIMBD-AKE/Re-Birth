@@ -150,6 +150,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Framework\Manager\SoundManager.h" />
     <ClInclude Include="MainGame\Loading.h" />
     <ClInclude Include="MainGame\Character\Character_Shield.h" />
     <ClInclude Include="Framework\Dialogue.h" />
@@ -221,6 +222,7 @@
     <ClInclude Include="MainGame\Item\ItemHeaderIndex.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Framework\Manager\SoundManager.cpp" />
     <ClCompile Include="MainGame\Loading.cpp" />
     <ClCompile Include="MainGame\Character\Character_Shield.cpp" />
     <ClCompile Include="Framework\Dialogue.cpp" />

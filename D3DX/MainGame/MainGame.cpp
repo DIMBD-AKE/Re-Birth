@@ -40,6 +40,7 @@ void MainGame::Update()
 {
 	SCENE->Update();
 	CAMERA->Update();
+	SOUND->Update();
 	if (INPUT->KeyDown(VK_F2))
 		m_isWire = !m_isWire;
 }
