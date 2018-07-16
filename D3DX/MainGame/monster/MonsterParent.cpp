@@ -447,7 +447,7 @@ POINT MonsterParent::MoveForAttack()
 		m_pModel->SetRotation(D3DXVECTOR3(0, angle, 0));
 		m_pModel->SetPosition(*m_pModel->GetPosition() + dir* SPEED(m_uMonsterStat));
 
-		if (m_vPath[0] != D3DXVECTOR3(-1, -1, -1))
+		if (playerIndex !=myIndex && m_vPath[0] != D3DXVECTOR3(-1, -1, -1))
 		{
 			if (myIndex != m_pAStar->GetCellIndex(*m_pModel->GetPosition()))
 			{

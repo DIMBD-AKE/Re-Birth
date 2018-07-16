@@ -44,12 +44,27 @@ void MagicMonster::Attack()
 		//공격 가능 사거리까지 하면 될듯 && 공격중이냐
 		if (length > RANGE(m_uMonsterStat) && !m_bIsAttack)
 		{
-			if (m_eState == MS_ATTACK)
+			//피드몹은 A*적용
+			if (!m_bIsSummon)
 			{
-				m_eState = MS_MOVEFORATTACK;
-				ChangeAni();
+				if (m_eState == MS_ATTACK)
+				{
+					m_eState = MS_MOVEFORATTACK;
+					ChangeAni();
+				}
+				MoveForAttack();
 			}
-			MoveForAttack();
+			//소환몹은
+			else
+			{
+				//스태이트와 애니메이션 교체 후 무브함수 실행을 위하여 함수 종료
+				if (m_eState == MS_ATTACK)
+				{
+					m_eState = MS_RUN;
+					ChangeAni();
+				}
+				return;
+			}
 		}
 
 		//사거리까지 도착하면 공격해야 하는데

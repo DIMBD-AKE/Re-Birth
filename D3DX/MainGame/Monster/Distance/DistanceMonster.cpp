@@ -50,12 +50,25 @@ void DistanceMonster::Attack()
 		//공격 가능 사거리까지 하면 될듯
 		if (length > RANGE(m_uMonsterStat))
 		{
-			if (m_eState == MS_ATTACK)
+			if (m_bIsSummon)
 			{
-				m_eState = MS_MOVEFORATTACK;
-				ChangeAni();
+				if (m_eState == MS_ATTACK)
+				{
+					m_eState = MS_MOVEFORATTACK;
+					ChangeAni();
+				}
+				MoveForAttack();
 			}
-			MoveForAttack();
+			else
+			{
+				//스태이트와 애니메이션 교체 후 무브함수 실행을 위하여 함수 종료
+				if (m_eState == MS_ATTACK)
+				{
+					m_eState = MS_RUN;
+					ChangeAni();
+				}
+				return;
+			}
 		}
 		else
 		{

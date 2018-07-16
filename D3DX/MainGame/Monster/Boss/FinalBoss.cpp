@@ -37,7 +37,7 @@ void FinalBoss::SetupBoss(Map* map, D3DXVECTOR3 pos)
 	box.lowZ = -50.0f;
 
 
-	m_pModel->SetScale(D3DXVECTOR3(0.03f, 0.03f, 0.03f));
+	m_pModel->SetScale(D3DXVECTOR3(0.02f, 0.02f, 0.02f));
 
 	m_pModel->CreateBound(box);
 	m_pModel->SetBoundSphere(m_pModel->GetOrigBoundSphere().center, 100.0f);
@@ -64,7 +64,7 @@ void FinalBoss::SetupStat()
 	AGI(m_uMonsterStat) = 10.0f;
 	HIT(m_uMonsterStat) = 10.0f;
 	SPEED(m_uMonsterStat) = 0.08f;
-	RANGE(m_uMonsterStat) = 15.0f;
+	RANGE(m_uMonsterStat) = 13.0f;
 }
 
 void FinalBoss::DropItemSetup()
