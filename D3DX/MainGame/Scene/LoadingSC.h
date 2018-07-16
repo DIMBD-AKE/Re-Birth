@@ -1,6 +1,13 @@
 #pragma once
+
+class Loading;
+
 class LoadingSC : public Scene
 {
+private:
+
+	Loading* m_pLoading;
+
 
 private:
 	//SINGLETONE
