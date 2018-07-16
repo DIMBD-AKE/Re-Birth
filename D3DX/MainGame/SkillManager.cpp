@@ -50,19 +50,30 @@ void Skill::Buff()
 		if (m_nDamageCount == 1)
 		{
 			if (m_eOwner == SKILLO_CHARACTER)
-			{
-				m_pCharacter->Getstatus()->chr.nMaxHp += m_stSkill.buffStatus.chr.nMaxHp;
-				m_pCharacter->Getstatus()->chr.nCurrentHP += m_stSkill.buffStatus.chr.nCurrentHP;
-			}
+				*m_pCharacter->Getstatus() += m_stSkill.buffStatus;
 			else
-			{
-				//m_pMonster->get
-			}
+				*m_pMonster->GetMosterStat() += m_stSkill.buffStatus;
 		}
 	}
 	else
 	{
-		m_isBuff = true;
+		if (!m_isBuff)
+		{
+			m_isBuff = true;
+			if (m_eOwner == SKILLO_CHARACTER)
+				*m_pCharacter->Getstatus() += m_stSkill.buffStatus;
+			else
+				*m_pMonster->GetMosterStat() += m_stSkill.buffStatus;
+		}
+
+		if (m_stSkill.fDamageDelay + m_stSkill.fBuffTime < m_fElapseTime)
+		{
+			m_isBuff = false;
+			if (m_eOwner == SKILLO_CHARACTER)
+				*m_pCharacter->Getstatus() -= m_stSkill.buffStatus;
+			else
+				*m_pMonster->GetMosterStat() -= m_stSkill.buffStatus;
+		}
 	}
 }
 
