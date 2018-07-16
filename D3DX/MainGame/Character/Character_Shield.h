@@ -1,0 +1,31 @@
+#pragma once
+#include "../GameEnum.h"
+#include "../../stdafx.h"
+
+
+class UIObject;
+union STATUS;
+
+
+class Character_Shield
+{
+public:
+	SYNTHESIZE(CHAR_SUBCONDITION, m_eShieldCondition, ShieldCondition);		//쉴드 캐릭터 상태 
+	Model*						m_pShieldChr;							//쉴드 캐릭터 변수
+	UIObject*					m_pShieldHp;							//쉴드용 HP
+	GET(STATUS*, m_Status, status);										//스테이터스 유니온 변수 
+
+public:
+	Character_Shield();
+	~Character_Shield();
+
+	void Init(D3DXVECTOR3 pos);
+	void Render();
+	void Update(D3DXVECTOR3 pos, D3DXVECTOR3 Rot);
+	void ChangeSubChrAni();
+	void KeyControl();
+
+
+	//void setCHRmemoryAddress()
+};
+
