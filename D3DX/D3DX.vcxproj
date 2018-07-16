@@ -204,7 +204,7 @@
     <ClInclude Include="MainGame\monster\Near\Elizabeth.h" />
     <ClInclude Include="MainGame\monster\Near\NearMonster.h" />
     <ClInclude Include="MainGame\Monster\TotalMonster.h" />
-    <ClInclude Include="MainGame\Scene\LoadingSC.h" />
+    <ClInclude Include="MainGame\Scene\SC_Loading.h" />
     <ClInclude Include="MainGame\SkillManager.h" />
     <ClInclude Include="MainGame\Status.h" />
     <ClInclude Include="MainGame\AStar\PathFind.h" />
@@ -212,6 +212,8 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Framework\Manager\SceneManager.h" />
     <ClInclude Include="MainGame\Scene\SC_Test.h" />
+    <ClInclude Include="MainGame\Scene\SC_Game.h" />
+    <ClInclude Include="MainGame\Scene\SC_Main.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Framework\Manager\TextureManager.h" />
@@ -260,13 +262,15 @@
     <ClCompile Include="MainGame\monster\Near\Assis.cpp" />
     <ClCompile Include="MainGame\monster\Near\Elizabeth.cpp" />
     <ClCompile Include="MainGame\monster\Near\NearMonster.cpp" />
-    <ClCompile Include="MainGame\Scene\LoadingSC.cpp" />
+    <ClCompile Include="MainGame\Scene\SC_Loading.cpp" />
     <ClCompile Include="MainGame\Scene\SC_Test.cpp" />
     <ClCompile Include="MainGame\Monster\MonsterParent.cpp" />
     <ClCompile Include="MainGame\Monster\MonsterManager.cpp" />
     <ClCompile Include="MainGame\AStar\PathFind.cpp" />
     <ClCompile Include="MainGame\Monster\Boss\MiddleBoss.cpp" />
     <ClCompile Include="MainGame\SkillManager.cpp" />
+    <ClCompile Include="MainGame\Scene\SC_Game.cpp" />
+    <ClCompile Include="MainGame\Scene\SC_Main.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

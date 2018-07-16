@@ -2,7 +2,7 @@
 
 class Loading;
 
-class LoadingSC : public Scene
+class SC_Loading : public Scene
 {
 private:
 
@@ -15,8 +15,8 @@ private:
 	void AddTexture();
 
 public:
-	LoadingSC();
-	~LoadingSC();
+	SC_Loading();
+	~SC_Loading();
 
 	void Release();
 	void Init();

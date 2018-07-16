@@ -1,26 +1,26 @@
 #include "../../stdafx.h"
-#include "LoadingSC.h"
+#include "SC_Loading.h"
 #include "../Loading.h"
 
 #include "../Item/ItemManager.h"
 
-LoadingSC::LoadingSC()
+SC_Loading::SC_Loading()
 : m_pLoading(NULL)
 {
 }
 
 
-LoadingSC::~LoadingSC()
+SC_Loading::~SC_Loading()
 {
 
 }
 
-void LoadingSC::Release()
+void SC_Loading::Release()
 {
 	SAFE_DELETE(m_pLoading)
 }
 
-void LoadingSC::Init()
+void SC_Loading::Init()
 {
 	m_pLoading = new Loading;
 	m_pLoading->Setup();
@@ -36,12 +36,12 @@ void LoadingSC::Init()
 	//SCENE->ChangeScene("Test", true);
 }
 
-void LoadingSC::SingletoneInit()
+void SC_Loading::SingletoneInit()
 {
 	ITEMMANAGER->SetUp();
 }
 
-void LoadingSC::AddModel()
+void SC_Loading::AddModel()
 {
 	//m_pLoading->LoadModel()
 	//일반 몬스터
@@ -70,7 +70,7 @@ void LoadingSC::AddModel()
 	m_pLoading->LoadModel("렘논", "Model/Character/Lemnon/", "Lemnon.x", MODELTYPE_X);
 }
 
-void LoadingSC::AddTexture()
+void SC_Loading::AddTexture()
 {
 	//m_pLoading->LoadTexture()
 	m_pLoading->LoadTexture("MonBackBar", "./Model/Enemy/UI/백바.jpg");
@@ -131,7 +131,7 @@ void LoadingSC::AddTexture()
 
 }
 
-void LoadingSC::Update()
+void SC_Loading::Update()
 {
 	m_pLoading->Update();
 
@@ -141,7 +141,7 @@ void LoadingSC::Update()
 	}
 }
 
-void LoadingSC::Render()
+void SC_Loading::Render()
 {
 	m_pLoading->Render();
 }

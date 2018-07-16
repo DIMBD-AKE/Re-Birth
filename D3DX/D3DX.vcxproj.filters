@@ -210,10 +210,16 @@
     <ClInclude Include="MainGame\Character\Character_Shield.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="MainGame\Scene\LoadingSC.h">
+    <ClInclude Include="MainGame\Loading.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="MainGame\Loading.h">
+    <ClInclude Include="MainGame\Scene\SC_Game.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="MainGame\Scene\SC_Main.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="MainGame\Scene\SC_Loading.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
@@ -365,10 +371,16 @@
     <ClCompile Include="MainGame\Character\Character_Shield.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="MainGame\Scene\LoadingSC.cpp">
+    <ClCompile Include="MainGame\Loading.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="MainGame\Loading.cpp">
+    <ClCompile Include="MainGame\Scene\SC_Main.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="MainGame\Scene\SC_Game.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="MainGame\Scene\SC_Loading.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
