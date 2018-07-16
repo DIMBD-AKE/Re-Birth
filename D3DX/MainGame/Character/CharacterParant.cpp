@@ -404,10 +404,8 @@ void CharacterParant::CalculDamage(float damage)
 
 	if (m_pShieldChr->GetShieldCurHp() <= 0)
 	{
-		m_pShieldChr->SetShieldCondition(SUB_DIE);
-		m_pShieldChr->ChangeSubChrAni();
+		//m_pShieldChr->Die();
 		m_bIsSubChr = false;
-
 		m_pShieldChr->SetShieldCurHp(m_pShieldChr->GetShieldMaxHp());
 	}
 }
@@ -566,26 +564,6 @@ void CharacterParant::PlayerProgressBar()
 	D3DXVECTOR3 StaPos = D3DXVECTOR3(1350, 535, 0);
 	m_pStaminaBar->SetPosition(StaPos);
 	m_pStaminaBar->Update();
-	
-	/*if(m_bIsSubChr)
-	{
-		float tempC = (float)m_nShieldCurHp / m_nShieldMaxHp;
-
-
-		m_pShieldHp->SetScale(D3DXVECTOR3(tempC, 1, 1));
-
-		D3DXVECTOR3 ShieldPos = *m_pShieldChr->GetPosition();
-		ShieldPos.y += 5.0f;
-
-		auto temp = Convert3DTo2D(ShieldPos);
-
-		ShieldPos.x = temp.x;
-		ShieldPos.y = temp.y;
-		ShieldPos.z = 0;
-		m_pShieldHp->SetPosition(ShieldPos);
-		m_pShieldHp->Update();
-	}
-*/
 }
 
 void CharacterParant::MGSKill()

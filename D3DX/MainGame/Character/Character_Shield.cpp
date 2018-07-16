@@ -11,6 +11,9 @@ Character_Shield::Character_Shield()
 
 Character_Shield::~Character_Shield()
 {
+	SAFE_DELETE(m_pShieldChr);
+	SAFE_RELEASE(m_pShieldHp);
+	
 }
 
 void Character_Shield::Init(D3DXVECTOR3 pos)
@@ -45,9 +48,9 @@ void Character_Shield::Init(D3DXVECTOR3 pos)
 
 	//m_Status->chr.nCurrentHP = 500;
 	//m_Status->chr.nMaxHp = 500;
-
-	m_nShieldMaxHp = 500;
-	m_nShieldCurHp = 500;
+	m_bIsDie = false;
+	m_nShieldMaxHp = 1000;
+	m_nShieldCurHp = 1000;
 	
 }
 
@@ -67,6 +70,11 @@ void Character_Shield::Update(D3DXVECTOR3 pos, D3DXVECTOR3 Rot)
 
 
 	KeyControl();
+
+	//if (m_nShieldCurHp <= 0)
+	//{
+	//	m_nShieldCurHp = m_nShieldMaxHp;
+	//}
 }
 
 void Character_Shield::ChangeSubChrAni()
@@ -75,7 +83,7 @@ void Character_Shield::ChangeSubChrAni()
 	{
 	case SUB_IDLE:
 		m_pShieldChr->SetBlendAnimation("IDLE");
-		m_pShieldChr->SetBlendTime(0.27);
+		m_pShieldChr->SetBlendTime(0.57);
 		m_pShieldChr->SetAnimationSpeed(1.0f);
 		break;
 	case SUB_RUN:
@@ -87,9 +95,10 @@ void Character_Shield::ChangeSubChrAni()
 		break;
 	case SUB_BATTLEREADY:
 		m_pShieldChr->SetAnimation("BATTLEREADY");
+		m_pShieldChr->SetBlendTime(0.57);
 		m_pShieldChr->SetAnimationSpeed(1.0f);
 		break;
-	case CHAR_NONE:
+	case SUB_NONE:
 		break;
 	}
 }
@@ -99,6 +108,11 @@ void Character_Shield::KeyControl()
 	if (m_pShieldChr->IsAnimationEnd() && m_eShieldCondition == SUB_BATTLEREADY)
 	{
 		m_eShieldCondition = SUB_IDLE;
+		ChangeSubChrAni();
+	}
+	if (m_pShieldChr->IsAnimationEnd() && m_eShieldCondition == SUB_DIE)
+	{
+		m_eShieldCondition = SUB_NONE;
 		ChangeSubChrAni();
 	}
 }
@@ -122,5 +136,11 @@ void Character_Shield::ShieldProgressBar()
 	m_pShieldHp->SetPosition(ShieldPos);
 	m_pShieldHp->Update();
 	
+}
+
+void Character_Shield::Die()
+{
+	m_eShieldCondition = SUB_DIE;
+	ChangeSubChrAni();
 }
 

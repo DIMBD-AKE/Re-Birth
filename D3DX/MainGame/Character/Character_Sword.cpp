@@ -120,7 +120,7 @@ void Character_Sword::Update()
 		{
 			if (m_pShieldChr)
 			{
-				m_pShieldChr->Update(*m_pCharacter->GetPosition() - m_vfront * 3.0f, *m_pCharacter->GetRotation());
+				m_pShieldChr->Update(*m_pCharacter->GetPosition() - m_vfront * 2.0f, *m_pCharacter->GetRotation());
 			}
 			else
 			{

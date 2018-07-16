@@ -115,15 +115,19 @@ void LoadingSC::AddTexture()
 	TEXTUREMANAGER->AddTexture("실드_프론트바", "Texture/PlayerProgressBar/shieldHp.jpg");
 	TEXTUREMANAGER->AddTexture("실드_백바", "Texture/PlayerProgressBar/shieldBack.jpg");
 
+	//로딩 이미지
+	TEXTUREMANAGER->AddTexture("로딩이미지", "Texture/Loading/Load1.png");
 
 }
 
 void LoadingSC::Update()
 {
-
+	LoadingImg->SetTexture(TEXTUREMANAGER->GetTexture("로딩이미지"));
+	LoadingImg->Update();
 }
 
 void LoadingSC::Render()
 {
+	LoadingImg->Render();
 
 }
