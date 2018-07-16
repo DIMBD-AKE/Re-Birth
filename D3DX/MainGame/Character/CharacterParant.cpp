@@ -399,16 +399,16 @@ void CharacterParant::CalculDamage(float damage)
 	else
 	{
 		float Shield = round(damage);
-		m_nShieldCurHp -= Shield;
+		m_pShieldChr->SetShieldCurHp(m_pShieldChr->GetShieldCurHp() -Shield);
 	}
 
-	if (m_nShieldCurHp <= 0)
+	if (m_pShieldChr->GetShieldCurHp() <= 0)
 	{
-		m_eSubCondition == SUB_DIE;
-		ChangeSubChrAni();
-
+		m_pShieldChr->SetShieldCondition(SUB_DIE);
+		m_pShieldChr->ChangeSubChrAni();
 		m_bIsSubChr = false;
-		m_nShieldCurHp = m_nShieldMaxHp;
+
+		m_pShieldChr->SetShieldCurHp(m_pShieldChr->GetShieldMaxHp());
 	}
 }
 
@@ -669,29 +669,6 @@ void CharacterParant::MGSKill()
 CharacterParant::CharacterParant()
 {
 	m_Status = new STATUS;
-	MODELMANAGER->AddModel("아린", "Model/Character/Arin/", "Arin.x", MODELTYPE_X);
-	MODELMANAGER->AddModel("아카날", "Model/Character/Aknal/", "Aknal.x", MODELTYPE_X);
-	MODELMANAGER->AddModel("헤스티아", "Model/Character/Hestia/", "Hestia.x", MODELTYPE_X);
-	MODELMANAGER->AddModel("메그너스", "Model/Character/Meguns/", "Meguns.x", MODELTYPE_X);
-	MODELMANAGER->AddModel("리아", "Model/Character/Riah/", "Riah.x", MODELTYPE_X);
-	MODELMANAGER->AddModel("스카디", "Model/Character/Skadi/", "Skadi.x", MODELTYPE_X);
-	MODELMANAGER->AddModel("베카", "Model/Character/Beakah/", "Beakah.x", MODELTYPE_X);
-	MODELMANAGER->AddModel("벨벳", "Model/Character/Velvet/", "Velvet.x", MODELTYPE_X);
-	//MODELMANAGER->AddModel("렘논", "Model/Character/Lemnon/", "Lemnon.x", MODELTYPE_X);
-	
-
-
-	TEXTUREMANAGER->AddTexture("아카날_사진", "Texture/Portrait/Portrait_PC_Aknal_S_Icon.png");
-	TEXTUREMANAGER->AddTexture("아린_사진", "Texture/Portrait/Portrait_PC_Arin_S_Icon.png");
-	TEXTUREMANAGER->AddTexture("베카_사진", "Texture/Portrait/Portrait_PC_BeakAh_S_Icon.png");
-	TEXTUREMANAGER->AddTexture("헤스티아_사진", "Texture/Portrait/Portrait_PC_Hestia_S_Icon.png");
-	TEXTUREMANAGER->AddTexture("메그너스_사진", "Texture/Portrait/Portrait_Pc_Magnus_Icon.png");
-	TEXTUREMANAGER->AddTexture("리아_사진", "Texture/Portrait/Portrait_PC_Riah_S_Icon.png");
-	TEXTUREMANAGER->AddTexture("스카디_사진", "Texture/Portrait/Portrait_PC_Skadi_S_Icon.png");
-	TEXTUREMANAGER->AddTexture("벨벳_사진", "Texture/Portrait/velvet.png");
-
-	
-
 	//공격시 파티클
 	PARTICLE->AddParticle("ATTACK",
 		TEXTUREMANAGER->AddTexture("파티클1", "Texture/Particle/Sphere.png"),
@@ -709,41 +686,6 @@ CharacterParant::CharacterParant()
 	PARTICLE->AddParticle("teleport",
 		TEXTUREMANAGER->AddTexture("포오탈2", "Texture/Particle/Sphere.png"),
 		"Particle/Teleport.ptc");
-
-
-	//데미지 이미지 
-	TEXTUREMANAGER->AddTexture("숫자0", "Texture/Damage/0.png");
-	TEXTUREMANAGER->AddTexture("숫자1", "Texture/Damage/1.png");
-	TEXTUREMANAGER->AddTexture("숫자2", "Texture/Damage/2.png");
-	TEXTUREMANAGER->AddTexture("숫자3", "Texture/Damage/3.png");
-	TEXTUREMANAGER->AddTexture("숫자4", "Texture/Damage/4.png");
-	TEXTUREMANAGER->AddTexture("숫자5", "Texture/Damage/5.png");
-	TEXTUREMANAGER->AddTexture("숫자6", "Texture/Damage/6.png");
-	TEXTUREMANAGER->AddTexture("숫자7", "Texture/Damage/7.png");
-	TEXTUREMANAGER->AddTexture("숫자8", "Texture/Damage/8.png");
-	TEXTUREMANAGER->AddTexture("숫자9", "Texture/Damage/9.png");
-
-	TEXTUREMANAGER->AddTexture("숫자0_r", "Texture/Damage/0_r.png");
-	TEXTUREMANAGER->AddTexture("숫자1_r", "Texture/Damage/1_r.png");
-	TEXTUREMANAGER->AddTexture("숫자2_r", "Texture/Damage/2_r.png");
-	TEXTUREMANAGER->AddTexture("숫자3_r", "Texture/Damage/3_r.png");
-	TEXTUREMANAGER->AddTexture("숫자4_r", "Texture/Damage/4_r.png");
-	TEXTUREMANAGER->AddTexture("숫자5_r", "Texture/Damage/5_r.png");
-	TEXTUREMANAGER->AddTexture("숫자6_r", "Texture/Damage/6_r.png");
-	TEXTUREMANAGER->AddTexture("숫자7_r", "Texture/Damage/7_r.png");
-	TEXTUREMANAGER->AddTexture("숫자8_r", "Texture/Damage/8_r.png");
-	TEXTUREMANAGER->AddTexture("숫자9_r", "Texture/Damage/9_r.png");
-
-	//프로그래스바
-	TEXTUREMANAGER->AddTexture("플레이어_프론트바", "Texture/PlayerProgressBar/frontBar.jpg");
-	TEXTUREMANAGER->AddTexture("플레이어_백바", "Texture/PlayerProgressBar/backBar.jpg");
-
-	TEXTUREMANAGER->AddTexture("스테미나_프론트바", "Texture/PlayerProgressBar/staminaFrontBar.jpg");
-	TEXTUREMANAGER->AddTexture("스테미나_백바", "Texture/PlayerProgressBar/staminaBackBar.jpg");
-
-	//TEXTUREMANAGER->AddTexture("실드_프론트바", "Texture/PlayerProgressBar/shieldHp.jpg");
-	//TEXTUREMANAGER->AddTexture("실드_백바", "Texture/PlayerProgressBar/shieldBack.jpg");
-
 }
 
 
@@ -886,34 +828,6 @@ void CharacterParant::Init(Map* map, CHARSELECT order, MonsterManager* pMonsterM
 
 
 	m_pShieldChr = NULL;
-	// 쉴드 캐릭터 
-	/*ST_SIZEBOX box1;
-	box1.highX = 50.0f;
-	box1.highY = 180.0f;
-	box1.highZ = 50.0f;
-	box1.lowX = -50.0f;
-	box1.lowY = 10.0f;
-	box1.lowZ = -50.0f;
-
-	m_pShieldChr = MODELMANAGER->GetModel("렘논", MODELTYPE_X);
-	m_pShieldChr->SetScale(D3DXVECTOR3(0.02, 0.02, 0.02));
-	m_pShieldChr->SetPosition(*m_pCharacter->GetPosition());
-
-	m_pShieldHp = new UIObject;
-	m_pShieldHp->SetTexture(TEXTUREMANAGER->GetTexture("실드_프론트바"));
-	UIObject* SbackBar = new UIObject;
-	SbackBar->SetPosition(D3DXVECTOR3(0, 0, 0.1));
-	SbackBar->SetTexture(TEXTUREMANAGER->GetTexture("실드_백바"));
-	m_pShieldHp->AddChild(SbackBar);
-
-
-	m_pShieldChr->CreateBound(box1);
-	m_pShieldChr->SetBoundSphere(m_pShieldChr->GetOrigBoundSphere().center, 100.0f);
-	m_nShieldMaxHp = 1000;
-	m_nShieldCurHp = 1000;
-	m_eSubCondition = SUB_BATTLEREADY;
-	ChangeSubChrAni();*/
-	
 }
 
 
@@ -936,9 +850,12 @@ void CharacterParant::KeyControl()
 		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_HIT)
 		{
 			m_eCondition = CHAR_RUN_FRONT;
-			m_eSubCondition = SUB_RUN;
+			if (m_bIsSubChr)
+			{
+				m_pShieldChr->SetShieldCondition(SUB_RUN);
+				m_pShieldChr->ChangeSubChrAni();
+			}
 			ChangeAnimation();
-			ChangeSubChrAni();
 		}
 	}
 	else if (INPUT->KeyUp('W'))
@@ -946,9 +863,12 @@ void CharacterParant::KeyControl()
 		if (m_eCondition == CHAR_RUN_FRONT)
 		{
 			m_eCondition = CHAR_IDLE;
-			m_eSubCondition = SUB_IDLE;
+			if (m_bIsSubChr)
+			{
+				m_pShieldChr->SetShieldCondition(SUB_IDLE);
+				m_pShieldChr->ChangeSubChrAni();
+			}
 			ChangeAnimation();
-			ChangeSubChrAni();
 		}
 	}
 	//뒤로 달리기
@@ -957,9 +877,12 @@ void CharacterParant::KeyControl()
 		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_HIT)
 		{
 			m_eCondition = CHAR_RUN_BACK;
-			m_eSubCondition = SUB_RUN;
+			if (m_bIsSubChr)
+			{
+				m_pShieldChr->SetShieldCondition(SUB_RUN);
+				m_pShieldChr->ChangeSubChrAni();
+			}
 			ChangeAnimation();
-			ChangeSubChrAni();
 		}
 	}
 	else if (INPUT->KeyUp('S'))
@@ -967,9 +890,12 @@ void CharacterParant::KeyControl()
 		if (m_eCondition == CHAR_RUN_BACK)
 		{
 			m_eCondition = CHAR_IDLE;
-			m_eSubCondition = SUB_IDLE;
+			if (m_bIsSubChr)
+			{
+				m_pShieldChr->SetShieldCondition(SUB_IDLE);
+				m_pShieldChr->ChangeSubChrAni();
+			}
 			ChangeAnimation();
-			ChangeSubChrAni();
 		}
 	}
 	//앞으로 대쉬
@@ -978,10 +904,13 @@ void CharacterParant::KeyControl()
 		if (m_eCondition == CHAR_RUN_FRONT)
 		{
 			m_eCondition = CHAR_DASH_FRONT;
-			m_eSubCondition = SUB_RUN;
+			if (m_bIsSubChr)
+			{
+				m_pShieldChr->SetShieldCondition(SUB_RUN);
+				m_pShieldChr->ChangeSubChrAni();
+			}
 			m_bIsDash = true;
 			ChangeAnimation();
-			ChangeSubChrAni();
 		}
 	}
 	else if (INPUT->KeyUp('Q'))
@@ -989,10 +918,13 @@ void CharacterParant::KeyControl()
 		if (m_eCondition == CHAR_DASH_FRONT)
 		{
 			m_eCondition = CHAR_RUN_FRONT;
-			m_eSubCondition = SUB_RUN;
+			if (m_bIsSubChr)
+			{
+				m_pShieldChr->SetShieldCondition(SUB_RUN);
+				m_pShieldChr->ChangeSubChrAni();
+			}
 			m_bIsDash = false;
 			ChangeAnimation();
-			ChangeSubChrAni();
 		}
 	}
 	//뒤로 대쉬
@@ -1001,10 +933,13 @@ void CharacterParant::KeyControl()
 		if (m_eCondition == CHAR_RUN_BACK)
 		{
 			m_eCondition = CHAR_DASH_BACK;
-			m_eSubCondition = SUB_RUN;
+			if (m_bIsSubChr)
+			{
+				m_pShieldChr->SetShieldCondition(SUB_RUN);
+				m_pShieldChr->ChangeSubChrAni();
+			}
 			m_bIsDash = true;
 			ChangeAnimation();
-			ChangeSubChrAni();
 		}
 	}
 	else if (INPUT->KeyUp('E'))
@@ -1012,10 +947,13 @@ void CharacterParant::KeyControl()
 		if (m_eCondition == CHAR_DASH_BACK)
 		{
 			m_eCondition = CHAR_RUN_BACK;
-			m_eSubCondition = SUB_RUN;
+			if (m_bIsSubChr)
+			{
+				m_pShieldChr->SetShieldCondition(SUB_RUN);
+				m_pShieldChr->ChangeSubChrAni();
+			}
 			m_bIsDash = false;
 			ChangeAnimation();
-			ChangeSubChrAni();
 		}
 	}
 
@@ -1025,11 +963,14 @@ void CharacterParant::KeyControl()
 		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_RUN_FRONT || m_eCondition == CHAR_RUN_BACK)
 		{
 			m_eCondition = CHAR_ATTACK;
-			m_eSubCondition = SUB_IDLE;
+			if (m_bIsSubChr)
+			{
+				m_pShieldChr->SetShieldCondition(SUB_IDLE);
+				m_pShieldChr->ChangeSubChrAni();
+			}
 			m_bIsAttack = true;
 			Attack();
 			ChangeAnimation();
-			ChangeSubChrAni();
 		}
 	}
 	else if (INPUT->KeyUp(VK_SPACE))
@@ -1043,10 +984,13 @@ void CharacterParant::KeyControl()
 		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_RUN_FRONT || m_eCondition == CHAR_RUN_BACK)
 		{
 			m_eCondition = CHAR_SKILL;
-			m_eSubCondition = SUB_IDLE;
+			if (m_bIsSubChr)
+			{
+				m_pShieldChr->SetShieldCondition(SUB_IDLE);
+				m_pShieldChr->ChangeSubChrAni();
+			}
 			m_bIsSkill = true;
 			ChangeAnimation();
-			ChangeSubChrAni();
 		}
 	}
 
@@ -1087,49 +1031,27 @@ void CharacterParant::KeyControl()
 		{
 		case CHAR_SKILL:
 			m_eCondition = CHAR_IDLE;
-			m_eSubCondition = SUB_IDLE;
 			break;
 		case CHAR_ATTACK:
 			m_eCondition = CHAR_IDLE;
-			m_eSubCondition = SUB_IDLE;
 			break;
 		case CHAR_HIT:
 			m_eCondition = CHAR_IDLE;
-			m_eSubCondition = SUB_IDLE;
 			break;
 		}
 		ChangeAnimation();
-		ChangeSubChrAni();
 	}
 
-	//if (m_nAppear == 0)
-	//{
-	//	m_eSubCondition = SUB_BATTLEREADY;
-	//	ChangeSubChrAni();
-	//}
-	//m_nAppear = 1;
-	
-	////실드 캐릭터 애니메이션 배틀래디후 대기상태로 제어.
-	//if (m_pShieldChr->IsAnimationEnd() && m_eSubCondition == SUB_BATTLEREADY)
-	//{
-	//	m_eSubCondition = SUB_IDLE;
-	//	ChangeSubChrAni();
-	//}
-	//if (m_pShieldChr->IsAnimationEnd() && m_eSubCondition == SUB_DIE)
-	//{
-	//	
-	//}
 
+	//피격 도중에 공격 가능하게 만들기
 	if(m_eCondition == CHAR_HIT)
 	{
 		if (INPUT->KeyDown(VK_SPACE))
 		{
 			m_eCondition = CHAR_ATTACK;
-			m_eSubCondition = SUB_IDLE;
 			m_bIsAttack = true;
 			Attack();
-			ChangeAnimation();	
-			ChangeSubChrAni();
+			ChangeAnimation();
 		}
 	}
 	
@@ -1154,30 +1076,6 @@ void CharacterParant::KeyControl()
 }
 
 
-void CharacterParant::ChangeSubChrAni()
-{/*
-	switch (m_eSubCondition)
-	{
-	case SUB_IDLE:
-		m_pShieldChr->SetBlendAnimation("IDLE");
-		m_pShieldChr->SetBlendTime(0.27);
-		m_pShieldChr->SetAnimationSpeed(1.0f);
-		break;
-	case SUB_RUN:
-		m_pShieldChr->SetAnimation("MOVE");
-		break;
-	case SUB_DIE:
-		m_pShieldChr->SetAnimation("DIE");
-		m_pShieldChr->SetAnimationSpeed(1.0f);
-		break;
-	case SUB_BATTLEREADY:
-		m_pShieldChr->SetAnimation("BATTLEREADY");
-		m_pShieldChr->SetAnimationSpeed(1.0f);
-		break;
-	case CHAR_NONE:
-		break;
-	}*/
-}
 
 void CharacterParant::ChangeAnimation()
 {

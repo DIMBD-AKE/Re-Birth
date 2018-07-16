@@ -15,6 +15,9 @@ public:
 	UIObject*					m_pShieldHp;							//쉴드용 HP
 	GET(STATUS*, m_Status, status);										//스테이터스 유니온 변수 
 
+	GET(int, m_nShieldMaxHp, ShieldMaxHp);								//실드 체력
+	SYNTHESIZE(int, m_nShieldCurHp, ShieldCurHp);								//실드 현재체력;
+
 public:
 	Character_Shield();
 	~Character_Shield();
@@ -24,8 +27,7 @@ public:
 	void Update(D3DXVECTOR3 pos, D3DXVECTOR3 Rot);
 	void ChangeSubChrAni();
 	void KeyControl();
+	void ShieldProgressBar();
 
-
-	//void setCHRmemoryAddress()
 };
 
