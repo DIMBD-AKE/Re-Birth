@@ -71,7 +71,10 @@ protected:
 
 	//몬스터의 A*
 	AStar* m_pAStar;
-
+	//A* 총 경로
+	vector<D3DXVECTOR3> m_vPath;
+	//플레이어의 이전 포지션
+	int m_nPrePosIndex;
 	//드랍 아이템 목록
 	vector<int> m_vItemID;
 

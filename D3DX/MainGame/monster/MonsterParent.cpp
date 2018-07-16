@@ -29,6 +29,9 @@ MonsterParent::~MonsterParent()
 
 void MonsterParent::Setup(Map* map, D3DXVECTOR3 spawnPos, bool isSummon)
 {
+	//초기화
+	m_nPrePosIndex = -1;
+
 	m_bIsSummon = isSummon;
 
 	m_vDir = D3DXVECTOR3(0, 0, 1);
@@ -399,24 +402,38 @@ POINT MonsterParent::MoveForAttack()
 		dir = *CHARACTER->GetPosition()
 			- *m_pModel->GetPosition();
 	}
+	//같은 셀이 아니면 에이스타 돌려야 한다.
 	else
 	{
 		//assert(playerIndex != -1 && "현재 플레이어가 갈 수 없는 곳을 가려고 합니다.");
 
+		//플레이어가 갈수 없는 곳에 있을때의 예외처리
 		if (playerIndex == -1) return{ -1, -1 };
 
-		m_pAStar->SetCell(myIndex, playerIndex);
-
-		D3DXVECTOR3 nextCell = m_pAStar->GetNextCell();
-
-		dir = nextCell - *m_pModel->GetPosition();
-
-		if (nextCell == D3DXVECTOR3(-1, -1, -1))
+		//내가 들고있는 플레이어의 인덱스가 현재 계산 한 결과랑 다르다면 A*를 돌린다.
+		if (m_nPrePosIndex != playerIndex)
 		{
-			dir = *CHARACTER->GetPosition()
-				- *m_pModel->GetPosition();
+			//다음번엔 검출을 하지 않기위해 값 바꿔주고
+			m_nPrePosIndex = playerIndex;
+			//에이스타 세팅 해주고
+			m_pAStar->SetCell(myIndex, playerIndex);
+
+			//경로를 가져온다.
+			D3DXVECTOR3 nextCell = m_pAStar->GetNextCell(&m_vPath);
 		}
 
+		//0번쨰 인덱스가 -1,-1,-1이면 바로 이동하자.
+		if ( m_vPath[0] == D3DXVECTOR3(-1, -1, -1))
+		{			
+				dir = *CHARACTER->GetPosition()
+					- *m_pModel->GetPosition();			
+
+		}
+		//그게 아니라면 방향은 다음 가야 되는 셀의 중점이다.
+		else
+		{
+			dir = m_vPath[0] - *m_pModel->GetPosition();
+		}
 	}
 	D3DXVec3Normalize(&dir, &dir);
 	if (!DEBUG)
@@ -429,6 +446,14 @@ POINT MonsterParent::MoveForAttack()
 
 		m_pModel->SetRotation(D3DXVECTOR3(0, angle, 0));
 		m_pModel->SetPosition(*m_pModel->GetPosition() + dir* SPEED(m_uMonsterStat));
+
+		if (m_vPath[0] != D3DXVECTOR3(-1, -1, -1))
+		{
+			if (myIndex != m_pAStar->GetCellIndex(*m_pModel->GetPosition()))
+			{
+				m_vPath.erase(m_vPath.begin());
+			}
+		}
 	}
 	return{ -1, -1 };
 }

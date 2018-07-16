@@ -215,18 +215,36 @@ void AStar::pathFinder(Cell* currentCell)
 		pathFinder(m_pCurrentCell);
 }
 
-D3DXVECTOR3 AStar::GetNextCell()
+D3DXVECTOR3 AStar::GetNextCell(OUT vector<D3DXVECTOR3>* path)
 {
+	if (!DEBUG)	path->clear();
 	if (m_pStartCell == m_pEndCell)
 	{
+		if (!DEBUG)	(*path).push_back(D3DXVECTOR3(-1, -1, -1));
 		return D3DXVECTOR3(-1, -1, -1);
 	}
 
 	pathFinder(m_pCurrentCell);
+	
 	if (m_vCloseList.size() <= 0)
 	{
+		if(!DEBUG) (*path).push_back(D3DXVECTOR3(-1, -1, -1));
 		return D3DXVECTOR3(-1, -1, -1);
 	}
+
+	if (!DEBUG)
+	{
+		
+		//path->resize(m_vCloseList.size());
+
+		for (int i = 0; i<m_vCloseList.size(); ++i)
+		{
+			(*path).push_back( m_vCloseList[i]->GetCenter());
+		}
+
+		(*path).push_back(D3DXVECTOR3(-1, -1, -1));
+	}
+
 	return m_vCloseList[0]->GetCenter();
 }
 
@@ -241,7 +259,7 @@ void AStar::Render(int MyCellIndex, int TargetIndex, D3DXVECTOR3* pos)
 	if (DEBUG)
 	{
 		SetCell(MyCellIndex, TargetIndex);
-		GetNextCell();
+		GetNextCell(NULL);
 		vector<D3DXVECTOR3> tempVector;
 		tempVector.push_back(D3DXVECTOR3(m_vCurrentCell[MyCellIndex]->GetCenter().x, m_vCurrentCell[MyCellIndex]->GetCenter().y + 2 , m_vCurrentCell[MyCellIndex]->GetCenter().z));
 		for (int i = 0; i < m_vCloseList.size(); i++)

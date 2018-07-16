@@ -43,7 +43,8 @@ public:
 	//길 찾기 함수
 	void pathFinder(Cell* currentCell);
 
-	D3DXVECTOR3 GetNextCell();
+	D3DXVECTOR3 GetNextCell(OUT vector<D3DXVECTOR3>* path);
+	
 
 	int GetCellIndex(D3DXVECTOR3 pos);
 
