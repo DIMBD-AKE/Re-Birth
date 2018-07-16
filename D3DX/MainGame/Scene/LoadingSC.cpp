@@ -30,7 +30,7 @@ void LoadingSC::Init()
 	//TEXT->Add(test, 100, 100, 40);
 	//TEXT->Render();
 	SingletoneInit();
-	//AddModel();
+	AddModel();
 	AddTexture();
 
 	//SCENE->ChangeScene("Test", true);
@@ -126,6 +126,8 @@ void LoadingSC::AddTexture()
 	m_pLoading->LoadTexture("실드_프론트바", "Texture/PlayerProgressBar/shieldHp.jpg");
 	m_pLoading->LoadTexture("실드_백바", "Texture/PlayerProgressBar/shieldBack.jpg");
 
+	//로딩 이미지
+	TEXTUREMANAGER->AddTexture("로딩이미지", "Texture/Loading/Load1.png");
 
 }
 
@@ -135,7 +137,7 @@ void LoadingSC::Update()
 
 	if (m_pLoading->loadingDone())
 	{
-		//SCENE->ChangeScene("Test", true);
+		SCENE->ChangeScene("Test", true);
 	}
 }
 

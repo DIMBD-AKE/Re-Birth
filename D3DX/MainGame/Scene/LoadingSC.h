@@ -8,7 +8,6 @@ private:
 
 	Loading* m_pLoading;
 
-
 private:
 	//SINGLETONE
 	void SingletoneInit();
