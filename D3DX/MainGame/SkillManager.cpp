@@ -47,32 +47,21 @@ void Skill::Buff()
 {
 	if (m_stSkill.fBuffTime < 0)
 	{
-		if (m_nDamageCount == 1)
-		{
-			if (m_eOwner == SKILLO_CHARACTER)
-				*m_pCharacter->Getstatus() += m_stSkill.buffStatus;
-			else
-				*m_pMonster->GetMosterStat() += m_stSkill.buffStatus;
-		}
+		if (m_eOwner == SKILLO_CHARACTER)
+			*m_pCharacter->Getstatus() += m_stSkill.buffStatus;
+		else
+			*m_pMonster->GetMosterStat() += m_stSkill.buffStatus;
 	}
 	else
 	{
 		if (!m_isBuff)
 		{
 			m_isBuff = true;
+			m_fBuffTime = m_fElapseTime;
 			if (m_eOwner == SKILLO_CHARACTER)
 				*m_pCharacter->Getstatus() += m_stSkill.buffStatus;
 			else
 				*m_pMonster->GetMosterStat() += m_stSkill.buffStatus;
-		}
-
-		if (m_stSkill.fDamageDelay + m_stSkill.fBuffTime < m_fElapseTime)
-		{
-			m_isBuff = false;
-			if (m_eOwner == SKILLO_CHARACTER)
-				*m_pCharacter->Getstatus() -= m_stSkill.buffStatus;
-			else
-				*m_pMonster->GetMosterStat() -= m_stSkill.buffStatus;
 		}
 	}
 }
@@ -384,7 +373,7 @@ Skill::Skill()
 }
 
 Skill::Skill(SKILL_PROCESS damage, SKILL_PROCESS target,
-	SKILL_EFFECT particleP, SKILL_EFFECT effectP, string particle, ST_EFFECT effect,
+	SKILL_EFFECT particleP, SKILL_EFFECT effectP, SKILL_BUFF buff, string particle, ST_EFFECT effect,
 	LPDIRECT3DTEXTURE9 iconTex, string name)
 {
 	ZeroMemory(this, sizeof(Skill));
@@ -392,6 +381,7 @@ Skill::Skill(SKILL_PROCESS damage, SKILL_PROCESS target,
 	m_eTargetProcess = target;
 	m_eParticleProcess = particleP;
 	m_eEffectProcess = effectP;
+	m_eBuffProcess = buff;
 	m_sParticle = particle;
 	m_stEffect = effect;
 	m_sSkillName = name;
@@ -440,6 +430,7 @@ void Skill::Prepare(CharacterParant * pCharacter, MonsterParent* pMonster, vecto
 	m_fElapseTime = 0;
 	m_fPrevTime = 0;
 	m_nDamageCount = 0;
+	m_nPrevCount = 0;
 	m_isProcess = false;
 
 	for (auto p : m_vecParticle)
@@ -556,8 +547,43 @@ void Skill::Update()
 		}
 	}
 
-	if (m_stSkill.fDamageDelay < m_fElapseTime)
-		Buff();
+	// 버프 처리
+	if (m_eBuffProcess == SKILLB_BEGIN)
+	{
+		if (m_nPrevCount == 0)
+		{
+			Buff();
+			m_nPrevCount++;
+		}
+	}
+	else if (m_eBuffProcess == SKILLB_HIT)
+	{
+		if (m_nPrevCount != m_nDamageCount)
+		{
+			Buff();
+			m_nPrevCount++;
+		}
+	}
+	else if (m_eBuffProcess == SKILLB_END)
+	{
+		if (m_fElapseTime > m_stSkill.fDamageDelay + m_stSkill.fDamageInterval * m_stSkill.nDamageCount
+			&& m_nPrevCount != m_nDamageCount)
+		{
+			Buff();
+			m_nPrevCount = m_nDamageCount;
+		}
+	}
+	if (m_stSkill.fBuffTime > 0)
+	{
+		if (m_isBuff && m_stSkill.fBuffTime + m_fBuffTime < m_fElapseTime)
+		{
+			m_isBuff = false;
+			if (m_eOwner == SKILLO_CHARACTER)
+				*m_pCharacter->Getstatus() -= m_stSkill.buffStatus;
+			else
+				*m_pMonster->GetMosterStat() -= m_stSkill.buffStatus;
+		}
+	}
 
 	// 파티클 처리
 	if (m_eParticleProcess == SKILLE_THIS)
@@ -681,6 +707,7 @@ Skill SkillManager::SkillParse(string name, string path)
 
 	SKILL_PROCESS damage, target;
 	SKILL_EFFECT particleP = SKILLE_THIS, effectP = SKILLE_THIS;
+	SKILL_BUFF buff = SKILLB_BEGIN;
 	string particle;
 	ST_EFFECT effect;
 	LPDIRECT3DTEXTURE9 iconTex = NULL;
@@ -751,6 +778,16 @@ Skill SkillManager::SkillParse(string name, string path)
 			if (strcmp(tok, "NONE") == 0)
 				effectP = SKILLE_NONE;
 		}
+		if (strcmp(tok, "SKILL_BUFF") == 0)
+		{
+			tok = strtok_s(NULL, "\t\n", &context);
+			if (strcmp(tok, "BEGIN") == 0)
+				buff = SKILLB_BEGIN;
+			if (strcmp(tok, "HIT") == 0)
+				buff = SKILLB_HIT;
+			if (strcmp(tok, "END") == 0)
+				buff = SKILLB_END;
+		}
 
 		if (strcmp(tok, "PARTICLE") == 0)
 		{
@@ -807,7 +844,7 @@ Skill SkillManager::SkillParse(string name, string path)
 
 	fclose(fp);
 
-	skill = Skill(damage, target, particleP, effectP, particle, effect, iconTex, name);
+	skill = Skill(damage, target, particleP, effectP, buff, particle, effect, iconTex, name);
 
 	return skill;
 }

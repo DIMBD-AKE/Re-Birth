@@ -21,6 +21,13 @@ enum SKILL_EFFECT
 	SKILLE_NONE
 };
 
+enum SKILL_BUFF
+{
+	SKILLB_BEGIN,
+	SKILLB_HIT,
+	SKILLB_END
+};
+
 enum SKILL_OWNER
 {
 	SKILLO_CHARACTER,
@@ -60,6 +67,7 @@ private:
 	SKILL_PROCESS		m_eTargetProcess;
 	SKILL_EFFECT		m_eParticleProcess;
 	SKILL_EFFECT		m_eEffectProcess;
+	SKILL_BUFF			m_eBuffProcess;
 
 	// 처리 정보
 	CharacterParant *		m_pCharacter;
@@ -71,8 +79,10 @@ private:
 	ST_SPHERE				m_stSphere;
 	SKILL_OWNER				m_eOwner;
 	int						m_nDamageCount;
+	int						m_nPrevCount;
 	float					m_fElapseTime;
 	float					m_fPrevTime;
+	float					m_fBuffTime;
 	bool					m_isBuff;
 
 	// 효과 정보
@@ -105,7 +115,7 @@ private:
 public:
 	Skill();
 	Skill(SKILL_PROCESS damage, SKILL_PROCESS target, 
-		SKILL_EFFECT particleP, SKILL_EFFECT effectP, string particle, ST_EFFECT effect,
+		SKILL_EFFECT particleP, SKILL_EFFECT effectP, SKILL_BUFF buff, string particle, ST_EFFECT effect,
 		LPDIRECT3DTEXTURE9 iconTex, string name);
 	~Skill();
 
