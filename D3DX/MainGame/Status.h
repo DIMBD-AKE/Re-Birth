@@ -1,23 +1,23 @@
 #pragma once
 
-#define CURRENTHP(varName)	varName.chr.nCurrentHP	
-#define MAXHP(varName)	varName.chr.nMaxHp	
+#define CURRENTHP(varName)	varName->chr.nCurrentHP	
+#define MAXHP(varName)	varName->chr.nMaxHp	
 
-#define CURRENTSTAM(varName)	varName.chr.nCurrentStam	
-#define MAXSTAM(varName)	varName.chr.nMaxStam	
+#define CURRENTSTAM(varName)	varName->chr.nCurrentStam	
+#define MAXSTAM(varName)	varName->chr.nMaxStam	
 
-#define ATK(varName)	varName.chr.nAtk	
-#define PHYRATE(varName)	varName.chr.fPhyRate	
-#define MAGICRATE(varName)	varName.chr.fMagicRate	
-#define CHERATE(varName)	varName.chr.fCheRate	
-#define ATKSPEED(varName)	varName.chr.fAtkSpeed	
+#define ATK(varName)	varName->chr.nAtk	
+#define PHYRATE(varName)	varName->chr.fPhyRate	
+#define MAGICRATE(varName)	varName->chr.fMagicRate	
+#define CHERATE(varName)	varName->chr.fCheRate	
+#define ATKSPEED(varName)	varName->chr.fAtkSpeed	
 
-#define DEF(varName)	varName.chr.nDef	
-#define AGI(varName)	varName.chr.fAgi	
-#define HIT(varName)	varName.chr.fHit	
-#define SPEED(varName)	varName.chr.fSpeed	
-#define RANGE(varName)  varName.chr.fRange
-#define SCALE(varName)  varName.chr.fScale
+#define DEF(varName)	varName->chr.nDef	
+#define AGI(varName)	varName->chr.fAgi	
+#define HIT(varName)	varName->chr.fHit	
+#define SPEED(varName)	varName->chr.fSpeed	
+#define RANGE(varName)  varName->chr.fRange
+#define SCALE(varName)  varName->chr.fScale
 
 union STATUS
 {
