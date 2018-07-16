@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -29,7 +29,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>NotSet</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -203,6 +203,7 @@
     <ClInclude Include="MainGame\monster\Near\Elizabeth.h" />
     <ClInclude Include="MainGame\monster\Near\NearMonster.h" />
     <ClInclude Include="MainGame\Monster\TotalMonster.h" />
+    <ClInclude Include="MainGame\Scene\LoadingSC.h" />
     <ClInclude Include="MainGame\SkillManager.h" />
     <ClInclude Include="MainGame\Status.h" />
     <ClInclude Include="MainGame\AStar\PathFind.h" />
@@ -257,6 +258,7 @@
     <ClCompile Include="MainGame\monster\Near\Assis.cpp" />
     <ClCompile Include="MainGame\monster\Near\Elizabeth.cpp" />
     <ClCompile Include="MainGame\monster\Near\NearMonster.cpp" />
+    <ClCompile Include="MainGame\Scene\LoadingSC.cpp" />
     <ClCompile Include="MainGame\Scene\SC_Test.cpp" />
     <ClCompile Include="MainGame\Monster\MonsterParent.cpp" />
     <ClCompile Include="MainGame\Monster\MonsterManager.cpp" />

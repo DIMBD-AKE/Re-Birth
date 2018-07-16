@@ -16,7 +16,7 @@ Elizabeth::~Elizabeth()
 void Elizabeth::Setup(Map* map, D3DXVECTOR3 spawnPos, bool isSummon)
 {
 	//모델부터 만들고
-	MODELMANAGER->AddModel("엘리자베스", "Model/Enemy/Elizabeth/", "Elizabeth.x", MODELTYPE_X);
+	//MODELMANAGER->AddModel("엘리자베스", "Model/Enemy/Elizabeth/", "Elizabeth.x", MODELTYPE_X);
 	m_pModel = MODELMANAGER->GetModel("엘리자베스", MODELTYPE_X);
 
 	m_fUIMoveX = 50.0f;

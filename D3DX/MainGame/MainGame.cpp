@@ -3,6 +3,7 @@
 
 #include "Item\ItemManager.h"
 #include "Scene\SC_Test.h"
+#include "Scene\LoadingSC.h"
 
 MainGame::MainGame()
 {
@@ -25,8 +26,10 @@ void MainGame::Setup()
 {
 	ITEMMANAGER->SetUp();
 
+	SCENE->AddScene("Loading", new LoadingSC);
+
 	SCENE->AddScene("Test", new SC_Test);
-	SCENE->ChangeScene("Test", true);
+	SCENE->ChangeScene("Loading", true);
 
 	m_isWire = false;
 
