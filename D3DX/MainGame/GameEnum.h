@@ -49,4 +49,11 @@ enum CHAR_CONDITION			//캐릭터 컨디션
 	CHAR_NONE				//죽은뒤의 None상태
 };
 
-
+enum CHAR_SUBCONDITION
+{
+	SUB_IDLE,
+	SUB_RUN,
+	SUB_DIE,
+	SUB_BATTLEREADY,
+	SUB_NONE
+};

@@ -6,6 +6,7 @@
 #include "../monster/MonsterManager.h"
 #include "../monster/MonsterParent.h"
 #include "../Item/ItemParent.h"
+#include "Character_Shield.h"
 
 
 void CharacterParant::SKill()
@@ -338,10 +339,10 @@ void CharacterParant::shield()
 	//체력 0시 역소환
 	//D3DXVECTOR3 tempAngle;
 	
-	m_pShieldChr->SetRotation(*m_pCharacter->GetRotation());
-	m_pShieldChr->SetPosition(*m_pCharacter->GetPosition() - m_vfront * 5.0f );
+	//m_pShieldChr->SetRotation(*m_pCharacter->GetRotation());
+	//m_pShieldChr->SetPosition(*m_pCharacter->GetPosition() - m_vfront * 3.0f );
 
-	
+
 }
 
 void CharacterParant::SetCurrentHP(int hp)
@@ -371,16 +372,16 @@ void CharacterParant::SetCurrentHP(int hp)
 
 void CharacterParant::CalculDamage(float damage)
 {
-	//if (!m_bIsInvincible)
-	//{
-		
-	if (m_eCondition != CHAR_HIT)
-	{	
-		m_eCondition = CHAR_HIT;
-		ChangeAnimation();
-	}
+	
+	if (!m_bIsSubChr)
+	{
+		if (m_eCondition != CHAR_HIT)
+		{
+			m_eCondition = CHAR_HIT;
+			ChangeAnimation();
+		}
 
-	//	m_bIsInvincible = true;
+		//	m_bIsInvincible = true;
 		m_bIsUnderAttacked = true;
 		float totalRate =
 			m_Status->chr.fPhyRate +
@@ -390,15 +391,25 @@ void CharacterParant::CalculDamage(float damage)
 		float totalDamage = totalRate * m_pInventory->GetEquipStat().chr.nDef;
 
 		totalDamage = damage - totalDamage;
-
 		totalDamage /= 3;
-
 		if (totalDamage <= 1) totalDamage = 1;
-
 		totalDamage = round(totalDamage);
-
 		SetCurrentHP(totalDamage);
-	//}
+	}
+	else
+	{
+		float Shield = round(damage);
+		m_nShieldCurHp -= Shield;
+	}
+
+	if (m_nShieldCurHp <= 0)
+	{
+		m_eSubCondition == SUB_DIE;
+		ChangeSubChrAni();
+
+		m_bIsSubChr = false;
+		m_nShieldCurHp = m_nShieldMaxHp;
+	}
 }
 
 void CharacterParant::Attack()
@@ -556,7 +567,25 @@ void CharacterParant::PlayerProgressBar()
 	m_pStaminaBar->SetPosition(StaPos);
 	m_pStaminaBar->Update();
 	
+	/*if(m_bIsSubChr)
+	{
+		float tempC = (float)m_nShieldCurHp / m_nShieldMaxHp;
 
+
+		m_pShieldHp->SetScale(D3DXVECTOR3(tempC, 1, 1));
+
+		D3DXVECTOR3 ShieldPos = *m_pShieldChr->GetPosition();
+		ShieldPos.y += 5.0f;
+
+		auto temp = Convert3DTo2D(ShieldPos);
+
+		ShieldPos.x = temp.x;
+		ShieldPos.y = temp.y;
+		ShieldPos.z = 0;
+		m_pShieldHp->SetPosition(ShieldPos);
+		m_pShieldHp->Update();
+	}
+*/
 }
 
 void CharacterParant::MGSKill()
@@ -648,7 +677,7 @@ CharacterParant::CharacterParant()
 	MODELMANAGER->AddModel("스카디", "Model/Character/Skadi/", "Skadi.x", MODELTYPE_X);
 	MODELMANAGER->AddModel("베카", "Model/Character/Beakah/", "Beakah.x", MODELTYPE_X);
 	MODELMANAGER->AddModel("벨벳", "Model/Character/Velvet/", "Velvet.x", MODELTYPE_X);
-	MODELMANAGER->AddModel("렘논", "Model/Character/Lemnon/", "Lemnon.x", MODELTYPE_X);
+	//MODELMANAGER->AddModel("렘논", "Model/Character/Lemnon/", "Lemnon.x", MODELTYPE_X);
 	
 
 
@@ -711,6 +740,10 @@ CharacterParant::CharacterParant()
 
 	TEXTUREMANAGER->AddTexture("스테미나_프론트바", "Texture/PlayerProgressBar/staminaFrontBar.jpg");
 	TEXTUREMANAGER->AddTexture("스테미나_백바", "Texture/PlayerProgressBar/staminaBackBar.jpg");
+
+	//TEXTUREMANAGER->AddTexture("실드_프론트바", "Texture/PlayerProgressBar/shieldHp.jpg");
+	//TEXTUREMANAGER->AddTexture("실드_백바", "Texture/PlayerProgressBar/shieldBack.jpg");
+
 }
 
 
@@ -726,6 +759,7 @@ CharacterParant::~CharacterParant()
 	SAFE_RELEASE(m_pUIobj);
 	SAFE_RELEASE(m_pHPBar);
 	SAFE_RELEASE(m_pStaminaBar);
+	SAFE_RELEASE(m_pShieldHp);
 	for (int i = 0; i < 10; i++)
 	{
 		SAFE_RELEASE(m_pUIDamage[i]);
@@ -808,6 +842,7 @@ void CharacterParant::Init(Map* map, CHARSELECT order, MonsterManager* pMonsterM
 	m_pHPBar = new UIObject;
 	m_pStaminaBar = new UIObject;
 
+
 	m_pHPBar->SetTexture(TEXTUREMANAGER->GetTexture("플레이어_프론트바"));
 	D3DXVECTOR3 UIPos = D3DXVECTOR3(1350, 520, 0);
 	m_pHPBar->SetPosition(UIPos);
@@ -850,8 +885,9 @@ void CharacterParant::Init(Map* map, CHARSELECT order, MonsterManager* pMonsterM
 	m_pParticle3->SetPosition(D3DXVECTOR3(m_pCharacter->GetPosition()->x, m_pCharacter->GetPosition()->y, m_pCharacter->GetPosition()->z + 5.0f));
 
 
+	m_pShieldChr = NULL;
 	// 쉴드 캐릭터 
-	ST_SIZEBOX box1;
+	/*ST_SIZEBOX box1;
 	box1.highX = 50.0f;
 	box1.highY = 180.0f;
 	box1.highZ = 50.0f;
@@ -863,12 +899,20 @@ void CharacterParant::Init(Map* map, CHARSELECT order, MonsterManager* pMonsterM
 	m_pShieldChr->SetScale(D3DXVECTOR3(0.02, 0.02, 0.02));
 	m_pShieldChr->SetPosition(*m_pCharacter->GetPosition());
 
-	//TODO : 바운딩 박스 만들기 (캐릭터 크기마다 일일히 입력해주자
+	m_pShieldHp = new UIObject;
+	m_pShieldHp->SetTexture(TEXTUREMANAGER->GetTexture("실드_프론트바"));
+	UIObject* SbackBar = new UIObject;
+	SbackBar->SetPosition(D3DXVECTOR3(0, 0, 0.1));
+	SbackBar->SetTexture(TEXTUREMANAGER->GetTexture("실드_백바"));
+	m_pShieldHp->AddChild(SbackBar);
+
+
 	m_pShieldChr->CreateBound(box1);
 	m_pShieldChr->SetBoundSphere(m_pShieldChr->GetOrigBoundSphere().center, 100.0f);
-
-	m_eSubCondition = SUB_IDLE;
-	ChangeSubChrAni();
+	m_nShieldMaxHp = 1000;
+	m_nShieldCurHp = 1000;
+	m_eSubCondition = SUB_BATTLEREADY;
+	ChangeSubChrAni();*/
 	
 }
 
@@ -1058,18 +1102,23 @@ void CharacterParant::KeyControl()
 		ChangeSubChrAni();
 	}
 
-	if (m_nAppear == 0)
-	{
-		m_eSubCondition = SUB_BATTLEREADY;
-		ChangeSubChrAni();
-	}
-	m_nAppear = 1;
-	//실드 캐릭터 애니메이션 배틀래디후 대기상태로 제어.
-	if (m_pShieldChr->IsAnimationEnd() && m_eSubCondition == SUB_BATTLEREADY)
-	{
-		m_eSubCondition = SUB_IDLE;
-		ChangeSubChrAni();
-	}
+	//if (m_nAppear == 0)
+	//{
+	//	m_eSubCondition = SUB_BATTLEREADY;
+	//	ChangeSubChrAni();
+	//}
+	//m_nAppear = 1;
+	
+	////실드 캐릭터 애니메이션 배틀래디후 대기상태로 제어.
+	//if (m_pShieldChr->IsAnimationEnd() && m_eSubCondition == SUB_BATTLEREADY)
+	//{
+	//	m_eSubCondition = SUB_IDLE;
+	//	ChangeSubChrAni();
+	//}
+	//if (m_pShieldChr->IsAnimationEnd() && m_eSubCondition == SUB_DIE)
+	//{
+	//	
+	//}
 
 	if(m_eCondition == CHAR_HIT)
 	{
@@ -1088,7 +1137,6 @@ void CharacterParant::KeyControl()
 	if (m_eCondition == CHAR_DASH_FRONT || m_eCondition == CHAR_DASH_BACK)
 	{
 		m_pCharacter->SetAnimationSpeed(5.0f);
-		m_pShieldChr->SetAnimationSpeed(5.0f);
 	}
 
 	//공격상태일때 애니메이션 스피드 제어
@@ -1107,7 +1155,7 @@ void CharacterParant::KeyControl()
 
 
 void CharacterParant::ChangeSubChrAni()
-{
+{/*
 	switch (m_eSubCondition)
 	{
 	case SUB_IDLE:
@@ -1128,7 +1176,7 @@ void CharacterParant::ChangeSubChrAni()
 		break;
 	case CHAR_NONE:
 		break;
-	}
+	}*/
 }
 
 void CharacterParant::ChangeAnimation()

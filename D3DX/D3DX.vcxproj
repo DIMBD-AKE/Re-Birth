@@ -150,6 +150,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="MainGame\Character\Character_Shield.h" />
     <ClInclude Include="Framework\Dialogue.h" />
     <ClInclude Include="MainGame\Monster\Boss\FinalBoss.h" />
     <ClInclude Include="MainGame\Monster\Boss\BossParent.h" />
@@ -216,6 +217,7 @@
     <ClInclude Include="MainGame\Item\ItemHeaderIndex.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="MainGame\Character\Character_Shield.cpp" />
     <ClCompile Include="Framework\Dialogue.cpp" />
     <ClCompile Include="MainGame\Monster\Boss\FinalBoss.cpp" />
     <ClCompile Include="MainGame\Monster\Boss\BossParent.cpp" />

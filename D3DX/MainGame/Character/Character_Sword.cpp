@@ -3,6 +3,7 @@
 #include "../Map.h"
 #include "Inventory.h"
 #include "../Status.h"
+#include "Character_Shield.h"
 
 
 Character_Sword::Character_Sword()
@@ -108,7 +109,6 @@ void Character_Sword::Update()
 	if (m_pCharacter && m_eCondition != CHAR_NONE)
 	{
 		Controller();
-		//UnderAttacked();
 		KeyControl();
 		Move();
 		
@@ -118,10 +118,17 @@ void Character_Sword::Update()
 	
 		if (m_bIsSubChr)
 		{
-			m_pShieldChr->World();
-			shield();
-			//subAniContorl();
+			if (m_pShieldChr)
+			{
+				m_pShieldChr->Update(*m_pCharacter->GetPosition() - m_vfront * 3.0f, *m_pCharacter->GetRotation());
+			}
+			else
+			{
+				m_pShieldChr = new Character_Shield;
+				m_pShieldChr->Init(*m_pCharacter->GetPosition());
+			}
 		}
+
 
 		PlayerProgressBar();
 		CountAppearDamage();

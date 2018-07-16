@@ -7,6 +7,7 @@ class Inventory;
 class UIObject;
 class MonsterManager;
 class ItemParent;
+class Character_Shield;
 union STATUS;
 struct ST_DAMAGE;
 
@@ -36,33 +37,37 @@ struct ST_PLAYERDAMAGED
 class CharacterParant
 {
 protected:
-	GET(CHRTYPE,m_eChrType, CharType);				//캐릭터 타입
+	GET(CHRTYPE, m_eChrType, CharType);				//캐릭터 타입
 	SYNTHESIZE(CHARSELECT, m_eCharSelect, CharSelect);	 //해당 클래스 캐릭터의 1번째 혹은 2번째
-	GET(CHAR_CONDITION,	m_eCondition, Condition);		//캐릭터 상태
+	GET(CHAR_CONDITION, m_eCondition, Condition);		//캐릭터 상태
 	GET(CHAR_SUBCONDITION, m_eSubCondition, SubCondition); //서브 캐릭터 상태
 
 	TestItem*				m_pFirstItem;			//첫번쨰 스킬 장비
 
 
-	GET(Model*,m_pCharacter,Character);				//캐릭터 맴버 변수 
-	GET(Model*, m_pShieldChr, ShiedldChr);			//쉴드 캐릭터 변수
+	GET(Model*, m_pCharacter, Character);				//캐릭터 맴버 변수 
+	//GET(Model*, m_pShieldChr, ShiedldChr);			//쉴드 캐릭터 변수
 	Map*					m_pSampleMap;			//맵정보 받는 맴버 변수
-	GET(Inventory*,m_pInventory,m_Inventory);		//인벤토리용 변수
-	GET(STATUS*,m_Status, status);					//스테이터스 유니온 변수 
+	GET(Inventory*, m_pInventory, m_Inventory);		//인벤토리용 변수
+	GET(STATUS*, m_Status, status);					//스테이터스 유니온 변수 
 	UIObject*				m_pUIobj;				//UI오브젝트용 변수
 	UIObject*				m_pUIDamage[10];		//데미지용 UIObj변수
 	UIObject*				m_pHPBar;				//hp프로그래스바
 	UIObject*				m_pStaminaBar;			//스테미너 프로그래스바
-	
+	UIObject*				m_pShieldHp;			//쉴드용 HP
+
 	MonsterManager*			m_pMonsterManager;		//몬스터 매니저용 변수
-	
+	Character_Shield*		m_pShieldChr;			//쉴드캐릭터용 변수 
+
 	D3DXVECTOR3				m_vfront;				//이동을 위한 프론트벡터
 	D3DXVECTOR3				m_vPotalfront;			//포탈 이동을 위한 프론트 벡터
-	//D3DXVECTOR3				m_vSubChrFront;			//서브캐 이동을 위한 프론트 벡터
+													//D3DXVECTOR3				m_vSubChrFront;			//서브캐 이동을 위한 프론트 벡터
 
 	int						m_nCalAction;			//액션 프레임 계산용 변수
 	int						m_nDamage;				//데미지 띄우기용 변수 
 	int						m_nAppear;				//서브캐릭터 나오나 
+	int						m_nShieldMaxHp;			//실드 체력
+	int						m_nShieldCurHp;			//실드 현재체력;
 
 	vector<ST_DAMAGETEXT>		m_vecDamage;		//데미지 저장용 변수
 
@@ -77,13 +82,13 @@ protected:
 	float					m_fDamageCount;			//데미지 띄우는 카운트
 	float					m_fDamageAngle;			//데미지 앵글
 
-	GET(bool,m_bIsDead,IsDead);						//죽었늬
+	GET(bool, m_bIsDead, IsDead);						//죽었늬
 	float					m_fStamina;				//스테미나 게이지
-	
+
 
 	vector<D3DXVECTOR3*>	m_vecVertex;			//디버그용 벡터
 	ST_PLAYERDAMAGED		m_stDamaged;			//스킬타임용 구조체 변수
-	
+
 	Particle*		m_pParticle;
 	Particle*		m_pParticle2;
 	Particle*		m_pParticle3;
@@ -99,7 +104,7 @@ protected:
 
 	void shield();
 
-	
+
 	void SetCurrentHP(int hp);
 	void CalculDamage(float damage);
 	void Attack();
@@ -109,7 +114,7 @@ protected:
 	void MGSKill();
 	void ChangeSubChrAni();
 
-	
+
 
 	int						m_temp;			//애니메이션 확인용 임시변수
 
@@ -121,6 +126,6 @@ public:
 	virtual void Init(Map* map, CHARSELECT order, MonsterManager* pMonsterManager);
 	virtual void Update() = 0;
 	virtual void Render();
-	virtual void KeyControl(); 
+	virtual void KeyControl();
 	virtual void ChangeAnimation();
 };
