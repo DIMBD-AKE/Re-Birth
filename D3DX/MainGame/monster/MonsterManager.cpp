@@ -111,7 +111,7 @@ void MonsterManager::MakeMonster(DropManager* pDropManager)
 	//
 	////MakeMiddleBoss(pDropManager);
 	////
-	//MakeFinalBoss(pDropManager);
+	MakeFinalBoss(pDropManager);
 }
 
 void MonsterManager::MakeMonster()
