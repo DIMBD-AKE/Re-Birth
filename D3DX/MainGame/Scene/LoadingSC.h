@@ -1,6 +1,13 @@
 #pragma once
 class LoadingSC : public Scene
 {
+
+private:
+	//SINGLETONE
+	void SingletoneInit();
+	void AddModel();
+	void AddTexture();
+
 public:
 	LoadingSC();
 	~LoadingSC();
@@ -9,5 +16,7 @@ public:
 	void Init();
 	void Update();
 	void Render();
+
+	
 };
 

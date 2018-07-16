@@ -15,7 +15,7 @@ MiddleBoss::~MiddleBoss()
 void MiddleBoss::SetupBoss(Map* map, D3DXVECTOR3 pos)
 {
 	//모델부터 만들고
-	MODELMANAGER->AddModel("나그로", "Model/Enemy/Lagro/", "Lagro.x", MODELTYPE_X);
+	//MODELMANAGER->AddModel("나그로", "Model/Enemy/Lagro/", "Lagro.x", MODELTYPE_X);
 	m_pModel = MODELMANAGER->GetModel("나그로", MODELTYPE_X);
 
 	//m_bIsTargeting = true;

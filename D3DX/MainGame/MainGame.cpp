@@ -24,7 +24,7 @@ MainGame::~MainGame()
 
 void MainGame::Setup()
 {
-	ITEMMANAGER->SetUp();
+	//ITEMMANAGER->SetUp();
 
 	SCENE->AddScene("Loading", new LoadingSC);
 

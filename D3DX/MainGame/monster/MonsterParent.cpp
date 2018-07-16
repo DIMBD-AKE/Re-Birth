@@ -54,8 +54,8 @@ void MonsterParent::Setup(Map* map, D3DXVECTOR3 spawnPos, bool isSummon)
 
 	m_pHPBar = new UIObject;
 
-	TEXTUREMANAGER->AddTexture("MonBackBar", "./Model/Enemy/UI/백바.jpg");
-	TEXTUREMANAGER->AddTexture("MonFrontBar", "./Model/Enemy/UI/프론트바.jpg");
+	//TEXTUREMANAGER->AddTexture("MonBackBar", "./Model/Enemy/UI/백바.jpg");
+	//TEXTUREMANAGER->AddTexture("MonFrontBar", "./Model/Enemy/UI/프론트바.jpg");
 
 	m_pHPBar->SetTexture(TEXTUREMANAGER->GetTexture("MonFrontBar"));
 
@@ -89,8 +89,8 @@ void MonsterParent::SetupBoss(Map* map, D3DXVECTOR3 pos)
 
 	m_pHPBar = new UIObject;
 
-	TEXTUREMANAGER->AddTexture("BossBackBar", "./Model/Enemy/UI/보스백바.jpg");
-	TEXTUREMANAGER->AddTexture("BossFrontBar", "./Model/Enemy/UI/보스프론트바.jpg");
+	//TEXTUREMANAGER->AddTexture("BossBackBar", "./Model/Enemy/UI/보스백바.jpg");
+	//TEXTUREMANAGER->AddTexture("BossFrontBar", "./Model/Enemy/UI/보스프론트바.jpg");
 
 	m_pHPBar->SetTexture(TEXTUREMANAGER->GetTexture("BossFrontBar"));
 

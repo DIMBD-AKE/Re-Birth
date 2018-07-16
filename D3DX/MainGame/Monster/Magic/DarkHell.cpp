@@ -15,7 +15,7 @@ DarkHell::~DarkHell()
 void DarkHell::Setup(Map* map, D3DXVECTOR3 spawnPos, bool isSummon)
 {
 	//∏µ®∫Œ≈Õ ∏∏µÈ∞Ì
-	MODELMANAGER->AddModel("¥Ÿ≈©«Ô", "Model/Enemy/DarkHell/", "DarkHell.x", MODELTYPE_X);
+	//MODELMANAGER->AddModel("¥Ÿ≈©«Ô", "Model/Enemy/DarkHell/", "DarkHell.x", MODELTYPE_X);
 	m_pModel = MODELMANAGER->GetModel("¥Ÿ≈©«Ô", MODELTYPE_X);
 
 	m_fUIMoveX = 50.0f;

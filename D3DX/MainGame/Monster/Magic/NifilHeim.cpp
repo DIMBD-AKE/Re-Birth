@@ -15,7 +15,7 @@ NifilHeim::~NifilHeim()
 void NifilHeim::Setup(Map* map, D3DXVECTOR3 spawnPos, bool isSummon )
 {
 	//모델부터 만들고
-	MODELMANAGER->AddModel("니플하임", "Model/Enemy/NifilHeim/", "NifilHeim.x", MODELTYPE_X);
+	//MODELMANAGER->AddModel("니플하임", "Model/Enemy/NifilHeim/", "NifilHeim.x", MODELTYPE_X);
 	m_pModel = MODELMANAGER->GetModel("니플하임", MODELTYPE_X);
 
 	m_fUIMoveX = 50.0f;

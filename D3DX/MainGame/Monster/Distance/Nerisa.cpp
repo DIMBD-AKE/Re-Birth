@@ -15,7 +15,7 @@ Nerisa::~Nerisa()
 void Nerisa::Setup(Map* map, D3DXVECTOR3 spawnPos, bool isSummon)
 {
 	//모델부터 만들고
-	MODELMANAGER->AddModel("너리사", "Model/Enemy/Nerisa/", "Nerisa.x", MODELTYPE_X);
+	//MODELMANAGER->AddModel("너리사", "Model/Enemy/Nerisa/", "Nerisa.x", MODELTYPE_X);
 	m_pModel = MODELMANAGER->GetModel("너리사", MODELTYPE_X);
 
 	m_fUIMoveX = 50.0f;
