@@ -60,6 +60,50 @@ union STATUS
 		float	fHit;			//명중률 증가량
 		float	fSpeed;			//이동속도 증가량
 	} item;
+
+	void operator+= (STATUS status)
+	{
+		chr.nCurrentHP += status.chr.nCurrentHP;
+		chr.nMaxHp += status.chr.nMaxHp;
+
+		chr.nCurrentStam += status.chr.nCurrentStam;
+		chr.nMaxStam += status.chr.nMaxStam;
+
+		chr.nAtk += status.chr.nAtk;
+		chr.fPhyRate += status.chr.fPhyRate;
+		chr.fMagicRate += status.chr.fMagicRate;
+		chr.fCheRate += status.chr.fCheRate;
+		chr.fAtkSpeed += status.chr.fAtkSpeed;
+
+		chr.nDef += status.chr.nDef;
+		chr.fAgi += status.chr.fAgi;
+		chr.fHit += status.chr.fHit;
+		chr.fSpeed += status.chr.fSpeed;
+		chr.fRange += status.chr.fRange;
+		chr.fScale += status.chr.fScale;
+	}
+
+	void operator-= (STATUS status)
+	{
+		chr.nCurrentHP -= status.chr.nCurrentHP;
+		chr.nMaxHp -= status.chr.nMaxHp;
+
+		chr.nCurrentStam -= status.chr.nCurrentStam;
+		chr.nMaxStam -= status.chr.nMaxStam;
+
+		chr.nAtk -= status.chr.nAtk;
+		chr.fPhyRate -= status.chr.fPhyRate;
+		chr.fMagicRate -= status.chr.fMagicRate;
+		chr.fCheRate -= status.chr.fCheRate;
+		chr.fAtkSpeed -= status.chr.fAtkSpeed;
+
+		chr.nDef -= status.chr.nDef;
+		chr.fAgi -= status.chr.fAgi;
+		chr.fHit -= status.chr.fHit;
+		chr.fSpeed -= status.chr.fSpeed;
+		chr.fRange -= status.chr.fRange;
+		chr.fScale -= status.chr.fScale;
+	}
 };
 
 struct ST_DAMAGE
