@@ -15,11 +15,6 @@ Character_Shield::~Character_Shield()
 
 void Character_Shield::Init(D3DXVECTOR3 pos)
 {
-
-	TEXTUREMANAGER->AddTexture("실드_프론트바", "Texture/PlayerProgressBar/shieldHp.jpg");
-	TEXTUREMANAGER->AddTexture("실드_백바", "Texture/PlayerProgressBar/shieldBack.jpg");
-	MODELMANAGER->AddModel("렘논", "Model/Character/Lemnon/", "Lemnon.x", MODELTYPE_X);
-
 	// 쉴드 캐릭터 
 	ST_SIZEBOX box1;
 	box1.highX = 50.0f;
@@ -50,12 +45,16 @@ void Character_Shield::Init(D3DXVECTOR3 pos)
 
 	//m_Status->chr.nCurrentHP = 500;
 	//m_Status->chr.nMaxHp = 500;
+
+	m_nShieldMaxHp = 500;
+	m_nShieldCurHp = 500;
 	
 }
 
 void Character_Shield::Render()
 {
 	m_pShieldChr->Render();
+	m_pShieldHp->Render();
 }
 
 void Character_Shield::Update(D3DXVECTOR3 pos, D3DXVECTOR3 Rot)
@@ -63,7 +62,8 @@ void Character_Shield::Update(D3DXVECTOR3 pos, D3DXVECTOR3 Rot)
 	m_pShieldChr->World();
 	m_pShieldChr->SetPosition(pos);
 	m_pShieldChr->SetRotation(Rot);
-
+	m_pShieldHp->Update();
+	ShieldProgressBar();
 
 
 	KeyControl();
@@ -101,5 +101,26 @@ void Character_Shield::KeyControl()
 		m_eShieldCondition = SUB_IDLE;
 		ChangeSubChrAni();
 	}
+}
+
+void Character_Shield::ShieldProgressBar()
+{
+	
+	float tempC = (float)m_nShieldCurHp / m_nShieldMaxHp;
+
+
+	m_pShieldHp->SetScale(D3DXVECTOR3(tempC, 1, 1));
+
+	D3DXVECTOR3 ShieldPos = *m_pShieldChr->GetPosition();
+	ShieldPos.y += 5.0f;
+
+	auto temp = Convert3DTo2D(ShieldPos);
+
+	ShieldPos.x = temp.x;
+	ShieldPos.y = temp.y;
+	ShieldPos.z = 0;
+	m_pShieldHp->SetPosition(ShieldPos);
+	m_pShieldHp->Update();
+	
 }
 

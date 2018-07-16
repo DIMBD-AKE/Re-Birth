@@ -66,8 +66,7 @@ protected:
 	int						m_nCalAction;			//액션 프레임 계산용 변수
 	int						m_nDamage;				//데미지 띄우기용 변수 
 	int						m_nAppear;				//서브캐릭터 나오나 
-	int						m_nShieldMaxHp;			//실드 체력
-	int						m_nShieldCurHp;			//실드 현재체력;
+	
 
 	vector<ST_DAMAGETEXT>		m_vecDamage;		//데미지 저장용 변수
 
@@ -112,7 +111,6 @@ protected:
 	void SkillIconAlpha();
 	void PlayerProgressBar();
 	void MGSKill();
-	void ChangeSubChrAni();
 
 
 
