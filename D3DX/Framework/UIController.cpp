@@ -3,6 +3,14 @@
 
 
 
+void UIObject::FindAllChild(vector<UIObject*>& vecChild)
+{
+	vecChild.push_back(this);
+
+	for (auto child : m_vecChild)
+		child->FindAllChild(vecChild);
+}
+
 UIObject::UIObject()
 	: m_pParent(NULL)
 	, m_pFunction(NULL)
@@ -149,11 +157,12 @@ void UIObject::SetFunction(IUIFunction * function)
 
 UIObject * UIObject::Find(string name)
 {
-	if (m_sName.compare(name) == 0)
-		return this;
+	vector<UIObject*> vecChild;
+	FindAllChild(vecChild);
 
-	for (auto child : m_vecChild)
-		return child->Find(name);
+	for (auto child : vecChild)
+		if (child->m_sName.compare(name) == 0)
+			return child;
 
 	return NULL;
 }

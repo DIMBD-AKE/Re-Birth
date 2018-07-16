@@ -17,6 +17,7 @@ SC_Loading::~SC_Loading()
 
 void SC_Loading::Release()
 {
+	SAFE_RELEASE(m_pUI);
 	SAFE_DELETE(m_pLoading)
 }
 
@@ -24,6 +25,8 @@ void SC_Loading::Init()
 {
 	m_pLoading = new Loading;
 	m_pLoading->Setup();
+
+	InitUI();
 
 	//char test[111];
 	//sprintf_s(test, sizeof(test), "½Ì±ÛÅæ ÀÌ´ÖÁßÀÔ´Ï´Ù");
@@ -137,9 +140,26 @@ void SC_Loading::AddSound()
 	m_pLoading->LoadSound("Main Theme", "Sound/01. Premonition.mp3", true);
 }
 
+void SC_Loading::InitUI()
+{
+	TEXTUREMANAGER->AddTexture("Loading Background", "Texture/Loading/Background.png");
+	TEXTUREMANAGER->AddTexture("Loading Bar", "Texture/Loading/Bar.png");
+
+	m_pUI = new UIObject;
+	m_pUI->SetTexture(TEXTUREMANAGER->GetTexture("Loading Background"));
+	m_pUI->SetPosition(D3DXVECTOR3(0, 0, 0.1));
+	m_pUI->SetName("Background");
+
+	UIObject * child = new UIObject;
+	child->SetTexture(TEXTUREMANAGER->GetTexture("Loading Bar"));
+	child->SetPosition(D3DXVECTOR3(181, 493, 0));
+	child->SetName("Bar");
+	m_pUI->AddChild(child);
+}
+
 void SC_Loading::Update()
 {
-	m_pLoading->Update();
+	m_pUI->Update();
 
 	if (m_pLoading->loadingDone())
 	{
@@ -150,5 +170,7 @@ void SC_Loading::Update()
 
 void SC_Loading::Render()
 {
-	m_pLoading->Render();
+	UIObject * bar = m_pUI->Find("Bar");
+	bar->SetScale(D3DXVECTOR3(m_pLoading->GaugePercent(), 1, 1));
+	m_pUI->Render();
 }

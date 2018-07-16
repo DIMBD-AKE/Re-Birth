@@ -7,6 +7,7 @@ class SC_Loading : public Scene
 private:
 
 	Loading* m_pLoading;
+	UIObject * m_pUI;
 
 private:
 	//SINGLETONE
@@ -14,6 +15,8 @@ private:
 	void AddModel();
 	void AddTexture();
 	void AddSound();
+
+	void InitUI();
 
 public:
 	SC_Loading();

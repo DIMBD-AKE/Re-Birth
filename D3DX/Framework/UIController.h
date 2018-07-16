@@ -35,6 +35,8 @@ protected:
 	IUIFunction *			m_pFunction;
 	bool					m_isOver;
 
+	void FindAllChild(vector<UIObject*>& vecChild);
+
 public:
 	UIObject();
 	~UIObject();

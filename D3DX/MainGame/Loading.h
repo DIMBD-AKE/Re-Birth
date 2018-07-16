@@ -69,6 +69,8 @@ public:
 
 	void LoadSingletone(string keyName, const char* fileName);
 
+	float GaugePercent() { return m_nCurrentGauge / (float)m_vLoadItem.size(); }
+
 
 	Loading();
 	~Loading();
