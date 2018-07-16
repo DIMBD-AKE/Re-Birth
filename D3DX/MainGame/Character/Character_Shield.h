@@ -17,6 +17,7 @@ public:
 
 	GET(int, m_nShieldMaxHp, ShieldMaxHp);								//실드 체력
 	SYNTHESIZE(int, m_nShieldCurHp, ShieldCurHp);								//실드 현재체력;
+	SYNTHESIZE(bool, m_bIsDie,IsDie);								//살아있늬
 
 public:
 	Character_Shield();
@@ -28,6 +29,7 @@ public:
 	void ChangeSubChrAni();
 	void KeyControl();
 	void ShieldProgressBar();
+	void Die();
 
 };
 
