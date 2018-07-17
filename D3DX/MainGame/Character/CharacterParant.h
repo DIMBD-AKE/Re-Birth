@@ -120,7 +120,7 @@ protected:
 	void Effect();
 	void StoreEffect(int index);
 	void StoreAttack(int index);
-
+	void Reset(Map* map, MonsterManager* pMonsterManager);
 
 
 	int						m_temp;			//애니메이션 확인용 임시변수
@@ -130,7 +130,7 @@ public:
 	CharacterParant();
 	virtual ~CharacterParant();
 
-	virtual void Init(Map* map, CHRTYPE type ,CHARSELECT order, MonsterManager* pMonsterManager);
+	virtual void Init(CHRTYPE type ,CHARSELECT order);
 	virtual void Update();
 	virtual void Render();
 	virtual void KeyControl();

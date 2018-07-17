@@ -1099,6 +1099,17 @@ void CharacterParant::StoreAttack(int index)
 }
 
 
+
+void CharacterParant::Reset(Map * map, MonsterManager * pMonsterManager)
+{	
+	m_pSampleMap = map;
+	m_pMonsterManager = pMonsterManager;
+
+	D3DXVECTOR3 startPos = map->GetSpawnPlayer();
+	m_pCharacter->SetPosition(D3DXVECTOR3(startPos.x, m_pSampleMap->GetHeight(startPos.x, startPos.z), startPos.z));
+}
+
+
 CharacterParant::CharacterParant()
 {
 	m_Status = new STATUS;
@@ -1146,12 +1157,8 @@ CharacterParant::~CharacterParant()
 	
 }
 
-void CharacterParant::Init(Map* map, CHRTYPE type, CHARSELECT order, MonsterManager* pMonsterManager)
-{
-	m_pSampleMap = map;
-	m_pMonsterManager = pMonsterManager;
-	
-	//TODO : 바운딩 박스 만들기 (캐릭터 크기마다 일일히 입력해주자
+void CharacterParant::Init(CHRTYPE type, CHARSELECT order)
+{	
 	ST_SIZEBOX box;
 	box.highX = 50.0f;
 	box.highY = 180.0f;
@@ -1160,13 +1167,8 @@ void CharacterParant::Init(Map* map, CHRTYPE type, CHARSELECT order, MonsterMana
 	box.lowY = 10.0f;
 	box.lowZ = -50.0f;
 
-
-
 	m_pCharacter->SetScale(D3DXVECTOR3(0.02, 0.02, 0.02));
-	D3DXVECTOR3 startPos = map->GetSpawnPlayer();
-	startPos.y = 300.0f;
-	m_pCharacter->SetPosition(D3DXVECTOR3(startPos.x, m_pSampleMap->GetHeight(startPos.x, startPos.z), startPos.z));
-
+	
 	//인벤토리
 	if (m_pInventory == NULL)
 	{
@@ -1183,9 +1185,6 @@ void CharacterParant::Init(Map* map, CHRTYPE type, CHARSELECT order, MonsterMana
 	CAMERA->SetTargetOffset(D3DXVECTOR3(0, 5, 0));
 	CAMERA->SetTarget(m_pCharacter->GetPosition(), m_pCharacter->GetRotation());
 
-
-	
-	
 	m_temp = 0;
 	m_nCalAction = 0;
 
@@ -1241,7 +1240,7 @@ void CharacterParant::Init(Map* map, CHRTYPE type, CHARSELECT order, MonsterMana
 		m_pStaminaBar = new UIObject;
 		m_pStaminaBar->SetTexture(TEXTUREMANAGER->GetTexture("스테미나_프론트바"));
 		D3DXVECTOR3 StaPos = D3DXVECTOR3(1350, 535, 0);
-		m_pStaminaBar->SetPosition(startPos);
+		m_pStaminaBar->SetPosition(StaPos);
 		UIObject* staBackBar = new UIObject;
 		staBackBar->SetPosition(D3DXVECTOR3(0, 0, 0.1));
 		staBackBar->SetTexture(TEXTUREMANAGER->GetTexture("스테미나_백바"));
