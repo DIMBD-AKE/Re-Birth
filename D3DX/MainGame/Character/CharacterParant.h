@@ -122,7 +122,7 @@ public:
 	CharacterParant();
 	virtual ~CharacterParant();
 
-	virtual void Init(Map* map, CHARSELECT order, MonsterManager* pMonsterManager);
+	virtual void Init(Map* map, CHRTYPE type ,CHARSELECT order, MonsterManager* pMonsterManager);
 	virtual void Update() = 0;
 	virtual void Render();
 	virtual void KeyControl();

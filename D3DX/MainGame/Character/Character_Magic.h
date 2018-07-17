@@ -7,7 +7,7 @@ public:
 	Character_Magic();
 	virtual ~Character_Magic();
 
-	virtual void Init(Map* map, CHARSELECT order, MonsterManager* pMonsterManager);
+	virtual void Init(Map* map, CHRTYPE type, CHARSELECT order, MonsterManager* pMonsterManager);
 	virtual void Update();
 	virtual void Render();
 	virtual void KeyControl();
