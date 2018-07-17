@@ -133,7 +133,6 @@ void SC_Loading::AddTexture()
 
 void SC_Loading::AddSound()
 {
-	m_pLoading->LoadSound("Main Theme", "Sound/01. Premonition.mp3", true);
 	m_pLoading->LoadSound("FootStep", "Sound/S_Foot02.ogg", true);
 	m_pLoading->LoadSound("SwordAttack", "Sound/Sword_4.ogg", false);
 	m_pLoading->LoadSound("SwordAttack_TWO", "Sound/Sword_Scrape_2.ogg", false);
@@ -144,8 +143,11 @@ void SC_Loading::AddSound()
 
 void SC_Loading::InitUI()
 {
+	SOUND->AddSound("Main Theme", "Sound/01. Premonition.mp3", true);
 	TEXTUREMANAGER->AddTexture("Loading Background", "Texture/Scene/Loading BG.png");
 	TEXTUREMANAGER->AddTexture("Loading Bar", "Texture/Scene/Loading Bar.png");
+
+	SOUND->Play("Main Theme", 0.5);
 
 	m_pUI = new UIObject;
 	m_pUI->SetTexture(TEXTUREMANAGER->GetTexture("Loading Background"));

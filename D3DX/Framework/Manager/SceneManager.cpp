@@ -61,7 +61,7 @@ void SceneManager::Destroy()
 	auto iter = m_mScene.begin();
 	for (; iter != m_mScene.end(); iter++)
 	{
-		SAFE_RELEASE(iter->second);
+		iter->second->Release();
 		SAFE_DELETE(iter->second);
 	}
 

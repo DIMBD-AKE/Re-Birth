@@ -2,13 +2,17 @@
 
 class Scene
 {
-	SYNTHESIZE(void*, m_pData[4], Data);
+protected:
+	void *	m_pData[10];
 
 public:
+	virtual ~Scene() {}
 	virtual void Release() = 0;
 	virtual void Init() = 0;
 	virtual void Render() = 0;
 	virtual void Update() = 0;
+
+	void SetData(int index, void * data) { m_pData[index] = data; }
 };
 
 class SceneManager

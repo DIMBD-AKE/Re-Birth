@@ -28,7 +28,7 @@ private:
 
 public:
 	SC_Main();
-	~SC_Main();
+	virtual ~SC_Main();
 
 	virtual void OnClick(UIObject * pSender);
 	virtual void OnOver(UIObject * pSender);

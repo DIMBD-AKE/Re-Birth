@@ -1,6 +1,9 @@
 #include "../../stdafx.h"
 #include "SC_Main.h"
-
+#include "../Character/CharacterParant.h"
+#include "../Character/Character_Gun.h"
+#include "../Character/Character_Magic.h"
+#include "../Character/Character_Sword.h"
 
 
 SC_Main::SC_Main()
@@ -17,9 +20,49 @@ void SC_Main::OnClick(UIObject * pSender)
 	if (pSender->GetName().compare("Character Select") == 0)
 		m_eState = MS_PORTRAIT;
 
-	if (pSender->GetName().compare("Start") == 0)
+	if (pSender->GetName().compare("Start") == 0 && m_sSelect.compare("아린"))
 	{
-		SCENE->ChangeScene("Test", true);
+		SCENE->ChangeScene("Game", false);
+		CharacterParant * character = NULL;
+		if (m_sSelect.compare("아카날") == 0)
+		{
+			character = new Character_Magic;
+			character->Init(CHRTYPE_MAGIC, CHAR_ONE);
+		}
+		if (m_sSelect.compare("헤스티아") == 0)
+		{
+			character = new Character_Magic;
+			character->Init(CHRTYPE_MAGIC, CHAR_TWO);
+		}
+		if (m_sSelect.compare("베카") == 0)
+		{
+			character = new Character_Sword;
+			character->Init(CHRTYPE_SWORD, CHAR_ONE);
+		}
+		if (m_sSelect.compare("리아") == 0)
+		{
+			character = new Character_Sword;
+			character->Init(CHRTYPE_SWORD, CHAR_TWO);
+		}
+		if (m_sSelect.compare("벨벳") == 0)
+		{
+			character = new Character_Sword;
+			character->Init(CHRTYPE_SWORD, CHAR_THREE);
+		}
+		if (m_sSelect.compare("메그너스") == 0)
+		{
+			character = new Character_Gun;
+			character->Init(CHRTYPE_GUN, CHAR_ONE);
+		}
+		if (m_sSelect.compare("스카디") == 0)
+		{
+			character = new Character_Gun;
+			character->Init(CHRTYPE_GUN, CHAR_TWO);
+		}
+		SCENE->GetCurrentScene()->SetData(0, character);
+		int stage = 1;
+		SCENE->GetCurrentScene()->SetData(1, &stage);
+		SCENE->GetCurrentScene()->Init();
 	}
 
 	if (pSender->GetName().compare("Character Select") && 
@@ -105,7 +148,7 @@ void SC_Main::Init()
 	m_pPortrait->AddChild(child);
 
 	m_pContext = new Dialogue;
-	m_pContext->Init(D3DXVECTOR2(550, 300), 30, "나눔명조", 0.1, 0xFFFFFFFF);
+	m_pContext->Init(D3DXVECTOR2(550, 300), 30, "나눔명조", 0.05, 0xFFFFFFFF);
 	
 	for (int y = 0; y < 4; y++)
 	{
@@ -143,7 +186,7 @@ void SC_Main::Init()
 			{
 				child->SetName("헤스티아");
 				child->SetTexture(TEXTUREMANAGER->GetTexture("헤스티아_사진"));
-				m_pContext->AddText("헤스티아 - 마법사\n설명이 없다");
+				m_pContext->AddText("헤스티아 - 마법사\n\n모자를 쓰고있다");
 			}
 			if (index == 4)
 			{
@@ -155,19 +198,19 @@ void SC_Main::Init()
 			{
 				child->SetName("리아");
 				child->SetTexture(TEXTUREMANAGER->GetTexture("리아_사진"));
-				m_pContext->AddText("리아 - 검사\n안경을 쓰고있다.");
+				m_pContext->AddText("리아 - 검사\n안경을 쓰고있다.\n테스트용으로 꽤 쓰이는것 같다.");
 			}
 			if (index == 6)
 			{
 				child->SetName("스카디");
 				child->SetTexture(TEXTUREMANAGER->GetTexture("스카디_사진"));
-				m_pContext->AddText("스카디 - 궁수\n활이 멋지다.");
+				m_pContext->AddText("스카디 - 궁수\n크으...");
 			}
 			if (index == 7)
 			{
 				child->SetName("벨벳");
 				child->SetTexture(TEXTUREMANAGER->GetTexture("벨벳_사진"));
-				m_pContext->AddText("벨벳 - 근접\n뚝배기가 사라질것같다.\n뭔가 마음에 든다.");
+				m_pContext->AddText("벨벳 - 근접\n왠지 모르게 마음에 드는 캐릭터다.\n그냥 그렇다는것이다.");
 			}
 			
 			m_pPortrait->AddChild(child);
@@ -199,6 +242,9 @@ void SC_Main::Update()
 		m_pUI->Find("Character Select")->SetAlpha(alpha);
 		TEXT->Add("시작", 724, 382, 40, "나눔명조", D3DCOLOR_ARGB(alpha, 255, 255, 255));
 	}
+
+	if (INPUT->KeyDown(VK_BACK))
+		m_eState = MS_TITLE;
 
 	if (m_pModel)
 		m_pModel->World();

@@ -20,7 +20,7 @@ private:
 
 public:
 	SC_Loading();
-	~SC_Loading();
+	virtual ~SC_Loading();
 
 	virtual void Release();
 	virtual void Init();
