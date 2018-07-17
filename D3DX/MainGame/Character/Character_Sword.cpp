@@ -358,7 +358,7 @@ void Character_Sword::KeyControl()
 		{
 			m_eCondition = CHAR_ATTACK;
 			m_bIsAttack = true;
-			Attack();
+			//Attack();
 			ChangeAnimation();
 		}
 	}

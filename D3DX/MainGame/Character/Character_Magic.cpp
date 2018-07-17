@@ -84,7 +84,7 @@ void Character_Magic::Update()
 		KeyControl();
 		Move();
 		MgSkill();
-
+		Effect();
 		m_pInventory->Update();
 		m_pCharacter->World();
 		m_pUIobj->Update();
@@ -208,7 +208,8 @@ void Character_Magic::KeyControl()
 			m_eCondition = CHAR_ATTACK;
 
 			m_bIsAttack = true;
-			Attack();
+			//Attack();
+			m_nDamageCount = 0;
 			ChangeAnimation();
 		}
 	}
@@ -284,7 +285,7 @@ void Character_Magic::KeyControl()
 		{
 			m_eCondition = CHAR_ATTACK;
 			m_bIsAttack = true;
-			Attack();
+			//Attack();
 			ChangeAnimation();
 		}
 	}
@@ -301,12 +302,10 @@ void Character_Magic::KeyControl()
 		m_pCharacter->SetAnimationSpeed(1.0f * (m_Status->chr.fAtkSpeed + m_pInventory->GetEquipStat().chr.fAtkSpeed));
 	}
 
-	////╡Т╬с аж╠щ
-	//if (m_pCharacter->IsAnimationEnd() && m_eCondition == CHAR_DIE)
-	//{
-	//	m_eCondition = CHAR_NONE;
-	//	m_bIsDead = false;
-	//}
+	if (m_eCondition == CHAR_ATTACK)
+	{
+		Attack();
+	}
 }
 
 void Character_Magic::MgSkill()

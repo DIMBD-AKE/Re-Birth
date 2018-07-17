@@ -89,6 +89,8 @@ void Character_Gun::Update()
 
 		m_pUIobj->Update();
 
+		Effect();
+
 		PlayerProgressBar();
 		CountAppearDamage();
 	}
@@ -210,7 +212,8 @@ void Character_Gun::KeyControl()
 			m_eCondition = CHAR_ATTACK;
 		
 			m_bIsAttack = true;
-			Attack();
+			//Attack();
+			m_nDamageCount = 0;
 			ChangeAnimation();
 		}
 	}
@@ -254,7 +257,6 @@ void Character_Gun::KeyControl()
 		ChangeAnimation();
 	}
 
-
 	//피격 도중에 공격 가능하게 만들기
 	if (m_eCondition == CHAR_HIT)
 	{
@@ -262,7 +264,7 @@ void Character_Gun::KeyControl()
 		{
 			m_eCondition = CHAR_ATTACK;
 			m_bIsAttack = true;
-			Attack();
+			//Attack();
 			ChangeAnimation();
 		}
 	}
@@ -279,12 +281,10 @@ void Character_Gun::KeyControl()
 		m_pCharacter->SetAnimationSpeed(1.0f * (m_Status->chr.fAtkSpeed + m_pInventory->GetEquipStat().chr.fAtkSpeed));
 	}
 
-	////끄앙 주금
-	//if (m_pCharacter->IsAnimationEnd() && m_eCondition == CHAR_DIE)
-	//{
-	//	m_eCondition = CHAR_NONE;
-	//	m_bIsDead = false;
-	//}
+	if (m_eCondition == CHAR_ATTACK)
+	{
+		Attack();
+	}
 }
 
 

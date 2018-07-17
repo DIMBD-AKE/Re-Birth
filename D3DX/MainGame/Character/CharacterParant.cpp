@@ -426,123 +426,483 @@ void CharacterParant::Attack()
 		
 
 
-	if (m_eChrType == CHRTYPE_SWORD || m_eChrType == CHRTYPE_GUN)
+	if (m_eChrType == CHRTYPE_SWORD)
 	{
-		//기준점이 되는 몬스터를 구하고 
-		for (int i = 0; i < m_pMonsterManager->GetMonsterVector().size(); ++i)
+		if (m_eCharSelect == CHAR_ONE)
 		{
-			if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn())continue;								//리젠할때는 건드리지 않고 
-			
-			float radius1 = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().radius;		//몬스터의 바운드 스페어의 반지름 받고 
-			mosPos = *(m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetPosition());		//몬스터 포지션 받고 
-			float distance1 = D3DXVec3Length(&(mosPos - pos));
-	
-			if (distance1 - radius1 > m_Status->chr.fRange) continue;
-			distance = distance1;
-			distance = subDistance;
-
-			m_nIndex = i;
-			break;
-		}
-		if (m_nIndex != -1)//만약 기준점이 된 몬스터가 구해졌으면 
-		{
-			for (int i = m_nIndex +1; i < m_pMonsterManager->GetMonsterVector().size(); ++i)
+			//기준점이 되는 몬스터를 구하고 
+			for (int i = 0; i < m_pMonsterManager->GetMonsterVector().size(); ++i)
 			{
-				if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn())continue;	//리젠할때는 건드리지 않고 
-				float radius2 = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().radius;
-				float distance2 = D3DXVec3Length(&(mosPos - pos));
-				if (distance2 - radius2 > m_Status->chr.fRange) continue;
-				if (distance > distance2)
-				{
-					distance = distance2;
-					m_nIndex = i;
-				}
-				
+				if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn())continue;								//리젠할때는 건드리지 않고 
+
+				float radius1 = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().radius;		//몬스터의 바운드 스페어의 반지름 받고 
+				mosPos = *(m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetPosition());		//몬스터 포지션 받고 
+				float distance1 = D3DXVec3Length(&(mosPos - pos));
+
+				if (distance1 - radius1 > m_Status->chr.fRange) continue;
+				distance = distance1;
+				distance = subDistance;
+
+				m_nIndex = i;
+				break;
 			}
-			//시선 
-			D3DXVECTOR3 front;
-			D3DXMATRIX matY;
-			D3DXMatrixRotationY(&matY, m_pCharacter->GetRotation()->y);
-			D3DXVec3TransformNormal(&front, &D3DXVECTOR3(0, 0, -1), &matY);
-			D3DXVECTOR3 v0 = front;
-			//대상방향
-			D3DXVECTOR3 v1 = mosPos - pos;
-			D3DXVec3Normalize(&v0, &v1);
-			float dot = D3DXVec3Dot(&v0, &v1)/ D3DXVec3Length(&v0) * D3DXVec3Length(&v1);
-			if (dot >= cos(m_Status->chr.fScale / 2))
+			if (m_nIndex != -1)//만약 기준점이 된 몬스터가 구해졌으면 
 			{
-				//if (m_nIndex == -1) return;
-				if (m_fElpTime < m_fPrevTime + m_fEffectInterval) return;
-
-				m_fPrevTime = m_fElpTime;
-
-				m_nDamageCount++;
-
-				if (m_nDamageCount <= 3)
+				for (int i = m_nIndex + 1; i < m_pMonsterManager->GetMonsterVector().size(); ++i)
 				{
-					ST_EFFECT tempEffect;
-					ZeroMemory(&tempEffect, sizeof(tempEffect));
+					if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn())continue;	//리젠할때는 건드리지 않고 
+					float radius2 = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().radius;
+					float distance2 = D3DXVec3Length(&(mosPos - pos));
+					if (distance2 - radius2 > m_Status->chr.fRange) continue;
+					if (distance > distance2)
+					{
+						distance = distance2;
+						m_nIndex = i;
+					}
 
-					tempEffect.time = FRand(0.1, 0.4);
-					tempEffect.isRY = true;
-					tempEffect.isRX = true;
-					tempEffect.height = 3.0f;
-					tempEffect.SetAlpha(255, 255, 0);
-					tempEffect.SetScale(1, 0.8, 0.8);
-					tempEffect.tex = TEXTUREMANAGER->AddTexture("testSkill", "Texture/Effect/TestSkill.png");
-					EffectObject* tempEFOBJ;
-					tempEFOBJ = new EffectObject;
+				}
+				//시선 
+				D3DXVECTOR3 front;
+				D3DXMATRIX matY;
+				D3DXMatrixRotationY(&matY, m_pCharacter->GetRotation()->y);
+				D3DXVec3TransformNormal(&front, &D3DXVECTOR3(0, 0, -1), &matY);
+				D3DXVECTOR3 v0 = front;
+				//대상방향
+				D3DXVECTOR3 v1 = mosPos - pos;
+				D3DXVec3Normalize(&v0, &v1);
+				float dot = D3DXVec3Dot(&v0, &v1) / D3DXVec3Length(&v0) * D3DXVec3Length(&v1);
+				if (dot >= cos(m_Status->chr.fScale / 2))
+				{
+					//if (m_nIndex == -1) return;
+					if (m_fElpTime < m_fPrevTime + m_fEffectInterval) return;
 
-					D3DXVECTOR3 testSkillpos = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
-					testSkillpos.y += 1.0f;
-					testSkillpos.x += FRand(-0.5, 0.5);
-					tempEFOBJ->Init(tempEffect, testSkillpos);
+					m_fPrevTime = m_fElpTime;
 
-					m_vecEffect.push_back(tempEFOBJ);
-					m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
+					m_nDamageCount++;
+
+					if (m_nDamageCount <= 3)
+					{
+						ST_EFFECT tempEffect;
+						ZeroMemory(&tempEffect, sizeof(tempEffect));
+
+						tempEffect.time = FRand(0.1, 0.4);
+						tempEffect.isRY = true;
+						tempEffect.isRX = true;
+						tempEffect.height = 3.0f;
+						tempEffect.SetAlpha(255, 255, 0);
+						tempEffect.SetScale(1, 0.8, 0.8);
+						tempEffect.tex = TEXTUREMANAGER->AddTexture("testSkill", "Texture/Effect/TestSkill.png");
+						EffectObject* tempEFOBJ;
+						tempEFOBJ = new EffectObject;
+
+						D3DXVECTOR3 testSkillpos = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
+						testSkillpos.y += 1.0f;
+						testSkillpos.x += FRand(-0.5, 0.5);
+						testSkillpos.z += 1.0f;
+						tempEFOBJ->Init(tempEffect, testSkillpos);
+
+						m_vecEffect.push_back(tempEFOBJ);
+						m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
+					}
+				}
+			}
+		}
+		else if (m_eCharSelect == CHAR_TWO)
+		{
+			//기준점이 되는 몬스터를 구하고 
+			for (int i = 0; i < m_pMonsterManager->GetMonsterVector().size(); ++i)
+			{
+				if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn())continue;								//리젠할때는 건드리지 않고 
+
+				float radius1 = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().radius;		//몬스터의 바운드 스페어의 반지름 받고 
+				mosPos = *(m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetPosition());		//몬스터 포지션 받고 
+				float distance1 = D3DXVec3Length(&(mosPos - pos));
+
+				if (distance1 - radius1 > m_Status->chr.fRange) continue;
+				distance = distance1;
+				distance = subDistance;
+
+				m_nIndex = i;
+				break;
+			}
+			if (m_nIndex != -1)//만약 기준점이 된 몬스터가 구해졌으면 
+			{
+				for (int i = m_nIndex + 1; i < m_pMonsterManager->GetMonsterVector().size(); ++i)
+				{
+					if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn())continue;	//리젠할때는 건드리지 않고 
+					float radius2 = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().radius;
+					float distance2 = D3DXVec3Length(&(mosPos - pos));
+					if (distance2 - radius2 > m_Status->chr.fRange) continue;
+					if (distance > distance2)
+					{
+						distance = distance2;
+						m_nIndex = i;
+					}
+
+				}
+				//시선 
+				D3DXVECTOR3 front;
+				D3DXMATRIX matY;
+				D3DXMatrixRotationY(&matY, m_pCharacter->GetRotation()->y);
+				D3DXVec3TransformNormal(&front, &D3DXVECTOR3(0, 0, -1), &matY);
+				D3DXVECTOR3 v0 = front;
+				//대상방향
+				D3DXVECTOR3 v1 = mosPos - pos;
+				D3DXVec3Normalize(&v0, &v1);
+				float dot = D3DXVec3Dot(&v0, &v1) / D3DXVec3Length(&v0) * D3DXVec3Length(&v1);
+				if (dot >= cos(m_Status->chr.fScale / 2))
+				{
+					//if (m_nIndex == -1) return;
+					if (m_fElpTime < m_fPrevTime + m_fEffectInterval) return;
+
+					m_fPrevTime = m_fElpTime;
+
+					m_nDamageCount++;
+
+					if (m_nDamageCount <= 3)
+					{
+						ST_EFFECT tempEffect;
+						ZeroMemory(&tempEffect, sizeof(tempEffect));
+
+						tempEffect.time = FRand(0.1, 0.4);
+						//tempEffect.isRY = true;
+						tempEffect.isRX = true;
+						tempEffect.height = 3.0f;
+						tempEffect.SetAlpha(255, 255, 0);
+						tempEffect.SetScale(2, 2, 2);
+						tempEffect.tex = TEXTUREMANAGER->AddTexture("Step", "Texture/Effect/step.png");
+						EffectObject* tempEFOBJ;
+						tempEFOBJ = new EffectObject;
+
+						D3DXVECTOR3 testSkillpos = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
+						testSkillpos.y += 1.0f;
+						testSkillpos.x += FRand(-0.5, 0.5);
+						tempEFOBJ->Init(tempEffect, testSkillpos);
+
+						m_vecEffect.push_back(tempEFOBJ);
+						m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
+					}
+				}
+			}
+		}
+	}
+	else if (m_eChrType == CHRTYPE_GUN)
+	{
+		if (m_eCharSelect == CHAR_ONE)
+		{
+			//기준점이 되는 몬스터를 구하고 
+			for (int i = 0; i < m_pMonsterManager->GetMonsterVector().size(); ++i)
+			{
+				if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn())continue;								//리젠할때는 건드리지 않고 
+
+				float radius1 = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().radius;		//몬스터의 바운드 스페어의 반지름 받고 
+				mosPos = *(m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetPosition());		//몬스터 포지션 받고 
+				float distance1 = D3DXVec3Length(&(mosPos - pos));
+
+				if (distance1 - radius1 > m_Status->chr.fRange) continue;
+				distance = distance1;
+				distance = subDistance;
+
+				m_nIndex = i;
+				break;
+			}
+			if (m_nIndex != -1)//만약 기준점이 된 몬스터가 구해졌으면 
+			{
+				for (int i = m_nIndex + 1; i < m_pMonsterManager->GetMonsterVector().size(); ++i)
+				{
+					if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn())continue;	//리젠할때는 건드리지 않고 
+					float radius2 = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().radius;
+					float distance2 = D3DXVec3Length(&(mosPos - pos));
+					if (distance2 - radius2 > m_Status->chr.fRange) continue;
+					if (distance > distance2)
+					{
+						distance = distance2;
+						m_nIndex = i;
+					}
+
+				}
+				//시선 
+				D3DXVECTOR3 front;
+				D3DXMATRIX matY;
+				D3DXMatrixRotationY(&matY, m_pCharacter->GetRotation()->y);
+				D3DXVec3TransformNormal(&front, &D3DXVECTOR3(0, 0, -1), &matY);
+				D3DXVECTOR3 v0 = front;
+				//대상방향
+				D3DXVECTOR3 v1 = mosPos - pos;
+				D3DXVec3Normalize(&v0, &v1);
+				float dot = D3DXVec3Dot(&v0, &v1) / D3DXVec3Length(&v0) * D3DXVec3Length(&v1);
+				if (dot >= cos(m_Status->chr.fScale / 2))
+				{
+					if (m_fElpTime < m_fPrevTime + m_fEffectInterval) return;
+
+					m_fPrevTime = m_fElpTime;
+
+					m_nDamageCount++;
+
+					if (m_nDamageCount <= 3)
+					{
+						ST_EFFECT tempEffect;
+						ZeroMemory(&tempEffect, sizeof(tempEffect));
+
+						tempEffect.time = FRand(0.1, 0.4);
+						tempEffect.isRY = true;
+						tempEffect.isRX = true;
+						tempEffect.height = 3.0f;
+						tempEffect.SetAlpha(255, 255, 0);
+						tempEffect.SetScale(2, 2, 2);
+						tempEffect.tex = TEXTUREMANAGER->AddTexture("Gun", "Texture/Effect/gun.png");
+						EffectObject* tempEFOBJ;
+						tempEFOBJ = new EffectObject;
+
+						D3DXVECTOR3 testSkillpos = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
+						testSkillpos.y += 1.0f;
+						testSkillpos.x += FRand(-0.5, 0.5);
+						tempEFOBJ->Init(tempEffect, testSkillpos);
+
+						m_vecEffect.push_back(tempEFOBJ);	
+						m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
+					}
+				
+				}
+			}
+		}
+		else if (m_eCharSelect == CHAR_TWO)
+		{
+			//기준점이 되는 몬스터를 구하고 
+			for (int i = 0; i < m_pMonsterManager->GetMonsterVector().size(); ++i)
+			{
+				if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn())continue;								//리젠할때는 건드리지 않고 
+
+				float radius1 = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().radius;		//몬스터의 바운드 스페어의 반지름 받고 
+				mosPos = *(m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetPosition());		//몬스터 포지션 받고 
+				float distance1 = D3DXVec3Length(&(mosPos - pos));
+
+				if (distance1 - radius1 > m_Status->chr.fRange) continue;
+				distance = distance1;
+				distance = subDistance;
+
+				m_nIndex = i;
+				break;
+			}
+			if (m_nIndex != -1)//만약 기준점이 된 몬스터가 구해졌으면 
+			{
+				for (int i = m_nIndex + 1; i < m_pMonsterManager->GetMonsterVector().size(); ++i)
+				{
+					if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn())continue;	//리젠할때는 건드리지 않고 
+					float radius2 = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().radius;
+					float distance2 = D3DXVec3Length(&(mosPos - pos));
+					if (distance2 - radius2 > m_Status->chr.fRange) continue;
+					if (distance > distance2)
+					{
+						distance = distance2;
+						m_nIndex = i;
+					}
+
+				}
+				//시선 
+				D3DXVECTOR3 front;
+				D3DXMATRIX matY;
+				D3DXMatrixRotationY(&matY, m_pCharacter->GetRotation()->y);
+				D3DXVec3TransformNormal(&front, &D3DXVECTOR3(0, 0, -1), &matY);
+				D3DXVECTOR3 v0 = front;
+				//대상방향
+				D3DXVECTOR3 v1 = mosPos - pos;
+				D3DXVec3Normalize(&v0, &v1);
+				float dot = D3DXVec3Dot(&v0, &v1) / D3DXVec3Length(&v0) * D3DXVec3Length(&v1);
+				if (dot >= cos(m_Status->chr.fScale / 2))
+				{
+					if (m_fElpTime < m_fPrevTime + m_fEffectInterval) return;
+
+					m_fPrevTime = m_fElpTime;
+
+					m_nDamageCount++;
+
+					if (m_nDamageCount <= 3)
+					{
+						ST_EFFECT tempEffect;
+						ZeroMemory(&tempEffect, sizeof(tempEffect));
+
+						tempEffect.time = FRand(0.1, 0.4);
+						tempEffect.isRY = true;
+						tempEffect.isRX = true;
+						tempEffect.height = 3.0f;
+						tempEffect.SetAlpha(255, 255, 0);
+						tempEffect.SetScale(2, 2, 2);
+						tempEffect.tex = TEXTUREMANAGER->AddTexture("Gun", "Texture/Effect/gun.png");
+						EffectObject* tempEFOBJ;
+						tempEFOBJ = new EffectObject;
+
+						D3DXVECTOR3 testSkillpos = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
+						testSkillpos.y += 1.0f;
+						testSkillpos.x += FRand(-0.5, 0.5);
+						tempEFOBJ->Init(tempEffect, testSkillpos);
+
+						m_vecEffect.push_back(tempEFOBJ);
+						m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
+					}
+
 				}
 			}
 		}
 	}
 	else if (m_eChrType == CHRTYPE_MAGIC)
 	{
-		//기준점이 되는 몬스터를 구하고 
-		for (int i = 0; i < m_pMonsterManager->GetMonsterVector().size(); ++i)
+		if (m_eCharSelect == CHAR_ONE)
 		{
-			if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn())continue;								//리젠할때는 건드리지 않고 
-
-			float radius1 = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().radius;		//몬스터의 바운드 스페어의 반지름 받고 
-			D3DXVECTOR3 mosPos1 = *(m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetPosition());		//몬스터 포지션 받고 
-			float distance1 = D3DXVec3Length(&(mosPos1 - pos));
-
-			if (distance1 - radius1 > m_Status->chr.fRange) continue;
-			distance = distance1;
-			//radius = radius1;
-
-			m_nIndex = i;
-			break;
-		}
-		if (m_nIndex != -1)//만약 기준점이 된 몬스터가 구해졌으면 
-		{
-			for (int i = m_nIndex + 1; i < m_pMonsterManager->GetMonsterVector().size(); ++i)
+			//기준점이 되는 몬스터를 구하고 
+			for (int i = 0; i < m_pMonsterManager->GetMonsterVector().size(); ++i)
 			{
-				if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn())continue;	//리젠할때는 건드리지 않고 
-				radius = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().radius;
-				D3DXVECTOR3 mosPos2 = *(m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetPosition());
-				float distance2 = D3DXVec3Length(&(mosPos2 - pos));
-				if (distance2 - radius > m_Status->chr.fRange) continue;
-				if (distance > distance2)
+				if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn())continue;								//리젠할때는 건드리지 않고 
+
+				float radius1 = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().radius;		//몬스터의 바운드 스페어의 반지름 받고 
+				mosPos = *(m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetPosition());		//몬스터 포지션 받고 
+				float distance1 = D3DXVec3Length(&(mosPos - pos));
+
+				if (distance1 - radius1 > m_Status->chr.fRange) continue;
+				distance = distance1;
+				distance = subDistance;
+
+				m_nIndex = i;
+				break;
+			}
+			if (m_nIndex != -1)//만약 기준점이 된 몬스터가 구해졌으면 
+			{
+				for (int i = m_nIndex + 1; i < m_pMonsterManager->GetMonsterVector().size(); ++i)
 				{
-					distance = distance2;
-					m_nIndex = i;
+					if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn())continue;	//리젠할때는 건드리지 않고 
+					float radius2 = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().radius;
+					float distance2 = D3DXVec3Length(&(mosPos - pos));
+					if (distance2 - radius2 > m_Status->chr.fRange) continue;
+					if (distance > distance2)
+					{
+						distance = distance2;
+						m_nIndex = i;
+					}
+
+				}
+				//시선 
+				D3DXVECTOR3 front;
+				D3DXMATRIX matY;
+				D3DXMatrixRotationY(&matY, m_pCharacter->GetRotation()->y);
+				D3DXVec3TransformNormal(&front, &D3DXVECTOR3(0, 0, -1), &matY);
+				D3DXVECTOR3 v0 = front;
+				//대상방향
+				D3DXVECTOR3 v1 = mosPos - pos;
+				D3DXVec3Normalize(&v0, &v1);
+				float dot = D3DXVec3Dot(&v0, &v1) / D3DXVec3Length(&v0) * D3DXVec3Length(&v1);
+				if (dot >= cos(m_Status->chr.fScale / 2))
+				{
+					//if (m_nIndex == -1) return;
+					if (m_fElpTime < m_fPrevTime + m_fEffectInterval) return;
+
+					m_fPrevTime = m_fElpTime;
+
+					m_nDamageCount++;
+
+					if (m_nDamageCount <= 3)
+					{
+						ST_EFFECT tempEffect;
+						ZeroMemory(&tempEffect, sizeof(tempEffect));
+
+						tempEffect.time = FRand(0.1, 0.4);
+						tempEffect.isRY = true;
+						tempEffect.isRX = true;
+						tempEffect.height = 3.0f;
+						tempEffect.SetAlpha(255, 255, 0);
+						tempEffect.SetScale(1, 0.8, 0.8);
+						tempEffect.tex = TEXTUREMANAGER->AddTexture("akanal", "Texture/Effect/akanal.png");
+						EffectObject* tempEFOBJ;
+						tempEFOBJ = new EffectObject;
+
+						D3DXVECTOR3 testSkillpos = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
+						testSkillpos.y += 1.0f;
+						testSkillpos.x += FRand(-0.5, 0.5);
+						tempEFOBJ->Init(tempEffect, testSkillpos);
+
+						m_vecEffect.push_back(tempEFOBJ);
+						m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
+					}
 				}
 			}
-			m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(m_Status->chr.nAtk + m_pInventory->GetEquipStat().chr.nAtk);
-			m_pParticle->SetPosition(D3DXVECTOR3(m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition()->x,
-				m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition()->y + 2.0f,
-				m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition()->z));
-			m_pParticle->TimeReset();
-			
+		}
+		else if (m_eCharSelect == CHAR_TWO)
+		{
+			//기준점이 되는 몬스터를 구하고 
+			for (int i = 0; i < m_pMonsterManager->GetMonsterVector().size(); ++i)
+			{
+				if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn())continue;								//리젠할때는 건드리지 않고 
+
+				float radius1 = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().radius;		//몬스터의 바운드 스페어의 반지름 받고 
+				mosPos = *(m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetPosition());		//몬스터 포지션 받고 
+				float distance1 = D3DXVec3Length(&(mosPos - pos));
+
+				if (distance1 - radius1 > m_Status->chr.fRange) continue;
+				distance = distance1;
+				distance = subDistance;
+
+				m_nIndex = i;
+				break;
+			}
+			if (m_nIndex != -1)//만약 기준점이 된 몬스터가 구해졌으면 
+			{
+				for (int i = m_nIndex + 1; i < m_pMonsterManager->GetMonsterVector().size(); ++i)
+				{
+					if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn())continue;	//리젠할때는 건드리지 않고 
+					float radius2 = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().radius;
+					float distance2 = D3DXVec3Length(&(mosPos - pos));
+					if (distance2 - radius2 > m_Status->chr.fRange) continue;
+					if (distance > distance2)
+					{
+						distance = distance2;
+						m_nIndex = i;
+					}
+
+				}
+				//시선 
+				D3DXVECTOR3 front;
+				D3DXMATRIX matY;
+				D3DXMatrixRotationY(&matY, m_pCharacter->GetRotation()->y);
+				D3DXVec3TransformNormal(&front, &D3DXVECTOR3(0, 0, -1), &matY);
+				D3DXVECTOR3 v0 = front;
+				//대상방향
+				D3DXVECTOR3 v1 = mosPos - pos;
+				D3DXVec3Normalize(&v0, &v1);
+				float dot = D3DXVec3Dot(&v0, &v1) / D3DXVec3Length(&v0) * D3DXVec3Length(&v1);
+				if (dot >= cos(m_Status->chr.fScale / 2))
+				{
+					//if (m_nIndex == -1) return;
+					if (m_fElpTime < m_fPrevTime + m_fEffectInterval) return;
+
+					m_fPrevTime = m_fElpTime;
+
+					m_nDamageCount++;
+
+					if (m_nDamageCount <= 3)
+					{
+						ST_EFFECT tempEffect;
+						ZeroMemory(&tempEffect, sizeof(tempEffect));
+
+						tempEffect.time = FRand(0.1, 0.4);
+						tempEffect.isRY = true;
+						tempEffect.isRX = true;
+						tempEffect.height = 3.0f;
+						tempEffect.SetAlpha(255, 255, 0);
+						tempEffect.SetScale(1, 0.8, 0.8);
+						tempEffect.tex = TEXTUREMANAGER->AddTexture("Hestia", "Texture/Effect/Hestia.png");
+						EffectObject* tempEFOBJ;
+						tempEFOBJ = new EffectObject;
+
+						D3DXVECTOR3 testSkillpos = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
+						testSkillpos.y += 1.0f;
+						testSkillpos.x += FRand(-0.5, 0.5);
+						testSkillpos.z += 2.0f;
+						tempEFOBJ->Init(tempEffect, testSkillpos);
+
+						m_vecEffect.push_back(tempEFOBJ);
+						m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
+					}
+				}
+			}
 		}
 	}
 }
@@ -916,6 +1276,10 @@ void CharacterParant::Init(Map* map, CHRTYPE type, CHARSELECT order, MonsterMana
 
 
 	m_pShieldChr = NULL;
+}
+
+void CharacterParant::Update()
+{
 }
 
 

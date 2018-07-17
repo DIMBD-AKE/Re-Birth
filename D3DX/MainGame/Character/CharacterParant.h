@@ -131,7 +131,7 @@ public:
 	virtual ~CharacterParant();
 
 	virtual void Init(Map* map, CHRTYPE type ,CHARSELECT order, MonsterManager* pMonsterManager);
-	virtual void Update() = 0;
+	virtual void Update();
 	virtual void Render();
 	virtual void KeyControl();
 	virtual void ChangeAnimation();
