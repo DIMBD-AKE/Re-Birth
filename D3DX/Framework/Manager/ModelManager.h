@@ -35,6 +35,7 @@ class Model
 	virtual map<string, int> GetAnimation() { return map<string, int>(); }
 	virtual bool SetAnimation(string name) { return false; }
 	virtual bool SetAnimation(int index) { return false; }
+	virtual void SetAnimationPosition(float pos) {}
 	virtual bool SetBlendAnimation(string name) { return false; }
 	virtual bool SetBlendAnimation(int index) { return false; }
 	virtual bool SetBlendTime(float time) { return false; }
@@ -116,6 +117,7 @@ public:
 	virtual map<string, int> GetAnimation();
 	virtual bool SetAnimation(string name);
 	virtual bool SetAnimation(int index);
+	virtual void SetAnimationPosition(float pos);
 	virtual bool SetBlendAnimation(string name);
 	virtual bool SetBlendAnimation(int index);
 	virtual bool SetBlendTime(float time);

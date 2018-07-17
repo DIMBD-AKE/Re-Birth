@@ -80,6 +80,7 @@ TextManager::TextManager()
 {
 	RegisterFont("Font/NanumSquareR.ttf");
 	RegisterFont("Font/UhBee Yiseul.ttf");
+	RegisterFont("Font/NanumMyeongjo.ttf");
 }
 
 TextManager::~TextManager()

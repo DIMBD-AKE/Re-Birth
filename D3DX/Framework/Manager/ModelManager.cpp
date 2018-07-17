@@ -477,6 +477,11 @@ bool ModelX::SetAnimation(int index)
 	return true;
 }
 
+void ModelX::SetAnimationPosition(float pos)
+{
+	m_pSMesh->SetAnimationPosition(pos);
+}
+
 bool ModelX::SetBlendAnimation(string name)
 {
 	auto animMap = GetAnimation();

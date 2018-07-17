@@ -224,6 +224,19 @@ void SkinnedMesh::SetAnimationSpeed(float speed)
 	m_pAnimController->SetTrackSpeed(1, speed);
 }
 
+void SkinnedMesh::SetAnimationPosition(float pos)
+{
+	LPD3DXANIMATIONSET anim = NULL;
+	D3DXTRACK_DESC desc;
+	m_pAnimController->GetTrackAnimationSet(0, &anim);
+	m_pAnimController->GetTrackDesc(0, &desc);
+
+	float period = anim->GetPeriod() / desc.Speed;
+
+	desc.Position = period * pos;
+	m_pAnimController->SetTrackDesc(0, &desc);
+}
+
 bool SkinnedMesh::IsAnimationPercent(float rate)
 {
 	if (rate < 0 || rate > 1) return false;
@@ -233,7 +246,7 @@ bool SkinnedMesh::IsAnimationPercent(float rate)
 	m_pAnimController->GetTrackAnimationSet(0, &anim);
 	m_pAnimController->GetTrackDesc(0, &desc);
 
-	float period = anim->GetPeriod();
+	float period = anim->GetPeriod() / desc.Speed;
 	float current = fmod(desc.Position, period);
 	float curRate = current / period;
 	float elapseRate = TIME->GetElapsedTime() / period * 0.5;

@@ -48,8 +48,8 @@ void UIObject::Update()
 		RECT rc;
 		rc.left = m_matWorld._41;
 		rc.top = m_matWorld._42;
-		rc.right = rc.left + m_ptTexWH[UITEX_NORMAL].x;
-		rc.bottom = rc.top + m_ptTexWH[UITEX_NORMAL].y;
+		rc.right = rc.left + m_ptTexWH[UITEX_NORMAL].x * m_vScale.x;
+		rc.bottom = rc.top + m_ptTexWH[UITEX_NORMAL].y * m_vScale.y;
 
 		if (PtInRect(&rc, MOUSE_POS))
 		{

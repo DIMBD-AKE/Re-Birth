@@ -66,6 +66,7 @@ public:
 	void SetBlendIndex(int index);
 	void SetBlendTime(float time) { m_fBlendTime = time; }
 	void SetAnimationSpeed(float speed);
+	void SetAnimationPosition(float pos);
 	bool IsAnimationPercent(float rate);
 	bool IsAnimationEnd();
 
