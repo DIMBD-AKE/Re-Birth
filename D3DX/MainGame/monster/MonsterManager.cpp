@@ -318,3 +318,18 @@ void MonsterManager::MakeFinalBoss(DropManager* pDropManager)
 	m_vMM.push_back(finalBoss);
 
 }
+
+void MonsterManager::DeleteSummonMonster()
+{
+	for (int i = 0; i < m_vMM.size();)
+	{
+		//소환된몹이냐
+		if (m_vMM[i]->GetIsSummon())
+		{
+			SAFE_DELETE(m_vMM[i]);
+			m_vMM.erase(m_vMM.begin() + i);
+		}
+		//소환된 몹이면 인덱스 증가
+		else ++i;
+	}
+}

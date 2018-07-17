@@ -51,6 +51,9 @@ public:
 	void MakeMonster(DropManager* pDropManager);
 	//최종보스의 패시브통해 생성되는 함수
 	void MakeMonster();
+	//최종 보스 사망시 소환 몬스터 제거 함수
+	void DeleteSummonMonster();
+
 	//void SetSpawnSpot(vector<D3DXVECTOR3> spawnVec) { m_vSpawnSpot = spawnVec; }
 	//
 	//make(spawn[i])

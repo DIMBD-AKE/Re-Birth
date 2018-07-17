@@ -1,4 +1,5 @@
 #include "../MonsterUseHeader.h"
+#include "../MonsterManager.h"
 #include "BossParent.h"
 #include "../Magic/MagicCircle.h"
 
@@ -64,6 +65,23 @@ void BossParent::Render()
 
 	if (m_pHPBar) m_pHPBar->Render();
 
+}
+
+void BossParent::SetCurrentHP(int hp)
+{
+	CURRENTHP(m_pMonsterStat) -= hp;
+
+	if (CURRENTHP(m_pMonsterStat) <= 0)
+	{
+		m_pMM->DeleteSummonMonster();
+		CURRENTHP(m_pMonsterStat) = 0;
+		m_bIsDead = true;
+		m_bIsRespawn = true;
+		m_eState = MS_DIE;
+		m_eBossState = BS_DIE;
+		ChangeAni();
+		ItemDrop();
+	}
 }
 
 

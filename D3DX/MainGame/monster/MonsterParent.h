@@ -30,7 +30,7 @@ class MonsterParent
 	SET(CharacterParant**, m_ppCharacter, Character);
 	SET(DropManager*, m_pDropManager, DropManager);
 	SYNTHESIZE(STATUS*, m_pMonsterStat, MosterStat);
-
+	GET(bool, m_bIsSummon,IsSummon);
 	
 
 protected:
@@ -45,7 +45,7 @@ protected:
 	int m_nTargetingCount;
 
 	//보스가 소환해서 생성된 몹이냐
-	bool m_bIsSummon;
+	
 
 	//HP UI바
 	UIObject* m_pHPBar;

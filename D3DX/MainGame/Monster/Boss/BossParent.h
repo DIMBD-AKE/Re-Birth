@@ -81,21 +81,8 @@ protected:
 
 	virtual void Pattern();
 
-	virtual void SetCurrentHP(int hp)
-	{
-		CURRENTHP(m_pMonsterStat) -= hp;
+	virtual void SetCurrentHP(int hp);
 
-		if (CURRENTHP(m_pMonsterStat) <= 0)
-		{
-			CURRENTHP(m_pMonsterStat) = 0;
-			m_bIsDead = true;
-			m_bIsRespawn = true;
-			m_eState = MS_DIE;
-			m_eBossState = BS_DIE;
-			ChangeAni();
-			ItemDrop();
-		}
-	}
 	
 public:
 	BossParent();
