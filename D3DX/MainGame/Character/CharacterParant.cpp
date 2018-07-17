@@ -369,7 +369,10 @@ void CharacterParant::SetCurrentHP(int hp)
 
 void CharacterParant::CalculDamage(float damage)
 {
-
+	if (m_eCondition == CHAR_DIE)
+	{
+		return;
+	}
 	if (!m_bIsSubChr)
 	{
 		if (m_eCondition != CHAR_HIT)

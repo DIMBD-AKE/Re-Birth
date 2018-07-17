@@ -3,6 +3,8 @@
 #include "../Map.h"
 #include "../monster/MonsterManager.h"
 #include "../monster/MonsterParent.h"
+#include "../Character/Character_Gun.h"
+#include "../Character/Character_Magic.h"
 #include "../Character/Character_Sword.h"
 #include "../Item/DropManager.h"
 #include "../../Framework/EffectObject.h"
@@ -37,7 +39,7 @@ void SC_Test::Init()
 	m_pCharacter = new Character_Sword;
 	m_pMM = new MonsterManager;
 
-	m_pCharacter->Init(m_pSampleMap, CHAR_ONE, m_pMM);
+	m_pCharacter->Init(m_pSampleMap, CHRTYPE_SWORD,CHAR_ONE, m_pMM);
 
 	m_pMM->Setup(m_pSampleMap, &m_pCharacter);
 	m_pMM->SetSpawnSpat(m_pSampleMap->GetSpawnEnemy());
@@ -77,11 +79,98 @@ void SC_Test::Update()
 
 	m_pSkill->Update();
 	
-	m_pCharacter->Update();
+	
 	m_pMM->Update();
 	m_pDropManager->GetDropItem(m_pCharacter);
 
 	TEXT->Add(to_string(TIME->GetFPS()), 0, 0, 20);
+
+	if (m_pCharacter && m_pCharacter->GetCondition() != CHAR_NONE)
+	{
+		m_pCharacter->Update();
+
+
+		if (INPUT->KeyPress('0'))
+		{
+			CharacterParant* L_TestModel = m_pCharacter;
+			CharacterParant* L_TestModel2;
+			L_TestModel2 = new Character_Sword;
+			L_TestModel2->Init(m_pSampleMap, CHRTYPE_SWORD, CHAR_ONE, m_pMM);
+			m_pCharacter = L_TestModel2;
+			L_TestModel2 = NULL;
+			SAFE_DELETE(L_TestModel);
+		}
+		if (INPUT->KeyPress('1'))
+		{
+			CharacterParant* L_TestModel = m_pCharacter;
+			CharacterParant* L_TestModel2;
+			L_TestModel2 = new Character_Sword;
+			L_TestModel2->Init(m_pSampleMap, CHRTYPE_SWORD, CHAR_TWO, m_pMM);
+			m_pCharacter = L_TestModel2;
+			L_TestModel2 = NULL;
+			SAFE_DELETE(L_TestModel);
+		}
+		if (INPUT->KeyPress('2'))
+		{
+			CharacterParant* L_TestModel = m_pCharacter;
+			CharacterParant* L_TestModel2;
+			L_TestModel2 = new Character_Gun;
+			L_TestModel2->Init(m_pSampleMap, CHRTYPE_GUN, CHAR_ONE, m_pMM);
+			m_pCharacter = L_TestModel2;
+			L_TestModel2 = NULL;
+			SAFE_DELETE(L_TestModel);
+		}
+		if (INPUT->KeyPress('3'))
+		{
+			CharacterParant* L_TestModel = m_pCharacter;
+			CharacterParant* L_TestModel2;
+			L_TestModel2 = new Character_Gun;
+			L_TestModel2->Init(m_pSampleMap, CHRTYPE_GUN, CHAR_TWO, m_pMM);
+			m_pCharacter = L_TestModel2;
+			L_TestModel2 = NULL;
+			SAFE_DELETE(L_TestModel);
+		}
+		if (INPUT->KeyPress('4'))
+		{
+			CharacterParant* L_TestModel = m_pCharacter;
+			CharacterParant* L_TestModel2;
+			L_TestModel2 = new Character_Magic;
+			L_TestModel2->Init(m_pSampleMap, CHRTYPE_MAGIC, CHAR_ONE, m_pMM);
+			m_pCharacter = L_TestModel2;
+			L_TestModel2 = NULL;
+			SAFE_DELETE(L_TestModel);
+		}
+		if (INPUT->KeyPress('5'))
+		{
+			CharacterParant* L_TestModel = m_pCharacter;
+			CharacterParant* L_TestModel2;
+			L_TestModel2 = new Character_Magic;
+			L_TestModel2->Init(m_pSampleMap, CHRTYPE_MAGIC,CHAR_TWO, m_pMM);
+			m_pCharacter = L_TestModel2;
+			L_TestModel2 = NULL;
+			SAFE_DELETE(L_TestModel);
+		}
+		if (INPUT->KeyPress('6'))
+		{
+			CharacterParant* L_TestModel = m_pCharacter;
+			CharacterParant* L_TestModel2;
+			L_TestModel2 = new Character_Sword;
+			L_TestModel2->Init(m_pSampleMap, CHRTYPE_SWORD, CHAR_THREE, m_pMM);
+			m_pCharacter = L_TestModel2;
+			L_TestModel2 = NULL;
+			SAFE_DELETE(L_TestModel);
+		}
+	}
+	if (m_pCharacter->GetCondition() == CHAR_NONE)
+	{
+		CharacterParant* L_TestModel = m_pCharacter;
+		CharacterParant* L_TestModel2;
+		L_TestModel2 = new Character_Sword;
+		L_TestModel2->Init(m_pSampleMap, CHRTYPE_SWORD, CHAR_TWO, m_pMM);
+		m_pCharacter = L_TestModel2;
+		L_TestModel2 = NULL;
+		SAFE_DELETE(L_TestModel);
+	}
 }
 
 void SC_Test::Render()

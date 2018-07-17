@@ -249,6 +249,7 @@ void Character_Gun::KeyControl()
 		case CHAR_DIE:
 			m_eCondition = CHAR_NONE;
 			m_bIsDead = false;
+			break;
 		}
 		ChangeAnimation();
 	}

@@ -340,6 +340,10 @@ void Character_Sword::KeyControl()
 		case CHAR_HIT:
 			m_eCondition = CHAR_IDLE;
 			break;
+		case CHAR_DIE:
+			m_eCondition = CHAR_NONE;
+			m_bIsDead = false;
+			break;
 		}
 		ChangeAnimation();
 	}
@@ -369,12 +373,12 @@ void Character_Sword::KeyControl()
 		m_pCharacter->SetAnimationSpeed(1.0f * (m_Status->chr.fAtkSpeed + m_pInventory->GetEquipStat().chr.fAtkSpeed));
 	}
 
-	//╡Т╬с аж╠щ
-	if (m_pCharacter->IsAnimationEnd() && m_eCondition == CHAR_DIE)
-	{
-		m_eCondition = CHAR_NONE;
-		m_bIsDead = false;
-	}
+	////╡Т╬с аж╠щ
+	//if (m_pCharacter->IsAnimationEnd() && m_eCondition == CHAR_DIE)
+	//{
+	//	m_eCondition = CHAR_NONE;
+	//	m_bIsDead = false;
+	//}
 }
 
 
