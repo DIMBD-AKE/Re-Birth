@@ -74,6 +74,11 @@ void Assis::SetupStat()
 
 }
 
+void Assis::SetupSkill()
+{
+
+}
+
 
 //근접 몬스터 공격함수
 //void Assis::Attack()

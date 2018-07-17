@@ -66,6 +66,11 @@ void NifilHeim::SetupStat()
 	RANGE(m_pMonsterStat) = 10.0f;
 }
 
+void NifilHeim::SetupSkill()
+{
+
+}
+
 
 //근접 몬스터 공격함수
 //void NifilHeim::Attack()

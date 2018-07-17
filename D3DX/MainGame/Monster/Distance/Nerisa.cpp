@@ -66,6 +66,10 @@ void Nerisa::SetupStat()
 	RANGE(m_pMonsterStat) = 6.5f;
 }
 
+void Nerisa::SetupSkill()
+{
+
+}
 
 //근접 몬스터 공격함수
 //void Nerisa::Attack()

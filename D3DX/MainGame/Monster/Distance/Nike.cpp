@@ -45,6 +45,11 @@ void Nike::Setup(Map* map, D3DXVECTOR3 spawnPos, bool isSummon)
 	m_pSkill = SKILL->GetSkill("Nike Skill");
 }
 
+void Nike::SetupSkill()
+{
+
+}
+
 void Nike::SetupStat()
 {
 	m_nMinMoveCount = 450;

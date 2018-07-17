@@ -8,6 +8,7 @@ class Assis :
 private:
 
 	virtual void SetupStat() override;
+	virtual void SetupSkill() override;
 
 	virtual void Skill() override;
 

@@ -8,7 +8,7 @@ class Nerisa :
 private:
 
 	virtual void SetupStat() override;
-
+	virtual void SetupSkill() override;
 	//원거리 몬스터 스킬함수
 	virtual void Skill() override;
 

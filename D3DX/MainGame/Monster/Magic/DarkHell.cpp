@@ -64,6 +64,43 @@ void DarkHell::SetupStat()
 	RANGE(m_pMonsterStat) = 10.0f;
 }
 
+void DarkHell::SetupSkill()
+{
+	//int			nMaxTarget;
+	//float			fMinLength;
+	//float			fMaxLength;
+	//float			fAngle;
+	//
+	//float			fDamage;
+	//int			nDamageCount;
+	//float			fDamageInterval;
+	//float			fDamageDelay;
+	//
+	//float			fBuffTime;
+	//STATUS		buffStatus;
+	//
+	//float			fYOffset;
+	//bool			isAutoRot;
+	//float			fParticleTime;
+	//float			fParticleSpeed;
+	//float			fEffectTime;
+
+	ZeroMemory(&m_stSkill, sizeof(ST_SKILL));//
+	m_stSkill.fDamage = 200;				 //
+	m_stSkill.fDamageDelay = 0;				 //
+	m_stSkill.fDamageInterval = 0.1;		 //
+	m_stSkill.fMaxLength = 100;				 //
+	m_stSkill.fAngle = 360;					 //
+	m_stSkill.nMaxTarget = 5;				 //
+	m_stSkill.nDamageCount = 100;			 //
+	m_stSkill.isAutoRot = true;				 //
+	m_stSkill.fYOffset = 8;					 //
+	m_stSkill.fBuffTime = -1;				 //
+	m_stSkill.fParticleTime = 10;			 //
+	m_stSkill.fParticleSpeed = 0.05;		 //
+	m_stSkill.fEffectTime = 3;				 //
+}
+
 
 //근접 몬스터 공격함수
 //void DarkHell::Attack()
@@ -74,7 +111,13 @@ void DarkHell::SetupStat()
 //근접 몬스터 스킬함수
 void DarkHell::Skill()
 {
+	m_pSkill->Trigger();
 
+	if (m_pModel->IsAnimationEnd())
+	{
+		m_eState = MS_IDLE;
+		ChangeAni();
+	}
 }
 
 //근접 몬스터 기본 이동함수
