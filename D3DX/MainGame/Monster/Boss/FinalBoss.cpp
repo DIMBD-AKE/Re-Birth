@@ -344,7 +344,8 @@ void FinalBoss::Skill2()
 
 void FinalBoss::Casting()
 {
-	if (m_pModel->IsAnimationPercent(0.5f))
+	if (m_pModel->IsAnimationEnd())
+	//if (m_pModel->IsAnimationPercent(0.5f))
 	{
 		m_eBossState = BS_SKILL1;
 		ChangeAni();
