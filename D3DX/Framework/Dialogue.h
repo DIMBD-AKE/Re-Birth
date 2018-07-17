@@ -29,6 +29,7 @@ public:
 	void Init(D3DXVECTOR2 pos, int size, string fontName, float interval, DWORD color);
 	void SetKey(DWORD next, DWORD prev, DWORD rewrite);
 	void AddText(string text) { m_vecAllText.push_back(text); }
+	void SetIndex(int index);
 	void Update();
 };
 

@@ -15,7 +15,7 @@ void Dialogue::Init(D3DXVECTOR2 pos, int size, string fontName, float interval, 
 {
 	m_vPos = pos;
 	m_nSize = size;
-	m_sFont = fontName;
+	m_sFont = string(fontName);
 	m_fInterval = interval;
 	m_nColor = color;
 }
@@ -25,6 +25,14 @@ void Dialogue::SetKey(DWORD next, DWORD prev, DWORD rewrite)
 	m_nNext = next;
 	m_nPrev = prev;
 	m_nReWrite = rewrite;
+}
+
+void Dialogue::SetIndex(int index)
+{
+	m_nIndex = index;
+	m_nChar = 0;
+	m_nLine = 0;
+	m_vecCurrentText.clear();
 }
 
 void Dialogue::Update()
@@ -64,6 +72,9 @@ void Dialogue::Update()
 		int size = 0;
 		for (int i = 0; i < m_vecCurrentText.size(); i++)
 			size += m_vecCurrentText[i].size() + ((m_vecCurrentText.size() > 1) ? 1 : 0);
+
+		if (size > 2)
+			size -= 1;
 
 		if (size < m_vecAllText[m_nIndex].size())
 		{

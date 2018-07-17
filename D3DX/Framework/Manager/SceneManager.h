@@ -18,6 +18,7 @@ class SceneManager
 private:
 	map<string,Scene*>		m_mScene;
 	Scene*					m_pCurrentScene;
+	vector<Scene*>			m_vecPrevScene;
 
 public:
 	void AddScene(string name, Scene * scene);

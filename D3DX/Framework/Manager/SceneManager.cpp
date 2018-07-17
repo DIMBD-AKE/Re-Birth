@@ -26,7 +26,7 @@ void SceneManager::AddScene(string name, Scene * scene)
 void SceneManager::ChangeScene(string name, bool init)
 {
 	if (m_pCurrentScene)
-		m_pCurrentScene->Release();
+		m_vecPrevScene.push_back(m_pCurrentScene);
 
 	auto find = m_mScene.find(name);
 	if (find != m_mScene.end())
@@ -42,6 +42,12 @@ void SceneManager::Update()
 {
 	if (m_pCurrentScene)
 		m_pCurrentScene->Update();
+	
+	for (int i = 0; i < m_vecPrevScene.size();)
+	{
+		m_vecPrevScene[i]->Release();
+		m_vecPrevScene.erase(m_vecPrevScene.begin() + i);
+	}
 }
 
 void SceneManager::Render()

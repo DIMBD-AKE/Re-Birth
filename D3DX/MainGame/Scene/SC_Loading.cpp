@@ -129,10 +129,6 @@ void SC_Loading::AddTexture()
 	//쉴드 프로그래스바
 	m_pLoading->LoadTexture("실드_프론트바", "Texture/PlayerProgressBar/shieldHp.jpg");
 	m_pLoading->LoadTexture("실드_백바", "Texture/PlayerProgressBar/shieldBack.jpg");
-
-	//로딩 이미지
-	TEXTUREMANAGER->AddTexture("로딩이미지", "Texture/Loading/Load1.png");
-
 }
 
 void SC_Loading::AddSound()
@@ -148,8 +144,8 @@ void SC_Loading::AddSound()
 
 void SC_Loading::InitUI()
 {
-	TEXTUREMANAGER->AddTexture("Loading Background", "Texture/Loading/Background.png");
-	TEXTUREMANAGER->AddTexture("Loading Bar", "Texture/Loading/Bar.png");
+	TEXTUREMANAGER->AddTexture("Loading Background", "Texture/Scene/Loading BG.png");
+	TEXTUREMANAGER->AddTexture("Loading Bar", "Texture/Scene/Loading Bar.png");
 
 	m_pUI = new UIObject;
 	m_pUI->SetTexture(TEXTUREMANAGER->GetTexture("Loading Background"));

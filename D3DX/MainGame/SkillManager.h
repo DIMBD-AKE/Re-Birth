@@ -87,6 +87,7 @@ private:
 
 	// 효과 정보
 	string					m_sParticle;
+
 	vector<Particle*>		m_vecParticle;
 	ST_EFFECT				m_stEffect;
 	vector<EffectObject*>	m_vecEffect;
