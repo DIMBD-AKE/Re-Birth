@@ -66,7 +66,7 @@ void FinalBoss::SetupStat()
 	AGI(m_pMonsterStat) = 10.0f;
 	HIT(m_pMonsterStat) = 10.0f;
 	SPEED(m_pMonsterStat) = 0.08f;
-	RANGE(m_pMonsterStat) = 13.0f;
+	RANGE(m_pMonsterStat) = 8.0f;
 }
 
 void FinalBoss::SetupSkill()
@@ -75,22 +75,24 @@ void FinalBoss::SetupSkill()
 
 	m_stSkill.nMaxTarget = 1;
 	m_stSkill.fMinLength = 0;
-	m_stSkill.fMaxLength = 100;
+	m_stSkill.fMaxLength = 10;
 	m_stSkill.fAngle = 360;
 	
 	m_stSkill.fDamage = 100; //v
 	m_stSkill.nDamageCount = 5;
-	m_stSkill.fDamageInterval = 1;
+	m_stSkill.fDamageInterval =
+		((m_pModel->GetAnimationPeriod("SKILL2") * 3) / 4) / m_stSkill.nDamageCount;
 	m_stSkill.fDamageDelay = 0;
 	
 	m_stSkill.fBuffTime = -1;//<0;
+	
 	
 	
 	//m_stSkill.fYOffset ;
 	//m_stSkill.isAutoRot;
 	//m_stSkill.fParticleTime;
 	//m_stSkill.fParticleSpeed;
-	m_stSkill.fEffectTime = 1;	
+	m_stSkill.fEffectTime = m_pModel->GetAnimationPeriod("SKILL2") / 4;
 	
 	m_stSkill.buffStatus.chr.nCurrentHP = 100; //증가 될 스탯량 피뺴고 제로메모리;
 }
@@ -126,7 +128,7 @@ void FinalBoss::ChangeAni()
 		m_pModel->SetAnimation("SKILL1");
 		break;
 	case BS_CASTING:
-		m_pModel->SetAnimation("SKILL_CASTING");
+		m_pModel->SetAnimation("SKILL2_CASTING");
 		break;
 	case BS_DIE:
 		m_pModel->SetAnimation("DIE");
@@ -136,6 +138,12 @@ void FinalBoss::ChangeAni()
 	default:
 		break;
 	}
+
+	if (m_eBossState == BS_CASTING)
+	{
+		m_pModel->SetAnimationSpeed(0.5f);
+	}
+	else m_pModel->SetAnimationSpeed(1.0f);
 }
 
 void FinalBoss::Pattern()
@@ -322,11 +330,11 @@ void FinalBoss::SkillUse()
 {
 	m_pSkill->Trigger();
 
-	//if (m_pModel->IsAnimationEnd())
-	//{
-	//	m_eBossState = BS_IDLE;
-	//	ChangeAni();
-	//}
+	if (m_pModel->IsAnimationEnd())
+	{
+		m_eBossState = BS_IDLE;
+		ChangeAni();
+	}
 }
 
 void FinalBoss::Skill2()
@@ -336,5 +344,9 @@ void FinalBoss::Skill2()
 
 void FinalBoss::Casting()
 {
-	
+	if (m_pModel->IsAnimationEnd())
+	{
+		m_eBossState = BS_SKILL1;
+		ChangeAni();
+	}
 }
