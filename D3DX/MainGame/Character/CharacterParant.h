@@ -44,7 +44,6 @@ protected:
 
 	TestItem*				m_pFirstItem;			//첫번쨰 스킬 장비
 
-
 	GET(Model*, m_pCharacter, Character);				//캐릭터 맴버 변수 
 	//GET(Model*, m_pShieldChr, ShiedldChr);			//쉴드 캐릭터 변수
 	Map*					m_pSampleMap;			//맵정보 받는 맴버 변수
@@ -66,6 +65,8 @@ protected:
 	int						m_nCalAction;			//액션 프레임 계산용 변수
 	int						m_nDamage;				//데미지 띄우기용 변수 
 	int						m_nAppear;				//서브캐릭터 나오나 
+	int						m_nIndex;				//몬스터 벡터용 인덱스
+	int						m_nDamageCount;			//데미지 카운트 
 	
 
 	vector<ST_DAMAGETEXT>		m_vecDamage;		//데미지 저장용 변수
@@ -81,11 +82,15 @@ protected:
 	bool					m_bIsWalk;				//걷고 있니
 	float					m_fDamageCount;			//데미지 띄우는 카운트
 	float					m_fDamageAngle;			//데미지 앵글
+	float					m_fElpTime;				//이펙트용 일랩스 카운트
+	float					m_fPrevTime;			//이펙트 기준시간
+	float					m_fEffectInterval;		//이펙트 인터벌
+
 
 	GET(bool, m_bIsDead, IsDead);						//죽었늬
 	float					m_fStamina;				//스테미나 게이지
 
-
+	vector<EffectObject*>	m_vecEffect;			//이펙트 오브젝트용
 	vector<D3DXVECTOR3*>	m_vecVertex;			//디버그용 벡터
 	ST_PLAYERDAMAGED		m_stDamaged;			//스킬타임용 구조체 변수
 
@@ -112,6 +117,9 @@ protected:
 	void SkillIconAlpha();
 	void PlayerProgressBar();
 	void MGSKill();
+	void Effect();
+	void StoreEffect(int index);
+	void StoreAttack(int index);
 
 
 

@@ -131,6 +131,7 @@ void Character_Sword::Update()
 			}
 		}
 
+		Effect();
 
 		PlayerProgressBar();
 		CountAppearDamage();
@@ -294,13 +295,14 @@ void Character_Sword::KeyControl()
 				m_pShieldChr->ChangeSubChrAni();
 			}
 			m_bIsAttack = true;
-			Attack();
+			m_nDamageCount = 0;
 			ChangeAnimation();
 		}
 	}
 	else if (INPUT->KeyUp(VK_SPACE))
 	{
 		m_bIsAttack = false;
+
 	}
 
 	//½ºÅ³°ø°Ý
@@ -373,12 +375,11 @@ void Character_Sword::KeyControl()
 		m_pCharacter->SetAnimationSpeed(1.0f * (m_Status->chr.fAtkSpeed + m_pInventory->GetEquipStat().chr.fAtkSpeed));
 	}
 
-	////²ô¾Ó ÁÖ±Ý
-	//if (m_pCharacter->IsAnimationEnd() && m_eCondition == CHAR_DIE)
-	//{
-	//	m_eCondition = CHAR_NONE;
-	//	m_bIsDead = false;
-	//}
+
+	if (m_eCondition == CHAR_ATTACK)
+	{
+		Attack();
+	}
 }
 
 

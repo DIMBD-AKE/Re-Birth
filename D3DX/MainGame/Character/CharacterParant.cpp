@@ -12,17 +12,14 @@
 void CharacterParant::SKill()
 {
 	//특정 키를 누르면 아이템 클래스의 skill을 실행한다. 
+	//m_pInventory->GetWeapon()->Skill1(,);
 }
 
 void CharacterParant::Move()
 {
 	Debug();
 	m_pInventory->GetEquipStat();
-	
-	//if(m_bIsUnderAttacked) AppearDamage();
-	
-	
-
+	m_fElpTime += TIME->GetElapsedTime();
 
 
 	//전후좌우 점프 움직임
@@ -38,13 +35,6 @@ void CharacterParant::Move()
 	m_vfront = D3DXVECTOR3(0, 0, 1);
 	D3DXVec3TransformNormal(&m_vfront, &m_vfront, &matAngle);
 	
-	if (INPUT->KeyDown('J'))
-	{
-		int a = rand() % 20;
-		SetCurrentHP(a);
-		m_eCondition = CHAR_HIT;
-		ChangeAnimation();
-	}
 
 
 	if (INPUT->KeyPress('A'))
@@ -59,17 +49,17 @@ void CharacterParant::Move()
 	//달리는모션
 	if (m_eCondition == CHAR_RUN_FRONT)
 	{
-		float height = m_pSampleMap->GetHeight(pos.x - m_vfront.x * (m_Status->chr.fSpeed + m_pInventory->GetEquipStat().chr.fSpeed), pos.z - m_vfront.z * (m_Status->chr.fSpeed + m_pInventory->GetEquipStat().chr.fSpeed));
+		float height = m_pSampleMap->GetHeight(pos.x - m_vfront.x * (m_Status->chr.fSpeed + m_pInventory->GetEquipStat().item.fSpeed), pos.z - m_vfront.z * (m_Status->chr.fSpeed + m_pInventory->GetEquipStat().item.fSpeed));
 		if (height >= 0)
 		{
 			pos.y = height;
 			if (m_bIsUnderAttacked)
 			{
-				m_pCharacter->SetPosition(pos - m_vfront * ((m_Status->chr.fSpeed + m_pInventory->GetEquipStat().chr.fSpeed) - 0.1f));
+				m_pCharacter->SetPosition(pos - m_vfront * ((m_Status->chr.fSpeed + m_pInventory->GetEquipStat().item.fSpeed) - 0.1f));
 			}
 			else
 			{
-				m_pCharacter->SetPosition(pos - m_vfront * (m_Status->chr.fSpeed + m_pInventory->GetEquipStat().chr.fSpeed));
+				m_pCharacter->SetPosition(pos - m_vfront * (m_Status->chr.fSpeed + m_pInventory->GetEquipStat().item.fSpeed));
 			}
 		}
 		else
@@ -79,18 +69,18 @@ void CharacterParant::Move()
 	}
 	else if (m_eCondition == CHAR_RUN_BACK)
 	{
-		float height = m_pSampleMap->GetHeight(pos.x - m_vfront.x * ((m_Status->chr.fSpeed + m_pInventory->GetEquipStat().chr.fSpeed )-0.2f), pos.z - m_vfront.z * ((m_Status->chr.fSpeed + m_pInventory->GetEquipStat().chr.fSpeed )-0.2f));
+		float height = m_pSampleMap->GetHeight(pos.x - m_vfront.x * ((m_Status->chr.fSpeed + m_pInventory->GetEquipStat().item.fSpeed )-0.2f), pos.z - m_vfront.z * ((m_Status->chr.fSpeed + m_pInventory->GetEquipStat().item.fSpeed )-0.2f));
 		if (height >= 0)
 		{
 			pos.y = height;
 			
 			if (m_bIsUnderAttacked)
 			{
-				m_pCharacter->SetPosition(pos + m_vfront * ((m_Status->chr.fSpeed + m_pInventory->GetEquipStat().chr.fSpeed) - 0.2f));
+				m_pCharacter->SetPosition(pos + m_vfront * ((m_Status->chr.fSpeed + m_pInventory->GetEquipStat().item.fSpeed) - 0.2f));
 			}
 			else
 			{
-				m_pCharacter->SetPosition(pos + m_vfront * ((m_Status->chr.fSpeed + m_pInventory->GetEquipStat().chr.fSpeed) - 0.2f));
+				m_pCharacter->SetPosition(pos + m_vfront * ((m_Status->chr.fSpeed + m_pInventory->GetEquipStat().item.fSpeed) - 0.2f));
 			}
 
 		}
@@ -388,7 +378,7 @@ void CharacterParant::CalculDamage(float damage)
 			m_Status->chr.fMagicRate +
 			m_Status->chr.fCheRate;
 
-		float totalDamage = totalRate * m_pInventory->GetEquipStat().chr.nDef;
+		float totalDamage = totalRate * (m_pInventory->GetEquipStat().item.nDef + m_Status->chr.nDef);
 
 		totalDamage = damage - totalDamage;
 		totalDamage /= 3;
@@ -419,11 +409,11 @@ void CharacterParant::Attack()
 	//3. 초기화에 0번째 놈과의 거리를 담는다.(0번째놈이 죽었을경우 대충 큰값 아무거나 넣는데)인덱스는 0이다.
 	//4. i = 1부터 벡터사이즈만큼 돌면서 거리를 구하고 2번에 만든 변수와 비교를 하여 작은놈의 값으로 다시 넣고 인덱스값을 바꾼다.
 
-
 		D3DXVECTOR3 pos = *m_pCharacter->GetPosition();														//플레이어 포지션 받고 
 		D3DXVECTOR3 rot = *m_pCharacter->GetRotation();														//플레이어 각도 받고 
 		
-		int MinIndex = -1;
+		//int MinIndex = -1;
+		m_nIndex = -1;
 		int subMinIndex = -1;
 		int MINIndex2 = -1;
 		float MinDistance = 0.0f;
@@ -431,6 +421,10 @@ void CharacterParant::Attack()
 		D3DXVECTOR3 mosPos;
 		float distance;
 		float subDistance = 0.0f;
+
+
+		
+
 
 	if (m_eChrType == CHRTYPE_SWORD || m_eChrType == CHRTYPE_GUN)
 	{
@@ -447,12 +441,12 @@ void CharacterParant::Attack()
 			distance = distance1;
 			distance = subDistance;
 
-			MinIndex = i;
+			m_nIndex = i;
 			break;
 		}
-		if (MinIndex != -1)//만약 기준점이 된 몬스터가 구해졌으면 
+		if (m_nIndex != -1)//만약 기준점이 된 몬스터가 구해졌으면 
 		{
-			for (int i = MinIndex+1; i < m_pMonsterManager->GetMonsterVector().size(); ++i)
+			for (int i = m_nIndex +1; i < m_pMonsterManager->GetMonsterVector().size(); ++i)
 			{
 				if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn())continue;	//리젠할때는 건드리지 않고 
 				float radius2 = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().radius;
@@ -461,7 +455,7 @@ void CharacterParant::Attack()
 				if (distance > distance2)
 				{
 					distance = distance2;
-					MinIndex = i;
+					m_nIndex = i;
 				}
 				
 			}
@@ -477,7 +471,36 @@ void CharacterParant::Attack()
 			float dot = D3DXVec3Dot(&v0, &v1)/ D3DXVec3Length(&v0) * D3DXVec3Length(&v1);
 			if (dot >= cos(m_Status->chr.fScale / 2))
 			{
-				m_pMonsterManager->GetMonsterVector()[MinIndex]->CalculDamage(m_Status->chr.nAtk + m_pInventory->GetEquipStat().chr.nAtk);
+				//if (m_nIndex == -1) return;
+				if (m_fElpTime < m_fPrevTime + m_fEffectInterval) return;
+
+				m_fPrevTime = m_fElpTime;
+
+				m_nDamageCount++;
+
+				if (m_nDamageCount <= 3)
+				{
+					ST_EFFECT tempEffect;
+					ZeroMemory(&tempEffect, sizeof(tempEffect));
+
+					tempEffect.time = FRand(0.1, 0.4);
+					tempEffect.isRY = true;
+					tempEffect.isRX = true;
+					tempEffect.height = 3.0f;
+					tempEffect.SetAlpha(255, 255, 0);
+					tempEffect.SetScale(1, 0.8, 0.8);
+					tempEffect.tex = TEXTUREMANAGER->AddTexture("testSkill", "Texture/Effect/TestSkill.png");
+					EffectObject* tempEFOBJ;
+					tempEFOBJ = new EffectObject;
+
+					D3DXVECTOR3 testSkillpos = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
+					testSkillpos.y += 1.0f;
+					testSkillpos.x += FRand(-0.5, 0.5);
+					tempEFOBJ->Init(tempEffect, testSkillpos);
+
+					m_vecEffect.push_back(tempEFOBJ);
+					m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
+				}
 			}
 		}
 	}
@@ -496,12 +519,12 @@ void CharacterParant::Attack()
 			distance = distance1;
 			//radius = radius1;
 
-			MinIndex = i;
+			m_nIndex = i;
 			break;
 		}
-		if (MinIndex != -1)//만약 기준점이 된 몬스터가 구해졌으면 
+		if (m_nIndex != -1)//만약 기준점이 된 몬스터가 구해졌으면 
 		{
-			for (int i = MinIndex + 1; i < m_pMonsterManager->GetMonsterVector().size(); ++i)
+			for (int i = m_nIndex + 1; i < m_pMonsterManager->GetMonsterVector().size(); ++i)
 			{
 				if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn())continue;	//리젠할때는 건드리지 않고 
 				radius = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().radius;
@@ -511,13 +534,13 @@ void CharacterParant::Attack()
 				if (distance > distance2)
 				{
 					distance = distance2;
-					MinIndex = i;
+					m_nIndex = i;
 				}
 			}
-			m_pMonsterManager->GetMonsterVector()[MinIndex]->CalculDamage(m_Status->chr.nAtk + m_pInventory->GetEquipStat().chr.nAtk);
-			m_pParticle->SetPosition(D3DXVECTOR3(m_pMonsterManager->GetMonsterVector()[MinIndex]->GetModel()->GetPosition()->x,
-				m_pMonsterManager->GetMonsterVector()[MinIndex]->GetModel()->GetPosition()->y + 2.0f,
-				m_pMonsterManager->GetMonsterVector()[MinIndex]->GetModel()->GetPosition()->z));
+			m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(m_Status->chr.nAtk + m_pInventory->GetEquipStat().chr.nAtk);
+			m_pParticle->SetPosition(D3DXVECTOR3(m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition()->x,
+				m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition()->y + 2.0f,
+				m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition()->z));
 			m_pParticle->TimeReset();
 			
 		}
@@ -665,6 +688,56 @@ void CharacterParant::MGSKill()
 	//}
 }
 
+void CharacterParant::Effect()
+{
+	for (int i = 0; i < m_vecEffect.size();)
+	{
+		if (!m_vecEffect[i]->IsFinish())
+		{
+			m_vecEffect[i]->Update();
+			i++;
+		}
+		else
+		{
+			SAFE_DELETE(m_vecEffect[i]);
+			m_vecEffect.erase(m_vecEffect.begin() + i);
+		}
+	}
+}
+
+void CharacterParant::StoreEffect(int index)
+{
+	if (m_nIndex == -1) return;
+	if (m_fElpTime < m_fPrevTime + m_fEffectInterval) return;
+
+	m_fPrevTime = m_fElpTime;
+
+		ST_EFFECT tempEffect;
+		ZeroMemory(&tempEffect, sizeof(tempEffect));
+
+		tempEffect.time = FRand(0.1, 0.4);
+		tempEffect.isRY = true;
+		tempEffect.isRX = true;
+		tempEffect.height = 3.0f;
+		tempEffect.SetAlpha(255, 255, 0);
+		tempEffect.SetScale(1, 0.8, 0.8);
+		tempEffect.tex = TEXTUREMANAGER->AddTexture("testSkill", "Texture/Effect/TestSkill.png");
+		EffectObject* tempEFOBJ;
+		tempEFOBJ = new EffectObject;
+
+		D3DXVECTOR3 testSkillpos = *m_pMonsterManager->GetMonsterVector()[index]->GetModel()->GetPosition();
+		testSkillpos.y += 1.0f;
+		testSkillpos.x += FRand(-0.5, 0.5);
+		tempEFOBJ->Init(tempEffect, testSkillpos);
+
+		m_vecEffect.push_back(tempEFOBJ);
+}
+
+void CharacterParant::StoreAttack(int index)
+{
+
+}
+
 
 CharacterParant::CharacterParant()
 {
@@ -774,6 +847,11 @@ void CharacterParant::Init(Map* map, CHRTYPE type, CHARSELECT order, MonsterMana
 	m_nDamage = 0;
 	m_fDamageCount = 0.0;
 	m_fDamageAngle = 0.0f;
+	m_fElpTime = 0.0f;
+	m_fPrevTime = 0.0f;
+	m_nDamageCount = 0;
+
+	m_fEffectInterval = 0.1f;
 
 	m_stDamaged.startDamageTime = 0.0f;
 	m_stDamaged.endDamageTime = 1.0f;
@@ -850,6 +928,13 @@ void CharacterParant::Render()
 	m_pParticle2->Render();
 	if (m_bIsPotal) m_pParticle3->Render();
 	m_pParticle4->Render();
+
+	for (int i = 0; i < m_vecEffect.size(); i++)
+	{
+		m_vecEffect[i]->Render();
+	}
+
+
 }
 
 void CharacterParant::KeyControl()
