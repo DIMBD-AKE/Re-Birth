@@ -35,8 +35,15 @@ void BossParent::Update()
 
 	if (INPUT->KeyDown('L'))
 	{
-		SetCurrentHP(100);
-		//CURRENTHP(m_pMonsterStat) -= 100;
+		vector<MonsterParent*> tt;
+		m_pSkill->Prepare(PCHARACTER,
+			this,
+			tt,
+			m_stSkill,
+			SKILLO_MONSTER);
+
+		m_eBossState = BS_SKILL1;
+		ChangeAni();
 	}
 
 	if (m_pHPBar)
@@ -48,7 +55,7 @@ void BossParent::Update()
 
 		m_pHPBar->Update();
 	}
-
+	if (m_pSkill) m_pSkill->Update();
 
 	Pattern();
 
@@ -64,6 +71,8 @@ void BossParent::Render()
 	}
 
 	if (m_pHPBar) m_pHPBar->Render();
+
+	if (m_pSkill) m_pSkill->Render();
 
 }
 
@@ -89,14 +98,17 @@ void BossParent::SetupStat()
 {
 
 }
+void BossParent::SetupSkill()
+{
 
+}
 
 void BossParent::Attack()
 {
 
 }
 
-void BossParent::Skill()
+void BossParent::SkillUse()
 {
 
 }

@@ -79,7 +79,7 @@ void Nike::SetupStat()
 //}
 
 //근접 몬스터 스킬함수
-void Nike::Skill()
+void Nike::SkillUse()
 {
 
 }

@@ -42,6 +42,7 @@ void FinalBoss::SetupBoss(Map* map, D3DXVECTOR3 pos)
 	m_pModel->CreateBound(box);
 	m_pModel->SetBoundSphere(m_pModel->GetOrigBoundSphere().center, 100.0f);
 
+	m_pSkill = SKILL->GetSkill("Boss Skill1");
 	
 
 }
@@ -53,7 +54,8 @@ void FinalBoss::SetupStat()
 
 	ZeroMemory(m_pMonsterStat, sizeof(STATUS));
 
-	CURRENTHP(m_pMonsterStat) = MAXHP(m_pMonsterStat) = 1500;
+	CURRENTHP(m_pMonsterStat) = 1400;
+		MAXHP(m_pMonsterStat) = 1500;
 	ATK(m_pMonsterStat) = 20;
 	PHYRATE(m_pMonsterStat) = 1.3f;
 	MAGICRATE(m_pMonsterStat) = 0.8f;
@@ -65,6 +67,32 @@ void FinalBoss::SetupStat()
 	HIT(m_pMonsterStat) = 10.0f;
 	SPEED(m_pMonsterStat) = 0.08f;
 	RANGE(m_pMonsterStat) = 13.0f;
+}
+
+void FinalBoss::SetupSkill()
+{
+	ZeroMemory(&m_stSkill, sizeof(m_stSkill));
+
+	m_stSkill.nMaxTarget = 1;
+	m_stSkill.fMinLength = 0;
+	m_stSkill.fMaxLength = 100;
+	m_stSkill.fAngle = 360;
+	
+	m_stSkill.fDamage = 100; //v
+	m_stSkill.nDamageCount = 5;
+	m_stSkill.fDamageInterval = 1;
+	m_stSkill.fDamageDelay = 0;
+	
+	m_stSkill.fBuffTime = -1;//<0;
+	
+	
+	//m_stSkill.fYOffset ;
+	//m_stSkill.isAutoRot;
+	//m_stSkill.fParticleTime;
+	//m_stSkill.fParticleSpeed;
+	m_stSkill.fEffectTime = 1;	
+	
+	m_stSkill.buffStatus.chr.nCurrentHP = 100; //증가 될 스탯량 피뺴고 제로메모리;
 }
 
 void FinalBoss::DropItemSetup()
@@ -92,10 +120,10 @@ void FinalBoss::ChangeAni()
 		m_pModel->SetAnimation("ATTACK");
 		break;
 	case BS_SKILL1:
-		m_pModel->SetAnimation("SKILL1");
+		m_pModel->SetAnimation("SKILL2");
 		break;
 	case BS_SKILL2:
-		m_pModel->SetAnimation("SKILL2");
+		m_pModel->SetAnimation("SKILL1");
 		break;
 	case BS_CASTING:
 		m_pModel->SetAnimation("SKILL_CASTING");
@@ -139,7 +167,7 @@ void FinalBoss::Pattern()
 		Attack();
 		break;
 	case BS_SKILL1:
-		Skill1();
+		SkillUse();
 		break;
 	case BS_SKILL2:
 		Skill2();
@@ -290,9 +318,15 @@ bool FinalBoss::AbleSummon()
 
 	return false;
 }
-void FinalBoss::Skill1()
+void FinalBoss::SkillUse()
 {
+	m_pSkill->Trigger();
 
+	//if (m_pModel->IsAnimationEnd())
+	//{
+	//	m_eBossState = BS_IDLE;
+	//	ChangeAni();
+	//}
 }
 
 void FinalBoss::Skill2()

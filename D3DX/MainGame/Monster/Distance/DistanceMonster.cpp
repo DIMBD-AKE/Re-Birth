@@ -124,7 +124,7 @@ void DistanceMonster::Attack()
 }
 
 //원거리 몬스터 스킬함수
-void DistanceMonster::Skill()
+void DistanceMonster::SkillUse()
 {
 
 }

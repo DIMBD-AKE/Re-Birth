@@ -9,7 +9,7 @@ private:
 	virtual void SetupStat() override;
 	virtual void SetupSkill() override;
 
-	virtual void Skill() override;
+	virtual void SkillUse() override;
 
 	virtual void DropItemSetup() override;
 

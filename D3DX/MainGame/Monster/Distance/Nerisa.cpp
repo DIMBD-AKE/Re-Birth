@@ -78,7 +78,7 @@ void Nerisa::SetupSkill()
 //}
 
 //근접 몬스터 스킬함수
-void Nerisa::Skill()
+void Nerisa::SkillUse()
 {
 
 }

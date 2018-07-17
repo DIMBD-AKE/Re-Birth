@@ -226,7 +226,7 @@ void Elizabeth::SetupSkill()
 //	}
 //}
 
-void Elizabeth::Skill()
+void Elizabeth::SkillUse()
 {
 	
 

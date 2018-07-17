@@ -115,7 +115,7 @@ void NearMonster::Attack()
 	}
 }
 
-void NearMonster::Skill()
+void NearMonster::SkillUse()
 {
 
 }

@@ -15,7 +15,7 @@ protected:
 
 	virtual void Move() override;
 	virtual void Attack() override;
-	virtual void Skill() override;
+	virtual void SkillUse() override;
 public:
 	MiddleBoss();
 	virtual ~MiddleBoss();

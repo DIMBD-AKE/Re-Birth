@@ -87,7 +87,7 @@ void Assis::SetupSkill()
 //}
 
 //근접 몬스터 스킬함수
-void Assis::Skill()
+void Assis::SkillUse()
 {
 	
 }

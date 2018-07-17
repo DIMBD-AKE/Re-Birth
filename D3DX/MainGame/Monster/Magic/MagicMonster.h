@@ -21,7 +21,7 @@ protected:
 	//마법 몬스터 공격함수
 	virtual void Attack() override;
 	//마법 몬스터 스킬함수
-	virtual void Skill() override;
+	virtual void SkillUse() override;
 	//마법 몬스터 기본 이동함수
 	virtual void Move() override;
 	virtual void SummonMove() override;

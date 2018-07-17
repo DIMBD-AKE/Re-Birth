@@ -90,7 +90,9 @@ void MonsterParent::SetupBoss(Map* map, D3DXVECTOR3 pos)
 	m_pMap = map;
 	m_pModel->SetPosition(D3DXVECTOR3(pos.x, m_pMap->GetHeight(pos.x, pos.z), pos.z));
 	m_pMonsterStat = new STATUS;
+
 	SetupStat();
+	SetupSkill();
 
 	m_pHPBar = new UIObject;
 
@@ -119,15 +121,15 @@ void MonsterParent::Update()
 {
 	if (INPUT->KeyDown('L'))
 	{
-		vector<MonsterParent*> tt;
-		m_pSkill->Prepare(PCHARACTER,
-			this,
-			tt,
-			m_stSkill,
-			SKILLO_MONSTER);
-
-		m_eState = MS_SKILL;
-		ChangeAni();
+		//vector<MonsterParent*> tt;
+		//m_pSkill->Prepare(PCHARACTER,
+		//	this,
+		//	tt,
+		//	m_stSkill,
+		//	SKILLO_MONSTER);
+		//
+		//m_eState = MS_SKILL;
+		//ChangeAni();
 	}
 	if (m_bIsTargeting)
 	{
@@ -174,7 +176,7 @@ void MonsterParent::Update()
 			//스킬상태이면 스킬상태 함수 호출
 		case MS_SKILL:
 		{
-						 Skill();
+						 SkillUse();
 		}
 			break;
 			//공격상태이면 공격상태 호출
@@ -333,7 +335,7 @@ void MonsterParent::Attack()
 
 }
 
-void MonsterParent::Skill()
+void MonsterParent::SkillUse()
 {
 
 }

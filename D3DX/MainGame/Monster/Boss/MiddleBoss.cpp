@@ -169,7 +169,7 @@ void MiddleBoss::Attack()
 
 }
 
-void MiddleBoss::Skill()
+void MiddleBoss::SkillUse()
 {
 
 }

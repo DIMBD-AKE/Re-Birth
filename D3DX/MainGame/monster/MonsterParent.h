@@ -79,7 +79,7 @@ protected:
 	vector<int> m_vItemID;
 
 	//각각의 몬스터 스킬
-	Skill * m_pSkill;
+	Skill* m_pSkill;
 
 	ST_SKILL m_stSkill;
 	/*
@@ -107,7 +107,7 @@ protected:
 
 	virtual void Attack();
 	//몬스터 스킬함수
-	virtual void Skill();
+	virtual void SkillUse();
 	//몬스터 기본 이동함수
 	virtual void Move();
 	virtual void SummonMove();

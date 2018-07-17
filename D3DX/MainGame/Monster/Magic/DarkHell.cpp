@@ -109,7 +109,7 @@ void DarkHell::SetupSkill()
 //}
 
 //근접 몬스터 스킬함수
-void DarkHell::Skill()
+void DarkHell::SkillUse()
 {
 	m_pSkill->Trigger();
 

@@ -92,9 +92,15 @@ void NifilHeim::SetupSkill()
 //}
 
 //근접 몬스터 스킬함수
-void NifilHeim::Skill()
+void NifilHeim::SkillUse()
 {
+	m_pSkill->Trigger();
 
+	if (m_pModel->IsAnimationEnd())
+	{
+		m_eState = MS_IDLE;
+		ChangeAni();
+	}
 }
 
 //근접 몬스터 기본 이동함수

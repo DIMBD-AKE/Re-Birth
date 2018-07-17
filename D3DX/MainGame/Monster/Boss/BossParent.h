@@ -2,6 +2,7 @@
 #include "../MonsterParent.h"
 
 class MagicCircle;
+class Skill;
 
 enum BOSS_STATE{
 	BS_ENTER,			//보스 등장상태
@@ -30,7 +31,15 @@ protected :
 
 	BOSS_STATE m_eBossState;
 
+	//3타스킬
+	Skill* m_pSkill2;
+
+	//3타스킬 스탯
+	ST_SKILL m_stSkill2;
+
 	SET(MonsterManager*, m_pMM, MM);
+
+	
 	/*
 	
 	UIObject* m_pHPBar;
@@ -67,11 +76,11 @@ protected:
 	}
 
 	virtual void SetupStat() override;
-
+	virtual void SetupSkill() override;
 	//근접 몬스터 공격함수
 	virtual void Attack() override;
 	//근접 몬스터 스킬함수
-	virtual void Skill() override;
+	virtual void SkillUse() override;
 	//근접 몬스터 기본 이동함수
 	virtual void Move() override;
 

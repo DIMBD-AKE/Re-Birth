@@ -123,7 +123,7 @@ void MagicMonster::Attack()
 }
 
 //근접 몬스터 스킬함수
-void MagicMonster::Skill()
+void MagicMonster::SkillUse()
 {
 
 }
