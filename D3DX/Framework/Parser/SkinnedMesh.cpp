@@ -247,7 +247,7 @@ bool SkinnedMesh::IsAnimationPercent(float rate)
 	m_pAnimController->GetTrackDesc(0, &desc);
 
 	float period = anim->GetPeriod() / desc.Speed;
-	float current = fmod(desc.Position, period);
+	float current = fmod(desc.Position / desc.Speed, period);
 	float curRate = current / period;
 	float elapseRate = TIME->GetElapsedTime() / period * 0.5;
 
@@ -267,7 +267,7 @@ bool SkinnedMesh::IsAnimationEnd()
 	m_pAnimController->GetTrackDesc(0, &desc);
 
 	float period = anim->GetPeriod() / desc.Speed;
-	float current = fmod(desc.Position, period);
+	float current = fmod(desc.Position / desc.Speed, period);
 	float curRate = current / period;
 	float elapseRate = TIME->GetElapsedTime() / period;
 
