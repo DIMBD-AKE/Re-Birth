@@ -42,7 +42,7 @@ void BossParent::Update()
 			m_stSkill,
 			SKILLO_MONSTER);
 
-		m_eBossState = BS_ENTER;
+		m_eBossState = BS_CASTING;
 		ChangeAni();
 	}
 

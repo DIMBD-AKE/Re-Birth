@@ -76,7 +76,23 @@ void Assis::SetupStat()
 
 void Assis::SetupSkill()
 {
+	ZeroMemory(&m_stSkill, sizeof(ST_SKILL));
+	m_stSkill.fDamage = 0;
+	m_stSkill.fDamageDelay = 0;
+	m_stSkill.fDamageInterval = 0;
+	m_stSkill.fMaxLength = 0;
+	m_stSkill.fAngle = 0;
+	m_stSkill.nMaxTarget = 5;
+	m_stSkill.nDamageCount = 0;
+	m_stSkill.isAutoRot = true;
+	m_stSkill.fYOffset = 1;
+	m_stSkill.fBuffTime = 0;
+	m_stSkill.fParticleTime = m_pModel->GetAnimationPeriod("SKILL");
+	m_stSkill.fParticleSpeed = 0;
+	m_stSkill.fEffectTime = 3;
 
+	m_stSkill.buffStatus.chr.nAtk = ATK(m_pMonsterStat);
+	//공격력 2배
 }
 
 
@@ -89,7 +105,13 @@ void Assis::SetupSkill()
 //근접 몬스터 스킬함수
 void Assis::SkillUse()
 {
-	
+	m_pSkill->Trigger();
+
+	if (m_pModel->IsAnimationEnd())
+	{
+		m_eState = MS_IDLE;
+		ChangeAni();
+	}
 }
 
 //근접 몬스터 기본 이동함수

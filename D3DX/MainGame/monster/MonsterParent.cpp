@@ -121,15 +121,15 @@ void MonsterParent::Update()
 {
 	if (INPUT->KeyDown('L'))
 	{
-		//vector<MonsterParent*> tt;
-		//m_pSkill->Prepare(PCHARACTER,
-		//	this,
-		//	tt,
-		//	m_stSkill,
-		//	SKILLO_MONSTER);
-		//
-		//m_eState = MS_SKILL;
-		//ChangeAni();
+		vector<MonsterParent*> tt;
+		m_pSkill->Prepare(PCHARACTER,
+			this,
+			tt,
+			m_stSkill,
+			SKILLO_MONSTER);
+		
+		m_eState = MS_SKILL;
+		ChangeAni();
 	}
 	if (m_bIsTargeting)
 	{

@@ -77,7 +77,7 @@ void NifilHeim::SetupSkill()
 	m_stSkill.nMaxTarget = 5;				 //
 	m_stSkill.nDamageCount = 100;			 //
 	m_stSkill.isAutoRot = true;				 //
-	m_stSkill.fYOffset = 13;					 //
+	m_stSkill.fYOffset = 13.5f;					 //
 	m_stSkill.fBuffTime = -1;				 //
 	m_stSkill.fParticleTime = 10;			 //
 	m_stSkill.fParticleSpeed = 0.05;		 //
