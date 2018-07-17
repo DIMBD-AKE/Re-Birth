@@ -3,12 +3,15 @@
 
 union STATUS;
 struct ST_DAMAGE;
+struct ST_SKILL;
 
 class CharacterParant;
 class MonsterParent;
 class MonsterManager;
 class Model;
 class SkillManager;
+class Skill;
+
 
 class ItemParent
 {
@@ -22,6 +25,10 @@ protected:
 	SYNTHESIZE(Particle*, m_pParticle, Particle);
 	GET(float, m_fRange, Range);
 	GET(float, m_fScale, Scale);
+	SYNTHESIZE(Skill*, m_pSkill1, Skill1);
+	SYNTHESIZE(Skill*, m_pSkill2, Skill2);
+	SYNTHESIZE(ST_SKILL*, m_Skill1Data, Skill1Data);
+	SYNTHESIZE(ST_SKILL*, m_Skill2Data, Skill2Data);
 
 	vector<MonsterParent*> m_vecTarget;
 	int m_nCurrentTarget;
@@ -29,7 +36,9 @@ protected:
 	LPDIRECT3DTEXTURE9	m_pTexture;
 	D3DXIMAGE_INFO		m_imageInfo;
 	
-	
+	float		m_RotX;
+	float		m_RotY;
+	float		m_RotZ;
 
 
 public:

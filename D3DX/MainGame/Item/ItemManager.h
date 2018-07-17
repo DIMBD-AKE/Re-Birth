@@ -1,7 +1,10 @@
 #pragma once
 #include "ItemHeaderIndex.h"
 
+
 #define ITEMMANAGER ItemManager::GetInstance()
+
+struct ST_SKILL;
 
 class ItemManager
 {
@@ -9,8 +12,10 @@ class ItemManager
 private:
 	typedef map<int, ItemParent*> mItemList;
 	typedef map<int, ItemParent*>::iterator mItItemList;
-	
+	typedef map<string, ST_SKILL*> mSkillDataList;
 	mItemList m_mIdItem;
+	mSkillDataList m_mSkList;
+
 	FILE *	m_fp;
 	char	m_szToken[1024];
 	
@@ -24,6 +29,7 @@ private:
 public:
 	void SetUp();
 	void Load(IN const char* szFolder, IN const char* szFile);
+	void LoadSkillData(IN const char* szFolder, IN const char* szFile);
 	ItemParent* GetItem(int keyNum);
 
 	int FindItem(int keyNum);

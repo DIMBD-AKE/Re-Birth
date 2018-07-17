@@ -24,7 +24,9 @@ R Rare
 D "d"
 I 111
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 1.1 10.0 30.0 40 60 80 0 0.0 0.0 0.0
+ST 1.1 10.0 30.0 40 60 80 0 0.0 0.0 0.0
+SK1 NULL
+SK2 NULL
 E 0
 K RareTwoHandSword
 T "Texture/Item/Item Num 111 Rare TwoHand Sword.jpg"
@@ -35,7 +37,9 @@ R Unique
 D "d"
 I 011
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 1.2 10.0 30.0 40 60 100 0 0 0.0 1.0 0.0
+ST 1.2 10.0 30.0 40 60 100 0 0 0.0 1.0 0.0
+SK1 NULL
+SK2 NULL
 E 0
 K UniqueTwoHandSword
 T "Texture/Item/Item Num 011 Unique TwoHand Sword.jpg"
