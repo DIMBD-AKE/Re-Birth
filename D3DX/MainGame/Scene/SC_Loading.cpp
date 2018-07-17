@@ -138,6 +138,8 @@ void SC_Loading::AddTexture()
 void SC_Loading::AddSound()
 {
 	m_pLoading->LoadSound("Main Theme", "Sound/01. Premonition.mp3", true);
+	m_pLoading->LoadSound("FootStep", "Sound/S_Foot02.ogg", true);
+	m_pLoading->LoadSound("SwordAttack", "Sound/Sword_4.ogg", false);
 }
 
 void SC_Loading::InitUI()

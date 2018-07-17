@@ -137,12 +137,9 @@ void Character_Sword::Update()
 
 void Character_Sword::Render()
 {
-
-
 	if (m_pCharacter && m_eCondition != CHAR_NONE)
 	{
 		m_pCharacter->Render();
-		//CharacterParant::Render();
 		m_pInventory->Render();
 
 
@@ -158,6 +155,221 @@ void Character_Sword::Render()
 		AppearDamage();
 		
 		CharacterParant::Render();
+	}
+}
+
+void Character_Sword::KeyControl()
+{
+	//앞으로 달리기
+	if (INPUT->KeyDown('W'))
+	{
+		SOUND->Play("FootStep");
+		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_HIT)
+		{
+			m_eCondition = CHAR_RUN_FRONT;
+			if (m_bIsSubChr)
+			{
+				m_pShieldChr->SetShieldCondition(SUB_RUN);
+				m_pShieldChr->ChangeSubChrAni();
+			}
+			ChangeAnimation();
+		}
+	}
+	else if (INPUT->KeyUp('W'))
+	{
+		SOUND->Stop("FootStep");
+		if (m_eCondition == CHAR_RUN_FRONT)
+		{
+			m_eCondition = CHAR_IDLE;
+			if (m_bIsSubChr)
+			{
+				m_pShieldChr->SetShieldCondition(SUB_IDLE);
+				m_pShieldChr->ChangeSubChrAni();
+			}
+			ChangeAnimation();
+		}
+	}
+	//뒤로 달리기
+	if (INPUT->KeyDown('S'))
+	{
+		SOUND->Play("FootStep");
+		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_HIT)
+		{
+			m_eCondition = CHAR_RUN_BACK;
+			if (m_bIsSubChr)
+			{
+				m_pShieldChr->SetShieldCondition(SUB_RUN);
+				m_pShieldChr->ChangeSubChrAni();
+			}
+			ChangeAnimation();
+		}
+	}
+	else if (INPUT->KeyUp('S'))
+	{
+		SOUND->Stop("FootStep");
+		if (m_eCondition == CHAR_RUN_BACK)
+		{
+			m_eCondition = CHAR_IDLE;
+			if (m_bIsSubChr)
+			{
+				m_pShieldChr->SetShieldCondition(SUB_IDLE);
+				m_pShieldChr->ChangeSubChrAni();
+			}
+			ChangeAnimation();
+		}
+	}
+	//앞으로 대쉬
+	if (INPUT->KeyDown('Q'))
+	{
+		if (m_eCondition == CHAR_RUN_FRONT)
+		{
+			m_eCondition = CHAR_DASH_FRONT;
+			if (m_bIsSubChr)
+			{
+				m_pShieldChr->SetShieldCondition(SUB_RUN);
+				m_pShieldChr->ChangeSubChrAni();
+			}
+			m_bIsDash = true;
+			ChangeAnimation();
+		}
+	}
+	else if (INPUT->KeyUp('Q'))
+	{
+		if (m_eCondition == CHAR_DASH_FRONT)
+		{
+			m_eCondition = CHAR_RUN_FRONT;
+			if (m_bIsSubChr)
+			{
+				m_pShieldChr->SetShieldCondition(SUB_RUN);
+				m_pShieldChr->ChangeSubChrAni();
+			}
+			m_bIsDash = false;
+			ChangeAnimation();
+		}
+	}
+	//뒤로 대쉬
+	if (INPUT->KeyDown('E'))
+	{
+		if (m_eCondition == CHAR_RUN_BACK)
+		{
+			m_eCondition = CHAR_DASH_BACK;
+			if (m_bIsSubChr)
+			{
+				m_pShieldChr->SetShieldCondition(SUB_RUN);
+				m_pShieldChr->ChangeSubChrAni();
+			}
+			m_bIsDash = true;
+			ChangeAnimation();
+		}
+	}
+	else if (INPUT->KeyUp('E'))
+	{
+		if (m_eCondition == CHAR_DASH_BACK)
+		{
+			m_eCondition = CHAR_RUN_BACK;
+			if (m_bIsSubChr)
+			{
+				m_pShieldChr->SetShieldCondition(SUB_RUN);
+				m_pShieldChr->ChangeSubChrAni();
+			}
+			m_bIsDash = false;
+			ChangeAnimation();
+		}
+	}
+
+	//일반공격
+	if (INPUT->KeyDown(VK_SPACE))
+	{
+		SOUND->Play("SwordAttack");
+		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_RUN_FRONT || m_eCondition == CHAR_RUN_BACK)
+		{
+			m_eCondition = CHAR_ATTACK;
+			if (m_bIsSubChr)
+			{
+				m_pShieldChr->SetShieldCondition(SUB_IDLE);
+				m_pShieldChr->ChangeSubChrAni();
+			}
+			m_bIsAttack = true;
+			Attack();
+			ChangeAnimation();
+		}
+	}
+	else if (INPUT->KeyUp(VK_SPACE))
+	{
+		m_bIsAttack = false;
+	}
+
+	//스킬공격
+	if (INPUT->KeyDown('K'))
+	{
+		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_RUN_FRONT || m_eCondition == CHAR_RUN_BACK)
+		{
+			m_eCondition = CHAR_SKILL;
+			if (m_bIsSubChr)
+			{
+				m_pShieldChr->SetShieldCondition(SUB_IDLE);
+				m_pShieldChr->ChangeSubChrAni();
+			}
+			m_bIsSkill = true;
+			ChangeAnimation();
+		}
+	}
+
+	//서브캐릭터 제어
+	if (INPUT->KeyDown('N'))
+	{
+		m_bIsSubChr = true;
+	}
+
+
+	//애니메이션 한바퀴 돌고나서 상태제어
+	if (m_pCharacter->IsAnimationEnd())
+	{
+		switch (m_eCondition)
+		{
+		case CHAR_SKILL:
+			m_eCondition = CHAR_IDLE;
+			break;
+		case CHAR_ATTACK:
+			m_eCondition = CHAR_IDLE;
+			break;
+		case CHAR_HIT:
+			m_eCondition = CHAR_IDLE;
+			break;
+		}
+		ChangeAnimation();
+	}
+
+
+	//피격 도중에 공격 가능하게 만들기
+	if (m_eCondition == CHAR_HIT)
+	{
+		if (INPUT->KeyDown(VK_SPACE))
+		{
+			m_eCondition = CHAR_ATTACK;
+			m_bIsAttack = true;
+			Attack();
+			ChangeAnimation();
+		}
+	}
+
+	//대쉬일때 애니메이션 스피드 제어
+	if (m_eCondition == CHAR_DASH_FRONT || m_eCondition == CHAR_DASH_BACK)
+	{
+		m_pCharacter->SetAnimationSpeed(5.0f);
+	}
+
+	//공격상태일때 애니메이션 스피드 제어
+	if (m_eCondition == CHAR_ATTACK)
+	{
+		m_pCharacter->SetAnimationSpeed(1.0f * (m_Status->chr.fAtkSpeed + m_pInventory->GetEquipStat().chr.fAtkSpeed));
+	}
+
+	//끄앙 주금
+	if (m_pCharacter->IsAnimationEnd() && m_eCondition == CHAR_DIE)
+	{
+		m_eCondition = CHAR_NONE;
+		m_bIsDead = false;
 	}
 }
 

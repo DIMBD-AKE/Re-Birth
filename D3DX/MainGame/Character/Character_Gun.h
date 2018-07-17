@@ -11,6 +11,7 @@ public:
 	virtual void Init(Map* map, CHARSELECT order, MonsterManager* pMonsterManager);
 	virtual void Update();
 	virtual void Render();
+	virtual void KeyControl();
 
 };
 

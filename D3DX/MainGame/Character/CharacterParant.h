@@ -78,6 +78,7 @@ protected:
 	bool					m_bIsInvincible;			//무적이니
 	bool					m_bIsPotal;				//지금 포탈 눌렀니?
 	bool					m_bIsSubChr;			//서브캐릭터 나왔늬?
+	bool					m_bIsWalk;				//걷고 있니
 	float					m_fDamageCount;			//데미지 띄우는 카운트
 	float					m_fDamageAngle;			//데미지 앵글
 
