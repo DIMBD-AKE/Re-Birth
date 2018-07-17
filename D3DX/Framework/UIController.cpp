@@ -117,8 +117,9 @@ void UIObject::Render()
 
 	SPRITE_END;
 
-	for (auto child : m_vecChild)
-		child->Render();
+	if (!m_vecChild.empty())
+		for (auto child : m_vecChild)
+			child->Render();
 }
 
 void UIObject::AddChild(UIObject * pChild)
