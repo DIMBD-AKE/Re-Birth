@@ -69,8 +69,9 @@ void UIObject::Update()
 		}
 	}
 
-	for (auto child : m_vecChild)
-		child->Update();
+	if (!m_vecChild.empty())
+		for (auto child : m_vecChild)
+			child->Update();
 }
 
 void UIObject::Render()
