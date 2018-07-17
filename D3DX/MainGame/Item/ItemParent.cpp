@@ -4,6 +4,8 @@
 #include "../monster/MonsterManager.h"
 #include "../monster/MonsterParent.h"
 #include "../Character/CharacterParant.h"
+#include "../SkillManager.h"
+
 
 ItemParent::ItemParent()
 	:m_pItemStatus(NULL)
@@ -67,10 +69,20 @@ void ItemParent::Attack(CharacterParant* pCharacter,ST_DAMAGE pStatus, MonsterMa
 
 void ItemParent::Skill1(CharacterParant* pCharacter,ST_DAMAGE pStatus, MonsterManager* pMonsterManager)
 {
+	if (m_pSkill1)
+	{
+		m_pSkill1->Prepare(pCharacter, NULL, pMonsterManager->GetMonsterVector(), *m_Skill1Data, SKILLO_CHARACTER);
+		m_pSkill1->Trigger();
+	}
 }
 
 void ItemParent::Skill2(CharacterParant* pCharacter,ST_DAMAGE pStatus, MonsterManager* pMonsterManager)
 {
+	if (m_pSkill2)
+	{
+		m_pSkill2->Prepare(pCharacter, NULL, pMonsterManager->GetMonsterVector(), *m_Skill2Data, SKILLO_CHARACTER);
+		m_pSkill2->Trigger();
+	}
 }
 
 void ItemParent::SetTarget()
@@ -121,6 +133,12 @@ void ItemParent::EffectRender(D3DXVECTOR3 pos)
 	if (m_pParticle)
 	{
 		m_pParticle->SetPosition(pos);
+
+		m_RotX += 0.01f;
+		m_RotY += 0.01f;
+		m_RotZ += 0.01f;
+		D3DXVECTOR3 matRot(m_RotX,m_RotY,m_RotZ);
+		m_pParticle->SetRotation(matRot);
 		m_pParticle->World();
 		m_pParticle->Update();
 		m_pParticle->Render();

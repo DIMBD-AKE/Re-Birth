@@ -1,0 +1,36 @@
+//struct ST_SKILL
+//{
+//	int		nMaxTarget;
+//	float		fMinLength;
+//	float		fMaxLength;
+//	float		fAngle;
+//
+//	float		fDamage;
+//	int		nDamageCount;
+//	float		fDamageInterval;
+//	float		fDamageDelay;
+//
+//	float		fBuffTime;
+//	STATUS	buffStatus;
+//
+//	float		fYOffset;
+//	bool		isAutoRot;
+//	float		fParticleTime;
+//	float		fParticleSpeed;
+//	float		fEffectTime;
+//};
+//===================================================
+N Item_Electric
+S  1 0.0 0.0 0.0 0.0 1 0.0 0.0 0.0 0.0 1 0.0 0.0 0.0
+
+N Flame
+S  1 0.0 0.0 0.0 0.0 1 0.0 0.0 0.0 0.0 1 0.0 0.0 0.0
+
+N BlackHole
+S  1 0.0 0.0 0.0 0.0 1 0.0 0.0 0.0 0.0 1 0.0 0.0 0.0
+
+N MultiShot
+S  1 0.0 0.0 0.0 0.0 1 0.0 0.0 0.0 0.0 1 0.0 0.0 0.0
+
+N FlameDrop
+S  1 0.0 0.0 0.0 0.0 1 0.0 0.0 0.0 0.0 1 0.0 0.0 0.0

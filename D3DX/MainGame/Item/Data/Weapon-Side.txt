@@ -24,7 +24,9 @@ R Normal
 D "d"
 I 351
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 1.2 0.0 0.0 0 0 40 0 0 0.0 0.0 0.0
+ST 1.2 0.0 0.0 0 0 40 0 0 0.0 0.0 0.0
+SK1 NULL
+SK2 NULL
 E 0
 K NormalSide
 T "Texture/Item/Item Num 351 Normal Side.jpg"
@@ -35,7 +37,9 @@ R Magic
 D "d"
 I 251
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 1.3 10.0 0.0 15 0 50 0 0 0.0 0.0 0.0
+ST 1.3 10.0 0.0 15 0 50 0 0 0.0 0.0 0.0
+SK1 NULL
+SK2 NULL
 E 0
 K MagicSide
 T "Texture/Item/Item Num 251 Magic Side.jpg"
@@ -46,7 +50,9 @@ R Rare
 D "d"
 I 151
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 1.4 10.0 60.0 15 80 60 0 0 0.0 0.0 0.0
+ST 1.4 10.0 60.0 15 80 60 0 0 0.0 0.0 0.0
+SK1 NULL
+SK2 NULL
 E 0
 K RareSide
 T "Texture/Item/Item Num 151 Rare Side.jpg"
@@ -57,7 +63,9 @@ R Unique
 D "d"
 I 051
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 1.5 10.0 60.0 15 80 70 0 0 0.0 0.0 0.0
+ST 1.5 10.0 60.0 15 80 70 0 0 0.0 0.0 0.0
+SK1 NULL
+SK2 NULL
 E 0
 K UniqueSide
 T "Texture/Item/Item Num 051 Unique Side.jpg"

@@ -1,6 +1,7 @@
 #include "../../stdafx.h"
 #include "../Status.h"
 #include "ItemManager.h"
+#include "../SkillManager.h"
 
 ItemManager::ItemManager()
 {
@@ -18,6 +19,9 @@ void ItemManager::SetUp()
 	PARTICLE->AddParticle("MAGIC", TEXTUREMANAGER->GetTexture("Star"), "Particle/Particle/Magic effect.ptc");
 	PARTICLE->AddParticle("RARE", TEXTUREMANAGER->GetTexture("Star"), "Particle/Particle/Rare effect.ptc");
 	PARTICLE->AddParticle("UNIQUE", TEXTUREMANAGER->GetTexture("Star"), "Particle/Particle/Unique effect.ptc");
+	
+	LoadSkillData("MainGame/Item/Data", "SkillData.txt");
+	
 	Load("MainGame/Item/Data", "SwordManArmor.txt");
 	Load("MainGame/Item/Data", "BaBarianArmor.txt");
 	Load("MainGame/Item/Data", "KnightArmor.txt");
@@ -30,6 +34,7 @@ void ItemManager::SetUp()
 	Load("MainGame/Item/Data", "Weapon-Side.txt");
 	Load("MainGame/Item/Data", "Weapon-Staff.txt");
 	Load("MainGame/Item/Data", "Weapon-TwoHandSword.txt");	
+	
 }
 
 void ItemManager::Load(IN const char * szFolder, IN const char * szFile)
@@ -129,15 +134,64 @@ void ItemManager::Load(IN const char * szFolder, IN const char * szFile)
 		}
 		else if (c == 'S')
 		{
-			char szTemp[1024];
-			fgets(szTemp, 1024, m_fp);
+			c = fgetc(m_fp);
+			if (c == 'T')
+			{
+				char szTemp[1024];
+				fgets(szTemp, 1024, m_fp);
 
-			STATUS* st = new STATUS;
-			sscanf_s(szTemp, " %f %f %f %d %d %d %d %d %f %f %f",
-				&st->item.fAtkSpeed, &st->item.fCoolTime1, &st->item.fCoolTime2,
-				&st->item.nSkillAtk1, &st->item.nSkillAtk2, &st->item.nAtk, &st->item.nDef,
-				&st->item.nHp, &st->item.fAgi, &st->item.fHit, &st->item.fSpeed);
-			Ap->SetStatus(*st);
+				STATUS* st = new STATUS;
+				sscanf_s(szTemp, " %f %f %f %d %d %d %d %d %f %f %f",
+					&st->item.fAtkSpeed, &st->item.fCoolTime1, &st->item.fCoolTime2,
+					&st->item.nSkillAtk1, &st->item.nSkillAtk2, &st->item.nAtk, &st->item.nDef,
+					&st->item.nHp, &st->item.fAgi, &st->item.fHit, &st->item.fSpeed);
+				Ap->SetStatus(*st);
+			}
+			else if (c == 'K')
+			{
+				c = fgetc(m_fp);
+				if (c == '1')
+				{
+					char szTemp[1024];
+					fgets(szTemp, 1024, m_fp);
+
+					char skillKeyName[1024];
+					sscanf_s(szTemp, " %s", skillKeyName, 1024);
+					string rt(skillKeyName);
+
+					if (rt == "NULL")
+					{
+						Ap->SetSkill1(NULL);
+						Ap->SetSkill1Data(NULL);
+					}
+					else
+					{
+						Ap->SetSkill1(SKILL->GetSkill(rt));
+						Ap->SetSkill1Data(m_mSkList[rt]);
+					}
+				}
+				else if (c == '2')
+				{
+					char szTemp[1024];
+					fgets(szTemp, 1024, m_fp);
+
+					char skillKeyName[1024];
+					sscanf_s(szTemp, " %s", skillKeyName, 1024);
+					string rt(skillKeyName);
+					
+					if (rt == "NULL")
+					{
+						Ap->SetSkill2(NULL);
+						Ap->SetSkill2Data(NULL);
+					}
+					else
+					{
+						Ap->SetSkill2(SKILL->GetSkill(rt));
+						Ap->SetSkill2Data(m_mSkList[rt]);
+					}
+				}
+			}
+			
 		}
 		else if (c == 'E')
 		{
@@ -160,6 +214,58 @@ void ItemManager::Load(IN const char * szFolder, IN const char * szFile)
 	fclose(m_fp);
 
 
+}
+
+void ItemManager::LoadSkillData(IN const char * szFolder, IN const char * szFile)
+{
+	string	sFullPath(szFolder);
+	sFullPath += (string("/") + string(szFile));
+
+	fopen_s(&m_fp, sFullPath.c_str(), "r");
+
+	char keyName[1024];
+
+
+	while (true)
+	{
+		char c = fgetc(m_fp);
+
+		if (feof(m_fp))
+			break;
+
+		else if (c == '/')
+		{
+			char szTemp[1024];
+			fgets(szTemp, 1024, m_fp);
+
+			continue;
+		}
+
+		else if (c == 'N')
+		{
+			char szTemp[1024];
+			fgets(szTemp, 1024, m_fp);
+			sscanf_s(szTemp, " %s", keyName, 1024);
+		}
+
+		else if (c == 'S')
+		{
+			char szTemp[1024];
+			fgets(szTemp, 1024, m_fp);
+
+			ST_SKILL* sSkill = new ST_SKILL;
+			sscanf_s(szTemp, " %d %f %f %f %f %d %f %f %f %f %d %f %f %f",
+				&sSkill->nMaxTarget, &sSkill->fMinLength, &sSkill->fMaxLength, &sSkill->fAngle,
+				&sSkill->fDamage, &sSkill->nDamageCount, &sSkill->fDamageInterval, &sSkill->fDamageDelay,
+				&sSkill->fBuffTime, &sSkill->fYOffset, &sSkill->isAutoRot,
+				&sSkill->fParticleTime, &sSkill->fParticleSpeed, &sSkill->fEffectTime
+			);
+
+			m_mSkList[keyName] = sSkill;
+		}
+	}
+
+	fclose(m_fp);
 }
 
 ItemParent* ItemManager::GetItem(int keyNum)
@@ -253,5 +359,13 @@ void ItemManager::Destroy()
 	for (mIterItem = m_mIdItem.begin(); mIterItem != m_mIdItem.end(); ++mIterItem)
 	{
  		SAFE_DELETE(mIterItem->second);
+	}
+
+	mSkillDataList::iterator mIterSkill;
+	{
+		for (mIterSkill = m_mSkList.begin(); mIterSkill != m_mSkList.end(); ++mIterSkill)
+		{
+			SAFE_DELETE(mIterSkill->second);
+		}
 	}
 }
