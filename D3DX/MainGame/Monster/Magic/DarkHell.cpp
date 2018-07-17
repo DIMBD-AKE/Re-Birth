@@ -87,7 +87,7 @@ void DarkHell::SetupSkill()
 
 	ZeroMemory(&m_stSkill, sizeof(ST_SKILL));//
 	m_stSkill.fDamage = 200;				 //
-	m_stSkill.fDamageDelay = 0;				 //
+	m_stSkill.fDamageDelay = 0.8;				 //
 	m_stSkill.fDamageInterval = 0.1;		 //
 	m_stSkill.fMaxLength = 100;				 //
 	m_stSkill.fAngle = 360;					 //
