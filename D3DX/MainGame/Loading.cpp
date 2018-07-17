@@ -87,7 +87,7 @@ void Loading::Render()
 }
 
 
-BOOL Loading::loadingDone()
+BOOL Loading::LoadingDone()
 {
 	if (m_nCurrentGauge >= m_vLoadItem.size())
 		return true;

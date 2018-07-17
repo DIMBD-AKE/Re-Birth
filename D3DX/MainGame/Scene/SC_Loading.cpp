@@ -161,10 +161,9 @@ void SC_Loading::Update()
 {
 	m_pUI->Update();
 
-	if (m_pLoading->loadingDone())
+	if (m_pLoading->LoadingDone())
 	{
-		SCENE->ChangeScene("Test", true);
-		SOUND->Play("Main Theme");
+		SCENE->ChangeScene("Main", true);
 	}
 }
 

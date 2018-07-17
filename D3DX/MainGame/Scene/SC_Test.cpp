@@ -59,17 +59,15 @@ void SC_Test::Update()
 		ZeroMemory(&skill, sizeof(ST_SKILL));
 		skill.fDamage = 200;
 		skill.fDamageDelay = 0;
-		skill.fDamageInterval = 0.1;
+		skill.fDamageInterval = 0;
 		skill.fMaxLength = 15;
 		skill.fAngle = 60;
 		skill.nMaxTarget = 5;
 		skill.nDamageCount = 100;
-		skill.isAutoRot = true;
 		skill.fYOffset = 1;
-		skill.fBuffTime = -1;
-		skill.fParticleTime = 10;
-		skill.fParticleSpeed = 0.05;
 		skill.fEffectTime = 3;
+		skill.fBuffTime = -1;
+		skill.buffStatus.chr.nCurrentHP = 100;
 		m_pSkill->Prepare(m_pCharacter, m_pMM->GetMonsterVector()[0], m_pMM->GetMonsterVector(),
 			skill, SKILLO_CHARACTER);
 	}

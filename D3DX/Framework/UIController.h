@@ -13,10 +13,10 @@ class UIObject;
 class IUIFunction
 {
 public:
-	virtual void OnClick(UIObject * pSender) = 0;
-	virtual void OnOver(UIObject * pSender) = 0;
-	virtual void OnExit(UIObject * pSender) = 0;
-	virtual void OnEntrance(UIObject * pSender) = 0;
+	virtual void OnClick(UIObject * pSender) {}
+	virtual void OnOver(UIObject * pSender) {}
+	virtual void OnExit(UIObject * pSender) {}
+	virtual void OnEntrance(UIObject * pSender) {}
 };
 
 class UIObject

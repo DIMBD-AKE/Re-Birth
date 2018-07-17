@@ -567,10 +567,10 @@ void Skill::Update()
 	else if (m_eBuffProcess == SKILLB_END)
 	{
 		if (m_fElapseTime > m_stSkill.fDamageDelay + m_stSkill.fDamageInterval * m_stSkill.nDamageCount
-			&& m_nPrevCount != m_nDamageCount)
+			&& m_nPrevCount == 0)
 		{
 			Buff();
-			m_nPrevCount = m_nDamageCount;
+			m_nPrevCount++;
 		}
 	}
 	if (m_stSkill.fBuffTime > 0)

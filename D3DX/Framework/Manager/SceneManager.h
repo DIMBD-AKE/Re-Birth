@@ -1,6 +1,9 @@
 #pragma once
+
 class Scene
 {
+	SYNTHESIZE(void*, m_pData[4], Data);
+
 public:
 	virtual void Release() = 0;
 	virtual void Init() = 0;

@@ -61,7 +61,7 @@ public:
 	void Update();
 	void Render();
 
-	BOOL loadingDone();
+	BOOL LoadingDone();
 	
 	void LoadModel(string keyName, string folderPath, string fileName, MODELTYPE type);
 	void LoadTexture(string keyName, string path);

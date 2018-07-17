@@ -22,10 +22,10 @@ public:
 	SC_Loading();
 	~SC_Loading();
 
-	void Release();
-	void Init();
-	void Update();
-	void Render();
+	virtual void Release();
+	virtual void Init();
+	virtual void Update();
+	virtual void Render();
 
 	
 };
