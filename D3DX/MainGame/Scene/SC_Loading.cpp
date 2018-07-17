@@ -140,6 +140,10 @@ void SC_Loading::AddSound()
 	m_pLoading->LoadSound("Main Theme", "Sound/01. Premonition.mp3", true);
 	m_pLoading->LoadSound("FootStep", "Sound/S_Foot02.ogg", true);
 	m_pLoading->LoadSound("SwordAttack", "Sound/Sword_4.ogg", false);
+	m_pLoading->LoadSound("SwordAttack_TWO", "Sound/Sword_Scrape_2.ogg", false);
+	m_pLoading->LoadSound("SwordAttack_THREE", "Sound/Chain_2.ogg", false);
+	m_pLoading->LoadSound("BowAttack", "Sound/Bow_3.ogg", false);
+	m_pLoading->LoadSound("GunAttack", "Sound/Rifle_Shot2.ogg", false);
 }
 
 void SC_Loading::InitUI()

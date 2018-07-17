@@ -15,7 +15,7 @@ Character_Magic::~Character_Magic()
 }
 
 
-void Character_Magic::Init(Map * map, CHARSELECT order, MonsterManager* pMonsterManager)
+void Character_Magic::Init(Map* map, CHRTYPE type, CHARSELECT order, MonsterManager* pMonsterManager)
 {
 	m_eChrType = CHRTYPE_MAGIC;
 
@@ -24,6 +24,7 @@ void Character_Magic::Init(Map * map, CHARSELECT order, MonsterManager* pMonster
 		//법사 남캐
 		m_pCharacter = MODELMANAGER->GetModel("아카날", MODELTYPE_X);
 		//
+		m_eCharSelect = CHAR_ONE;
 		m_Status->chr.fAgi = 30.0f;
 		m_Status->chr.fAtkSpeed = 1.0f;
 		m_Status->chr.fCheRate = 5.0f;
@@ -39,7 +40,7 @@ void Character_Magic::Init(Map * map, CHARSELECT order, MonsterManager* pMonster
 		m_Status->chr.nMaxStam = 10;
 		m_Status->chr.fRange = 15.0f;
 		m_Status->chr.fScale = 10.0f;
-		CharacterParant::Init(map, order, pMonsterManager);
+		CharacterParant::Init(map, type, order, pMonsterManager);
 
 		m_pUIobj->SetTexture(TEXTUREMANAGER->GetTexture("아카날_사진"));
 		m_pUIobj->SetPosition(D3DXVECTOR3(1300, 550, 0));
@@ -50,6 +51,7 @@ void Character_Magic::Init(Map * map, CHARSELECT order, MonsterManager* pMonster
 	{
 		//법사 여캐
 		m_pCharacter = MODELMANAGER->GetModel("헤스티아", MODELTYPE_X);
+		m_eCharSelect = CHAR_TWO;
 		m_Status->chr.fAgi = 30.0f;
 		m_Status->chr.fAtkSpeed = 1.0f;
 		m_Status->chr.fCheRate = 5.0f;
@@ -65,7 +67,7 @@ void Character_Magic::Init(Map * map, CHARSELECT order, MonsterManager* pMonster
 		m_Status->chr.nMaxStam = 10;
 		m_Status->chr.fRange = 10.0f;
 		m_Status->chr.fScale = 15.2f;
-		CharacterParant::Init(map, order, pMonsterManager);
+		CharacterParant::Init(map, type, order, pMonsterManager);
 
 		m_pUIobj->SetTexture(TEXTUREMANAGER->GetTexture("헤스티아_사진"));
 		m_pUIobj->SetPosition(D3DXVECTOR3(1300, 550, 0));

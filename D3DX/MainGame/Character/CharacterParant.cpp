@@ -710,7 +710,7 @@ CharacterParant::~CharacterParant()
 	
 }
 
-void CharacterParant::Init(Map* map, CHARSELECT order, MonsterManager* pMonsterManager)
+void CharacterParant::Init(Map* map, CHRTYPE type, CHARSELECT order, MonsterManager* pMonsterManager)
 {
 	m_pSampleMap = map;
 	m_pMonsterManager = pMonsterManager;
@@ -727,14 +727,16 @@ void CharacterParant::Init(Map* map, CHARSELECT order, MonsterManager* pMonsterM
 
 
 	m_pCharacter->SetScale(D3DXVECTOR3(0.02, 0.02, 0.02));
-	D3DXVECTOR3 startPos = m_pSampleMap->GetSpawnPlayer();
+	D3DXVECTOR3 startPos = map->GetSpawnPlayer();
 	startPos.y = 300.0f;
 	m_pCharacter->SetPosition(D3DXVECTOR3(startPos.x, m_pSampleMap->GetHeight(startPos.x, startPos.z), startPos.z));
 
 	//인벤토리
-	m_pInventory = new Inventory;
-	m_pInventory->CreateInventory(5,3, this);
-
+	if (m_pInventory == NULL)
+	{
+		m_pInventory = new Inventory;
+		m_pInventory->CreateInventory(5, 3, this);
+	}
 
 	//TODO : 바운딩 박스 만들기 (캐릭터 크기마다 일일히 입력해주자
 	m_pCharacter->CreateBound(box);
@@ -776,32 +778,40 @@ void CharacterParant::Init(Map* map, CHARSELECT order, MonsterManager* pMonsterM
 	m_nAppear = 0;
 
 	//포트레이트 UI
-	m_pUIobj = new UIObject;
+	if(m_pUIobj == NULL) m_pUIobj = new UIObject;
+	
+	
 	//프로그래스바
-	m_pHPBar = new UIObject;
-	m_pStaminaBar = new UIObject;
+	if (m_pHPBar == NULL)
+	{
+		m_pHPBar = new UIObject;
+		m_pHPBar->SetTexture(TEXTUREMANAGER->GetTexture("플레이어_프론트바"));
+		D3DXVECTOR3 UIPos = D3DXVECTOR3(1350, 520, 0);
+		m_pHPBar->SetPosition(UIPos);
+		UIObject* backBar = new UIObject;
+		backBar->SetPosition(D3DXVECTOR3(0, 0, 0.1));
+		backBar->SetTexture(TEXTUREMANAGER->GetTexture("플레이어_백바"));
+		m_pHPBar->AddChild(backBar);
+	}
 
 
-	m_pHPBar->SetTexture(TEXTUREMANAGER->GetTexture("플레이어_프론트바"));
-	D3DXVECTOR3 UIPos = D3DXVECTOR3(1350, 520, 0);
-	m_pHPBar->SetPosition(UIPos);
-	UIObject* backBar = new UIObject;
-	backBar->SetPosition(D3DXVECTOR3(0, 0, 0.1));
-	backBar->SetTexture(TEXTUREMANAGER->GetTexture("플레이어_백바"));
-	m_pHPBar->AddChild(backBar);
+	if (m_pStaminaBar == NULL)
+	{
+		m_pStaminaBar = new UIObject;
+		m_pStaminaBar->SetTexture(TEXTUREMANAGER->GetTexture("스테미나_프론트바"));
+		D3DXVECTOR3 StaPos = D3DXVECTOR3(1350, 535, 0);
+		m_pStaminaBar->SetPosition(startPos);
+		UIObject* staBackBar = new UIObject;
+		staBackBar->SetPosition(D3DXVECTOR3(0, 0, 0.1));
+		staBackBar->SetTexture(TEXTUREMANAGER->GetTexture("스테미나_백바"));
+		m_pStaminaBar->AddChild(staBackBar);
+	}
 
-	m_pStaminaBar->SetTexture(TEXTUREMANAGER->GetTexture("스테미나_프론트바"));
-	D3DXVECTOR3 StaPos = D3DXVECTOR3(1350, 535, 0);
-	m_pStaminaBar->SetPosition(startPos);
-	UIObject* staBackBar = new UIObject;
-	staBackBar->SetPosition(D3DXVECTOR3(0, 0, 0.1));
-	staBackBar->SetTexture(TEXTUREMANAGER->GetTexture("스테미나_백바"));
-	m_pStaminaBar->AddChild(staBackBar);
-
+	
 	//데미지 UI
 	for (int i = 0; i < 10; i++)
 	{
-		m_pUIDamage[i] = new UIObject;
+		if(m_pUIDamage[i] == NULL) m_pUIDamage[i] = new UIObject;
 	}
 
 	m_pUIDamage[0]->SetTexture(TEXTUREMANAGER->GetTexture("숫자0"));

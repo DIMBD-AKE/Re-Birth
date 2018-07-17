@@ -8,7 +8,7 @@ public:
 	virtual ~Character_Sword();
 
 
-	virtual void Init(Map* map, CHARSELECT order, MonsterManager* pMonsterManager);
+	virtual void Init(Map* map, CHRTYPE type, CHARSELECT order, MonsterManager* pMonsterManager);
 	virtual void Update();
 	virtual void Render();
 	virtual void KeyControl();
