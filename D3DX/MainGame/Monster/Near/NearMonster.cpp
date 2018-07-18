@@ -34,7 +34,7 @@ void NearMonster::Attack()
 	{
 		//내가 타겟팅이 되었으면 공격함수가 실행이 될테니 카운트 증가 시작
 		//소환몹은 이런거 없다.
-		if (!m_bIsSummon)	m_nTargetingCount++;
+		
 
 		//플레이어 죽으면 기본행동으로
 		if (PCHARACTER->GetIsDead())
@@ -43,6 +43,8 @@ void NearMonster::Attack()
 			ChangeAni();
 			return;
 		}
+
+		if (!m_bIsSummon)	m_nTargetingCount++;
 
 		//플레이어와의 거리를 계산하고
 		float length = GetDistance(*m_pModel->GetPosition(), *CHARACTER->GetPosition());

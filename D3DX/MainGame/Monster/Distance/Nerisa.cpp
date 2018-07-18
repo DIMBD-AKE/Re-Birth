@@ -68,7 +68,29 @@ void Nerisa::SetupStat()
 
 void Nerisa::SetupSkill()
 {
+	ZeroMemory(&m_stSkill, sizeof(m_stSkill));
 
+	m_stSkill.nMaxTarget = 1;
+	m_stSkill.fMinLength = 0;
+	m_stSkill.fMaxLength = 100;
+	m_stSkill.fAngle = 360;
+
+	m_stSkill.fDamage = 100; //v
+	m_stSkill.nDamageCount = 1;
+	m_stSkill.fDamageInterval = 0;
+	m_stSkill.fDamageDelay = 0;
+
+	m_stSkill.fBuffTime = -1;//<0;
+
+
+
+	//m_stSkill.fYOffset ;
+	//m_stSkill.isAutoRot;
+	//m_stSkill.fParticleTime;
+	//m_stSkill.fParticleSpeed;
+	m_stSkill.fEffectTime = 0;
+
+//	m_stSkill.buffStatus.chr.nCurrentHP = 100; //증가 될 스탯량 피뺴고 제로메모리;
 }
 
 //근접 몬스터 공격함수
@@ -80,7 +102,49 @@ void Nerisa::SetupSkill()
 //근접 몬스터 스킬함수
 void Nerisa::SkillUse()
 {
+	vector<MonsterParent*> tt;
+	
 
+	//if (m_pModel->IsAnimationPercent(0.2))
+	//{
+	//	m_pSkill->Prepare(PCHARACTER,
+	//		this,
+	//		tt,
+	//		m_stSkill,
+	//		SKILLO_MONSTER);
+	//	m_pSkill->Trigger();
+	//}
+
+	if (m_pModel->IsAnimationPercent(0.4))
+	{
+		m_pSkill->Prepare(PCHARACTER,
+			this,
+			tt,
+			m_stSkill,
+			SKILLO_MONSTER);
+		m_pSkill->Trigger();
+	}
+
+	if (m_pModel->IsAnimationPercent(0.8))
+	{
+		m_pSkill->Prepare(PCHARACTER,
+			this,
+			tt,
+			m_stSkill,
+			SKILLO_MONSTER);
+		m_pSkill->Trigger();
+	}
+
+	if (m_pModel->IsAnimationEnd())
+	{
+		m_eState = MS_IDLE;
+		ChangeAni();
+	}
+	//if (m_pModel->IsAnimationPercent(0.6))
+	//	m_pSkill->Trigger();
+	//
+	//if (m_pModel->IsAnimationPercent(0.9))
+	//	m_pSkill->Trigger();
 }
 
 //근접 몬스터 기본 이동함수

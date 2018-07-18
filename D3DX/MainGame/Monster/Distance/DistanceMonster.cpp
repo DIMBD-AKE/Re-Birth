@@ -50,7 +50,7 @@ void DistanceMonster::Attack()
 		//공격 가능 사거리까지 하면 될듯
 		if (length > RANGE(m_pMonsterStat))
 		{
-			if (m_bIsSummon)
+			if (!m_bIsSummon)
 			{
 				if (m_eState == MS_ATTACK)
 				{
@@ -113,7 +113,7 @@ void DistanceMonster::Attack()
 				{
 					float tatalRate = PHYRATE(m_pMonsterStat) + MAGICRATE(m_pMonsterStat) + CHERATE(m_pMonsterStat);
 					float tatalDamage = tatalRate * ATK(m_pMonsterStat);
-					(*m_ppCharacter)->CalculDamage(tatalDamage);
+					PCHARACTER->CalculDamage(tatalDamage);
 				}
 
 			}

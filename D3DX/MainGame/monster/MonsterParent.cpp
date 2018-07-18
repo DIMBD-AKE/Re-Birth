@@ -121,12 +121,7 @@ void MonsterParent::Update()
 {
 	if (INPUT->KeyDown('L'))
 	{
-		vector<MonsterParent*> tt;
-		m_pSkill->Prepare(PCHARACTER,
-			this,
-			tt,
-			m_stSkill,
-			SKILLO_MONSTER);
+		
 		
 		m_eState = MS_SKILL;
 		ChangeAni();
@@ -294,11 +289,12 @@ void MonsterParent::ChangeAni()
 
 void MonsterParent::Respawn(D3DXVECTOR3 spawnPos)
 {
-	m_nResPawnCount = m_bIsRespawn = 0;
+	m_nResPawnCount = m_bIsRespawn = m_nTargetingCount = 0;
 	m_eState = MS_IDLE;
 	ChangeAni();
 	CURRENTHP(m_pMonsterStat) = MAXHP(m_pMonsterStat);
-
+	m_bIsTargeting = false;
+	m_nPrePosIndex = -1;
 
 	m_pModel->SetPosition(D3DXVECTOR3(spawnPos.x, m_pMap->GetHeight(spawnPos.x, spawnPos.z), spawnPos.z));
 }

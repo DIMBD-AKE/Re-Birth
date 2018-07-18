@@ -284,6 +284,7 @@ void FinalBoss::Move()
 	if (m_eBossState == BS_RUN)
 	{
 		m_vDir = *CHARACTER->GetPosition() - *m_pModel->GetPosition();
+		D3DXVec3Normalize(&m_vDir, &m_vDir);
 		D3DXVECTOR3 tempPos = *m_pModel->GetPosition() + m_vDir* SPEED(m_pMonsterStat);
 		tempPos.y = m_pMap->GetHeight(tempPos.x, tempPos.z);
 
@@ -295,7 +296,7 @@ void FinalBoss::Move()
 
 		float length = GetDistance(*m_pModel->GetPosition(), *CHARACTER->GetPosition());
 
-		if (length < RANGE(m_pMonsterStat) - 4)
+		if (length < RANGE(m_pMonsterStat) )
 		{
 			m_eBossState = BS_ATTACK;
 			ChangeAni();

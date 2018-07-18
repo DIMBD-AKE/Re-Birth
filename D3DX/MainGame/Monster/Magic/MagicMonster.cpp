@@ -38,6 +38,9 @@ void MagicMonster::Attack()
 			ChangeAni();
 			return;
 		}
+
+		if (!m_bIsSummon)	m_nTargetingCount++;
+
 		float length = GetDistance(*m_pModel->GetPosition(), *CHARACTER->GetPosition());
 		
 		int a = 10;
@@ -117,6 +120,14 @@ void MagicMonster::Attack()
 				
 				m_bIsAttack = false;
 			}
+		}
+
+		if (m_nTargetingCount >= 200)
+		{
+			m_eState = MS_IDLE;
+			ChangeAni();
+			m_nTargetingCount = 0;
+			m_bIsTargeting = false;
 		}
 
 	}
