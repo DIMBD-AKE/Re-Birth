@@ -432,11 +432,18 @@ void Character_Sword::Attack()
 				tempEFOBJ->Init(tempEffect, testSkillpos);
 
 				m_vecEffect.push_back(tempEFOBJ);
-				for (int i = 0; i < m_vecTarget.size(); i++)
+				
+
+				for (int i = 0; i <m_vecTarget.size(); i++)
 				{
 					if (m_pMonsterManager->GetMonsterVector()[m_vecTarget[i]]->GetIsResPawn())return;
 					m_pMonsterManager->GetMonsterVector()[m_vecTarget[i]]->CalculDamage(m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
 				}
+				
+				//if (m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetIsResPawn())return;
+				//m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
+				//if (m_pMonsterManager->GetMonsterVector()[m_nIndex2]->GetIsResPawn())return;
+				//m_pMonsterManager->GetMonsterVector()[m_nIndex2]->CalculDamage(m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
 			}
 		}
 		else if (m_eCharSelect == CHAR_TWO)
