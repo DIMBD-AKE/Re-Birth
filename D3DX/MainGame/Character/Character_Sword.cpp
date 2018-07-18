@@ -95,13 +95,12 @@ void Character_Sword::Init(CHRTYPE type, CHARSELECT order)
 		m_Status->chr.nMaxHp = 100;
 		m_Status->chr.nMaxStam = 100;
 		m_Status->chr.fRange = 5.0f;
-		m_Status->chr.fScale = 30.0f;
+		m_Status->chr.fScale = 3.0f;
 		CharacterParant::Init(type, order);
 
 		m_pUIobj->SetTexture(TEXTUREMANAGER->GetTexture("º§ºª_»çÁø"));
 		m_pUIobj->SetPosition(D3DXVECTOR3(1300, 550, 0));
 		
-
 	}
 
 }
@@ -286,6 +285,7 @@ void Character_Sword::KeyControl()
 		if(m_eCharSelect == CHAR_ONE) SOUND->Play("SwordAttack");
 		if (m_eCharSelect == CHAR_TWO) SOUND->Play("SwordAttack_TWO");
 		if (m_eCharSelect == CHAR_THREE) SOUND->Play("SwordAttack_THREE");
+		
 		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_RUN_FRONT || m_eCondition == CHAR_RUN_BACK)
 		{
 			m_eCondition = CHAR_ATTACK;
@@ -381,6 +381,7 @@ void Character_Sword::KeyControl()
 		Attack();
 	}
 }
+
 
 
 

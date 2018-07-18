@@ -11,7 +11,7 @@ class SC_Test : public Scene
 {
 private:
 	Map *				m_pSampleMap;
-	CharacterParant *	m_pCharacter;
+	CharacterParant*	m_pCharacter;
 	MonsterManager *	m_pMM;
 	DropManager *		m_pDropManager;
 
