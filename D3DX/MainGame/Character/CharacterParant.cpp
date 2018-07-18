@@ -1242,6 +1242,24 @@ void CharacterParant::SetTarget()
 				m_vecTarget.push_back(m_nIndex);
 			}
 		}
+		//두번째 가까운녀석도 추가
+		//if (m_eChrType == CHRTYPE_SWORD)
+		//{
+		//	for (int i = m_nIndex + 1; i < m_pMonsterManager->GetMonsterVector().size(); ++i)
+		//	{
+		//		if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn())continue;	//리젠할때는 건드리지 않고 
+		//		if (i == m_nIndex) continue;//먼저 검출한 최소거리를 가진 몬스터면 재끼고 
+		//		float radius3 = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().radius;
+		//		float distance3 = D3DXVec3Length(&(mosPos - pos));
+		//		if (distance3 - radius3 > m_Status->chr.fRange) continue;
+		//		if (distance > distance3)
+		//		{
+		//			distance = distance3;
+		//			m_nIndex = i;
+		//			m_vecTarget.push_back(m_nIndex);
+		//		}
+		//	}
+		//}
 	}
 }
 

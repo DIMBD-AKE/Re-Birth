@@ -310,7 +310,7 @@ void Character_Magic::KeyControl()
 
 void Character_Magic::Attack()
 {
-	if (m_nIndex = NULL) return;
+	if (m_nIndex < 0) return;
 	D3DXVECTOR3 front;
 	D3DXMATRIX matY;
 	D3DXMatrixRotationY(&matY, m_pCharacter->GetRotation()->y);
