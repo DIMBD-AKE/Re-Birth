@@ -11,7 +11,7 @@ public:
 	virtual void Update();
 	virtual void Render();
 	virtual void KeyControl();
-
+	virtual void Attack();
 
 	void MgSkill();
 	

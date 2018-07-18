@@ -121,6 +121,7 @@ protected:
 	void StoreEffect(int index);
 	void StoreAttack(int index);
 	void Reset(Map* map, MonsterManager* pMonsterManager);
+	void SetTarget();
 
 
 	int						m_temp;			//애니메이션 확인용 임시변수

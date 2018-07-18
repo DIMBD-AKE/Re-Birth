@@ -3,6 +3,8 @@
 #include "../Map.h"
 #include "Inventory.h"
 #include "../Status.h"
+#include "../monster/MonsterManager.h"
+#include "../monster/MonsterParent.h"
 
 
 Character_Gun::Character_Gun()
@@ -212,7 +214,7 @@ void Character_Gun::KeyControl()
 			m_eCondition = CHAR_ATTACK;
 		
 			m_bIsAttack = true;
-			//Attack();
+			SetTarget();
 			m_nDamageCount = 0;
 			ChangeAnimation();
 		}
@@ -284,6 +286,83 @@ void Character_Gun::KeyControl()
 	if (m_eCondition == CHAR_ATTACK)
 	{
 		Attack();
+	}
+}
+
+void Character_Gun::Attack()
+{
+	D3DXVECTOR3 front;
+	D3DXMATRIX matY;
+	D3DXMatrixRotationY(&matY, m_pCharacter->GetRotation()->y);
+	D3DXVec3TransformNormal(&front, &D3DXVECTOR3(0, 0, -1), &matY);
+	D3DXVECTOR3 v0 = front;
+	//대상방향
+	D3DXVECTOR3 MonPos = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
+	D3DXVECTOR3 pos = *m_pCharacter->GetPosition();
+	D3DXVECTOR3 v1 = MonPos - pos;
+	D3DXVec3Normalize(&v0, &v1);
+	float dot = D3DXVec3Dot(&v0, &v1) / D3DXVec3Length(&v0) * D3DXVec3Length(&v1);
+	if (dot >= cos(m_Status->chr.fScale / 2))
+	{
+		//if (m_nIndex == -1) return;
+		if (m_fElpTime < m_fPrevTime + m_fEffectInterval) return;
+
+		m_fPrevTime = m_fElpTime;
+
+		m_nDamageCount++;
+		if (m_eCharSelect == CHAR_ONE)
+		{
+			if (m_nDamageCount <= 3)
+			{
+				ST_EFFECT tempEffect;
+				ZeroMemory(&tempEffect, sizeof(tempEffect));
+
+				tempEffect.time = FRand(0.1, 0.4);
+				tempEffect.isRY = true;
+				tempEffect.isRX = true;
+				tempEffect.height = 3.0f;
+				tempEffect.SetAlpha(255, 255, 0);
+				tempEffect.SetScale(2, 2, 2);
+				tempEffect.tex = TEXTUREMANAGER->AddTexture("Gun", "Texture/Effect/gun.png");
+				EffectObject* tempEFOBJ;
+				tempEFOBJ = new EffectObject;
+
+				D3DXVECTOR3 testSkillpos = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
+				testSkillpos.y += 1.0f;
+				testSkillpos.x += FRand(-0.5, 0.5);
+				tempEFOBJ->Init(tempEffect, testSkillpos);
+
+				m_vecEffect.push_back(tempEFOBJ);
+				m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
+			}
+		}
+		else if (m_eCharSelect == CHAR_TWO)
+		{
+			if (m_nDamageCount <= 3)
+			{
+				ST_EFFECT tempEffect;
+				ZeroMemory(&tempEffect, sizeof(tempEffect));
+
+				tempEffect.time = FRand(0.1, 0.4);
+				tempEffect.isRY = true;
+				tempEffect.isRX = true;
+				tempEffect.height = 3.0f;
+				tempEffect.SetAlpha(255, 255, 0);
+				tempEffect.SetScale(2, 2, 2);
+				tempEffect.tex = TEXTUREMANAGER->AddTexture("Gun", "Texture/Effect/gun.png");
+				EffectObject* tempEFOBJ;
+				tempEFOBJ = new EffectObject;
+
+				D3DXVECTOR3 testSkillpos = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
+				testSkillpos.y += 1.0f;
+				testSkillpos.x += FRand(-0.5, 0.5);
+				tempEFOBJ->Init(tempEffect, testSkillpos);
+
+				m_vecEffect.push_back(tempEFOBJ);
+				m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
+			}
+
+		}
 	}
 }
 
