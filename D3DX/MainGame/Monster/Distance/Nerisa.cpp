@@ -90,6 +90,9 @@ void Nerisa::SetupSkill()
 	//m_stSkill.fParticleSpeed;
 	m_stSkill.fEffectTime = 0;
 
+	m_fSkillCoolTimeCount = 0;
+	m_nSkillCooltime = 100;
+
 //	m_stSkill.buffStatus.chr.nCurrentHP = 100; //증가 될 스탯량 피뺴고 제로메모리;
 }
 
@@ -102,42 +105,35 @@ void Nerisa::SetupSkill()
 //근접 몬스터 스킬함수
 void Nerisa::SkillUse()
 {
-	vector<MonsterParent*> tt;
+	
 	
 
 	if (m_pModel->IsAnimationPercent(0.2))
 	{
-		m_pSkill->Prepare(PCHARACTER,
-			this,
-			tt,
-			m_stSkill,
-			SKILLO_MONSTER);
+		//SkillPrepare();
+
 		m_pSkill->Trigger();
 	}
 
 	if (m_pModel->IsAnimationPercent(0.4))
 	{
-		m_pSkill->Prepare(PCHARACTER,
-			this,
-			tt,
-			m_stSkill,
-			SKILLO_MONSTER);
+		SkillPrepare();
+
 		m_pSkill->Trigger();
 	}
 
 	if (m_pModel->IsAnimationPercent(0.8))
 	{
-		m_pSkill->Prepare(PCHARACTER,
-			this,
-			tt,
-			m_stSkill,
-			SKILLO_MONSTER);
+		SkillPrepare();
+
 		m_pSkill->Trigger();
 	}
 
 	if (m_pModel->IsAnimationEnd())
 	{
-		m_eState = MS_IDLE;
+		m_bUsingSkill = false;
+		m_fSkillCoolTimeCount = 0;
+		m_eState = MS_ATTACK;
 		ChangeAni();
 	}
 	//if (m_pModel->IsAnimationPercent(0.6))

@@ -92,6 +92,9 @@ void Assis::SetupSkill()
 	m_stSkill.fEffectTime = 3;
 
 	m_stSkill.buffStatus.chr.nAtk = ATK(m_pMonsterStat);
+
+	m_fSkillCoolTimeCount = 0;
+	m_nSkillCooltime = 100;
 	//공격력 2배
 }
 
@@ -105,11 +108,15 @@ void Assis::SetupSkill()
 //근접 몬스터 스킬함수
 void Assis::SkillUse()
 {
+	//SkillPrepare();
+
 	m_pSkill->Trigger();
 
 	if (m_pModel->IsAnimationEnd())
 	{
-		m_eState = MS_IDLE;
+		m_bUsingSkill = false;
+		m_fSkillCoolTimeCount = 0;
+		m_eState = MS_ATTACK;
 		ChangeAni();
 	}
 }

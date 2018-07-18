@@ -39,6 +39,7 @@ void MonsterParent::Setup(Map* map, D3DXVECTOR3 spawnPos, bool isSummon)
 
 	m_nCount = 0;
 	m_nPatternChangeCount = 0;
+	m_bUsingSkill = false;
 
 	m_pAStar = new AStar;
 	m_pAStar->SetCurrentCell(map->GetNavMesh());
@@ -148,6 +149,19 @@ void MonsterParent::Update()
 
 	if (!DEBUG)
 	{
+		m_fSkillCoolTimeCount += TIME->GetElapsedTime();
+
+		if (AbleSkill())
+		{
+			if (m_eState != MS_SKILL)
+			{
+				m_eState = MS_SKILL;
+				ChangeAni();
+			}
+			m_eState = MS_SKILL;
+			return;
+		}
+
 		if (INPUT->KeyDown('O'))
 		{
 			m_eState = MS_ATTACK;
@@ -489,18 +503,48 @@ void MonsterParent::ItemDrop()
 }
 void MonsterParent::SetupSkill()
 {
-	ZeroMemory(&m_stSkill, sizeof(ST_SKILL));
-	m_stSkill.fDamage = 200;
-	m_stSkill.fDamageDelay = 0;
-	m_stSkill.fDamageInterval = 0.1;
-	m_stSkill.fMaxLength = 100;
-	m_stSkill.fAngle = 360;
-	m_stSkill.nMaxTarget = 5;
-	m_stSkill.nDamageCount = 100;
-	m_stSkill.isAutoRot = true;
-	m_stSkill.fYOffset = 1;
-	m_stSkill.fBuffTime = -1;
-	m_stSkill.fParticleTime = 10;
-	m_stSkill.fParticleSpeed = 0.05;
-	m_stSkill.fEffectTime = 3;
+	//ZeroMemory(&m_stSkill, sizeof(ST_SKILL));
+	//m_stSkill.fDamage = 200;
+	//m_stSkill.fDamageDelay = 0;
+	//m_stSkill.fDamageInterval = 0.1;
+	//m_stSkill.fMaxLength = 100;
+	//m_stSkill.fAngle = 360;
+	//m_stSkill.nMaxTarget = 5;
+	//m_stSkill.nDamageCount = 100;
+	//m_stSkill.isAutoRot = true;
+	//m_stSkill.fYOffset = 1;
+	//m_stSkill.fBuffTime = -1;
+	//m_stSkill.fParticleTime = 10;
+	//m_stSkill.fParticleSpeed = 0.05;
+	//m_stSkill.fEffectTime = 3;
+}
+
+bool MonsterParent::AbleSkill()
+{
+	float leng = GetDistance(*m_pModel->GetPosition(), *CHARACTER->GetPosition());
+
+	//쿨타임이 돌았고 스킬이 사용가능할때
+	//그리고 내가 타겟팅이 되었을때 스킬 사용
+	if (m_fSkillCoolTimeCount >= m_nSkillCooltime
+		&& leng <= m_stSkill.fMaxLength
+		&& m_bIsTargeting
+		&& !m_bIsRespawn
+		&& !m_bUsingSkill)
+	{
+		m_bUsingSkill = true;
+		SkillPrepare();
+		return true;
+	}
+
+	return false;
+}
+
+void MonsterParent::SkillPrepare(){
+	vector<MonsterParent*> tt;
+
+	m_pSkill->Prepare(PCHARACTER,
+		this,
+		tt,
+		m_stSkill,
+		SKILLO_MONSTER);
 }

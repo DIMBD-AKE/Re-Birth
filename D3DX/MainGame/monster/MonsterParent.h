@@ -31,7 +31,7 @@ class MonsterParent
 	SET(DropManager*, m_pDropManager, DropManager);
 	SYNTHESIZE(STATUS*, m_pMonsterStat, MosterStat);
 	GET(bool, m_bIsSummon,IsSummon);
-	
+	//SET(bool, m_bIsTargeting, IsTargeting);
 
 protected:
 
@@ -82,6 +82,10 @@ protected:
 	Skill* m_pSkill;
 
 	ST_SKILL m_stSkill;
+
+	float	m_fSkillCoolTimeCount;
+	int		m_nSkillCooltime;
+	bool	m_bUsingSkill;
 	/*
 	int			nMaxTarget;
 	float		fMinLength;
@@ -123,7 +127,7 @@ protected:
 
 	virtual void SetCurrentHP(int hp)
 	{
-		if (m_eState != MS_ATTACK && m_eState != MS_DIE)
+		if (m_eState != MS_ATTACK && m_eState != MS_DIE && m_eState != MS_SKILL)
 		{
 			m_eState = MS_ATTACK;
 			ChangeAni();
@@ -145,7 +149,9 @@ protected:
 
 	virtual void ChangeAni();
 	
-
+	//스킬사용가능하냐
+	bool AbleSkill();
+	void SkillPrepare();
 public:
 	MonsterParent();
 	virtual ~MonsterParent();

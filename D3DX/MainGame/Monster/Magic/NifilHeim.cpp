@@ -82,6 +82,9 @@ void NifilHeim::SetupSkill()
 	m_stSkill.fParticleTime = 10;			 //
 	m_stSkill.fParticleSpeed = 0.05;		 //
 	m_stSkill.fEffectTime = 1.85f;				 //
+
+	m_fSkillCoolTimeCount = 0;
+	m_nSkillCooltime = 10;
 }
 
 
@@ -94,11 +97,15 @@ void NifilHeim::SetupSkill()
 //근접 몬스터 스킬함수
 void NifilHeim::SkillUse()
 {
+	//SkillPrepare();
+
 	m_pSkill->Trigger();
 
 	if (m_pModel->IsAnimationEnd())
 	{
-		m_eState = MS_IDLE;
+		m_bUsingSkill = false;
+		m_fSkillCoolTimeCount = 0;
+		m_eState = MS_ATTACK;
 		ChangeAni();
 	}
 }

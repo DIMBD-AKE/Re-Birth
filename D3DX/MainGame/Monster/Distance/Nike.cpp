@@ -69,6 +69,9 @@ void Nike::SetupSkill()
 	//m_stSkill.fParticleSpeed;
 	m_stSkill.fEffectTime = 0;
 
+	m_fSkillCoolTimeCount = 0;
+	m_nSkillCooltime = 100;
+
 	//	m_stSkill.buffStatus.chr.nCurrentHP = 100; //증가 될 스탯량 피뺴고 제로메모리;
 }
 
@@ -91,6 +94,8 @@ void Nike::SetupStat()
 	HIT(m_pMonsterStat) = 20.0f;
 	SPEED(m_pMonsterStat) = 0.09f;
 	RANGE(m_pMonsterStat) = 7.0f;
+
+
 }
 
 
@@ -108,37 +113,30 @@ void Nike::SkillUse()
 
 	if (m_pModel->IsAnimationPercent(0.2))
 	{
-		m_pSkill->Prepare(PCHARACTER,
-			this,
-			tt,
-			m_stSkill,
-			SKILLO_MONSTER);
+		//SkillPrepare();
+
 		m_pSkill->Trigger();
 	}
 
 	if (m_pModel->IsAnimationPercent(0.4))
 	{
-		m_pSkill->Prepare(PCHARACTER,
-			this,
-			tt,
-			m_stSkill,
-			SKILLO_MONSTER);
+		SkillPrepare();
+
 		m_pSkill->Trigger();
 	}
 
 	if (m_pModel->IsAnimationPercent(0.8))
 	{
-		m_pSkill->Prepare(PCHARACTER,
-			this,
-			tt,
-			m_stSkill,
-			SKILLO_MONSTER);
+		SkillPrepare();
+
 		m_pSkill->Trigger();
 	}
 
 	if (m_pModel->IsAnimationEnd())
 	{
-		m_eState = MS_IDLE;
+		m_bUsingSkill = false;
+		m_fSkillCoolTimeCount = 0;
+		m_eState = MS_ATTACK;
 		ChangeAni();
 	}
 }

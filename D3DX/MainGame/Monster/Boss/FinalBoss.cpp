@@ -364,6 +364,7 @@ void FinalBoss::SkillUse()
 
 	if (m_pModel->IsAnimationEnd())
 	{
+		m_fSkillCoolTimeCount = 0;
 		m_eBossState = BS_IDLE;
 		ChangeAni();
 	}
@@ -406,6 +407,7 @@ void FinalBoss::Skill2()
 
 	if (m_pModel->IsAnimationEnd())
 	{
+		m_fSkillCoolTimeCount = 0;
 		m_eBossState = BS_RUN;
 		ChangeAni();
 	}

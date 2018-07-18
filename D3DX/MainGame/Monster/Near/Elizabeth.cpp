@@ -139,6 +139,9 @@ void Elizabeth::SetupSkill()
 	m_stSkill.fParticleSpeed = 0.05;
 	m_stSkill.fEffectTime = 3;
 
+	m_fSkillCoolTimeCount = 0;
+	m_nSkillCooltime = 100;
+
 	//m_stSkill.fDamage = 10;
 	//m_stSkill.fDamageInterval = 0.1;
 	//m_stSkill.fMaxLength = 10;
@@ -228,13 +231,16 @@ void Elizabeth::SetupSkill()
 
 void Elizabeth::SkillUse()
 {
-	
+
+	//SkillPrepare();
 
 	m_pSkill->Trigger();
 
 	if (m_pModel->IsAnimationEnd())
 	{
-		m_eState = MS_IDLE;
+		m_bUsingSkill = false;
+		m_fSkillCoolTimeCount = 0;
+		m_eState = MS_ATTACK;
 		ChangeAni();
 	}
 }

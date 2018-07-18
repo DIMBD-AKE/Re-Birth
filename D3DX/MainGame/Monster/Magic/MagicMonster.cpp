@@ -44,9 +44,19 @@ void MagicMonster::Attack()
 		float length = GetDistance(*m_pModel->GetPosition(), *CHARACTER->GetPosition());
 		
 		int a = 10;
+
+	
+
 		//공격 가능 사거리까지 하면 될듯 && 공격중이냐
 		if (length > RANGE(m_pMonsterStat) && !m_bIsAttack)
 		{
+			if (AbleSkill())
+			{
+				m_bIsAttack = false;
+				m_eState = MS_SKILL;
+				ChangeAni();
+				return;
+			}
 			//피드몹은 A*적용
 			if (!m_bIsSummon)
 			{
