@@ -92,6 +92,7 @@ protected:
 
 	vector<EffectObject*>	m_vecEffect;			//이펙트 오브젝트용
 	vector<D3DXVECTOR3*>	m_vecVertex;			//디버그용 벡터
+	vector<int>				m_vecTarget;			//에너미 타겟저장 벡터
 	ST_PLAYERDAMAGED		m_stDamaged;			//스킬타임용 구조체 변수
 
 	Particle*		m_pParticle;

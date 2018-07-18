@@ -291,6 +291,7 @@ void Character_Gun::KeyControl()
 
 void Character_Gun::Attack()
 {
+	if (m_nIndex = NULL) return;
 	D3DXVECTOR3 front;
 	D3DXMATRIX matY;
 	D3DXMatrixRotationY(&matY, m_pCharacter->GetRotation()->y);

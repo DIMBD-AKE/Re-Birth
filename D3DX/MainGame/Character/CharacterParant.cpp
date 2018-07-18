@@ -13,7 +13,7 @@
 void CharacterParant::SKill()
 {
 	//특정 키를 누르면 아이템 클래스의 skill을 실행한다. 
-	//m_pInventory->GetWeapon()->Skill1(,);
+	m_pInventory->GetWeapon()->Skill1(this,m_pMonsterManager);
 }
 
 void CharacterParant::Move()
@@ -1239,6 +1239,7 @@ void CharacterParant::SetTarget()
 			{
 				distance = distance2;
 				m_nIndex = i;
+				m_vecTarget.push_back(m_nIndex);
 			}
 		}
 	}

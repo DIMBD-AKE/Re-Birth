@@ -321,6 +321,7 @@ void Character_Sword::KeyControl()
 			}
 			m_bIsSkill = true;
 			ChangeAnimation();
+			SKill();
 		}
 	}
 
@@ -387,6 +388,7 @@ void Character_Sword::KeyControl()
 
 void Character_Sword::Attack()
 {
+	//if (m_nIndex = NULL) return;
 	D3DXVECTOR3 front;
 	D3DXMATRIX matY;
 	D3DXMatrixRotationY(&matY, m_pCharacter->GetRotation()->y);
