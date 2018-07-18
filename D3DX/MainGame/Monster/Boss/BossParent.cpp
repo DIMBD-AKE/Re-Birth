@@ -12,6 +12,7 @@ BossParent::BossParent()
 BossParent::~BossParent()
 {
 	SAFE_DELETE(m_pMagicCircle);
+	SAFE_DELETE(m_pSkill2);
 	m_pMM = NULL;
 
 }
