@@ -66,6 +66,7 @@ protected:
 	int						m_nDamage;				//데미지 띄우기용 변수 
 	int						m_nAppear;				//서브캐릭터 나오나 
 	int						m_nIndex;				//몬스터 벡터용 인덱스
+	int						m_nIndex2;				//몬스터 벡터용 인덱스2 
 	int						m_nDamageCount;			//데미지 카운트 
 	
 

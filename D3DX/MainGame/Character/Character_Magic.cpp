@@ -353,7 +353,10 @@ void Character_Magic::Attack()
 				tempEFOBJ->Init(tempEffect, testSkillpos);
 
 				m_vecEffect.push_back(tempEFOBJ);
+				
+				
 				m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
+				
 			}
 		}
 		else if (m_eCharSelect == CHAR_TWO)
@@ -387,6 +390,7 @@ void Character_Magic::Attack()
 
 
 				m_vecEffect.push_back(tempEFOBJ);
+				
 				m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
 
 			}

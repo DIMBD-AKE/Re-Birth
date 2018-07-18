@@ -1203,6 +1203,7 @@ void CharacterParant::SetTarget()
 
 																										//int MinIndex = -1;
 	m_nIndex = -1;
+	m_nIndex2 = -1;
 	int subMinIndex = -1;
 	int MINIndex2 = -1;
 	float MinDistance = 0.0f;
@@ -1225,6 +1226,7 @@ void CharacterParant::SetTarget()
 		distance = subDistance;
 
 		m_nIndex = i;
+		m_nIndex2 = i;
 		break;
 	}
 	if (m_nIndex != -1)//만약 기준점이 된 몬스터가 구해졌으면 
@@ -1243,23 +1245,27 @@ void CharacterParant::SetTarget()
 			}
 		}
 		//두번째 가까운녀석도 추가
-		//if (m_eChrType == CHRTYPE_SWORD)
-		//{
-		//	for (int i = m_nIndex + 1; i < m_pMonsterManager->GetMonsterVector().size(); ++i)
-		//	{
-		//		if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn())continue;	//리젠할때는 건드리지 않고 
-		//		if (i == m_nIndex) continue;//먼저 검출한 최소거리를 가진 몬스터면 재끼고 
-		//		float radius3 = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().radius;
-		//		float distance3 = D3DXVec3Length(&(mosPos - pos));
-		//		if (distance3 - radius3 > m_Status->chr.fRange) continue;
-		//		if (distance > distance3)
-		//		{
-		//			distance = distance3;
-		//			m_nIndex = i;
-		//			m_vecTarget.push_back(m_nIndex);
-		//		}
-		//	}
-		//}
+		if (m_eChrType == CHRTYPE_SWORD)
+		{
+			for (int i = m_nIndex2 + 1; i < m_pMonsterManager->GetMonsterVector().size(); ++i)
+			{
+				if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn())continue;	//리젠할때는 건드리지 않고 
+				if (i == m_nIndex) continue;//먼저 검출한 최소거리를 가진 몬스터면 재끼고 
+				float radius3 = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().radius;
+				float distance3 = D3DXVec3Length(&(mosPos - pos));
+				if (distance3 - radius3 > m_Status->chr.fRange) continue;
+				if (subDistance > distance3)
+				{
+					subDistance = distance3;
+					m_nIndex2 = i;
+					m_vecTarget.push_back(m_nIndex2);
+				}
+				/*if(distance3 <  m_Status->chr.fRange)
+				{
+					m_vecTarget.push_back(i);
+				}*/
+			}
+		}
 	}
 }
 
