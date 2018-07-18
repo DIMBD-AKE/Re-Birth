@@ -67,7 +67,7 @@ void ItemParent::Attack(CharacterParant* pCharacter,ST_DAMAGE pStatus, MonsterMa
 	//}
 }
 
-void ItemParent::Skill1(CharacterParant* pCharacter,ST_DAMAGE pStatus, MonsterManager* pMonsterManager)
+void ItemParent::Skill1(CharacterParant* pCharacter, MonsterManager* pMonsterManager)
 {
 	if (m_pSkill1)
 	{
@@ -76,7 +76,7 @@ void ItemParent::Skill1(CharacterParant* pCharacter,ST_DAMAGE pStatus, MonsterMa
 	}
 }
 
-void ItemParent::Skill2(CharacterParant* pCharacter,ST_DAMAGE pStatus, MonsterManager* pMonsterManager)
+void ItemParent::Skill2(CharacterParant* pCharacter, MonsterManager* pMonsterManager)
 {
 	if (m_pSkill2)
 	{

@@ -49,8 +49,8 @@ public:
 	virtual void SetUp();
 	virtual void Use(CharacterParant & pCharacter);
 	virtual void Attack(CharacterParant* pCharacter, ST_DAMAGE pStatus, MonsterManager* pMonsterManager);
-	virtual void Skill1(CharacterParant* pCharacter, ST_DAMAGE pStatus, MonsterManager* pMonsterManager);
-	virtual void Skill2(CharacterParant* pCharacter, ST_DAMAGE pStatus, MonsterManager* pMonsterManager);
+	virtual void Skill1(CharacterParant* pCharacter, MonsterManager* pMonsterManager);
+	virtual void Skill2(CharacterParant* pCharacter, MonsterManager* pMonsterManager);
 	
 	virtual void SetTarget();
 	virtual void SetStatusZero();
