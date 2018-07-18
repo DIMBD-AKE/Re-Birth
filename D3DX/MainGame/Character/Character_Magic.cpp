@@ -117,7 +117,7 @@ void Character_Magic::KeyControl()
 	//앞으로 달리기
 	if (INPUT->KeyDown('W'))
 	{
-		SOUND->Play("FootStep");
+		SOUND->Play("FootStep2");
 		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_HIT)
 		{
 			m_eCondition = CHAR_RUN_FRONT;
@@ -127,7 +127,7 @@ void Character_Magic::KeyControl()
 	}
 	else if (INPUT->KeyUp('W'))
 	{
-		SOUND->Stop("FootStep");
+		SOUND->Stop("FootStep2");
 		if (m_eCondition == CHAR_RUN_FRONT)
 		{
 			m_eCondition = CHAR_IDLE;
@@ -138,7 +138,7 @@ void Character_Magic::KeyControl()
 	//뒤로 달리기
 	if (INPUT->KeyDown('S'))
 	{
-		SOUND->Play("FootStep");
+		SOUND->Play("FootStep2");
 		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_HIT)
 		{
 			m_eCondition = CHAR_RUN_BACK;
@@ -148,7 +148,7 @@ void Character_Magic::KeyControl()
 	}
 	else if (INPUT->KeyUp('S'))
 	{
-		SOUND->Stop("FootStep");
+		SOUND->Stop("FootStep2");
 		if (m_eCondition == CHAR_RUN_BACK)
 		{
 			m_eCondition = CHAR_IDLE;

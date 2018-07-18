@@ -67,6 +67,7 @@ protected:
 	int						m_nAppear;				//¼­ºêÄ³¸¯ÅÍ ³ª¿À³ª 
 	int						m_nIndex;				//¸ó½ºÅÍ º¤ÅÍ¿ë ÀÎµ¦½º
 	int						m_nIndex2;				//¸ó½ºÅÍ º¤ÅÍ¿ë ÀÎµ¦½º2 
+	int						m_nIndex3;				//¸ó½ºÅÍ º¤ÅÍ¿ë ÀÎµ¦½º3 
 	int						m_nDamageCount;			//µ¥¹ÌÁö Ä«¿îÆ® 
 	
 

@@ -26,18 +26,18 @@ void Character_Gun::Init(CHRTYPE type, CHARSELECT order)
 		m_pCharacter = MODELMANAGER->GetModel("메그너스", MODELTYPE_X);
 		m_eCharSelect = CHAR_ONE;
 		m_Status->chr.fAgi = 50.0f;
-		m_Status->chr.fAtkSpeed = 5.0f;
+		m_Status->chr.fAtkSpeed = 1.7f;
 		m_Status->chr.fCheRate = 70.0f;
 		m_Status->chr.fHit = 70.0f;
 		m_Status->chr.fMagicRate = 25.0f;
 		m_Status->chr.fPhyRate = 25.0f;
 		m_Status->chr.fSpeed = 0.32f;
-		m_Status->chr.nAtk = 50;
+		m_Status->chr.nAtk = 20;
 		m_Status->chr.nCurrentHP = 100;
-		m_Status->chr.nCurrentStam = 10;
+		m_Status->chr.nCurrentStam = 50;
 		m_Status->chr.nDef = 26;
 		m_Status->chr.nMaxHp = 100;
-		m_Status->chr.nMaxStam = 10;
+		m_Status->chr.nMaxStam = 50;
 		m_Status->chr.fRange = 20.0f;
 		m_Status->chr.fScale = 3.2f;
 		CharacterParant::Init(type, order);
@@ -53,18 +53,18 @@ void Character_Gun::Init(CHRTYPE type, CHARSELECT order)
 		m_pCharacter = MODELMANAGER->GetModel("스카디", MODELTYPE_X);
 		m_eCharSelect = CHAR_TWO;
 		m_Status->chr.fAgi = 50.0f;
-		m_Status->chr.fAtkSpeed = 4.0f;
+		m_Status->chr.fAtkSpeed = 2.2f;
 		m_Status->chr.fCheRate = 70.0f;
 		m_Status->chr.fHit = 70.0f;
 		m_Status->chr.fMagicRate = 25.0f;
 		m_Status->chr.fPhyRate = 25.0f;
 		m_Status->chr.fSpeed = 0.32f;
-		m_Status->chr.nAtk = 50;
+		m_Status->chr.nAtk = 22;
 		m_Status->chr.nCurrentHP = 100;
-		m_Status->chr.nCurrentStam = 10;
+		m_Status->chr.nCurrentStam = 100;
 		m_Status->chr.nDef = 26;
 		m_Status->chr.nMaxHp = 100;
-		m_Status->chr.nMaxStam = 10;
+		m_Status->chr.nMaxStam = 100;
 		m_Status->chr.fRange = 25.0f;
 		m_Status->chr.fScale = 3.2f;
 		CharacterParant::Init(type, order);
@@ -81,7 +81,7 @@ void Character_Gun::Update()
 	if (m_pCharacter)
 	{
 		Controller();
-		//UnderAttacked();
+	
 		KeyControl();
 		Move();
 
@@ -122,7 +122,7 @@ void Character_Gun::KeyControl()
 	//앞으로 달리기
 	if (INPUT->KeyDown('W'))
 	{
-		SOUND->Play("FootStep");
+		SOUND->Play("FootStep4");
 		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_HIT)
 		{
 			m_eCondition = CHAR_RUN_FRONT;
@@ -132,7 +132,7 @@ void Character_Gun::KeyControl()
 	}
 	else if (INPUT->KeyUp('W'))
 	{
-		SOUND->Stop("FootStep");
+		SOUND->Stop("FootStep4");
 		if (m_eCondition == CHAR_RUN_FRONT)
 		{
 			m_eCondition = CHAR_IDLE;
@@ -143,7 +143,7 @@ void Character_Gun::KeyControl()
 	//뒤로 달리기
 	if (INPUT->KeyDown('S'))
 	{
-		SOUND->Play("FootStep");
+		SOUND->Play("FootStep4");
 		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_HIT)
 		{
 			m_eCondition = CHAR_RUN_BACK;
@@ -153,7 +153,7 @@ void Character_Gun::KeyControl()
 	}
 	else if (INPUT->KeyUp('S'))
 	{
-		SOUND->Stop("FootStep");
+		SOUND->Stop("FootStep4");
 		if (m_eCondition == CHAR_RUN_BACK)
 		{
 			m_eCondition = CHAR_IDLE;
@@ -164,6 +164,8 @@ void Character_Gun::KeyControl()
 	//앞으로 대쉬
 	if (INPUT->KeyDown('Q'))
 	{
+		SOUND->Play("FootStep3");
+		SOUND->Stop("FootStep4");
 		if (m_eCondition == CHAR_RUN_FRONT)
 		{
 			m_eCondition = CHAR_DASH_FRONT;
@@ -174,6 +176,8 @@ void Character_Gun::KeyControl()
 	}
 	else if (INPUT->KeyUp('Q'))
 	{
+		SOUND->Stop("FootStep3");
+		SOUND->Play("FootStep4");
 		if (m_eCondition == CHAR_DASH_FRONT)
 		{
 			m_eCondition = CHAR_RUN_FRONT;
@@ -185,6 +189,8 @@ void Character_Gun::KeyControl()
 	//뒤로 대쉬
 	if (INPUT->KeyDown('E'))
 	{
+		SOUND->Play("FootStep3");
+		SOUND->Stop("FootStep4");
 		if (m_eCondition == CHAR_RUN_BACK)
 		{
 			m_eCondition = CHAR_DASH_BACK;
@@ -195,6 +201,8 @@ void Character_Gun::KeyControl()
 	}
 	else if (INPUT->KeyUp('E'))
 	{
+		SOUND->Stop("FootStep3");
+		SOUND->Play("FootStep4");
 		if (m_eCondition == CHAR_DASH_BACK)
 		{
 			m_eCondition = CHAR_RUN_BACK;
@@ -224,6 +232,7 @@ void Character_Gun::KeyControl()
 		m_bIsAttack = false;
 	}
 
+
 	//스킬공격
 	if (INPUT->KeyDown('K'))
 	{
@@ -234,6 +243,22 @@ void Character_Gun::KeyControl()
 			m_bIsSkill = true;
 			ChangeAnimation();
 		}
+	}
+
+
+	//고유스킬
+	if (INPUT->KeyDown('T'))
+	{
+		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_RUN_FRONT || m_eCondition == CHAR_RUN_BACK)
+		{
+			m_eCondition = CHAR_INHERENT;
+			MultiAttack();
+			ChangeAnimation();
+		}
+	}
+	if (INPUT->KeyUp('T'))
+	{
+		m_nDamageCount = 0;
 	}
 
 	
@@ -249,6 +274,9 @@ void Character_Gun::KeyControl()
 			m_eCondition = CHAR_IDLE;
 			break;
 		case CHAR_HIT:
+			m_eCondition = CHAR_IDLE;
+			break;
+		case CHAR_INHERENT:
 			m_eCondition = CHAR_IDLE;
 			break;
 		case CHAR_DIE:
@@ -328,9 +356,15 @@ void Character_Gun::Attack()
 				EffectObject* tempEFOBJ;
 				tempEFOBJ = new EffectObject;
 
+				D3DXVECTOR3 TempDir;
+				TempDir = *m_pCharacter->GetPosition() - *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
+				D3DXVec3Normalize(&TempDir, &TempDir);
+
 				D3DXVECTOR3 testSkillpos = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
 				testSkillpos.y += 1.0f;
 				testSkillpos.x += FRand(-0.5, 0.5);
+				testSkillpos.z += FRand(-0.5, 0.5);
+				testSkillpos += TempDir * 4.0f;
 				tempEFOBJ->Init(tempEffect, testSkillpos);
 
 				m_vecEffect.push_back(tempEFOBJ);
@@ -354,13 +388,207 @@ void Character_Gun::Attack()
 				EffectObject* tempEFOBJ;
 				tempEFOBJ = new EffectObject;
 
+				D3DXVECTOR3 TempDir;
+				TempDir = *m_pCharacter->GetPosition() - *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
+				D3DXVec3Normalize(&TempDir, &TempDir);
+
 				D3DXVECTOR3 testSkillpos = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
 				testSkillpos.y += 1.0f;
 				testSkillpos.x += FRand(-0.5, 0.5);
+				testSkillpos.z += FRand(-0.5, 0.5);
+				testSkillpos += TempDir * 4.0f;
 				tempEFOBJ->Init(tempEffect, testSkillpos);
 
 				m_vecEffect.push_back(tempEFOBJ);
 				m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
+			}
+
+		}
+	}
+}
+
+void Character_Gun::MultiAttack()
+{
+	D3DXVECTOR3 pos = *m_pCharacter->GetPosition();														//플레이어 포지션 받고 
+	D3DXVECTOR3 rot = *m_pCharacter->GetRotation();														//플레이어 각도 받고 
+
+	m_vecTarget.clear();
+	m_nIndex = -1;
+	m_nIndex2 = -1;
+	m_nIndex3 = -1;
+	int subMinIndex = -1;
+
+	int MINIndex2 = -1;
+	float MinDistance = 0.0f;
+	float radius;
+	D3DXVECTOR3 mosPos;
+	float distance;
+	float subDistance = 0.0f;
+	float subDistance2 = 0.0f;
+
+
+	for (int i = 0; i < m_pMonsterManager->GetMonsterVector().size(); ++i)
+	{
+		if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn())continue;								//리젠할때는 건드리지 않고 
+
+		float radius1 = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().radius;		//몬스터의 바운드 스페어의 반지름 받고 
+		mosPos = *(m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetPosition());		//몬스터 포지션 받고 
+		float distance1 = D3DXVec3Length(&(mosPos - pos));
+
+		if (distance1 - radius1 > m_Status->chr.fRange) continue;
+		distance = distance1;
+		subDistance = distance;
+		subDistance2 = distance;
+
+		m_nIndex = i;
+		m_nIndex2 = i;
+		m_nIndex3 = i;
+		break;
+	}
+	if (m_nIndex != -1)//만약 기준점이 된 몬스터가 구해졌으면 
+	{
+		for (int i = m_nIndex + 1; i < m_pMonsterManager->GetMonsterVector().size(); ++i)
+		{
+			if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn())continue;	//리젠할때는 건드리지 않고 
+			float radius2 = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().radius;
+			mosPos = *(m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetPosition());		//몬스터 포지션 받고 
+			float distance2 = D3DXVec3Length(&(mosPos - pos));
+			if (distance2 - radius2 > m_Status->chr.fRange) continue;
+			if (distance >= distance2)
+			{
+				distance = distance2;
+				m_nIndex = i;
+			}
+		}
+		m_vecTarget.push_back(m_nIndex);
+		//두번째 가까운녀석도 추가
+		for (int i = m_nIndex2 + 1; i < m_pMonsterManager->GetMonsterVector().size(); ++i)
+		{
+			if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn())continue;	//리젠할때는 건드리지 않고 
+			if (i == m_nIndex) continue;//먼저 검출한 최소거리를 가진 몬스터면 재끼고 
+			float radius3 = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().radius;
+			mosPos = *(m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetPosition());		//몬스터 포지션 받고 
+			float distance3 = D3DXVec3Length(&(mosPos - pos));
+			if (distance3 - radius3 > m_Status->chr.fRange) continue;
+			if (subDistance >= distance3)
+			{
+				subDistance = distance3;
+				m_nIndex2 = i;
+			}
+		}
+		m_vecTarget.push_back(m_nIndex2);
+
+		//세번째 가까운 녀석도 추가
+		for (int i = m_nIndex3 + 1; i < m_pMonsterManager->GetMonsterVector().size(); ++i)
+		{
+			if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn())continue;	//리젠할때는 건드리지 않고 
+			if (i == m_nIndex) continue;//먼저 검출한 최소거리를 가진 몬스터면 재끼고 
+			if (i == m_nIndex2) continue;//먼저 검출한 최소거리를 가진 몬스터면 재끼고 
+			float radius4 = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().radius;
+			mosPos = *(m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetPosition());		//몬스터 포지션 받고 
+			float distance4 = D3DXVec3Length(&(mosPos - pos));
+			if (distance4 - radius4 > m_Status->chr.fRange) continue;
+			if (subDistance2 >= distance4)
+			{
+				subDistance2 = distance4;
+				m_nIndex3 = i;
+			}
+		}
+		m_vecTarget.push_back(m_nIndex3);
+	}
+
+	if (m_nIndex < 0) return;
+	D3DXVECTOR3 front;
+	D3DXMATRIX matY;
+	D3DXMatrixRotationY(&matY, m_pCharacter->GetRotation()->y);
+	D3DXVec3TransformNormal(&front, &D3DXVECTOR3(0, 0, -1), &matY);
+	D3DXVECTOR3 v0 = front;
+	//대상방향
+	D3DXVECTOR3 MonPos = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
+	//D3DXVECTOR3 pos = *m_pCharacter->GetPosition();
+	D3DXVECTOR3 v1 = MonPos - pos;
+	D3DXVec3Normalize(&v0, &v1);
+	float dot = D3DXVec3Dot(&v0, &v1) / D3DXVec3Length(&v0) * D3DXVec3Length(&v1);
+	if (dot >= cos(m_Status->chr.fScale / 2))
+	{
+		//if (m_nIndex == -1) return;
+		if (m_fElpTime < m_fPrevTime + m_fEffectInterval) return;
+
+		m_fPrevTime = m_fElpTime;
+
+		m_nDamageCount++;
+		if (m_eCharSelect == CHAR_ONE)
+		{
+			if (m_nDamageCount <= 3)
+			{
+				ST_EFFECT tempEffect;
+				ZeroMemory(&tempEffect, sizeof(tempEffect));
+
+				tempEffect.time = FRand(0.1, 0.4);
+				tempEffect.isRY = true;
+				tempEffect.isRX = true;
+				tempEffect.height = 3.0f;
+				tempEffect.SetAlpha(255, 255, 0);
+				tempEffect.SetScale(2, 2, 2);
+				tempEffect.tex = TEXTUREMANAGER->AddTexture("Gun", "Texture/Effect/gun.png");
+				EffectObject* tempEFOBJ;
+				tempEFOBJ = new EffectObject;
+
+				D3DXVECTOR3 TempDir;
+				TempDir = *m_pCharacter->GetPosition() - *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
+				D3DXVec3Normalize(&TempDir, &TempDir);
+
+				D3DXVECTOR3 testSkillpos = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
+				testSkillpos.y += 1.0f;
+				testSkillpos.x += FRand(-0.5, 0.5);
+				testSkillpos.z += FRand(-0.5, 0.5);
+				testSkillpos += TempDir * 4.0f;
+				tempEFOBJ->Init(tempEffect, testSkillpos);
+
+				m_vecEffect.push_back(tempEFOBJ);
+
+				for (int i = 0; i < m_vecTarget.size(); i++)
+				{
+					if (m_pMonsterManager->GetMonsterVector()[m_vecTarget[i]]->GetIsResPawn())return;
+					m_pMonsterManager->GetMonsterVector()[m_vecTarget[i]]->CalculDamage(100);
+				}
+			}
+		}
+		else if (m_eCharSelect == CHAR_TWO)
+		{
+			if (m_nDamageCount <= 3)
+			{
+				ST_EFFECT tempEffect;
+				ZeroMemory(&tempEffect, sizeof(tempEffect));
+
+				tempEffect.time = FRand(0.1, 0.4);
+				tempEffect.isRY = true;
+				tempEffect.isRX = true;
+				tempEffect.height = 3.0f;
+				tempEffect.SetAlpha(255, 255, 0);
+				tempEffect.SetScale(2, 2, 2);
+				tempEffect.tex = TEXTUREMANAGER->AddTexture("Gun", "Texture/Effect/gun.png");
+				EffectObject* tempEFOBJ;
+				tempEFOBJ = new EffectObject;
+
+				D3DXVECTOR3 TempDir;
+				TempDir = *m_pCharacter->GetPosition() - *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
+				D3DXVec3Normalize(&TempDir, &TempDir);
+
+				D3DXVECTOR3 testSkillpos = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
+				testSkillpos.y += 1.0f;
+				testSkillpos.x += FRand(-0.5, 0.5);
+				testSkillpos.z += FRand(-0.5, 0.5);
+				testSkillpos += TempDir * 4.0f;
+				tempEFOBJ->Init(tempEffect, testSkillpos);
+
+				m_vecEffect.push_back(tempEFOBJ);
+
+				for (int i = 0; i < m_vecTarget.size(); i++)
+				{
+					if (m_pMonsterManager->GetMonsterVector()[m_vecTarget[i]]->GetIsResPawn())return;
+					m_pMonsterManager->GetMonsterVector()[m_vecTarget[i]]->CalculDamage(100);
+				}
 			}
 
 		}

@@ -1745,6 +1745,9 @@ void CharacterParant::ChangeAnimation()
 	case CHAR_BATTLEREADY:
 			m_pCharacter->SetAnimation("BATTLEREADY");
 		break;
+	case CHAR_INHERENT:
+		m_pCharacter->SetAnimation("ATTACK");
+		break;
 	case CHAR_NONE :
 		break;
 	}

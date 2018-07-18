@@ -135,11 +135,28 @@ void SC_Loading::AddSound()
 {
 	m_pLoading->LoadSound("Main Theme", "Sound/01. Premonition.mp3", true);
 	m_pLoading->LoadSound("FootStep", "Sound/S_Foot02.ogg", true);
-	m_pLoading->LoadSound("SwordAttack", "Sound/Sword_4.ogg", false);
+	m_pLoading->LoadSound("FootStep2", "Sound/S_Foot03.ogg", true);
+	m_pLoading->LoadSound("FootStep3", "Sound/S_Foot04.ogg", true);
+	m_pLoading->LoadSound("FootStep4", "Sound/S_Foot05.ogg", true);
+	m_pLoading->LoadSound("SwordAttack", "Sound/Sword1.mp3", false);
 	m_pLoading->LoadSound("SwordAttack_TWO", "Sound/Sword_Scrape_2.ogg", false);
-	m_pLoading->LoadSound("SwordAttack_THREE", "Sound/Chain_2.ogg", false);
+	m_pLoading->LoadSound("SwordAttack_THREE", "Sound/chainSaw.mp3", false);
 	m_pLoading->LoadSound("BowAttack", "Sound/Bow_3.ogg", false);
 	m_pLoading->LoadSound("GunAttack", "Sound/Rifle_Shot2.ogg", false);
+
+	//벨벳 사운드
+	m_pLoading->LoadSound("벨벳_공격", "Sound/Velvet/Attack.mp3", false);
+	m_pLoading->LoadSound("벨벳_스킬", "Sound/Velvet/Skill.mp3", false);
+	m_pLoading->LoadSound("벨벳_피격", "Sound/Velvet/hitted.mp3", false);
+	m_pLoading->LoadSound("벨벳_죽음", "Sound/Velvet/die.mp3", false);
+
+
+	//베카 사운드
+	m_pLoading->LoadSound("베카_공격", "Sound/Beakah/Beakah_attack.mp3", false);
+	m_pLoading->LoadSound("베카_스킬", "Sound/Beakah/Beakah_skill.mp3", false);
+	m_pLoading->LoadSound("베카_피격", "Sound/Beakah/Beakah_hitted.mp3", false);
+	m_pLoading->LoadSound("베카_죽음", "Sound/Beakah/Beakah_die.mp3", false);
+
 }
 
 void SC_Loading::InitUI()

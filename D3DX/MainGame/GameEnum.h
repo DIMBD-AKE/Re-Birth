@@ -46,6 +46,7 @@ enum CHAR_CONDITION			//캐릭터 컨디션
 	CHAR_DIE,				//캐릭터 죽음
 	CHAR_HIT,				//캐릭터 피격
 	CHAR_BATTLEREADY,		//캐릭터 선택됨
+	CHAR_INHERENT,			//캐릭터 고유스킬
 	CHAR_NONE				//죽은뒤의 None상태
 };
 
