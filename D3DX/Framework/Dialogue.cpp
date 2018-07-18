@@ -39,7 +39,7 @@ void Dialogue::Update()
 {
 	m_fElapse += TIME->GetElapsedTime();
 
-	if (INPUT->KeyDown(m_nPrev) && m_nIndex > 0)
+	if (INPUT->KeyDown(m_nPrev) && m_nIndex > 0 && m_nPrev > 0)
 	{
 		m_nIndex--;
 		m_nChar = 0;
@@ -47,7 +47,7 @@ void Dialogue::Update()
 		m_vecCurrentText.clear();
 	}
 
-	if (INPUT->KeyDown(m_nNext) && m_nIndex < m_vecAllText.size() - 1)
+	if (INPUT->KeyDown(m_nNext) && m_nIndex < m_vecAllText.size() - 1 && m_nNext > 0)
 	{
 		m_nIndex++;
 		m_nChar = 0;
@@ -55,7 +55,7 @@ void Dialogue::Update()
 		m_vecCurrentText.clear();
 	}
 
-	if (INPUT->KeyDown(m_nReWrite))
+	if (INPUT->KeyDown(m_nReWrite) && m_nReWrite > 0)
 	{
 		m_nChar = 0;
 		m_nLine = 0;
