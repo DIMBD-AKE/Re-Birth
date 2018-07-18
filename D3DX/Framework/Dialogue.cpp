@@ -78,7 +78,7 @@ void Dialogue::Update()
 
 		if (size < m_vecAllText[m_nIndex].size())
 		{
-			if (m_vecAllText[m_nIndex][m_nChar] == '\n')
+			while (m_vecAllText[m_nIndex][m_nChar] == '\n')
 			{
 				m_vecCurrentText.push_back("");
 				m_nLine++;
