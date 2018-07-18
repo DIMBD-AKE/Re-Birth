@@ -21,6 +21,7 @@ MainGame::~MainGame()
 	ITEMMANAGER->Destroy();
 	MODELMANAGER->Release();
 	PARTICLE->Release();
+	SOUND->Release();
 	DEVICEMANAGER->Destroy();
 }
 

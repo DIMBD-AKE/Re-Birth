@@ -37,7 +37,7 @@ void SC_Game::Init()
 	if (m_nStage == 1)
 		m_pMap->Load("Map/Sample.map");
 	if (m_nStage == 2)
-		m_pMap->Load("Map/Sample.map");
+		m_pMap->Load("Map/Stage 1.map");
 	if (m_nStage == 3)
 		m_pMap->Load("Map/Sample.map");
 

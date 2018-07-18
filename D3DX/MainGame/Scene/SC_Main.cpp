@@ -22,6 +22,7 @@ void SC_Main::OnClick(UIObject * pSender)
 
 	if (pSender->GetName().compare("Start") == 0 && m_sSelect.compare("아린"))
 	{
+		SOUND->Stop("Main Theme");
 		SCENE->ChangeScene("Game", false);
 		CharacterParant * character = NULL;
 		if (m_sSelect.compare("아카날") == 0)
@@ -107,6 +108,8 @@ void SC_Main::Release()
 
 void SC_Main::Init()
 {
+	SOUND->Play("Main Theme", 0.2);
+
 	m_eState = MS_TITLE;
 	m_isPortrait = false;
 	m_sSelect = "";
@@ -221,7 +224,9 @@ void SC_Main::Init()
 void SC_Main::Update()
 {
 	m_pUI->Update();
-	m_pPortrait->Update();
+
+	if (m_eState == MS_PORTRAIT)
+		m_pPortrait->Update();
 
 	if (m_eState == MS_PORTRAIT && m_sSelect.size() > 0)
 	{
