@@ -408,6 +408,8 @@ void Inventory::Update()
 
 	if (INPUT->KeyUp(VK_LBUTTON))
 		ChangeItem();
+
+	if (m_pEquip[EQUIP_FIRSTWEAPON].item) m_pEquip[EQUIP_FIRSTWEAPON].item->Update();
 }
 
 void Inventory::Render()
@@ -562,6 +564,7 @@ void Inventory::Render()
 		if (m_pEquip[i].item)
 			m_pEquip[i].item->EffectRender(*m_pCharacter->GetCharacter()->GetPosition());
 	}
+	if (m_pEquip[EQUIP_FIRSTWEAPON].item) m_pEquip[EQUIP_FIRSTWEAPON].item->Render();
 }
 
 ItemParent * Inventory::GetWeapon()

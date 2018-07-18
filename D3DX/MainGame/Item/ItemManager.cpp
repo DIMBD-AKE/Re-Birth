@@ -166,7 +166,8 @@ void ItemManager::Load(IN const char * szFolder, IN const char * szFile)
 					}
 					else
 					{
-						Ap->SetSkill1(SKILL->GetSkill(rt));
+						Skill* temp = SKILL->GetSkill(rt);
+						Ap->SetSkill1(temp);
 						Ap->SetSkill1Data(m_mSkList[rt]);
 					}
 				}
@@ -186,7 +187,8 @@ void ItemManager::Load(IN const char * szFolder, IN const char * szFile)
 					}
 					else
 					{
-						Ap->SetSkill2(SKILL->GetSkill(rt));
+						Skill* temp = SKILL->GetSkill(rt);
+						Ap->SetSkill2(temp);
 						Ap->SetSkill2Data(m_mSkList[rt]);
 					}
 				}
@@ -253,7 +255,9 @@ void ItemManager::LoadSkillData(IN const char * szFolder, IN const char * szFile
 			char szTemp[1024];
 			fgets(szTemp, 1024, m_fp);
 
+
 			ST_SKILL* sSkill = new ST_SKILL;
+			ZeroMemory(sSkill, sizeof(ST_SKILL));
 			sscanf_s(szTemp, " %d %f %f %f %f %d %f %f %f %f %d %f %f %f",
 				&sSkill->nMaxTarget, &sSkill->fMinLength, &sSkill->fMaxLength, &sSkill->fAngle,
 				&sSkill->fDamage, &sSkill->nDamageCount, &sSkill->fDamageInterval, &sSkill->fDamageDelay,
@@ -281,7 +285,18 @@ ItemParent* ItemManager::GetItem(int keyNum)
 	else if (miterId->second->GetRarity() == RARITY_RARE) rt->SetParticle(PARTICLE->GetParticle("RARE"));
 	else if (miterId->second->GetRarity() == RARITY_MAGIC) rt->SetParticle(PARTICLE->GetParticle("MAGIC"));
 	else if (miterId->second->GetRarity() == RARITY_UNIQUE) rt->SetParticle(PARTICLE->GetParticle("UNIQUE"));
+	
 	rt->SetStatus(*(miterId->second->GetItemStat()));
+
+	Skill* temp = new Skill;
+
+	*temp = *miterId->second->GetSkill1();
+	rt->SetSkill1(temp);
+
+	Skill* dest = new Skill;
+
+	*dest = *miterId->second->GetSkill2();
+	rt->SetSkill2(dest);
 
 	return rt;
 }
