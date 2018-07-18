@@ -35,14 +35,14 @@ void BossParent::Update()
 
 	if (INPUT->KeyDown('L'))
 	{
-		vector<MonsterParent*> tt;
-		m_pSkill->Prepare(PCHARACTER,
-			this,
-			tt,
-			m_stSkill,
-			SKILLO_MONSTER);
+		//vector<MonsterParent*> tt;
+		//m_pSkill->Prepare(PCHARACTER,
+		//	this,
+		//	tt,
+		//	m_stSkill,
+		//	SKILLO_MONSTER);
 
-		m_eBossState = BS_CASTING;
+		m_eBossState = BS_SKILL2;
 		ChangeAni();
 	}
 

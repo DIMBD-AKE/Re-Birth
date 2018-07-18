@@ -16,6 +16,8 @@ protected:
 	virtual void SetupStat() override;
 	virtual void SetupSkill() override;
 
+	void SetupSkill2();
+
 	virtual void Attack() override;
 	virtual void Move() override;
 	virtual void SkillUse() override;
@@ -23,8 +25,6 @@ protected:
 	void Passive();
 	//패시브스킬 발동 조건 함수
 	bool AbleSummon();
-	//스킬1 함수
-	void Skill();
 	//스킬 2 함수
 	void Skill2();
 	//스킬 2 캐스팅함수

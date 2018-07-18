@@ -105,15 +105,15 @@ void Nerisa::SkillUse()
 	vector<MonsterParent*> tt;
 	
 
-	//if (m_pModel->IsAnimationPercent(0.2))
-	//{
-	//	m_pSkill->Prepare(PCHARACTER,
-	//		this,
-	//		tt,
-	//		m_stSkill,
-	//		SKILLO_MONSTER);
-	//	m_pSkill->Trigger();
-	//}
+	if (m_pModel->IsAnimationPercent(0.2))
+	{
+		m_pSkill->Prepare(PCHARACTER,
+			this,
+			tt,
+			m_stSkill,
+			SKILLO_MONSTER);
+		m_pSkill->Trigger();
+	}
 
 	if (m_pModel->IsAnimationPercent(0.4))
 	{

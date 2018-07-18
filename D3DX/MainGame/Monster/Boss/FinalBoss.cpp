@@ -42,8 +42,12 @@ void FinalBoss::SetupBoss(Map* map, D3DXVECTOR3 pos)
 	m_pModel->CreateBound(box);
 	m_pModel->SetBoundSphere(m_pModel->GetOrigBoundSphere().center, 100.0f);
 
+	//피흡스킬
 	m_pSkill = SKILL->GetSkill("Boss Skill1");
-	
+	//3타스킬
+	m_pSkill2 = SKILL->GetSkill("Boss Skill2");
+
+	SetupSkill2();
 
 }
 
@@ -65,8 +69,8 @@ void FinalBoss::SetupStat()
 	DEF(m_pMonsterStat) = 5;
 	AGI(m_pMonsterStat) = 10.0f;
 	HIT(m_pMonsterStat) = 10.0f;
-	SPEED(m_pMonsterStat) = 0.08f;
-	RANGE(m_pMonsterStat) = 8.0f;
+	SPEED(m_pMonsterStat) = 0.9f;
+	RANGE(m_pMonsterStat) = 6.0f;
 }
 
 void FinalBoss::SetupSkill()
@@ -95,6 +99,33 @@ void FinalBoss::SetupSkill()
 	m_stSkill.fEffectTime = m_pModel->GetAnimationPeriod("SKILL2") / 4;
 	
 	m_stSkill.buffStatus.chr.nCurrentHP = 100; //증가 될 스탯량 피뺴고 제로메모리;
+}
+
+void FinalBoss::SetupSkill2()
+{
+	ZeroMemory(&m_stSkill, sizeof(m_stSkill));
+
+	m_stSkill.nMaxTarget = 1;
+	m_stSkill.fMinLength = 0;
+	m_stSkill.fMaxLength = 100;
+	m_stSkill.fAngle = 360;
+
+	m_stSkill.fDamage = 100; //v
+	m_stSkill.nDamageCount = 1;
+	m_stSkill.fDamageInterval = 0;
+	m_stSkill.fDamageDelay = 0;
+
+	m_stSkill.fBuffTime = -1;//<0;
+
+
+
+	//m_stSkill.fYOffset ;
+	//m_stSkill.isAutoRot;
+	//m_stSkill.fParticleTime;
+	//m_stSkill.fParticleSpeed;
+	m_stSkill.fEffectTime = 0;
+
+	//	m_stSkill.buffStatus.chr.nCurrentHP = 100; //증가 될 스탯량 피뺴고 제로메모리;
 }
 
 void FinalBoss::DropItemSetup()
@@ -340,7 +371,44 @@ void FinalBoss::SkillUse()
 
 void FinalBoss::Skill2()
 {
+	vector<MonsterParent*> tt;
 
+
+	if (m_pModel->IsAnimationPercent(0.3))
+	{
+		m_pSkill->Prepare(PCHARACTER,
+			this,
+			tt,
+			m_stSkill,
+			SKILLO_MONSTER);
+		m_pSkill->Trigger();
+	}
+
+	if (m_pModel->IsAnimationPercent(0.6))
+	{
+		m_pSkill->Prepare(PCHARACTER,
+			this,
+			tt,
+			m_stSkill,
+			SKILLO_MONSTER);
+		m_pSkill->Trigger();
+	}
+
+	if (m_pModel->IsAnimationPercent(0.8))
+	{
+		m_pSkill->Prepare(PCHARACTER,
+			this,
+			tt,
+			m_stSkill,
+			SKILLO_MONSTER);
+		m_pSkill->Trigger();
+	}
+
+	if (m_pModel->IsAnimationEnd())
+	{
+		m_eBossState = BS_RUN;
+		ChangeAni();
+	}
 }
 
 void FinalBoss::Casting()

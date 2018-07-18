@@ -119,13 +119,13 @@ void MonsterParent::SetupStat()
 
 void MonsterParent::Update()
 {
-	if (INPUT->KeyDown('L'))
-	{
-		
-		
-		m_eState = MS_SKILL;
-		ChangeAni();
-	}
+	//if (INPUT->KeyDown('L'))
+	//{
+	//	
+	//	
+	//	m_eState = MS_SKILL;
+	//	ChangeAni();
+	//}
 	if (m_bIsTargeting)
 	{
 		float tempF = (float)CURRENTHP(m_pMonsterStat) / MAXHP(m_pMonsterStat);
