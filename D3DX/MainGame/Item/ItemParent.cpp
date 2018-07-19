@@ -46,7 +46,29 @@ void ItemParent::Update()
 
 void ItemParent::Render()
 {
-	if (m_pSkill1) m_pSkill1->Render();
+	if (m_pSkill1)
+	{
+		m_pSkill1->Render();
+
+		SPRITE_BEGIN;
+		D3DXMATRIX world;
+		D3DXMatrixIdentity(&world);
+		world._41 = 1200;
+		world._42 = 600;
+		SPRITE->SetTransform(&world);
+
+		float CoolTime = (m_pItemStatus->item.fCoolTime1 - m_fSkill1CurrentCooltime) * 255 / m_pItemStatus->item.fCoolTime1;
+
+		int alpha = CoolTime;
+		TEXT->Add(to_string(int(m_fSkill1CurrentCooltime)), 1225, 625, 50, "³ª´®¸íÁ¶");
+		
+
+		SPRITE->Draw(m_pSkill1->GetIcon(), NULL, NULL, NULL, D3DCOLOR_ARGB(alpha, 255, 255, 255));
+		SPRITE_END;
+
+		TEXT->Render();
+
+	}
 	if (m_pSkill2) m_pSkill2->Render();
 }
 

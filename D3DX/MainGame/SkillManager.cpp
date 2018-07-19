@@ -616,17 +616,17 @@ void Skill::Render()
 	if (DEBUG)
 		Debug();
 
-	if (m_pSkillIcon)
-	{
-		SPRITE_BEGIN;
-		D3DXMATRIX world;
-		D3DXMatrixIdentity(&world);
-		world._41 = 100;
-		world._42 = 200;
-		SPRITE->SetTransform(&world);
-		SPRITE->Draw(m_pSkillIcon, NULL, NULL, NULL, 0xFFFFFFFF);
-		SPRITE_END;
-	}
+	//if (m_pSkillIcon)
+	//{
+	//	SPRITE_BEGIN;
+	//	D3DXMATRIX world;
+	//	D3DXMatrixIdentity(&world);
+	//	world._41 = 100;
+	//	world._42 = 200;
+	//	SPRITE->SetTransform(&world);
+	//	SPRITE->Draw(m_pSkillIcon, NULL, NULL, NULL, 0xFFFFFFFF);
+	//	SPRITE_END;
+	//}
 
 	for (auto p : m_vecParticle)
 		p->Render();
