@@ -530,7 +530,8 @@ bool MonsterParent::AbleSkill()
 		&& leng <= m_stSkill.fMaxLength
 		&& m_bIsTargeting
 		&& !m_bIsRespawn
-		&& !m_bUsingSkill)
+		&& !m_bUsingSkill
+		&& m_pModel->IsAnimationEnd())
 	{
 		m_bUsingSkill = true;
 		SkillPrepare();

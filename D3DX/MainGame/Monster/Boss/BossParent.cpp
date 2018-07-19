@@ -148,7 +148,8 @@ bool BossParent::AbleSkill2()
 		&& m_bIsTargeting
 		&& !m_bIsRespawn
 		&& !m_bUsingSkill
-		&& !m_bSkill2Use)
+		&& !m_bSkill2Use
+		&& m_pModel->IsAnimationEnd())
 	{
 		m_bSkill2Use = true;
 		SkillPrepare2();
