@@ -155,6 +155,9 @@ public:
 	virtual void RespawnUpdate();
 
 	virtual void Render();
+
+	void SetAttak() { m_eState = MS_ATTACK; ChangeAni(); }
+	void SetSkill() { m_eState = MS_SKILL;  ChangeAni();  SkillPrepare(); }
 	
 	void Respawn(D3DXVECTOR3 spawnPos);
 };

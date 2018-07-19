@@ -107,13 +107,13 @@ void NearMonster::Attack()
 		}
 
 		//200이 될동안 더이상의 공격이 없다면
-		if (m_nTargetingCount >= 200)
-		{
-			m_eState = MS_IDLE;
-			ChangeAni();
-			m_nTargetingCount = 0;
-			m_bIsTargeting = false;
-		}
+		//if (m_nTargetingCount >= 200)
+		//{
+		//	m_eState = MS_IDLE;
+		//	ChangeAni();
+		//	m_nTargetingCount = 0;
+		//	m_bIsTargeting = false;
+		//}
 	}
 }
 

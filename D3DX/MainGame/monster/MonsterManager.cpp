@@ -75,6 +75,19 @@ void MonsterManager::Update()
 			m_vMM[i]->Update();
 		}
 	}
+
+	if (INPUT->KeyDown('1'))
+	{
+		m_vMM[0]->SetAttak();
+	}
+	if (INPUT->KeyDown('2'))
+	{
+		m_vMM[2]->SetSkill();
+	}
+	if (INPUT->KeyDown('3'))
+	{
+		MakeFinalBoss(NULL);
+	}
 }
 
 void MonsterManager::Render()
@@ -111,7 +124,7 @@ void MonsterManager::MakeMonster(DropManager* pDropManager)
 	//
 	////MakeMiddleBoss(pDropManager);
 	////
-	MakeFinalBoss(pDropManager);
+	//MakeFinalBoss(pDropManager);
 }
 
 void MonsterManager::MakeMonster()
