@@ -12,8 +12,39 @@
 
 void CharacterParant::SKill()
 {
+	if (m_pInventory->GetSkill1(this, m_pMonsterManager))
+	{
+		if (m_eCharSelect == CHAR_ONE)
+		{
+			SOUND->Play("SwordAttack");
+			SOUND->Play("베카_스킬");
+		}
+		if (m_eCharSelect == CHAR_TWO)
+		{
+			SOUND->Play("SwordAttack_TWO");
+			SOUND->Play("리아_스킬");
+		}
+		if (m_eCharSelect == CHAR_THREE)
+		{
+			SOUND->Play("SwordAttack_THREE");
+			SOUND->Play("벨벳_스킬");
+		}
+
+		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_RUN_FRONT || m_eCondition == CHAR_RUN_BACK)
+		{
+			m_eCondition = CHAR_SKILL;
+			if (m_bIsSubChr)
+			{
+				m_pShieldChr->SetShieldCondition(SUB_IDLE);
+				m_pShieldChr->ChangeSubChrAni();
+			}
+			m_bIsSkill = true;
+			ChangeAnimation();
+		}
+	}
 	//특정 키를 누르면 아이템 클래스의 skill을 실행한다. 
-	m_pInventory->GetWeapon()->Skill1(this,m_pMonsterManager);
+	//if(m_pInventory->GetWeapon()->GetSkill1()) m_pInventory->GetWeapon()->Skill1(this, m_pMonsterManager);
+	
 }
 
 void CharacterParant::Move()
@@ -257,10 +288,12 @@ void CharacterParant::Controller()
 	//===============기능키 제어=====================//
 	if (INPUT->KeyDown('I'))
 	{
+		SOUND->Play("인벤_오픈");
 		m_pInventory->OpenInventory();
 	}
 	if (INPUT->KeyDown('P'))
 	{
+		SOUND->Play("인벤_오픈");
 		m_pInventory->OpenEquip();
 	}	
 }
@@ -366,7 +399,7 @@ void CharacterParant::CalculDamage(float damage)
 	}
 	if (!m_bIsSubChr)
 	{
-		if (m_eCondition != CHAR_HIT)
+		if (m_eCondition != CHAR_HIT && m_eCondition != CHAR_ATTACK && m_eCondition != CHAR_SKILL )
 		{
 			m_eCondition = CHAR_HIT;
 			ChangeAnimation();
@@ -1023,11 +1056,37 @@ void CharacterParant::SkillIconAlpha()
 
 void CharacterParant::PlayerProgressBar()
 {
+
+	// t = 현재 시간 / 토탈 시간
+	// from = 현재위치, to = 도착위치
+	// (1 - t) * from + t * to;
+
+	/*if (_hpBarFront)
+	{
+		float currentTime = TIMEMANAGER->getElapsedTime();
+		float totalTime = 1.0f;
+		float t = currentTime / totalTime;
+		float from = _width;
+		float to = (currentGauge / maxGauge) * _hpBarFront->getWidth();
+
+		if (t < totalTime)
+			_width = (1 - t) * from + t * to;
+	}
+
+	if (_width <= 0) _width = 0;
+
+*/
+	/*float TotalTime = 1.0f;
+	float CurrentTime;
+	CurrentTime += TIME->GetElapsedTime();*/
+
 	float tempF = (float)m_Status->chr.nCurrentHP / m_Status->chr.nMaxHp;
 	m_pHPBar->SetScale(D3DXVECTOR3(tempF, 1, 1));
 	D3DXVECTOR3 UIPos = D3DXVECTOR3(1350, 520, 0);
 	m_pHPBar->SetPosition(UIPos);
 	m_pHPBar->Update();
+
+	
 
 
 	float tempS = (float)m_Status->chr.nCurrentStam / m_Status->chr.nMaxStam;
@@ -1267,6 +1326,22 @@ void CharacterParant::SetTarget()
 	}
 }
 
+void CharacterParant::CutScene()
+{
+	if (m_isCutScene)
+	{
+		D3DXVECTOR3 tempPos1;
+		tempPos1 = *m_pCharacter->GetPosition();
+		tempPos1.y += 3;
+		D3DXVECTOR2 pos1 = Convert3DTo2D(tempPos1);
+		TEXT->Add(to_string(m_Status->chr.nCurrentHP), pos1.x, pos1.y, 30);
+		TEXT->Add(to_string(m_Status->chr.nMaxHp), pos1.x, pos1.y - 25.0f, 30);
+
+		TEXT->Add(to_string(m_Status->chr.nCurrentStam), pos1.x + 90, pos1.y, 30);
+		TEXT->Add(to_string(m_Status->chr.nMaxStam), pos1.x + 90, pos1.y - 25.0f, 30);
+	}
+}
+
 
 CharacterParant::CharacterParant()
 {
@@ -1367,6 +1442,7 @@ void CharacterParant::Init(CHRTYPE type, CHARSELECT order)
 	m_bIsInvincible = false;
 	m_bIsPotal = false;
 	m_bIsSubChr = false;
+	m_isCutScene = false;
 
 	m_fStamina = 10.0f;
 	m_nDamage = 0;

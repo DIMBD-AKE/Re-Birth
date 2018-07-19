@@ -82,6 +82,7 @@ protected:
 	bool					m_bIsPotal;				//지금 포탈 눌렀니?
 	bool					m_bIsSubChr;			//서브캐릭터 나왔늬?
 	bool					m_bIsWalk;				//걷고 있니
+	bool					m_isCutScene;			//컷씬이니?
 	float					m_fDamageCount;			//데미지 띄우는 카운트
 	float					m_fDamageAngle;			//데미지 앵글
 	float					m_fElpTime;				//이펙트용 일랩스 카운트
@@ -125,7 +126,7 @@ protected:
 	void StoreAttack(int index);
 	void Reset(Map* map, MonsterManager* pMonsterManager);
 	void SetTarget();
-
+	void CutScene();
 
 	int						m_temp;			//애니메이션 확인용 임시변수
 

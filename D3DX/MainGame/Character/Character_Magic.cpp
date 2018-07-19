@@ -159,6 +159,8 @@ void Character_Magic::KeyControl()
 	//앞으로 대쉬
 	if (INPUT->KeyDown('Q'))
 	{
+		SOUND->Stop("FootStep2");
+		SOUND->Play("FootStep3");
 		if (m_eCondition == CHAR_RUN_FRONT)
 		{
 			m_eCondition = CHAR_DASH_FRONT;
@@ -169,6 +171,7 @@ void Character_Magic::KeyControl()
 	}
 	else if (INPUT->KeyUp('Q'))
 	{
+		SOUND->Stop("FootStep3");
 		if (m_eCondition == CHAR_DASH_FRONT)
 		{
 			m_eCondition = CHAR_RUN_FRONT;
@@ -180,6 +183,8 @@ void Character_Magic::KeyControl()
 	//뒤로 대쉬
 	if (INPUT->KeyDown('E'))
 	{
+		SOUND->Stop("FootStep2");
+		SOUND->Play("FootStep3");
 		if (m_eCondition == CHAR_RUN_BACK)
 		{
 			m_eCondition = CHAR_DASH_BACK;
@@ -190,6 +195,7 @@ void Character_Magic::KeyControl()
 	}
 	else if (INPUT->KeyUp('E'))
 	{
+		SOUND->Stop("FootStep3");
 		if (m_eCondition == CHAR_DASH_BACK)
 		{
 			m_eCondition = CHAR_RUN_BACK;
@@ -202,7 +208,17 @@ void Character_Magic::KeyControl()
 	//일반공격
 	if (INPUT->KeyDown(VK_SPACE))
 	{
-		SOUND->Play("SwordAttack");
+		if(m_eCharSelect == CHAR_ONE)
+		{
+			SOUND->Play("SwordAttack");
+			SOUND->Play("아카날_공격");
+		}
+		if (m_eCharSelect == CHAR_TWO)
+		{
+			SOUND->Play("SwordAttack");
+			SOUND->Play("헤스티아_공격");
+		}
+		
 		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_RUN_FRONT || m_eCondition == CHAR_RUN_BACK)
 		{
 			m_eCondition = CHAR_ATTACK;
@@ -281,6 +297,15 @@ void Character_Magic::KeyControl()
 	//피격 도중에 공격 가능하게 만들기
 	if (m_eCondition == CHAR_HIT)
 	{
+		if (m_eCharSelect == CHAR_ONE)
+		{
+			if (!SOUND->IsPlaySound("아카날_피격")) SOUND->Play("아카날_피격");
+		}
+		if (m_eCharSelect == CHAR_TWO)
+		{
+			if (!SOUND->IsPlaySound("헤스티아_피격")) SOUND->Play("헤스티아_피격");
+		}
+
 		if (INPUT->KeyDown(VK_SPACE))
 		{
 			m_eCondition = CHAR_ATTACK;
@@ -305,6 +330,12 @@ void Character_Magic::KeyControl()
 	if (m_eCondition == CHAR_ATTACK)
 	{
 		Attack();
+	}
+
+	if (m_eCondition == CHAR_IDLE)
+	{
+		if (SOUND->IsPlaySound("FootStep2")) SOUND->Stop("FootStep2");
+		if (SOUND->IsPlaySound("FootStep3")) SOUND->Stop("FootStep3");
 	}
 }
 

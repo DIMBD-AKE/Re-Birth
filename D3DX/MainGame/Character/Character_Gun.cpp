@@ -177,7 +177,6 @@ void Character_Gun::KeyControl()
 	else if (INPUT->KeyUp('Q'))
 	{
 		SOUND->Stop("FootStep3");
-		SOUND->Play("FootStep4");
 		if (m_eCondition == CHAR_DASH_FRONT)
 		{
 			m_eCondition = CHAR_RUN_FRONT;
@@ -202,7 +201,6 @@ void Character_Gun::KeyControl()
 	else if (INPUT->KeyUp('E'))
 	{
 		SOUND->Stop("FootStep3");
-		SOUND->Play("FootStep4");
 		if (m_eCondition == CHAR_DASH_BACK)
 		{
 			m_eCondition = CHAR_RUN_BACK;
@@ -215,8 +213,16 @@ void Character_Gun::KeyControl()
 	//일반공격
 	if (INPUT->KeyDown(VK_SPACE))
 	{
-		if(m_eCharSelect == CHAR_ONE) SOUND->Play("GunAttack");
-		else if (m_eCharSelect == CHAR_TWO) SOUND->Play("BowAttack");
+		if (m_eCharSelect == CHAR_ONE)
+		{
+			SOUND->Play("GunAttack");
+			SOUND->Play("메그너스_공격");
+		}
+		if (m_eCharSelect == CHAR_TWO)
+		{
+			SOUND->Play("스카디_공격");
+			SOUND->Play("BowAttack");
+		}
 		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_RUN_FRONT || m_eCondition == CHAR_RUN_BACK)
 		{
 			m_eCondition = CHAR_ATTACK;
@@ -249,6 +255,16 @@ void Character_Gun::KeyControl()
 	//고유스킬
 	if (INPUT->KeyDown('T'))
 	{
+		if (m_eCharSelect == CHAR_ONE)
+		{
+			SOUND->Play("메그너스_고유_총");
+			SOUND->Play("메그너스_고유");
+		}
+		if (m_eCharSelect == CHAR_TWO)
+		{
+			SOUND->Play("스카디_고유");
+			SOUND->Play("BowAttack");
+		}
 		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_RUN_FRONT || m_eCondition == CHAR_RUN_BACK)
 		{
 			m_eCondition = CHAR_INHERENT;
@@ -290,6 +306,15 @@ void Character_Gun::KeyControl()
 	//피격 도중에 공격 가능하게 만들기
 	if (m_eCondition == CHAR_HIT)
 	{
+		if (m_eCharSelect == CHAR_ONE)
+		{
+			if (!SOUND->IsPlaySound("메그너스_피격")) SOUND->Play("메그너스_피격");
+		}
+		if (m_eCharSelect == CHAR_TWO)
+		{
+			if (!SOUND->IsPlaySound("스카디_피격")) SOUND->Play("스카디_피격");
+		}
+
 		if (INPUT->KeyDown(VK_SPACE))
 		{
 			m_eCondition = CHAR_ATTACK;
@@ -314,6 +339,12 @@ void Character_Gun::KeyControl()
 	if (m_eCondition == CHAR_ATTACK)
 	{
 		Attack();
+	}
+
+	if (m_eCondition == CHAR_IDLE)
+	{
+		if (SOUND->IsPlaySound("FootStep4")) SOUND->Stop("FootStep4");
+		if (SOUND->IsPlaySound("FootStep3")) SOUND->Stop("FootStep3");
 	}
 }
 

@@ -109,10 +109,9 @@ void Character_Sword::Init(CHRTYPE type, CHARSELECT order)
 
 void Character_Sword::Update()
 {
-	if (m_pCharacter && m_eCondition != CHAR_NONE)
+	if (m_pCharacter && m_eCondition != CHAR_NONE && !m_isCutScene)
 	{
 		Controller();
-		KeyControl();
 		Move();
 		
 		m_pInventory->Update();
@@ -137,6 +136,8 @@ void Character_Sword::Update()
 		PlayerProgressBar();
 		CountAppearDamage();
 	}
+	CutScene();
+	KeyControl();
 }
 
 void Character_Sword::Render()
@@ -241,6 +242,7 @@ void Character_Sword::KeyControl()
 	}
 	else if (INPUT->KeyUp('Q'))
 	{
+		SOUND->Stop("FootStep3");
 		if (m_eCondition == CHAR_DASH_FRONT)
 		{
 			m_eCondition = CHAR_RUN_FRONT;
@@ -256,6 +258,8 @@ void Character_Sword::KeyControl()
 	//뒤로 대쉬
 	if (INPUT->KeyDown('E'))
 	{
+		SOUND->Play("FootStep3");
+		SOUND->Stop("FootStep");
 		if (m_eCondition == CHAR_RUN_BACK)
 		{
 			m_eCondition = CHAR_DASH_BACK;
@@ -270,6 +274,7 @@ void Character_Sword::KeyControl()
 	}
 	else if (INPUT->KeyUp('E'))
 	{
+		SOUND->Stop("FootStep3");
 		if (m_eCondition == CHAR_DASH_BACK)
 		{
 			m_eCondition = CHAR_RUN_BACK;
@@ -291,7 +296,11 @@ void Character_Sword::KeyControl()
 			SOUND->Play("SwordAttack");
 			SOUND->Play("베카_공격");
 		}
-		if (m_eCharSelect == CHAR_TWO) SOUND->Play("SwordAttack_TWO");
+		if (m_eCharSelect == CHAR_TWO)
+		{
+			SOUND->Play("SwordAttack_TWO");
+			SOUND->Play("리아_공격");
+		}
 		if (m_eCharSelect == CHAR_THREE)
 		{
 			SOUND->Play("SwordAttack_THREE");
@@ -321,6 +330,22 @@ void Character_Sword::KeyControl()
 	//스킬공격
 	if (INPUT->KeyDown('K'))
 	{
+		/*if (m_eCharSelect == CHAR_ONE)
+		{
+			SOUND->Play("SwordAttack");
+			SOUND->Play("베카_스킬");
+		}
+		if (m_eCharSelect == CHAR_TWO)
+		{
+			SOUND->Play("SwordAttack_TWO");
+			SOUND->Play("리아_스킬");
+		}
+		if (m_eCharSelect == CHAR_THREE)
+		{
+			SOUND->Play("SwordAttack_THREE");
+			SOUND->Play("벨벳_스킬");
+		}
+
 		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_RUN_FRONT || m_eCondition == CHAR_RUN_BACK)
 		{
 			m_eCondition = CHAR_SKILL;
@@ -330,9 +355,9 @@ void Character_Sword::KeyControl()
 				m_pShieldChr->ChangeSubChrAni();
 			}
 			m_bIsSkill = true;
-			ChangeAnimation();
+			ChangeAnimation();*/
 			SKill();
-		}
+		//}
 	}
 
 	//서브캐릭터 제어
@@ -372,6 +397,13 @@ void Character_Sword::KeyControl()
 		{
 			if (!SOUND->IsPlaySound("베카_피격")) SOUND->Play("베카_피격");
 		}
+		if (m_eCharSelect == CHAR_TWO)
+		{
+			if (m_bIsUnderAttacked)
+			{
+				if (!SOUND->IsPlaySound("리아_피격")) SOUND->Play("리아_피격");
+			}
+		}
 		if (m_eCharSelect == CHAR_THREE)
 		{
 			if (!SOUND->IsPlaySound("벨벳_피격")) SOUND->Play("벨벳_피격");
@@ -397,11 +429,27 @@ void Character_Sword::KeyControl()
 		m_pCharacter->SetAnimationSpeed(1.0f * (m_Status->chr.fAtkSpeed + m_pInventory->GetEquipStat().chr.fAtkSpeed));
 	}
 
-
+	//공격상태시 공격 제어.
 	if (m_eCondition == CHAR_ATTACK)
 	{
 		Attack();
 	}
+
+	if (m_eCondition == CHAR_IDLE)
+	{
+		if(SOUND->IsPlaySound("FootStep")) SOUND->Stop("FootStep");
+		if (SOUND->IsPlaySound("FootStep3")) SOUND->Stop("FootStep3");
+	}
+
+	if (INPUT->KeyDown('M'))
+	{
+		m_isCutScene = true;
+	}
+	if (INPUT->KeyDown('L'))
+	{
+		m_isCutScene = false;
+	}
+
 }
 
 void Character_Sword::Attack()
@@ -501,7 +549,7 @@ void Character_Sword::Attack()
 		}
 		else if (m_eCharSelect == CHAR_THREE)
 		{
-			if (m_nDamageCount <= 10)
+			if (m_nDamageCount <= 20)
 			{
 				ST_EFFECT tempEffect;
 				ZeroMemory(&tempEffect, sizeof(tempEffect));
