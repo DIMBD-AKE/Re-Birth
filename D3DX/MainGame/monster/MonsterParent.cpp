@@ -13,7 +13,7 @@ MonsterParent::MonsterParent()
 MonsterParent::~MonsterParent()
 {
 	SAFE_DELETE(m_pAStar);
-	//SAFE_DELETE(m_pModel);
+	SAFE_DELETE(m_pModel);
 
 
 	m_pMap = NULL;
@@ -21,6 +21,7 @@ MonsterParent::~MonsterParent()
 	m_pDropManager = NULL;
 	SAFE_DELETE(m_pSkill);
 	SAFE_DELETE(m_pMonsterStat);
+	
 	/*
 	GET(Model*, m_pModel, Model);
 	SET(CharacterParant**, m_ppCharacter, Character);
