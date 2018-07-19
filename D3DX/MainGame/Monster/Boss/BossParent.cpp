@@ -28,6 +28,10 @@ void BossParent::SetupBoss(Map* map, D3DXVECTOR3 pos)
 
 void BossParent::Update()
 {
+	m_fAlphaCount += TIME->GetElapsedTime();
+
+	if (m_fAlphaCount >= 1) m_pModel->SetShaderAlpha(1.0f);
+
 	m_fSkillCoolTimeCount += TIME->GetElapsedTime();
 	m_fSkillCoolTimeCount2 += TIME->GetElapsedTime();
 
@@ -84,8 +88,13 @@ void BossParent::SetCurrentHP(int hp)
 {
 	CURRENTHP(m_pMonsterStat) -= hp;
 
+	m_pModel->SetShaderAlpha(0.5f);
+	m_fAlphaCount = 0;
+
 	if (CURRENTHP(m_pMonsterStat) <= 0)
 	{
+		m_pModel->SetShaderAlpha(1.0f);
+
 		m_pMM->DeleteSummonMonster();
 		CURRENTHP(m_pMonsterStat) = 0;
 		m_bIsDead = true;

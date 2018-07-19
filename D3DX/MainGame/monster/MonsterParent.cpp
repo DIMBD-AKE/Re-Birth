@@ -128,6 +128,10 @@ void MonsterParent::Update()
 	//	m_eState = MS_SKILL;
 	//	ChangeAni();
 	//}
+	m_fAlphaCount += TIME->GetElapsedTime();
+
+	if (m_fAlphaCount >= 1) m_pModel->SetShaderAlpha(1.0f);
+
 	if (m_bIsTargeting)
 	{
 		float tempF = (float)CURRENTHP(m_pMonsterStat) / MAXHP(m_pMonsterStat);

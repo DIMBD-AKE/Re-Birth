@@ -64,6 +64,8 @@ protected:
 	//리스폰될떄까지 시간
 	int m_nResPawnCount;
 
+	int m_fAlphaCount;
+
 	//몬스터 상태
 	MON_STATE m_eState;
 	//몬스터가 현재 있는 곳의 맵
@@ -133,12 +135,15 @@ protected:
 			ChangeAni();
 		}
 
-		
+		m_pModel->SetShaderAlpha(0.5f);
+		m_fAlphaCount = 0;
+
 		CURRENTHP(m_pMonsterStat) -= hp;
 		m_bIsTargeting = true;
 		m_nTargetingCount = 0;
 		if (CURRENTHP(m_pMonsterStat) <= 0)
 		{
+			m_pModel->SetShaderAlpha(1.0f);
 			CURRENTHP(m_pMonsterStat) = 0;
 			m_bIsRespawn = true;
 			m_eState = MS_DIE;
