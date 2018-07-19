@@ -57,6 +57,7 @@ void MonsterParent::Setup(Map* map, D3DXVECTOR3 spawnPos, bool isSummon)
 	SetupStat();
 	SetupSkill();
 	DropItemSetup();
+	m_fAlphaCount = 0;
 
 	m_pHPBar = new UIObject;
 
@@ -109,7 +110,7 @@ void MonsterParent::SetupBoss(Map* map, D3DXVECTOR3 pos)
 
 	backBar->SetPosition(D3DXVECTOR3(0, 0, 0.1));
 	backBar->SetTexture(TEXTUREMANAGER->GetTexture("BossBackBar"));
-
+	m_fAlphaCount = 0;
 
 	m_pHPBar->AddChild(backBar);
 }
@@ -130,7 +131,7 @@ void MonsterParent::Update()
 	//}
 	m_fAlphaCount += TIME->GetElapsedTime();
 
-	if (m_fAlphaCount >= 1) m_pModel->SetShaderAlpha(1.0f);
+	if (m_fAlphaCount >= 0.5) m_pModel->SetShaderAlpha(1.0f);
 
 	if (m_bIsTargeting)
 	{

@@ -64,7 +64,7 @@ protected:
 	//리스폰될떄까지 시간
 	int m_nResPawnCount;
 
-	int m_fAlphaCount;
+	float m_fAlphaCount;
 
 	//몬스터 상태
 	MON_STATE m_eState;
