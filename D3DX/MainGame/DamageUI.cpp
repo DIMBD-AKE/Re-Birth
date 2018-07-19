@@ -47,6 +47,18 @@ void DamageUI::Setup(bool IsPlayer)
 		//m_pUIDamage[8]->SetTexture(TEXTUREMANAGER->GetTexture("숫자8"));
 		//m_pUIDamage[9]->SetTexture(TEXTUREMANAGER->GetTexture("숫자9"));
 	}
+	else
+	{
+		for (int i = 0; i < 10; i++)
+		{
+			string tempStr = "몬스터숫자";
+			char tempChar[10];
+			sprintf_s(tempChar, sizeof(tempChar), "%d", i);
+
+			tempStr += tempChar;
+			m_pUIDamage[i]->SetTexture(TEXTUREMANAGER->GetTexture(tempStr));
+		}
+	}
 
 }
 

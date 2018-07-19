@@ -77,12 +77,24 @@ void SC_Loading::AddModel()
 void SC_Loading::AddTexture()
 {
 	//m_pLoading->LoadTexture()
+	//몬스터 HP바
 	m_pLoading->LoadTexture("MonBackBar", "./Model/Enemy/UI/백바.jpg");
 	m_pLoading->LoadTexture("MonFrontBar", "./Model/Enemy/UI/프론트바.jpg");
 
 	m_pLoading->LoadTexture("BossBackBar", "./Model/Enemy/UI/보스백바.jpg");
 	m_pLoading->LoadTexture("BossFrontBar", "./Model/Enemy/UI/보스프론트바.jpg");
 
+	//몬스터 데미지 이미지
+	m_pLoading->LoadTexture("몬스터숫자0", "Texture/Damage/0_r.png");
+	m_pLoading->LoadTexture("몬스터숫자1", "Texture/Damage/1_r.png");
+	m_pLoading->LoadTexture("몬스터숫자2", "Texture/Damage/2_r.png");
+	m_pLoading->LoadTexture("몬스터숫자3", "Texture/Damage/3_r.png");
+	m_pLoading->LoadTexture("몬스터숫자4", "Texture/Damage/4_r.png");
+	m_pLoading->LoadTexture("몬스터숫자5", "Texture/Damage/5_r.png");
+	m_pLoading->LoadTexture("몬스터숫자6", "Texture/Damage/6_r.png");
+	m_pLoading->LoadTexture("몬스터숫자7", "Texture/Damage/7_r.png");
+	m_pLoading->LoadTexture("몬스터숫자8", "Texture/Damage/8_r.png");
+	m_pLoading->LoadTexture("몬스터숫자9", "Texture/Damage/9_r.png");
 
 
 
@@ -108,16 +120,7 @@ void SC_Loading::AddTexture()
 	m_pLoading->LoadTexture("숫자8", "Texture/Damage/8.png");
 	m_pLoading->LoadTexture("숫자9", "Texture/Damage/9.png");
 
-	m_pLoading->LoadTexture("숫자0_r", "Texture/Damage/0_r.png");
-	m_pLoading->LoadTexture("숫자1_r", "Texture/Damage/1_r.png");
-	m_pLoading->LoadTexture("숫자2_r", "Texture/Damage/2_r.png");
-	m_pLoading->LoadTexture("숫자3_r", "Texture/Damage/3_r.png");
-	m_pLoading->LoadTexture("숫자4_r", "Texture/Damage/4_r.png");
-	m_pLoading->LoadTexture("숫자5_r", "Texture/Damage/5_r.png");
-	m_pLoading->LoadTexture("숫자6_r", "Texture/Damage/6_r.png");
-	m_pLoading->LoadTexture("숫자7_r", "Texture/Damage/7_r.png");
-	m_pLoading->LoadTexture("숫자8_r", "Texture/Damage/8_r.png");
-	m_pLoading->LoadTexture("숫자9_r", "Texture/Damage/9_r.png");
+	
 
 	//플레이어 프로그래스바
 	m_pLoading->LoadTexture("플레이어_프론트바", "Texture/PlayerProgressBar/frontBar.jpg");

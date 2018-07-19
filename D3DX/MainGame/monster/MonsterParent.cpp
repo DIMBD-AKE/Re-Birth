@@ -21,6 +21,7 @@ MonsterParent::~MonsterParent()
 	m_pDropManager = NULL;
 	SAFE_DELETE(m_pSkill);
 	SAFE_DELETE(m_pMonsterStat);
+	SAFE_DELETE(m_pDamageUI);
 	
 	/*
 	GET(Model*, m_pModel, Model);
@@ -85,6 +86,9 @@ void MonsterParent::Setup(Map* map, D3DXVECTOR3 spawnPos, bool isSummon)
 
 
 	m_pHPBar->AddChild(backBar);
+
+	m_pDamageUI = new DamageUI;
+	m_pDamageUI->Setup(false);
 	//ST_SIZEBOX box;
 }
 
@@ -113,6 +117,9 @@ void MonsterParent::SetupBoss(Map* map, D3DXVECTOR3 pos)
 	m_fAlphaCount = 0;
 
 	m_pHPBar->AddChild(backBar);
+
+	m_pDamageUI = new DamageUI;
+	m_pDamageUI->Setup(false);
 }
 
 void MonsterParent::SetupStat()
@@ -122,6 +129,7 @@ void MonsterParent::SetupStat()
 
 void MonsterParent::Update()
 {
+	m_pDamageUI->Update(*m_pModel->GetPosition());
 	//if (INPUT->KeyDown('L'))
 	//{
 	//	
@@ -506,6 +514,34 @@ void MonsterParent::ItemDrop()
 		}
 	}
 
+}
+void MonsterParent::SetCurrentHP(int hp)
+{
+	{
+		if (m_eState != MS_ATTACK && m_eState != MS_DIE && m_eState != MS_SKILL)
+		{
+			m_eState = MS_ATTACK;
+			ChangeAni();
+		}
+
+		m_pModel->SetShaderAlpha(0.5f);
+		m_fAlphaCount = 0;
+
+		m_pDamageUI->AddDamage(hp);
+
+		CURRENTHP(m_pMonsterStat) -= hp;
+		m_bIsTargeting = true;
+		m_nTargetingCount = 0;
+		if (CURRENTHP(m_pMonsterStat) <= 0)
+		{
+			m_pModel->SetShaderAlpha(1.0f);
+			CURRENTHP(m_pMonsterStat) = 0;
+			m_bIsRespawn = true;
+			m_eState = MS_DIE;
+			ChangeAni();
+			ItemDrop();
+		}
+	}
 }
 void MonsterParent::SetupSkill()
 {

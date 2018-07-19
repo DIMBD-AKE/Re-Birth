@@ -9,6 +9,7 @@ class AStar;
 class DropManager;
 class UIObject;
 class Skill;
+class DamageUI;
 
 enum MON_STATE{
 	MS_IDLE,			//제자리에 있는 상태
@@ -88,6 +89,8 @@ protected:
 	float	m_fSkillCoolTimeCount;
 	int		m_nSkillCooltime;
 	bool	m_bUsingSkill;
+
+	DamageUI* m_pDamageUI;
 	/*
 	int			nMaxTarget;
 	float		fMinLength;
@@ -127,30 +130,8 @@ protected:
 	POINT MoveForAttack();
 	void ItemDrop();
 
-	virtual void SetCurrentHP(int hp)
-	{
-		if (m_eState != MS_ATTACK && m_eState != MS_DIE && m_eState != MS_SKILL)
-		{
-			m_eState = MS_ATTACK;
-			ChangeAni();
-		}
-
-		m_pModel->SetShaderAlpha(0.5f);
-		m_fAlphaCount = 0;
-
-		CURRENTHP(m_pMonsterStat) -= hp;
-		m_bIsTargeting = true;
-		m_nTargetingCount = 0;
-		if (CURRENTHP(m_pMonsterStat) <= 0)
-		{
-			m_pModel->SetShaderAlpha(1.0f);
-			CURRENTHP(m_pMonsterStat) = 0;
-			m_bIsRespawn = true;
-			m_eState = MS_DIE;
-			ChangeAni();
-			ItemDrop();
-		}
-	}
+	virtual void SetCurrentHP(int hp);
+	
 
 	virtual void ChangeAni();
 	

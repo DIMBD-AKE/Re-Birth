@@ -28,6 +28,8 @@ void BossParent::SetupBoss(Map* map, D3DXVECTOR3 pos)
 
 void BossParent::Update()
 {
+	m_pDamageUI->Update(*m_pModel->GetPosition());
+
 	m_fAlphaCount += TIME->GetElapsedTime();
 
 	if (m_fAlphaCount >= 1) m_pModel->SetShaderAlpha(1.0f);
@@ -90,6 +92,7 @@ void BossParent::SetCurrentHP(int hp)
 
 	m_pModel->SetShaderAlpha(0.5f);
 	m_fAlphaCount = 0;
+	m_pDamageUI->AddDamage(hp);
 
 	if (CURRENTHP(m_pMonsterStat) <= 0)
 	{
