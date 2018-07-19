@@ -288,16 +288,19 @@ ItemParent* ItemManager::GetItem(int keyNum)
 	
 	rt->SetStatus(*(miterId->second->GetItemStat()));
 
-	Skill* temp = new Skill;
+	if (miterId->second->GetSkill1())
+	{
+		Skill* temp = new Skill;
+		*temp = *miterId->second->GetSkill1();
+		rt->SetSkill1(temp);
+	}
 
-	*temp = *miterId->second->GetSkill1();
-	rt->SetSkill1(temp);
-
-	Skill* dest = new Skill;
-
-	*dest = *miterId->second->GetSkill2();
-	rt->SetSkill2(dest);
-
+	if (miterId->second->GetSkill2())
+	{
+		Skill* dest = new Skill;
+		*dest = *miterId->second->GetSkill2();
+		rt->SetSkill2(dest);
+	}
 	return rt;
 }
 
