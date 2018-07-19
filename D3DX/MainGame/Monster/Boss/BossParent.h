@@ -39,6 +39,9 @@ protected :
 
 	SET(MonsterManager*, m_pMM, MM);
 
+	float m_fSkillCoolTimeCount2 ;
+	int m_nSkillCooltime2;
+	bool m_bSkill2Use;
 	
 	/*
 	
@@ -92,6 +95,8 @@ protected:
 
 	virtual void SetCurrentHP(int hp);
 
+	bool AbleSkill2();
+	void SkillPrepare2();
 	
 public:
 	BossParent();

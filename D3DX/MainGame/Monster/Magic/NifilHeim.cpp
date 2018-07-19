@@ -84,7 +84,7 @@ void NifilHeim::SetupSkill()
 	m_stSkill.fEffectTime = 1.85f;				 //
 
 	m_fSkillCoolTimeCount = 0;
-	m_nSkillCooltime = 10;
+	m_nSkillCooltime = 100;
 }
 
 

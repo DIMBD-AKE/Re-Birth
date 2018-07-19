@@ -49,6 +49,9 @@ void FinalBoss::SetupBoss(Map* map, D3DXVECTOR3 pos)
 
 	SetupSkill2();
 
+	m_bSkill2Use = m_bUsingSkill = false;
+	m_bIsTargeting = true;
+
 }
 
 void FinalBoss::SetupStat()
@@ -99,24 +102,30 @@ void FinalBoss::SetupSkill()
 	m_stSkill.fEffectTime = m_pModel->GetAnimationPeriod("SKILL2") / 4;
 	
 	m_stSkill.buffStatus.chr.nCurrentHP = 100; //증가 될 스탯량 피뺴고 제로메모리;
+
+	m_fSkillCoolTimeCount = 0;
+	m_nSkillCooltime = 200;
 }
 
 void FinalBoss::SetupSkill2()
 {
-	ZeroMemory(&m_stSkill, sizeof(m_stSkill));
+	ZeroMemory(&m_stSkill2, sizeof(m_stSkill2));
 
-	m_stSkill.nMaxTarget = 1;
-	m_stSkill.fMinLength = 0;
-	m_stSkill.fMaxLength = 100;
-	m_stSkill.fAngle = 360;
+	m_stSkill2.nMaxTarget = 1;
+	m_stSkill2.fMinLength = 0;
+	m_stSkill2.fMaxLength = 100;
+	m_stSkill2.fAngle = 360;
 
-	m_stSkill.fDamage = 100; //v
-	m_stSkill.nDamageCount = 1;
-	m_stSkill.fDamageInterval = 0;
-	m_stSkill.fDamageDelay = 0;
+	m_stSkill2.fDamage = 100; //v
+	m_stSkill2.nDamageCount = 1;
+	m_stSkill2.fDamageInterval = 0;
+	m_stSkill2.fDamageDelay = 0;
 
-	m_stSkill.fBuffTime = -1;//<0;
+	m_stSkill2.fBuffTime = -1;//<0;
 
+	m_fSkillCoolTimeCount2 = 0;
+	m_nSkillCooltime2 = 30;
+	
 
 
 	//m_stSkill.fYOffset ;
@@ -179,6 +188,18 @@ void FinalBoss::ChangeAni()
 
 void FinalBoss::Pattern()
 {
+	if (AbleSkill() && !m_bSkill2Use )
+	{
+		m_eBossState = BS_CASTING;
+		ChangeAni();
+	}
+
+	else if (AbleSkill2() )
+	{
+		m_eBossState = BS_SKILL2;
+		ChangeAni();
+	}
+
 	switch (m_eBossState)
 	{
 	case BS_ENTER:
@@ -364,8 +385,9 @@ void FinalBoss::SkillUse()
 
 	if (m_pModel->IsAnimationEnd())
 	{
+		m_bUsingSkill = false;
 		m_fSkillCoolTimeCount = 0;
-		m_eBossState = BS_IDLE;
+		m_eBossState = BS_RUN;
 		ChangeAni();
 	}
 }
@@ -377,37 +399,27 @@ void FinalBoss::Skill2()
 
 	if (m_pModel->IsAnimationPercent(0.3))
 	{
-		m_pSkill->Prepare(PCHARACTER,
-			this,
-			tt,
-			m_stSkill,
-			SKILLO_MONSTER);
+		
 		m_pSkill->Trigger();
 	}
 
 	if (m_pModel->IsAnimationPercent(0.6))
 	{
-		m_pSkill->Prepare(PCHARACTER,
-			this,
-			tt,
-			m_stSkill,
-			SKILLO_MONSTER);
+		SkillPrepare2();
 		m_pSkill->Trigger();
 	}
 
 	if (m_pModel->IsAnimationPercent(0.8))
 	{
-		m_pSkill->Prepare(PCHARACTER,
-			this,
-			tt,
-			m_stSkill,
-			SKILLO_MONSTER);
+		SkillPrepare2();
 		m_pSkill->Trigger();
 	}
 
 	if (m_pModel->IsAnimationEnd())
 	{
-		m_fSkillCoolTimeCount = 0;
+		m_bSkill2Use = false;
+		
+		m_fSkillCoolTimeCount2 = 0;
 		m_eBossState = BS_RUN;
 		ChangeAni();
 	}

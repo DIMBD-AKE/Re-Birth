@@ -28,6 +28,9 @@ void BossParent::SetupBoss(Map* map, D3DXVECTOR3 pos)
 
 void BossParent::Update()
 {
+	m_fSkillCoolTimeCount += TIME->GetElapsedTime();
+	m_fSkillCoolTimeCount2 += TIME->GetElapsedTime();
+
 	if (m_pModel && (m_eState != MS_NONE && m_eBossState != BS_NONE))
 	{
 		m_pModel->World();
@@ -132,4 +135,35 @@ void BossParent::ChangeAni()
 void BossParent::Pattern()
 {
 
+}
+
+bool BossParent::AbleSkill2()
+{
+	float leng = GetDistance(*m_pModel->GetPosition(), *CHARACTER->GetPosition());
+
+	//쿨타임이 돌았고 스킬이 사용가능할때
+	//그리고 내가 타겟팅이 되었을때 스킬 사용
+	if (m_fSkillCoolTimeCount2 >= m_nSkillCooltime2
+		&& leng <= m_stSkill2.fMaxLength
+		&& m_bIsTargeting
+		&& !m_bIsRespawn
+		&& !m_bUsingSkill
+		&& !m_bSkill2Use)
+	{
+		m_bSkill2Use = true;
+		SkillPrepare2();
+		return true;
+	}
+
+	return false;
+}
+
+void BossParent::SkillPrepare2(){
+	vector<MonsterParent*> tt;
+
+	m_pSkill->Prepare(PCHARACTER,
+		this,
+		tt,
+		m_stSkill2,
+		SKILLO_MONSTER);
 }
