@@ -6,6 +6,7 @@ protected:
 	void *	m_pData[10];
 
 public:
+	Scene() { ZeroMemory(m_pData, sizeof(void*) * 10); }
 	virtual ~Scene() {}
 	virtual void Release() = 0;
 	virtual void Init() = 0;

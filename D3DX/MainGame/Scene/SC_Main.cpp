@@ -20,11 +20,11 @@ void SC_Main::OnClick(UIObject * pSender)
 	if (pSender->GetName().compare("Character Select") == 0)
 		m_eState = MS_PORTRAIT;
 
+	if (pSender->GetName().compare("Option") == 0)
+		m_eState = MS_OPTION;
+
 	if (pSender->GetName().compare("Start") == 0 && m_sSelect.compare("아린"))
 	{
-		/*SCENE->ChangeScene("Test", true);
-		return;*/
-
 		SOUND->Stop("Main Theme");
 		SCENE->ChangeScene("Game", false);
 		CharacterParant * character = NULL;
@@ -66,12 +66,15 @@ void SC_Main::OnClick(UIObject * pSender)
 		SCENE->GetCurrentScene()->SetData(0, character);
 		int stage = 1;
 		SCENE->GetCurrentScene()->SetData(1, &stage);
+		float time = 0;
+		SCENE->GetCurrentScene()->SetData(2, &time);
 		SCENE->GetCurrentScene()->Init();
 	}
 
 	if (pSender->GetName().compare("Character Select") && 
 		pSender->GetName().compare("Background") &&
-		pSender->GetName().compare("Start"))
+		pSender->GetName().compare("Start") &&
+		pSender->GetName().compare("Option"))
 	{
 		m_sSelect = pSender->GetName();
 		MakeModel();
@@ -82,7 +85,8 @@ void SC_Main::OnOver(UIObject * pSender)
 {
 	if (pSender->GetName().compare("Character Select") &&
 		pSender->GetName().compare("Background") && 
-		pSender->GetName().compare("Start"))
+		pSender->GetName().compare("Start") &&
+		pSender->GetName().compare("Option"))
 	{
 		m_pChrOver->SetPosition(pSender->GetPosition() - D3DXVECTOR3(6, 6, 0));
 		m_pChrOver->SetScale(pSender->GetScale());
@@ -95,7 +99,8 @@ void SC_Main::OnExit(UIObject * pSender)
 {
 	if (pSender->GetName().compare("Character Select") && 
 		pSender->GetName().compare("Background") &&
-		pSender->GetName().compare("Start"))
+		pSender->GetName().compare("Start") &&
+		pSender->GetName().compare("Option"))
 		m_isPortrait = false;
 }
 
@@ -111,7 +116,8 @@ void SC_Main::Release()
 
 void SC_Main::Init()
 {
-	SOUND->Play("Main Theme", 0.2);
+	g_clearColor = 0xFF000000;
+	SOUND->Play("Main Theme");
 
 	m_eState = MS_TITLE;
 	m_isPortrait = false;
@@ -127,6 +133,13 @@ void SC_Main::Init()
 	child->SetPosition(D3DXVECTOR3(580, 351, 0));
 	child->SetTexture(TEXTUREMANAGER->AddTexture("Main Button", "Texture/Scene/Main Button.png"));
 	child->SetName("Character Select");
+	child->SetFunction(this);
+	m_pUI->AddChild(child);
+
+	child = new UIObject;
+	child->SetPosition(D3DXVECTOR3(580, 450, 0));
+	child->SetTexture(TEXTUREMANAGER->AddTexture("Main Button", "Texture/Scene/Main Button.png"));
+	child->SetName("Option");
 	child->SetFunction(this);
 	m_pUI->AddChild(child);
 
@@ -180,25 +193,25 @@ void SC_Main::Init()
 			{
 				child->SetName("아린");
 				child->SetTexture(TEXTUREMANAGER->GetTexture("아린_사진"));
-				m_pContext->AddText("아린 - 검사\n\n초반에 쓰려했지만\n애니메이션이 위치이동을해서\n이미 존재하지 않는 캐릭터다...");
+				m_pContext->AddText("아린 - 검사\n\n초반에 쓰려했지만\n애니메이션이 이동을해서\n이미 존재하지 않는 캐릭터다...\n\n(머릿수 채우기 용)");
 			}
 			if (index == 2)
 			{
 				child->SetName("베카");
 				child->SetTexture(TEXTUREMANAGER->GetTexture("베카_사진"));
-				m_pContext->AddText("베카 - 검사\n\n크으...\n뽕에 취한다.");
+				m_pContext->AddText("베카 - 검사\n\n크으...\n??? : 드림뽕에 취한다.");
 			}
 			if (index == 3)
 			{
 				child->SetName("헤스티아");
 				child->SetTexture(TEXTUREMANAGER->GetTexture("헤스티아_사진"));
-				m_pContext->AddText("헤스티아 - 마법사\n\n모자를 쓰고있다");
+				m_pContext->AddText("헤스티아 - 마법사\n\n모자를 쓰고있다.\n마법사다.\n..");
 			}
 			if (index == 4)
 			{
 				child->SetName("메그너스");
 				child->SetTexture(TEXTUREMANAGER->GetTexture("메그너스_사진"));
-				m_pContext->AddText("메그너스 - 총\n\n남캐 그 자체다\n맘에 안들지만 평타가 괜찮으니\n넘어가도록 하자.");
+				m_pContext->AddText("메그너스 - 총\n\n남캐 그 자체다\n맘에 안들지만 평타가 쓸만하니\n넘어가도록 하자.");
 			}
 			if (index == 5)
 			{
@@ -210,13 +223,13 @@ void SC_Main::Init()
 			{
 				child->SetName("스카디");
 				child->SetTexture(TEXTUREMANAGER->GetTexture("스카디_사진"));
-				m_pContext->AddText("스카디 - 궁수\n\n크으...\n뒤를보면 왠지 겐지가 생각난다.");
+				m_pContext->AddText("스카디 - 궁수\n\n크으...");
 			}
 			if (index == 7)
 			{
 				child->SetName("벨벳");
 				child->SetTexture(TEXTUREMANAGER->GetTexture("벨벳_사진"));
-				m_pContext->AddText("벨벳 - 근접\n\n왠지 모르게 마음에 드는 캐릭터다.\n그냥 그렇다는것이다.");
+				m_pContext->AddText("벨벳 - 근접\n\n왠지 모르게 마음에 드는 캐릭터다.\n'ㅅ'");
 			}
 			
 			m_pPortrait->AddChild(child);
@@ -246,9 +259,11 @@ void SC_Main::Update()
 	{
 		D3DXVECTOR2 mouse = D3DXVECTOR2(MOUSE_POS.x, MOUSE_POS.y);
 		m_fElapse += 0.05;
-		int alpha = sin(m_fElapse) * 30 + 220;
+		int alpha = sin(m_fElapse) * 30 + 150;
 		m_pUI->Find("Character Select")->SetAlpha(alpha);
+		m_pUI->Find("Option")->SetAlpha(alpha);
 		TEXT->Add("시작", 724, 382, 40, "나눔명조", D3DCOLOR_ARGB(alpha, 255, 255, 255));
+		TEXT->Add("설정", 724, 482, 40, "나눔명조", D3DCOLOR_ARGB(alpha, 255, 255, 255));
 	}
 
 	if (INPUT->KeyDown(VK_BACK))
@@ -293,6 +308,7 @@ void SC_Main::MakeModel()
 	CAMERA->SetMode(CAMERA_FOLLOW_HOLD);
 	CAMERA->SetTarget(&m_vPos, &m_vPos);
 	CAMERA->SetTargetOffset(D3DXVECTOR3(-5, 3, 0));
+	CAMERA->SetCamOffset(D3DXVECTOR3(0, 0, 0));
 
 	SAFE_DELETE(m_pModel);
 	m_pModel = MODELMANAGER->GetModel(m_sSelect, MODELTYPE_X);

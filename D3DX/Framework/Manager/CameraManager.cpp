@@ -161,6 +161,8 @@ void CameraManager::SetTarget(D3DXVECTOR3 * targetPos, D3DXVECTOR3 * targetRot)
 {
 	m_pTargetPos = targetPos;
 	m_pTargetRot = targetRot;
+	if (targetRot)
+		m_vRotation = *targetRot;
 }
 
 void CameraManager::SetFog(bool enable, float start, float end, DWORD color, float density)
