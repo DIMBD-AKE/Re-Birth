@@ -22,6 +22,9 @@ void SC_Main::OnClick(UIObject * pSender)
 
 	if (pSender->GetName().compare("Start") == 0 && m_sSelect.compare("아린"))
 	{
+		/*SCENE->ChangeScene("Test", true);
+		return;*/
+
 		SOUND->Stop("Main Theme");
 		SCENE->ChangeScene("Game", false);
 		CharacterParant * character = NULL;
@@ -151,7 +154,7 @@ void SC_Main::Init()
 	m_pPortrait->AddChild(child);
 
 	m_pContext = new Dialogue;
-	m_pContext->Init(D3DXVECTOR2(550, 300), 30, "나눔명조", 0.05, 0xFFFFFFFF);
+	m_pContext->Init(D3DXVECTOR2(550, 280), 30, "나눔명조", 0.05, 0xFFFFFFFF);
 	
 	for (int y = 0; y < 4; y++)
 	{
@@ -171,19 +174,19 @@ void SC_Main::Init()
 			{
 				child->SetName("아카날");
 				child->SetTexture(TEXTUREMANAGER->GetTexture("아카날_사진"));
-				m_pContext->AddText("아카날 - 마법사\n남자인지 여자인지 모르겠다.");
+				m_pContext->AddText("아카날 - 마법사\n\n일러는 여자같은데 모델은 남자다.");
 			}
 			if (index == 1)
 			{
 				child->SetName("아린");
 				child->SetTexture(TEXTUREMANAGER->GetTexture("아린_사진"));
-				m_pContext->AddText("아린 - 검사\n이미 존재하지 않는 캐릭터다...");
+				m_pContext->AddText("아린 - 검사\n\n초반에 쓰려했지만\n애니메이션이 위치이동을해서\n이미 존재하지 않는 캐릭터다...");
 			}
 			if (index == 2)
 			{
 				child->SetName("베카");
 				child->SetTexture(TEXTUREMANAGER->GetTexture("베카_사진"));
-				m_pContext->AddText("베카 - 검사\n크으...\n뽕에 취한다.");
+				m_pContext->AddText("베카 - 검사\n\n크으...\n뽕에 취한다.");
 			}
 			if (index == 3)
 			{
@@ -195,25 +198,25 @@ void SC_Main::Init()
 			{
 				child->SetName("메그너스");
 				child->SetTexture(TEXTUREMANAGER->GetTexture("메그너스_사진"));
-				m_pContext->AddText("메그너스 - 총\n유일한 남캐다.\n맘에 안들지만 넘어가도록 하자.");
+				m_pContext->AddText("메그너스 - 총\n\n남캐 그 자체다\n맘에 안들지만 평타가 괜찮으니\n넘어가도록 하자.");
 			}
 			if (index == 5)
 			{
 				child->SetName("리아");
 				child->SetTexture(TEXTUREMANAGER->GetTexture("리아_사진"));
-				m_pContext->AddText("리아 - 검사\n안경을 쓰고있다.\n테스트용으로 꽤 쓰이는것 같다.");
+				m_pContext->AddText("리아 - 검사\n\n안경을 쓰고있다.\n테스트용으로 꽤 쓰이는것 같다.");
 			}
 			if (index == 6)
 			{
 				child->SetName("스카디");
 				child->SetTexture(TEXTUREMANAGER->GetTexture("스카디_사진"));
-				m_pContext->AddText("스카디 - 궁수\n크으...");
+				m_pContext->AddText("스카디 - 궁수\n\n크으...\n뒤를보면 왠지 겐지가 생각난다.");
 			}
 			if (index == 7)
 			{
 				child->SetName("벨벳");
 				child->SetTexture(TEXTUREMANAGER->GetTexture("벨벳_사진"));
-				m_pContext->AddText("벨벳 - 근접\n왠지 모르게 마음에 드는 캐릭터다.\n그냥 그렇다는것이다.");
+				m_pContext->AddText("벨벳 - 근접\n\n왠지 모르게 마음에 드는 캐릭터다.\n그냥 그렇다는것이다.");
 			}
 			
 			m_pPortrait->AddChild(child);
@@ -252,7 +255,11 @@ void SC_Main::Update()
 		m_eState = MS_TITLE;
 
 	if (m_pModel)
+	{
+		if (INPUT->KeyPress('A')) m_pModel->GetRotation()->y -= 0.1;
+		if (INPUT->KeyPress('D')) m_pModel->GetRotation()->y += 0.1;
 		m_pModel->World();
+	}
 }
 
 void SC_Main::Render()

@@ -1,19 +1,18 @@
 #include "../../stdafx.h"
 #include "SkinnedMesh.h"
 
-
 SkinnedMesh::SkinnedMesh()
 	: m_pRoot(NULL)
 	, m_pAnimController(NULL)
 	, m_fBlendTime(1.0f)
 	, m_fPassedTime(0.0f)
+	, m_fAlpha(1.0f)
 {
 }
 
 SkinnedMesh::~SkinnedMesh()
 {
 	Destroy(m_pRoot);
-	SAFE_RELEASE(m_pAnimController);
 }
 
 void SkinnedMesh::CloneAnimation(SkinnedMesh * orig)
@@ -26,6 +25,8 @@ void SkinnedMesh::CloneAnimation(SkinnedMesh * orig)
 		orig->m_pAnimController->GetMaxNumTracks(),
 		orig->m_pAnimController->GetMaxNumEvents(),
 		&m_pAnimController);
+
+	m_pShaderEffect = Shader::LoadShader("Shader/Normal UV.fx");
 }
 
 AllocatedHierachy::AllocatedHierachy()
@@ -74,8 +75,19 @@ STDMETHODIMP AllocatedHierachy::CreateMeshContainer(
 		pBoneMesh->vecMtl.push_back(pMaterials[i].MatD3D);
 		string sFullPath = m_sFolder;
 		sFullPath += string(pMaterials[i].pTextureFilename);
-		TEXTUREMANAGER->AddTexture(sFullPath.c_str(), sFullPath.c_str());
-		pBoneMesh->vecTex.push_back(TEXTUREMANAGER->GetTexture(sFullPath.c_str()));
+		pBoneMesh->vecTex.push_back(TEXTUREMANAGER->AddTexture(sFullPath.c_str(), sFullPath.c_str()));
+		int n = -1; 
+		bool big = false;
+		if (sFullPath.find("_D") != string::npos) { n = sFullPath.find("_D"); big = true; }
+		if (sFullPath.find("_d") != string::npos) { n = sFullPath.find("_d"); big = false; }
+		if (n > 0)
+		{
+			sFullPath = sFullPath.substr(0, n);
+			sFullPath += big ? "_N.tga" : "_n.tga";
+			struct stat buffer;
+			if (stat(sFullPath.c_str(), &buffer) == 0)
+				pBoneMesh->vecNor.push_back(TEXTUREMANAGER->AddTexture(sFullPath.c_str(), sFullPath.c_str()));
+		}
 	}
 
 	pSkinInfo->AddRef();
@@ -350,13 +362,50 @@ void SkinnedMesh::Render(LPD3DXFRAME pFrame, D3DXMATRIX * matWorld)
 		ST_BONE_MESH * pBoneMesh = (ST_BONE_MESH*)pBone->pMeshContainer;
 		if (pBoneMesh->MeshData.pMesh)
 		{
-			DEVICE->SetTransform(D3DTS_WORLD, &(pBone->CombinedTransformationMatrix));
-			for (DWORD i = 0; i < pBoneMesh->vecMtl.size(); i++)
+			D3DXVECTOR4 vLightDir = D3DXVECTOR4(1, -1, 1, 1);
+			D3DXVECTOR4 vLightPosition = -vLightDir * 500;
+			UINT pass = 0;
+
+			D3DXMATRIX matView, matProj, matWVP, matViewProj;
+
+			DEVICE->GetTransform(D3DTS_VIEW, &matView);
+			DEVICE->GetTransform(D3DTS_PROJECTION, &matProj);
+			matViewProj = matView * matProj;
+
+			// À½¿µ
+			m_pShaderEffect->Begin(&pass, 0);
+
+			for (UINT i = 0; i < pass; i++)
 			{
-				DEVICE->SetTexture(0, pBoneMesh->vecTex[i]);
-				DEVICE->SetMaterial(&pBoneMesh->vecMtl[i]);
-				pBoneMesh->MeshData.pMesh->DrawSubset(i);
+				m_pShaderEffect->BeginPass(i);
+
+				matWVP = pBone->CombinedTransformationMatrix * matView * matProj;
+
+				m_pShaderEffect->SetMatrix("gWorldViewProjectionMatrix", &matWVP);
+				m_pShaderEffect->SetMatrix("gWorldMatrix", &pBone->CombinedTransformationMatrix);
+				m_pShaderEffect->SetVector("gWorldLightDirection", &vLightDir);
+				
+				for (DWORD i = 0; i < pBoneMesh->vecMtl.size(); i++)
+				{
+					pBoneMesh->vecMtl[i].Diffuse;
+					D3DXVECTOR4 diffuse;
+					diffuse.x = pBoneMesh->vecMtl[i].Diffuse.r;
+					diffuse.y = pBoneMesh->vecMtl[i].Diffuse.g;
+					diffuse.z = pBoneMesh->vecMtl[i].Diffuse.b;
+					diffuse.w = 1;
+					m_pShaderEffect->SetVector("gLightColor", &diffuse);
+					m_pShaderEffect->SetTexture("DiffuseMap_Tex", pBoneMesh->vecTex[i]);
+					m_pShaderEffect->SetFloat("gAlpha", m_fAlpha);
+					if (pBoneMesh->vecNor.size() > i)
+						m_pShaderEffect->SetTexture("NormalMap_Tex", pBoneMesh->vecNor[i]);
+					m_pShaderEffect->CommitChanges();
+					pBoneMesh->MeshData.pMesh->DrawSubset(i);
+				}
+
+				m_pShaderEffect->EndPass();
 			}
+			
+			m_pShaderEffect->End();
 		}
 	}
 
@@ -405,8 +454,9 @@ void SkinnedMesh::Destroy(D3DXFRAME * pFrame)
 	D3DXFrameDestroy(pFrame, &ah);
 }
 
-void SkinnedMesh::AnimationRelease()
+void SkinnedMesh::Release()
 {
 	m_pRoot = NULL;
 	SAFE_RELEASE(m_pAnimController);
+	SAFE_RELEASE(m_pShaderEffect);
 }

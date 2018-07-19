@@ -439,7 +439,7 @@ ModelX * ModelX::Clone() const
 
 ModelX::~ModelX()
 {
-	m_pSMesh->AnimationRelease();
+	m_pSMesh->Release();
 }
 
 void ModelX::Render()
@@ -542,4 +542,14 @@ float ModelX::GetAnimationPeriod(int index)
 		return -1;
 
 	return m_pSMesh->GetAnimationPeriod(index);
+}
+
+float ModelX::GetShaderAlpha()
+{
+	return m_pSMesh->GetAlpha();
+}
+
+void ModelX::SetShaderAlpha(float alpha)
+{
+	m_pSMesh->SetAlpha(Clamp(0, 1, alpha));
 }

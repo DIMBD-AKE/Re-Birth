@@ -16,5 +16,6 @@
 #include "EffectObject.h"
 #include "Dialogue.h"
 #include "Util.h"
+#include "Shader.h"
 
 using namespace UTIL;

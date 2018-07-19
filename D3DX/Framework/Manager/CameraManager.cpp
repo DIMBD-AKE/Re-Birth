@@ -64,6 +64,9 @@ void CameraManager::Setup()
 
 	DEVICE->SetTransform(D3DTS_PROJECTION, &matProj);
 
+	D3DVIEWPORT9 vp;
+	DEVICE->GetViewport(&vp);
+
 	// 프러스텀 셋팅
 	m_vecProjVertex.push_back(D3DXVECTOR3(-1, -1, 0));
 	m_vecProjVertex.push_back(D3DXVECTOR3(-1, 1, 0));
