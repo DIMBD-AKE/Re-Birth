@@ -21,6 +21,8 @@ void Character_Sword::Init(CHRTYPE type, CHARSELECT order)
 {
 	m_eChrType = CHRTYPE_SWORD;
 
+
+
 	if (order == CHAR_ONE)
 	{
 		//일본도여캐
@@ -148,7 +150,7 @@ void Character_Sword::Render()
 		m_pInventory->Render();
 
 
-		if (m_bIsSubChr)
+		if (m_pShieldChr && m_bIsSubChr)
 		{
 			m_pShieldChr->Render();
 		}
@@ -330,34 +332,7 @@ void Character_Sword::KeyControl()
 	//스킬공격
 	if (INPUT->KeyDown('K'))
 	{
-		/*if (m_eCharSelect == CHAR_ONE)
-		{
-			SOUND->Play("SwordAttack");
-			SOUND->Play("베카_스킬");
-		}
-		if (m_eCharSelect == CHAR_TWO)
-		{
-			SOUND->Play("SwordAttack_TWO");
-			SOUND->Play("리아_스킬");
-		}
-		if (m_eCharSelect == CHAR_THREE)
-		{
-			SOUND->Play("SwordAttack_THREE");
-			SOUND->Play("벨벳_스킬");
-		}
-
-		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_RUN_FRONT || m_eCondition == CHAR_RUN_BACK)
-		{
-			m_eCondition = CHAR_SKILL;
-			if (m_bIsSubChr)
-			{
-				m_pShieldChr->SetShieldCondition(SUB_IDLE);
-				m_pShieldChr->ChangeSubChrAni();
-			}
-			m_bIsSkill = true;
-			ChangeAnimation();*/
-			SKill();
-		//}
+		SKill();
 	}
 
 	//서브캐릭터 제어
@@ -415,6 +390,8 @@ void Character_Sword::KeyControl()
 			//Attack();
 			ChangeAnimation();
 		}
+		
+
 	}
 
 	//대쉬일때 애니메이션 스피드 제어
@@ -485,8 +462,10 @@ void Character_Sword::Attack()
 				tempEffect.isRY = true;
 				tempEffect.isRX = true;
 				tempEffect.height = 3.0f;
-				tempEffect.SetAlpha(255, 255, 0);
-				tempEffect.SetScale(1, 0.8, 0.8);
+
+				//TODO : 알파값도 랜덤으로, 스케일도 랜덤으로 RND써서 수정
+				tempEffect.SetAlpha(FRand(100,255), FRand(100, 255), 0);
+				tempEffect.SetScale(FRand(1.4, 3.0), FRand(1.4, 3.0), FRand(1.4, 3.0));
 				tempEffect.tex = TEXTUREMANAGER->AddTexture("testSkill", "Texture/Effect/TestSkill.png");
 				EffectObject* tempEFOBJ;
 				tempEFOBJ = new EffectObject;
@@ -496,11 +475,13 @@ void Character_Sword::Attack()
 				TempDir = *m_pCharacter->GetPosition() - *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
 				D3DXVec3Normalize(&TempDir, &TempDir);
 
+				float Length = D3DXVec3Length(&(MonPos - pos));
+
 				D3DXVECTOR3 testSkillpos = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
 				testSkillpos.y += 1.0f;
 				testSkillpos.x += FRand(-0.5, 0.5);
-				testSkillpos.z += FRand(-0.5, 0.5);
-				testSkillpos += TempDir * 4.0f;
+				testSkillpos.z += FRand(-0.3, 0.3);
+				testSkillpos += TempDir * (Length * 0.3f);
 				tempEFOBJ->Init(tempEffect, testSkillpos);
 
 				m_vecEffect.push_back(tempEFOBJ);

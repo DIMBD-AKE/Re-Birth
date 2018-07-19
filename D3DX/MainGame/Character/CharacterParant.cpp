@@ -312,6 +312,7 @@ void CharacterParant::Debug()
 
 		TEXT->Add(to_string(m_Status->chr.nCurrentStam), pos1.x + 90, pos1.y, 30);
 		TEXT->Add(to_string(m_Status->chr.nMaxStam), pos1.x + 90, pos1.y - 25.0f, 30);
+		
 		//CAMERA->SetMode(CAMERA_FREE);
 	}
 }
@@ -404,7 +405,7 @@ void CharacterParant::CalculDamage(float damage)
 			m_eCondition = CHAR_HIT;
 			ChangeAnimation();
 		}
-
+		m_pCharacter->SetShaderAlpha(0.3f);
 		//	m_bIsInvincible = true;
 		m_bIsUnderAttacked = true;
 		float totalRate =
@@ -1407,9 +1408,6 @@ void CharacterParant::Init(CHRTYPE type, CHARSELECT order)
 	box.lowZ = -50.0f;
 
 
-
-
-
 	//인벤토리
 	if (m_pInventory == NULL)
 	{
@@ -1790,6 +1788,7 @@ void CharacterParant::ChangeAnimation()
 			m_pCharacter->SetBlendAnimation("IDLE");
 			m_pCharacter->SetBlendTime(0.27f);
 			m_pCharacter->SetAnimationSpeed(1.0f);
+			m_pCharacter->SetShaderAlpha(1.0f);
 		break;
 	case CHAR_DASH_FRONT:
 		m_pCharacter->SetAnimation("RUN");
@@ -1816,7 +1815,7 @@ void CharacterParant::ChangeAnimation()
 		m_pCharacter->SetAnimation("DIE");
 		break;
 	case CHAR_HIT:
-			m_pCharacter->SetAnimation("HIT");
+			m_pCharacter->SetAnimation("HIT");	
 		break;
 	case CHAR_BATTLEREADY:
 			m_pCharacter->SetAnimation("BATTLEREADY");
