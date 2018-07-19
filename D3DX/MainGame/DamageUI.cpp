@@ -10,6 +10,11 @@ DamageUI::DamageUI()
 
 DamageUI::~DamageUI()
 {
+	for (int i = 0; i < 10; i++)
+	{
+		SAFE_DELETE(m_pUIDamage[i]);
+	}
+	
 }
 
 void DamageUI::Setup(bool IsPlayer)
