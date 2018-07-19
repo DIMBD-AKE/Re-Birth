@@ -19,6 +19,7 @@ class Model
 	SYNTHESIZE_PT(D3DXVECTOR3, m_vScale, Scale);
 	SYNTHESIZE(bool, m_isBlend, Blend);
 
+public:
 	Model();
 	virtual Model * Clone() const = 0;
 	virtual ~Model();
@@ -44,6 +45,8 @@ class Model
 	virtual bool IsAnimationPercent(float rate) { return false; }
 	virtual float GetAnimationPeriod(string name) { return 0; }
 	virtual float GetAnimationPeriod(int index) { return 0; }
+	virtual void SetShaderAlpha(float alpha) {}
+	virtual float GetShaderAlpha() { return 0; }
 
 private:
 	ST_BOUNDBOX	m_stBoundBox;
@@ -126,6 +129,8 @@ public:
 	virtual bool IsAnimationPercent(float rate);
 	virtual float GetAnimationPeriod(string name);
 	virtual float GetAnimationPeriod(int index);
+	virtual void SetShaderAlpha(float alpha);
+	virtual float GetShaderAlpha();
 };
 
 class ModelManager

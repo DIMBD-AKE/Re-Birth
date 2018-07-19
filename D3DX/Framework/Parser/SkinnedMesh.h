@@ -14,6 +14,7 @@ struct ST_BONE_MESH : public D3DXMESHCONTAINER
 
 	std::vector<D3DMATERIAL9>		vecMtl;
 	std::vector<LPDIRECT3DTEXTURE9>	vecTex;
+	std::vector<LPDIRECT3DTEXTURE9>	vecNor;
 };
 
 class AllocatedHierachy : public ID3DXAllocateHierarchy
@@ -48,6 +49,9 @@ private:
 	bool						m_isBlend;
 	float						m_fBlendTime;
 	float						m_fPassedTime;
+	float						m_fAlpha;
+
+	LPD3DXEFFECT				m_pShaderEffect;
 
 private:
 	map<string, int>			m_animMap;
@@ -70,6 +74,9 @@ public:
 	bool IsAnimationPercent(float rate);
 	bool IsAnimationEnd();
 
+	void SetAlpha(float alpha) { m_fAlpha = alpha; }
+	float GetAlpha() { return m_fAlpha; }
+
 	float GetAnimationPeriod(int index);
 
 	void Update(LPD3DXFRAME pFrame, LPD3DXFRAME pParent);
@@ -82,7 +89,7 @@ public:
 	void SetupBoneMatrixPtrs(LPD3DXFRAME pFrame);
 	void Destroy(D3DXFRAME* pFrame);
 
-	void AnimationRelease();
+	void Release();
 
 	map<string, int> GetAnimMap() { return m_animMap; }
 };
