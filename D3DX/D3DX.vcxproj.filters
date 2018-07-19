@@ -228,6 +228,9 @@
     <ClInclude Include="Framework\Shader.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="MainGame\DamageUI.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -393,6 +396,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Framework\Shader.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="MainGame\DamageUI.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
