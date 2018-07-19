@@ -24,7 +24,7 @@ R Normal
 D "체력을 150 회복시키는 물약 //사과맛이 난다"
 I 301
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 0.0 0.0 0.0 0 0 0 0 0 0.0 0.0 0.0
+ST 0.0 0.0 0.0 0 0 0 0 0 0.0 0.0 0.0
 E 5
 K NormalHealthPotion
 T "Texture/Item/Item Num 301 Normal HealthPotion.jpg"
@@ -35,7 +35,7 @@ R Magic
 D "체력을 300 회복시키는 물약 //딸기맛이 난다"
 I 201
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 0.0 0.0 0.0 0 0 0 0 0 0.0 0.0 0.0
+ST 0.0 0.0 0.0 0 0 0 0 0 0.0 0.0 0.0
 E 5
 K MagicHealthHighPoition
 T "Texture/Item/Item Num 201 Magic HealthHighPoition.jpg"
@@ -48,7 +48,7 @@ R Normal
 D "최대체력의 15퍼센트를 회복시킨다"
 I 303
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 0.0 0.0 0.0 0 0 0 0 0 0.0 0.0 0.0
+ST 0.0 0.0 0.0 0 0 0 0 0 0.0 0.0 0.0
 E 5
 K Normal Recovery Book
 T "Texture/Item/Item Num 303 Normal RecoveryBook.jpg"
@@ -59,7 +59,7 @@ R Magic
 D "최대체력의 30퍼센트를 회복시킨다"
 I 203
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 0.0 0.0 0.0 0 0 0 0 0 0.0 0.0 0.0
+ST 0.0 0.0 0.0 0 0 0 0 0 0.0 0.0 0.0
 E 5
 K Magic Recovery Book
 T "Texture/Item/Item Num 203 Magic RecoveryBook.jpg"
@@ -70,7 +70,7 @@ R Rare
 D "최대체력의 50퍼센트를 회복시킨다"
 I 103
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 0.0 0.0 0.0 0 0 0 0 0 0.0 0.0 0.0
+ST 0.0 0.0 0.0 0 0 0 0 0 0.0 0.0 0.0
 E 5
 K RareRecoveryBook
 T "Texture/Item/Item Num 103 Rare RecoveryBook.jpg"
@@ -81,7 +81,7 @@ R Unique
 D "최대체력의 75퍼센트를 회복시킨다"
 I 3
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 0.0 0.0 0.0 0 0 0 0 0 0.0 0.0 0.0
+ST 0.0 0.0 0.0 0 0 0 0 0 0.0 0.0 0.0
 E 5
 K UniqueRecoveryBook
 T "Texture/Item/Item Num 003 Unique RecoveryBook.jpg"

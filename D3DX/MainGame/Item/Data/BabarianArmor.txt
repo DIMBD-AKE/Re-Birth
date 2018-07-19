@@ -24,7 +24,7 @@ R Rare
 D "Çï¸ä"
 I 163
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 0.0 0.0 0.0 0 0 0 20 600 0.0 0.4 0.0
+ST 0.0 0.0 0.0 0 0 0 20 600 0.0 0.4 0.0
 E 1
 K RareBabarianHelmet
 T "Texture/Item/Item Num 163 Rare BabarianHelmet.jpg"
@@ -34,7 +34,7 @@ R Unique
 D "Çï¸ä"
 I 063
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 0.0 0.0 0.0 0 0 0 40 800 0.0 0.5 0.0
+ST 0.0 0.0 0.0 0 0 0 40 800 0.0 0.5 0.0
 E 1
 K UniqueBabarianHelmet
 T "Texture/Item/Item Num 063 Unique BabarianHelmet.jpg"
@@ -44,7 +44,7 @@ R Rare
 D "°©¿Ê"
 I 173
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 0.0 0.0 0.0 0 0 0 40 800 0.0 0.0 0.0
+ST 0.0 0.0 0.0 0 0 0 40 800 0.0 0.0 0.0
 E 2
 K RareBabarianArmor
 T "Texture/Item/Item Num 173 Rare BabarianArmor.jpg"
@@ -54,7 +54,7 @@ R Unique
 D "°©¿Ê"
 I 073
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 0.0 0.0 0.0 0 0 0 60 1000 0.0 0.0 0.0
+ST 0.0 0.0 0.0 0 0 0 60 1000 0.0 0.0 0.0
 E 2
 K UniqueBabarianArmor
 T "Texture/Item/Item Num 073 Unique BabarianArmor.jpg"
@@ -64,7 +64,7 @@ R Rare
 D "°ÇÆ²¸´"
 I 183
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 0.0 0.0 0.0 0 0 0 20 600 0.0 0.0 0.0
+ST 0.0 0.0 0.0 0 0 0 20 600 0.0 0.0 0.0
 E 3
 K RareBabarianGauntlet
 T "Texture/Item/Item Num 183 Rare BabarianGauntlet.jpg"
@@ -75,7 +75,7 @@ R Unique
 D "°ÇÆ²¸´"
 I 083
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 0.0 0.0 0.0 0 0 0 40 800 0.0 0.0 0.0
+ST 0.0 0.0 0.0 0 0 0 40 800 0.0 0.0 0.0
 E 3
 K UniqueBabarianGauntlet
 T "Texture/Item/Item Num 083 Unique BabarianGauntlet.jpg"
@@ -85,7 +85,7 @@ R Rare
 D "ºÎÃ÷"
 I 193
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 0.0 0.0 0.0 0 0 0 20 600 0.0 0.0 0.06
+ST 0.0 0.0 0.0 0 0 0 20 600 0.0 0.0 0.06
 E 4
 K RareBabarianBoots
 T "Texture/Item/Item Num 193 Rare BabarianBoots.jpg"
@@ -96,7 +96,7 @@ R Unique
 D "ºÎÃ÷"
 I 093
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 0.0 0.0 0.0 0 0 0 40 800 0.0 0.0 0.08
+ST 0.0 0.0 0.0 0 0 0 40 800 0.0 0.0 0.08
 E 4
 K UniqueBabarianBoots
 T "Texture/Item/Item Num 093 Unique BabarianBoots.jpg"

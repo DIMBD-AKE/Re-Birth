@@ -24,7 +24,7 @@ R Normal
 D "d"
 I 364
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 0.0 0.0 0.0 0 0 0 0 50 0.0 0.4 0.0
+ST 0.0 0.0 0.0 0 0 0 0 50 0.0 0.4 0.0
 E 1
 K NormalMageHelmet
 T "Texture/Item/Item Num 364 Normal MageHelmet.jpg"
@@ -35,7 +35,7 @@ R Magic
 D "Çï¸ä"
 I 264
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 0.0 0.0 0.0 0 0 0 10 100 0.0 0.5 0.0
+ST 0.0 0.0 0.0 0 0 0 10 100 0.0 0.5 0.0
 E 1
 K MagicMageHelmet
 T "Texture/Item/Item Num 264 Magic MageHelmet.jpg"
@@ -45,7 +45,7 @@ R Rare
 D "Çï¸ä"
 I 164
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 0.0 0.0 0.0 0 0 0 20 200 0.0 0.6 0.0
+ST 0.0 0.0 0.0 0 0 0 20 200 0.0 0.6 0.0
 E 1
 K RareMageHelmet
 T "Texture/Item/Item Num 164 Rare MageHelmet.jpg"
@@ -55,7 +55,7 @@ R Unique
 D "Çï¸ä"
 I 064
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 0.0 0.0 0.0 0 0 0 30 300 0.0 0.7 0.0
+ST 0.0 0.0 0.0 0 0 0 30 300 0.0 0.7 0.0
 E 1
 K UniqueMageHelmet
 T "Texture/Item/Item Num 064 Unique MageHelmet.jpg"
@@ -65,7 +65,7 @@ R Normal
 D "°©¿Ê"
 I 374
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 0.0 0.0 0.0 0 0 0 10 100 0.0 0.0 0.0
+ST 0.0 0.0 0.0 0 0 0 10 100 0.0 0.0 0.0
 E 2
 K NormalMageArmor
 T "Texture/Item/Item Num 374 Normal MageArmor.jpg"
@@ -75,7 +75,7 @@ R Magic
 D "°©¿Ê"
 I 274
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 0.0 0.0 0.0 0 0 0 20 200 0.0 0.0 0.0
+ST 0.0 0.0 0.0 0 0 0 20 200 0.0 0.0 0.0
 E 2
 K MagicMageArmor
 T "Texture/Item/Item Num 274 Magic MageArmor.jpg"
@@ -85,7 +85,7 @@ R Rare
 D "°©¿Ê"
 I 174
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 0.0 0.0 0.0 0 0 0 30 300 0.0 0.0 0.0
+ST 0.0 0.0 0.0 0 0 0 30 300 0.0 0.0 0.0
 E 2
 K RareMageArmor
 T "Texture/Item/Item Num 174 Rare MageArmor.jpg"
@@ -95,7 +95,7 @@ R Unique
 D "°©¿Ê"
 I 074
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 0.0 0.0 0.0 0 0 0 40 400 0.0 0.0 0.0
+ST 0.0 0.0 0.0 0 0 0 40 400 0.0 0.0 0.0
 E 2
 K UniqueMageArmor
 T "Texture/Item/Item Num 074 Unique MageArmor.jpg"
@@ -105,7 +105,7 @@ R Normal
 D "°ÇÆ²¸´"
 I 384
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 0.0 0.0 0.0 0 0 0 0 50 0.0 0.0 0.0
+ST 0.0 0.0 0.0 0 0 0 0 50 0.0 0.0 0.0
 E 3
 K NormalMageGauntlet
 T "Texture/Item/Item Num 384 Normal MageGauntlet.jpg"
@@ -116,7 +116,7 @@ R Magic
 D "°ÇÆ²¸´"
 I 284
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 0.0 0.0 0.0 0 0 0 10 100 0.0 0.0 0.0
+ST 0.0 0.0 0.0 0 0 0 10 100 0.0 0.0 0.0
 E 3
 K MagicMageGauntlet
 T "Texture/Item/Item Num 284 Magic MageGauntlet.jpg"
@@ -127,7 +127,7 @@ R Rare
 D "°ÇÆ²¸´"
 I 184
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 0.0 0.0 0.0 0 0 0 20 200 0.0 0.0 0.0
+ST 0.0 0.0 0.0 0 0 0 20 200 0.0 0.0 0.0
 E 3
 K RareMageGauntlet
 T "Texture/Item/Item Num 184 Rare MageGauntlet.jpg"
@@ -138,7 +138,7 @@ R Unique
 D "°ÇÆ²¸´"
 I 084
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 0.0 0.0 0.0 0 0 0 30 300 0.0 0.0 0.0
+ST 0.0 0.0 0.0 0 0 0 30 300 0.0 0.0 0.0
 E 3
 K UniqueMageGauntlet
 T "Texture/Item/Item Num 084 Unique MageGauntlet.jpg"
@@ -149,7 +149,7 @@ R Normal
 D "ºÎÃ÷"
 I 394
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 0.0 0.0 0.0 0 0 0 0 50 0.0 0.0 0.02
+ST 0.0 0.0 0.0 0 0 0 0 50 0.0 0.0 0.02
 E 4
 K NormalMageBoots
 T "Texture/Item/Item Num 294 Magic MageBoots.jpg"
@@ -160,7 +160,7 @@ R Magic
 D "ºÎÃ÷"
 I 294
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 0.0 0.0 0.0 0 0 0 10 100 0.0 0.0 0.04
+ST 0.0 0.0 0.0 0 0 0 10 100 0.0 0.0 0.04
 E 4 
 K MagicMageBoots
 T "Texture/Item/Item Num 294 Magic MageBoots.jpg"
@@ -171,7 +171,7 @@ R Rare
 D "ºÎÃ÷"
 I 194
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 0.0 0.0 0.0 0 0 0 20 200 0.0 0.0 0.06
+ST 0.0 0.0 0.0 0 0 0 20 200 0.0 0.0 0.06
 E 4
 K RareMageBoots
 T "Texture/Item/Item Num 194 Rare MageBoots.jpg"
@@ -182,7 +182,7 @@ R Unique
 D "ºÎÃ÷"
 I 094
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
-S 0.0 0.0 0.0 0 0 0 30 300 0.0 0.0 0.08
+ST 0.0 0.0 0.0 0 0 0 30 300 0.0 0.0 0.08
 E 4
 K UniqueMageBoots
 T "Texture/Item/Item Num 094 Unique MageBoots.jpg"
