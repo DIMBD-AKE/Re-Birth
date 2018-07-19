@@ -5,6 +5,7 @@
 class ItemParent;
 union STATUS;
 enum EQUIPTYPE;
+class MonsterManager;
 
 struct ST_ITEMSTACK
 {
@@ -84,6 +85,10 @@ public:
 
 	ItemParent * GetWeapon();
 	ItemParent * GetPotion();
+
+
+	bool GetSkill1(CharacterParant* pCharacter, MonsterManager* pMonster);
+	bool GetSkill2(CharacterParant* pCharacter, MonsterManager* pMonster);
 	STATUS GetEquipStat();
 	bool AddItem(ItemParent* item);
 };

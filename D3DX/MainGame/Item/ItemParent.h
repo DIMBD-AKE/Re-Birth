@@ -51,8 +51,8 @@ public:
 	virtual void Use(CharacterParant & pCharacter);
 
 	//아이템스킬(무기류)
-	virtual void Skill1(CharacterParant* pCharacter, MonsterManager* pMonsterManager);
-	virtual void Skill2(CharacterParant* pCharacter, MonsterManager* pMonsterManager);
+	virtual bool Skill1(CharacterParant* pCharacter, MonsterManager* pMonsterManager);
+	virtual bool Skill2(CharacterParant* pCharacter, MonsterManager* pMonsterManager);
 	
 	virtual void SetStatusZero();								//아이템 스텟 초기화
 	virtual void SetStatus(STATUS stat);						//아이템 스텟 설정

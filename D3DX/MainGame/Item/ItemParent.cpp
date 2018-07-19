@@ -76,24 +76,28 @@ void ItemParent::Use(CharacterParant& pCharacter)
 	if (pCharacter.Getstatus()->chr.nCurrentHP > pCharacter.Getstatus()->chr.nMaxHp)pCharacter.SetCurrentHP(pCharacter.Getstatus()->chr.nMaxHp);
 }
 
-void ItemParent::Skill1(CharacterParant* pCharacter, MonsterManager* pMonsterManager)
+bool ItemParent::Skill1(CharacterParant* pCharacter, MonsterManager* pMonsterManager)
 {
 	if (m_pSkill1 && m_bSkill1Able)
 	{
 		m_pSkill1->Prepare(pCharacter, pMonsterManager->GetMonsterVector()[0], pMonsterManager->GetMonsterVector(), *m_Skill1Data, SKILLO_CHARACTER);
 		m_pSkill1->Trigger();
 		m_fSkill1CurrentCooltime = m_pItemStatus->item.fCoolTime1;
+		return true;
 	}
+	return false;
 }
 
-void ItemParent::Skill2(CharacterParant* pCharacter, MonsterManager* pMonsterManager)
+bool ItemParent::Skill2(CharacterParant* pCharacter, MonsterManager* pMonsterManager)
 {
 	if (m_pSkill2 && m_bSkill2Able)
 	{
 		m_pSkill2->Prepare(pCharacter, NULL, pMonsterManager->GetMonsterVector(), *m_Skill2Data, SKILLO_CHARACTER);
 		m_pSkill2->Trigger();
 		m_fSkill2CurrentCooltime = m_pItemStatus->item.fCoolTime2;
+		return true;
 	}
+	return false;
 }
 
 void ItemParent::SetStatusZero()

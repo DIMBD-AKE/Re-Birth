@@ -577,6 +577,24 @@ ItemParent * Inventory::GetPotion()
 	return m_pEquip[EQUIP_POTION].item;
 }
 
+bool Inventory::GetSkill1(CharacterParant* pCharacter, MonsterManager* pMonster)
+{
+	if (GetWeapon())
+	{
+		return GetWeapon()->Skill1(pCharacter, pMonster);
+	}
+	return false;
+}
+
+bool Inventory::GetSkill2(CharacterParant * pCharacter, MonsterManager * pMonster)
+{
+	if (GetWeapon())
+	{
+		return GetWeapon()->Skill2(pCharacter, pMonster);
+	}
+	return false;
+}
+
 STATUS Inventory::GetEquipStat()
 {
 	STATUS status;
