@@ -6,9 +6,9 @@
 #include <time.h>
 
 DropManager::DropManager()
-	//: m_pModel(NULL)
+//: m_pModel(NULL)
 {
-	
+
 }
 
 
@@ -28,19 +28,20 @@ void DropManager::AddDropItem(int itemID, D3DXVECTOR3 pos)
 {
 	if (itemID == -1) return;
 
-	srand(time(NULL));
-
-	int tempItemID = ( rand() % 4) * 100 + itemID % 100;
-
-	//아이템이 없으면 1값이 반환되어 반복실행
-	//있으면 0이 반환되므로 끝남
-	while (ITEMMANAGER->FindItem(tempItemID))
-	{
-		tempItemID = (rand() % 4) * 100 + itemID % 100;
-	}
+	//srand(time(NULL));
+	//
+	//int tempItemID = ( rand() % 4) * 100 + itemID % 100;
+	//
+	////아이템이 없으면 1값이 반환되어 반복실행
+	////있으면 0이 반환되므로 끝남
+	//while (ITEMMANAGER->FindItem(tempItemID))
+	//{
+	//	tempItemID = (rand() % 4) * 100 + itemID % 100;
+	//}
+	itemID = 51;
 
 	ST_DROPBOX box;
-	box.itemID = tempItemID;
+	box.itemID = /*tempItemID*/itemID;
 	box.pos = pos;
 	box.pos.y += 1;
 	box.rot.x = D3DXToRadian(rand() % 360);
@@ -76,7 +77,7 @@ void DropManager::Render()
 	{
 		m_vecDrop[i].rot += D3DXVECTOR3(1, 1, 1) * 0.01;
 		m_pModel->SetRotation(m_vecDrop[i].rot);
-		m_pModel->SetPosition(m_vecDrop[i].pos + 
+		m_pModel->SetPosition(m_vecDrop[i].pos +
 			D3DXVECTOR3(0, sin(m_vecDrop[i].rot.x), 0) * 0.5);
 		m_pModel->World();
 		m_pModel->Render();

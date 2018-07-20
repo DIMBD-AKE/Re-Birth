@@ -394,11 +394,13 @@ void Character_Gun::Attack()
 				TempDir = *m_pCharacter->GetPosition() - *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
 				D3DXVec3Normalize(&TempDir, &TempDir);
 
+				float Length = D3DXVec3Length(&(MonPos - pos));
+
 				D3DXVECTOR3 testSkillpos = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
 				testSkillpos.y += 1.0f;
 				testSkillpos.x += FRand(-0.5, 0.5);
 				testSkillpos.z += FRand(-0.5, 0.5);
-				testSkillpos += TempDir * 4.0f;
+				testSkillpos += TempDir * (Length * 0.3f);
 				tempEFOBJ->Init(tempEffect, testSkillpos);
 
 				m_vecEffect.push_back(tempEFOBJ);
@@ -426,17 +428,18 @@ void Character_Gun::Attack()
 				TempDir = *m_pCharacter->GetPosition() - *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
 				D3DXVec3Normalize(&TempDir, &TempDir);
 
+				float Length = D3DXVec3Length(&(MonPos - pos));
+
 				D3DXVECTOR3 testSkillpos = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
 				testSkillpos.y += 1.0f;
 				testSkillpos.x += FRand(-0.5, 0.5);
 				testSkillpos.z += FRand(-0.5, 0.5);
-				testSkillpos += TempDir * 4.0f;
+				testSkillpos += TempDir * (Length * 0.3f);
 				tempEFOBJ->Init(tempEffect, testSkillpos);
 
 				m_vecEffect.push_back(tempEFOBJ);
 				m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
 			}
-
 		}
 	}
 }

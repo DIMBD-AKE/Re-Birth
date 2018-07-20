@@ -93,7 +93,6 @@ void Character_Magic::Update()
 		PlayerProgressBar();
 		//CountAppearDamage();
 		m_pDamage->Update(*m_pCharacter->GetPosition());
-
 	}
 }
 
@@ -381,9 +380,18 @@ void Character_Magic::Attack()
 				EffectObject* tempEFOBJ;
 				tempEFOBJ = new EffectObject;
 
+
+				D3DXVECTOR3 TempDir;
+				TempDir = *m_pCharacter->GetPosition() - *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
+				D3DXVec3Normalize(&TempDir, &TempDir);
+
+				float Length = D3DXVec3Length(&(MonPos - pos));
+
 				D3DXVECTOR3 testSkillpos = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
 				testSkillpos.y += 1.0f;
 				testSkillpos.x += FRand(-0.5, 0.5);
+				testSkillpos.z += FRand(-0.3, 0.3);
+				testSkillpos += TempDir * (Length * 0.3f);
 				tempEFOBJ->Init(tempEffect, testSkillpos);
 
 				m_vecEffect.push_back(tempEFOBJ);
@@ -414,11 +422,13 @@ void Character_Magic::Attack()
 				TempDir = *m_pCharacter->GetPosition() - *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
 				D3DXVec3Normalize(&TempDir, &TempDir);
 
+				float Length = D3DXVec3Length(&(MonPos - pos));
+
 				D3DXVECTOR3 testSkillpos = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
 				testSkillpos.y += 1.0f;
 				testSkillpos.x += FRand(-0.5, 0.5);
 				testSkillpos.z += FRand(-0.5, 0.5);
-				testSkillpos += TempDir * 4.0f;
+				testSkillpos += TempDir * (Length * 0.3f);
 				tempEFOBJ->Init(tempEffect, testSkillpos);
 
 
