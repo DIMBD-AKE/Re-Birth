@@ -30,7 +30,6 @@ void CharacterParant::SKill()
 			SOUND->Play("SwordAttack_THREE");
 			SOUND->Play("벨벳_스킬");
 		}
-
 		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_RUN_FRONT || m_eCondition == CHAR_RUN_BACK)
 		{
 			m_eCondition = CHAR_SKILL;
@@ -43,8 +42,7 @@ void CharacterParant::SKill()
 			ChangeAnimation();
 		}
 	}
-	//특정 키를 누르면 아이템 클래스의 skill을 실행한다. 
-	//if(m_pInventory->GetWeapon()->GetSkill1()) m_pInventory->GetWeapon()->Skill1(this, m_pMonsterManager);
+	
 	
 }
 
