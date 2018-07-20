@@ -166,7 +166,6 @@ void Character_Sword::Update()
 		Effect();
 
 		PlayerProgressBar();
-		//CountAppearDamage();
 		m_pDamage->Update(*m_pCharacter->GetPosition());
 	}
 	CutScene();
@@ -178,7 +177,7 @@ void Character_Sword::Render()
 	if (m_pCharacter && m_eCondition != CHAR_NONE)
 	{
 		m_pCharacter->Render();
-		m_pInventory->Render();
+		
 
 
 		if (m_pShieldChr && m_bIsSubChr)
@@ -193,6 +192,7 @@ void Character_Sword::Render()
 		CharacterParant::Render();
 		//포트레이트 
 		m_pUIobj->Render();
+		m_pInventory->Render();
 		m_pInheritateIco->Render();
 		m_pHPBar->Render();
 		m_pStaminaBar->Render();
