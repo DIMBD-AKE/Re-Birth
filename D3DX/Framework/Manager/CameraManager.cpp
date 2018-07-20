@@ -15,8 +15,11 @@ CameraManager::CameraManager()
 	, m_pTargetRot(NULL)
 	, m_eMode(CAMERA_FREE)
 	, m_fSpeed(0.5f)
-	, m_fSmooth(0.1f)
+	, m_fSmooth(0.2f)
 	, m_fDistance(0)
+	, m_fElapse(0)
+	, m_fShakePower(0)
+	, m_fShakeTime(0)
 {
 	Setup();
 }
@@ -123,11 +126,12 @@ void CameraManager::Update()
 		if (m_pTargetPos && m_pTargetRot)
 		{
 			m_vRotation += m_fSmooth * (*m_pTargetRot - m_vRotation);
+			m_vPosition += m_fSmooth * (*m_pTargetPos - m_vPosition);
 
 			vLookAt = *m_pTargetPos + m_vTargetOffset;
 			D3DXVec3TransformCoord(&vEye, &vEye, &matR);
 			D3DXVec3TransformCoord(&vCamOffset, &vCamOffset, &matR);
-			vEye = *m_pTargetPos + vCamOffset + m_vTargetOffset + vEye;
+			vEye = m_vPosition + vCamOffset + m_vTargetOffset + vEye;
 		}
 	}
 
@@ -151,8 +155,19 @@ void CameraManager::Update()
 		}
 	}
 
+	if (m_fElapse < m_fShakeTime)
+	{
+		float x = FRand(-m_fShakePower, m_fShakePower);
+		float y = FRand(-m_fShakePower, m_fShakePower);
+		float z = FRand(-m_fShakePower, m_fShakePower);
+		vEye += D3DXVECTOR3(x, y, z);
+		vLookAt += D3DXVECTOR3(x, y, z);
+	}
+
 	D3DXMatrixLookAtLH(&matView, &vEye, &vLookAt, &m_vUp);
 	DEVICE->SetTransform(D3DTS_VIEW, &matView);
+
+	m_fElapse += TIME->GetElapsedTime();
 
 	UpdateFrustum();
 }
@@ -162,7 +177,10 @@ void CameraManager::SetTarget(D3DXVECTOR3 * targetPos, D3DXVECTOR3 * targetRot)
 	m_pTargetPos = targetPos;
 	m_pTargetRot = targetRot;
 	if (targetRot)
+	{
 		m_vRotation = *targetRot;
+		m_vPosition = *targetPos;
+	}
 }
 
 void CameraManager::SetFog(bool enable, float start, float end, DWORD color, float density)
@@ -185,4 +203,11 @@ bool CameraManager::IsFrustum(ST_SPHERE sphere)
 		if (D3DXPlaneDotCoord(&p, &sphere.center) > sphere.radius)
 			return false;
 	return true;
+}
+
+void CameraManager::Shake(float power, float time)
+{
+	m_fShakePower = power;
+	m_fShakeTime = time;
+	m_fElapse = 0;
 }
