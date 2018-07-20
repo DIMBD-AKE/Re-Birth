@@ -347,3 +347,16 @@ void MonsterManager::DeleteSummonMonster()
 		//else ++i;
 	}
 }
+
+bool MonsterManager::IsBossDie()
+{
+	//bool endGame = false;
+	for (int i = 0; i < m_vMM.size(); i++)
+	{
+		if (m_vMM[i]->IsBossDie())
+		{
+			return true;
+		}
+	}
+	return false;
+}

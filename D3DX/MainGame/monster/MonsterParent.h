@@ -10,6 +10,7 @@ class DropManager;
 class UIObject;
 class Skill;
 class DamageUI;
+class BossParent;
 
 enum MON_STATE{
 	MS_IDLE,			//제자리에 있는 상태
@@ -160,5 +161,7 @@ public:
 	void SetSkill() { m_eState = MS_SKILL;  ChangeAni();  SkillPrepare(); }
 	
 	void Respawn(D3DXVECTOR3 spawnPos);
+
+	bool IsBossDie();
 };
 

@@ -28,6 +28,9 @@ void BossParent::SetupBoss(Map* map, D3DXVECTOR3 pos)
 
 void BossParent::Update()
 {
+	if (INPUT->KeyDown('4'))
+		SetCurrentHP(10000);
+
 	m_pDamageUI->Update(*m_pModel->GetPosition());
 
 	m_fAlphaCount += TIME->GetElapsedTime();

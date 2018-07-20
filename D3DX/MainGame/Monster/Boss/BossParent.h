@@ -97,6 +97,8 @@ protected:
 
 	bool AbleSkill2();
 	void SkillPrepare2();
+
+	
 	
 public:
 	BossParent();
@@ -105,6 +107,11 @@ public:
 	virtual void SetupBoss(Map* map, D3DXVECTOR3 pos) override;
 	virtual void Update() override;
 	virtual void Render() override;
+
+	bool IsDie() {
+		if (m_eBossState == BS_NONE) return true;
+		return false;
+	}
 	//virtual void Update() override;
 };
 

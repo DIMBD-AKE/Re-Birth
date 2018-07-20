@@ -3,6 +3,7 @@
 #include "../AStar/AStar.h"
 #include "../Item/DropManager.h"
 #include "../SkillManager.h"
+#include "Boss/BossParent.h"
 
 MonsterParent::MonsterParent()
 : m_pModel(NULL)
@@ -325,6 +326,21 @@ void MonsterParent::Respawn(D3DXVECTOR3 spawnPos)
 	m_nPrePosIndex = -1;
 
 	m_pModel->SetPosition(D3DXVECTOR3(spawnPos.x, m_pMap->GetHeight(spawnPos.x, spawnPos.z), spawnPos.z));
+}
+
+bool MonsterParent::IsBossDie()
+{
+	//보스가 아니면 false 반환
+	if (MAXHP(m_pMonsterStat) < 1000)
+	{
+		return false;
+	}
+	//보스이므로
+	else
+	{
+		//dynamic_cast<FinalBoss*>(finalBoss)->SetMM(this);
+		return dynamic_cast<BossParent*>(this)->IsDie();
+	}
 }
 
 void MonsterParent::CalculDamage(float damage)
