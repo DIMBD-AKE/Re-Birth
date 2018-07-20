@@ -55,6 +55,8 @@ protected:
 	UIObject*				m_pHPBar;				//hp프로그래스바
 	UIObject*				m_pStaminaBar;			//스테미너 프로그래스바
 	UIObject*				m_pShieldHp;			//쉴드용 HP
+	UIObject*				m_pChrStat;				//캐릭터 스테이터스 
+	UIObject*				m_pInheritateIco;		//캐릭터 고유스킬UI
 
 	MonsterManager*			m_pMonsterManager;		//몬스터 매니저용 변수
 	Character_Shield*		m_pShieldChr;			//쉴드캐릭터용 변수 
@@ -90,6 +92,7 @@ protected:
 	float					m_fPrevTime;			//이펙트 기준시간
 	float					m_fEffectInterval;		//이펙트 인터벌
 	float					m_fModelAlpha;			//모델 알파값
+	float					m_fDot;					//공격시 각도계산용
 
 	GET(bool, m_bIsDead, IsDead);						//죽었늬
 	float					m_fStamina;				//스테미나 게이지

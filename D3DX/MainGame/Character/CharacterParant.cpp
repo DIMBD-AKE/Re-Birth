@@ -383,7 +383,6 @@ void CharacterParant::SetCurrentHP(int hp)
 
 	m_Status->chr.nCurrentHP -= hp;
 	
-
 	if (m_Status->chr.nCurrentHP <= 0 && !m_bIsDead)
 	{
 		m_bIsDead = true;
@@ -408,8 +407,8 @@ void CharacterParant::CalculDamage(float damage)
 			m_eCondition = CHAR_HIT;
 			ChangeAnimation();
 		}
-		SetModelAlpha();
-		//m_pCharacter->SetShaderAlpha(0.3f);
+		//SetModelAlpha();
+		m_pCharacter->SetShaderAlpha(0.3f);
 		//	m_bIsInvincible = true;
 		m_bIsUnderAttacked = true;
 		float totalRate =
@@ -1087,7 +1086,7 @@ void CharacterParant::PlayerProgressBar()
 
 	float tempF = (float)m_Status->chr.nCurrentHP / m_Status->chr.nMaxHp;
 	m_pHPBar->SetScale(D3DXVECTOR3(tempF, 1, 1));
-	D3DXVECTOR3 UIPos = D3DXVECTOR3(1350, 520, 0);
+	D3DXVECTOR3 UIPos = D3DXVECTOR3(205, 685, 0);
 	m_pHPBar->SetPosition(UIPos);
 	m_pHPBar->Update();
 
@@ -1096,7 +1095,7 @@ void CharacterParant::PlayerProgressBar()
 
 	float tempS = (float)m_Status->chr.nCurrentStam / m_Status->chr.nMaxStam;
 	m_pStaminaBar->SetScale(D3DXVECTOR3(tempS, 1, 1));
-	D3DXVECTOR3 StaPos = D3DXVECTOR3(1350, 535, 0);
+	D3DXVECTOR3 StaPos = D3DXVECTOR3(205, 746, 0);
 	m_pStaminaBar->SetPosition(StaPos);
 	m_pStaminaBar->Update();
 	
@@ -1268,6 +1267,7 @@ void CharacterParant::SetTarget()
 	m_vecTarget.clear();																								
 	m_nIndex = -1;
 	m_nIndex2 = -1;
+	m_fDot = 0.0f;
 	int subMinIndex = -1;
 	int MINIndex2 = -1;
 	float MinDistance = 0.0f;
@@ -1275,6 +1275,8 @@ void CharacterParant::SetTarget()
 	D3DXVECTOR3 mosPos;
 	float distance;
 	float subDistance = 0.0f;
+
+	
 
 
 	for (int i = 0; i < m_pMonsterManager->GetMonsterVector().size(); ++i)
@@ -1298,12 +1300,26 @@ void CharacterParant::SetTarget()
 		for (int i = m_nIndex + 1; i < m_pMonsterManager->GetMonsterVector().size(); ++i)
 		{
 			if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn())continue;	//리젠할때는 건드리지 않고 
+			
 			float radius2 = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().radius;
 			mosPos = *(m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetPosition());		//몬스터 포지션 받고 
 			float distance2 = D3DXVec3Length(&(mosPos - pos));
 			if (distance2 - radius2 > m_Status->chr.fRange) continue;
+			
+			//시선
+			D3DXVECTOR3 front;
+			D3DXMATRIX matY;
+			D3DXMatrixRotationY(&matY, m_pCharacter->GetRotation()->y);
+			D3DXVec3TransformNormal(&front, &D3DXVECTOR3(0, 0, -1), &matY);
+			D3DXVECTOR3 v0 = front;
+			//대상방향
+			D3DXVECTOR3 v1 = pos - mosPos;
+			D3DXVec3Normalize(&v1, &v1);
+			float dot = D3DXVec3Dot(&v0, &v1) / D3DXVec3Length(&v0) * D3DXVec3Length(&v1);
+			if (dot < cos(m_Status->chr.fScale / 2)) continue;
 			if (distance >= distance2)
 			{
+				
 				distance = distance2;
 				m_nIndex = i;
 			}
@@ -1320,13 +1336,23 @@ void CharacterParant::SetTarget()
 				mosPos = *(m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetPosition());		//몬스터 포지션 받고 
 				float distance3 = D3DXVec3Length(&(mosPos - pos));
 				if (distance3 - radius3 > m_Status->chr.fRange) continue;
+				D3DXVECTOR3 front;
+				D3DXMATRIX matY;
+				D3DXMatrixRotationY(&matY, m_pCharacter->GetRotation()->y);
+				D3DXVec3TransformNormal(&front, &D3DXVECTOR3(0, 0, -1), &matY);
+				D3DXVECTOR3 v0 = front;
+				//대상방향
+				D3DXVECTOR3 v1 = pos - mosPos;
+				D3DXVec3Normalize(&v1, &v1);
+				float dot = D3DXVec3Dot(&v0, &v1) / D3DXVec3Length(&v0) * D3DXVec3Length(&v1);
+				if (dot < cos(m_Status->chr.fScale / 2)) continue;
 				if (subDistance >= distance3)
 				{
 					subDistance = distance3;
 					m_nIndex2 = i;
 				}
 			}
-			m_vecTarget.push_back(m_nIndex2);
+			 m_vecTarget.push_back(m_nIndex2);
 		}
 	}
 }
@@ -1400,6 +1426,7 @@ CharacterParant::~CharacterParant()
 	SAFE_RELEASE(m_pHPBar);
 	SAFE_RELEASE(m_pStaminaBar);
 	SAFE_RELEASE(m_pShieldHp);
+	SAFE_RELEASE(m_pChrStat);
 	//for (int i = 0; i < 10; i++)
 	//{
 	//	SAFE_RELEASE(m_pUIDamage[i]);
@@ -1470,6 +1497,7 @@ void CharacterParant::Init(CHRTYPE type, CHARSELECT order)
 	m_fPrevTime = 0.0f;
 	m_nDamageCount = 0;
 	m_fModelAlpha = 0.0f;
+	m_fDot = 0.0f;
 
 
 	m_fEffectInterval = 0.1f;
@@ -1481,7 +1509,12 @@ void CharacterParant::Init(CHRTYPE type, CHARSELECT order)
 
 	//포트레이트 UI
 	if(m_pUIobj == NULL) m_pUIobj = new UIObject;
-	
+
+	//스테이터스
+	if (m_pChrStat == NULL) m_pChrStat = new UIObject;
+
+	//고유스킬 아이콘
+	if(m_pInheritateIco == NULL) m_pInheritateIco = new UIObject;
 
 	//데미지 
 	m_pDamage = new DamageUI;
@@ -1491,26 +1524,18 @@ void CharacterParant::Init(CHRTYPE type, CHARSELECT order)
 	if (m_pHPBar == NULL)
 	{
 		m_pHPBar = new UIObject;
-		m_pHPBar->SetTexture(TEXTUREMANAGER->GetTexture("플레이어_프론트바"));
+		m_pHPBar->SetTexture(TEXTUREMANAGER->GetTexture("캐릭터_체력"));
 		D3DXVECTOR3 UIPos = D3DXVECTOR3(1350, 520, 0);
 		m_pHPBar->SetPosition(UIPos);
-		UIObject* backBar = new UIObject;
-		backBar->SetPosition(D3DXVECTOR3(0, 0, 0.1));
-		backBar->SetTexture(TEXTUREMANAGER->GetTexture("플레이어_백바"));
-		m_pHPBar->AddChild(backBar);
 	}
 
 
 	if (m_pStaminaBar == NULL)
 	{
 		m_pStaminaBar = new UIObject;
-		m_pStaminaBar->SetTexture(TEXTUREMANAGER->GetTexture("스테미나_프론트바"));
+		m_pStaminaBar->SetTexture(TEXTUREMANAGER->GetTexture("캐릭터_스테미너"));
 		D3DXVECTOR3 StaPos = D3DXVECTOR3(1350, 535, 0);
 		m_pStaminaBar->SetPosition(StaPos);
-		UIObject* staBackBar = new UIObject;
-		staBackBar->SetPosition(D3DXVECTOR3(0, 0, 0.1));
-		staBackBar->SetTexture(TEXTUREMANAGER->GetTexture("스테미나_백바"));
-		m_pStaminaBar->AddChild(staBackBar);
 	}
 
 	
@@ -1563,7 +1588,7 @@ void CharacterParant::Render()
 		m_vecEffect[i]->Render();
 	}
 
-
+	m_pChrStat->Render();
 }
 
 void CharacterParant::KeyControl()
