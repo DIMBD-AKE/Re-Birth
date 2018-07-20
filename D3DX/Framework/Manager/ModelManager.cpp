@@ -549,6 +549,11 @@ float ModelX::GetShaderAlpha()
 	return m_pSMesh->GetAlpha();
 }
 
+D3DXMATRIX * ModelX::GetBoneMatrix(string name)
+{
+	return m_pSMesh->GetBoneMatrix(name);
+}
+
 void ModelX::SetShaderAlpha(float alpha)
 {
 	m_pSMesh->SetAlpha(Clamp(0, 1, alpha));

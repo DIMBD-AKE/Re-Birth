@@ -84,6 +84,9 @@ public:
 
 	void Render(LPD3DXFRAME pFrame, D3DXMATRIX * matWorld);
 
+	void FindAllChild(LPD3DXFRAME pFrame, vector<LPD3DXFRAME>& vecChild);
+	D3DXMATRIX* GetBoneMatrix(string boneName);
+
 	void UpdateRender(D3DXMATRIX * matWorld);
 
 	void SetupBoneMatrixPtrs(LPD3DXFRAME pFrame);

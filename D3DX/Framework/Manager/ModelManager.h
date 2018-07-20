@@ -47,6 +47,7 @@ public:
 	virtual float GetAnimationPeriod(int index) { return 0; }
 	virtual void SetShaderAlpha(float alpha) {}
 	virtual float GetShaderAlpha() { return 0; }
+	virtual D3DXMATRIX* GetBoneMatrix(string name) { return NULL; }
 
 private:
 	ST_BOUNDBOX	m_stBoundBox;
@@ -131,6 +132,7 @@ public:
 	virtual float GetAnimationPeriod(int index);
 	virtual void SetShaderAlpha(float alpha);
 	virtual float GetShaderAlpha();
+	virtual D3DXMATRIX* GetBoneMatrix(string name);
 };
 
 class ModelManager

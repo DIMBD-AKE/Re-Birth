@@ -353,9 +353,20 @@ void SkinnedMesh::Render(LPD3DXFRAME pFrame, D3DXMATRIX * matWorld)
 		pFrame = m_pRoot;
 
 	ST_BONE* pBone = (ST_BONE*)pFrame;
+	string name = "";
+	if (pBone->Name)
+		name = pBone->Name;
 
 	if (matWorld)
 		pBone->CombinedTransformationMatrix *= *matWorld;
+
+	if (false)
+	{
+		D3DXVECTOR3 pos = D3DXVECTOR3(0, 0, 0);
+		D3DXVec3TransformCoord(&pos, &pos, &pBone->CombinedTransformationMatrix);
+		D3DXVECTOR2 conv = Convert3DTo2D(pos);
+		TEXT->Add(name, conv.x, conv.y, 10, "", 0xFFFFFFFF);
+	}
 
 	if (pBone->pMeshContainer)
 	{
@@ -414,6 +425,35 @@ void SkinnedMesh::Render(LPD3DXFRAME pFrame, D3DXMATRIX * matWorld)
 
 	if (pFrame->pFrameSibling)
 		Render(pFrame->pFrameSibling, matWorld);
+}
+
+void SkinnedMesh::FindAllChild(LPD3DXFRAME pFrame, vector<LPD3DXFRAME>& vecChild)
+{
+	if (pFrame == NULL)
+		pFrame = m_pRoot;
+
+	vecChild.push_back(pFrame);
+
+	if (pFrame->pFrameFirstChild)
+		FindAllChild(pFrame->pFrameFirstChild, vecChild);
+	if (pFrame->pFrameSibling)
+		FindAllChild(pFrame->pFrameSibling, vecChild);
+}
+
+D3DXMATRIX * SkinnedMesh::GetBoneMatrix(string boneName)
+{
+	vector<LPD3DXFRAME> vecChild;
+	FindAllChild(NULL, vecChild);
+
+	for (int i = 0; i < vecChild.size(); i++)
+	{
+		ST_BONE * bone = (ST_BONE*)vecChild[i];
+		if (bone->Name)
+			if (boneName.compare(bone->Name) == 0)
+				return &bone->CombinedTransformationMatrix;
+	}
+
+	return NULL;
 }
 
 void SkinnedMesh::UpdateRender(D3DXMATRIX * matWorld)
