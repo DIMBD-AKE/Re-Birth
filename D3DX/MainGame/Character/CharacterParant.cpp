@@ -1258,99 +1258,65 @@ void CharacterParant::Reset(Map * map, MonsterManager * pMonsterManager)
 
 void CharacterParant::SetTarget()
 {
+	m_nIndex = -1;
 
 	D3DXVECTOR3 pos = *m_pCharacter->GetPosition();														//플레이어 포지션 받고 
 	D3DXVECTOR3 rot = *m_pCharacter->GetRotation();														//플레이어 각도 받고 
-
-	m_vecTarget.clear();																								
-	m_nIndex = -1;
-	m_nIndex2 = -1;
-	m_fDot = 0.0f;
-	int subMinIndex = -1;
-	int MINIndex2 = -1;
-	float MinDistance = 0.0f;
-	float radius;
-	D3DXVECTOR3 mosPos;
-	float distance;
-	float subDistance = 0.0f;
-
 	
-
-
-	for (int i = 0; i < m_pMonsterManager->GetMonsterVector().size(); ++i)
+	
+	m_vecTarget.clear();		
+	
+	if (m_eNumTarget == NUM_SINGLE)
 	{
-		if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn())continue;								//리젠할때는 건드리지 않고 
-
-		float radius1 = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().radius;		//몬스터의 바운드 스페어의 반지름 받고 
-		mosPos = *(m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetPosition());		//몬스터 포지션 받고 
-		float distance1 = D3DXVec3Length(&(mosPos - pos));
-
-		if (distance1 - radius1 > m_Status->chr.fRange) continue;
-		distance = distance1;
-		subDistance = distance;
-
-		m_nIndex = i;
-		m_nIndex2 = i;
-		break;
-	}
-	if (m_nIndex != -1)//만약 기준점이 된 몬스터가 구해졌으면 
-	{
-		for (int i = m_nIndex + 1; i < m_pMonsterManager->GetMonsterVector().size(); ++i)
+		for (int i = 0; i < m_pMonsterManager->GetMonsterVector().size(); i++)
 		{
-			if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn())continue;	//리젠할때는 건드리지 않고 
-			
-			float radius2 = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().radius;
-			mosPos = *(m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetPosition());		//몬스터 포지션 받고 
-			float distance2 = D3DXVec3Length(&(mosPos - pos));
-			if (distance2 - radius2 > m_Status->chr.fRange) continue;
-			
-			//시선
-			D3DXVECTOR3 front;
-			D3DXMATRIX matY;
-			D3DXMatrixRotationY(&matY, m_pCharacter->GetRotation()->y);
-			D3DXVec3TransformNormal(&front, &D3DXVECTOR3(0, 0, -1), &matY);
-			D3DXVECTOR3 v0 = front;
-			//대상방향
-			D3DXVECTOR3 v1 = pos - mosPos;
-			D3DXVec3Normalize(&v1, &v1);
-			float dot = D3DXVec3Dot(&v0, &v1) / D3DXVec3Length(&v0) * D3DXVec3Length(&v1);
-			if (dot < cos(m_Status->chr.fScale / 2)) continue;
-			if (distance >= distance2)
-			{
-				
-				distance = distance2;
-				m_nIndex = i;
-			}
-		}
-		m_vecTarget.push_back(m_nIndex);
-		//두번째 가까운녀석도 추가
-		if (m_eChrType == CHRTYPE_SWORD)
-		{
-			for (int i = m_nIndex2 + 1; i < m_pMonsterManager->GetMonsterVector().size(); ++i)
-			{
-				if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn())continue;	//리젠할때는 건드리지 않고 
-				if (i == m_nIndex) continue;//먼저 검출한 최소거리를 가진 몬스터면 재끼고 
-				float radius3 = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().radius;
-				mosPos = *(m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetPosition());		//몬스터 포지션 받고 
-				float distance3 = D3DXVec3Length(&(mosPos - pos));
-				if (distance3 - radius3 > m_Status->chr.fRange) continue;
+			if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn()) continue;
+			D3DXVECTOR3 MonPos = *m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetPosition();
+			float length = D3DXVec3Length(&(MonPos - pos));
+
+			if (length <= m_Status->chr.fRange)
+			{	
+				// 시선
 				D3DXVECTOR3 front;
 				D3DXMATRIX matY;
 				D3DXMatrixRotationY(&matY, m_pCharacter->GetRotation()->y);
 				D3DXVec3TransformNormal(&front, &D3DXVECTOR3(0, 0, -1), &matY);
 				D3DXVECTOR3 v0 = front;
-				//대상방향
-				D3DXVECTOR3 v1 = pos - mosPos;
+				// 대상방향
+				D3DXVECTOR3 v1 = MonPos - pos;
 				D3DXVec3Normalize(&v1, &v1);
 				float dot = D3DXVec3Dot(&v0, &v1) / D3DXVec3Length(&v0) * D3DXVec3Length(&v1);
-				if (dot < cos(m_Status->chr.fScale / 2)) continue;
-				if (subDistance >= distance3)
+				if (dot >= cos(m_Status->chr.fScale / 2))
 				{
-					subDistance = distance3;
-					m_nIndex2 = i;
+					m_nIndex = i;
 				}
 			}
-			 m_vecTarget.push_back(m_nIndex2);
+		}
+	}
+	if (m_eNumTarget == NUM_MULTI)
+	{
+		for (int i = 0; i < m_pMonsterManager->GetMonsterVector().size(); i++)
+		{
+			if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn()) continue;
+			D3DXVECTOR3 MonPos = *m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetPosition();
+			float length = D3DXVec3Length(&(MonPos - pos));
+
+			if (length <= m_Status->chr.fRange)
+			{	// 시선
+				D3DXVECTOR3 front;
+				D3DXMATRIX matY;
+				D3DXMatrixRotationY(&matY, m_pCharacter->GetRotation()->y);
+				D3DXVec3TransformNormal(&front, &D3DXVECTOR3(0, 0, -1), &matY);
+				D3DXVECTOR3 v0 = front;
+				// 대상방향
+				D3DXVECTOR3 v1 = MonPos - pos;
+				D3DXVec3Normalize(&v1, &v1);
+				float dot = D3DXVec3Dot(&v0, &v1) / D3DXVec3Length(&v0) * D3DXVec3Length(&v1);
+				if (dot >= cos(m_Status->chr.fScale / 2))
+				{
+					m_vecTarget.push_back(i);
+				}
+			}
 		}
 	}
 }
@@ -1425,6 +1391,7 @@ CharacterParant::~CharacterParant()
 	SAFE_RELEASE(m_pStaminaBar);
 	SAFE_RELEASE(m_pShieldHp);
 	SAFE_RELEASE(m_pChrStat);
+	SAFE_RELEASE(m_pInheritateIco);
 	//for (int i = 0; i < 10; i++)
 	//{
 	//	SAFE_RELEASE(m_pUIDamage[i]);

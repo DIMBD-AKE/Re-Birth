@@ -42,6 +42,7 @@ protected:
 	SYNTHESIZE(CHARSELECT, m_eCharSelect, CharSelect);	 //해당 클래스 캐릭터의 1번째 혹은 2번째
 	GET(CHAR_CONDITION, m_eCondition, Condition);		//캐릭터 상태
 	GET(CHAR_SUBCONDITION, m_eSubCondition, SubCondition); //서브 캐릭터 상태
+	CHAR_NUMTARGET			m_eNumTarget;				//캐릭터 타겟수 
 
 	TestItem*				m_pFirstItem;			//첫번쨰 스킬 장비
 
@@ -69,8 +70,6 @@ protected:
 	int						m_nDamage;				//데미지 띄우기용 변수 
 	int						m_nAppear;				//서브캐릭터 나오나 
 	int						m_nIndex;				//몬스터 벡터용 인덱스
-	int						m_nIndex2;				//몬스터 벡터용 인덱스2 
-	int						m_nIndex3;				//몬스터 벡터용 인덱스3 
 	int						m_nDamageCount;			//데미지 카운트 
 	
 	DamageUI*				m_pDamage;				//데미지 클래스 포인터
