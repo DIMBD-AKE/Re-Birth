@@ -8,6 +8,7 @@
 #include "../Item/ItemParent.h"
 #include "Character_Shield.h"
 #include "Character_Sword.h"
+#include "../DamageUI.h"
 
 
 void CharacterParant::SKill()
@@ -170,117 +171,117 @@ void CharacterParant::Move()
 
 void CharacterParant::AppearDamage()
 {
-	D3DXVECTOR3 tempPos;
-	
-	
-	//TODO : 데미지를 벡터에 담아서 [순차적으로] 출력하고 지우고 하는걸 생각해보자. 동시에 데미지가 들어오는데 지금은 하나씩만 띄우고 있음.
+	//D3DXVECTOR3 tempPos;
+	//
+	//
+	////TODO : 데미지를 벡터에 담아서 [순차적으로] 출력하고 지우고 하는걸 생각해보자. 동시에 데미지가 들어오는데 지금은 하나씩만 띄우고 있음.
 
-	char damageChar[16];
+	//char damageChar[16];
 
-	for (int i = 0; i < m_vecDamage.size();)
-	{	
-		sprintf_s(damageChar, 16, "%d", m_vecDamage[i].Damage);			//sprintf로 숫자를 문자화
+	//for (int i = 0; i < m_vecDamage.size();)
+	//{	
+	//	sprintf_s(damageChar, 16, "%d", m_vecDamage[i].Damage);			//sprintf로 숫자를 문자화
 
-		m_vecDamage[i].time += TIME->GetElapsedTime();		//일랩스타임을 더해줘서 시간제어 시작시간에 계속 더해서 엔드타임이 되면. 이런식으로 조건문 제어
+	//	m_vecDamage[i].time += TIME->GetElapsedTime();		//일랩스타임을 더해줘서 시간제어 시작시간에 계속 더해서 엔드타임이 되면. 이런식으로 조건문 제어
 
-		tempPos = *m_pCharacter->GetPosition();
-		
-		m_vecDamage[i].x += m_vecDamage[i].time * cosf(m_vecDamage[i].angle * D3DX_PI / 180)*3.0f;
-		tempPos.y -= -4.0f + m_vecDamage[i].time * -sinf(m_vecDamage[i].angle * D3DX_PI / 180)*1.5f;
-		
-		
-		auto temp = Convert3DTo2D(tempPos);
-		
-	
-		tempPos.x = temp.x;
-		tempPos.x += m_vecDamage[i].x;
-		tempPos.y = temp.y;
-		tempPos.z = 0;
+	//	tempPos = *m_pCharacter->GetPosition();
+	//	
+	//	m_vecDamage[i].x += m_vecDamage[i].time * cosf(m_vecDamage[i].angle * D3DX_PI / 180)*3.0f;
+	//	tempPos.y -= -4.0f + m_vecDamage[i].time * -sinf(m_vecDamage[i].angle * D3DX_PI / 180)*1.5f;
+	//	
+	//	
+	//	auto temp = Convert3DTo2D(tempPos);
+	//	
+	//
+	//	tempPos.x = temp.x;
+	//	tempPos.x += m_vecDamage[i].x;
+	//	tempPos.y = temp.y;
+	//	tempPos.z = 0;
 
-		if (m_vecDamage[i].time < m_vecDamage[i].endTime) //만약 시작시간이 엔드시간보다 작으면 
-		{
-			m_vecDamage[i].angle++;
-			m_vecDamage[i].alpha-= 3.0f;
-			for (int j = 0; j < strlen(damageChar); j++)
-			{
-				if (damageChar[j] == '0')
-				{
-					m_pUIDamage[0]->SetPosition(D3DXVECTOR3(tempPos.x + 30 * j, tempPos.y , tempPos.z));
-					m_pUIDamage[0]->Update();
-					m_pUIDamage[0]->Render();
-					m_pUIDamage[0]->SetAlpha(m_vecDamage[i].alpha);
-				}
-				else if (damageChar[j] == '1')
-				{
-					m_pUIDamage[1]->SetPosition(D3DXVECTOR3(tempPos.x + 30 * j, tempPos.y , tempPos.z));
-					m_pUIDamage[1]->Update();
-					m_pUIDamage[1]->Render();
-					m_pUIDamage[1]->SetAlpha(m_vecDamage[i].alpha);
-				}
-				else if (damageChar[j] == '2')
-				{
-					m_pUIDamage[2]->SetPosition(D3DXVECTOR3(tempPos.x + 30 * j, tempPos.y , tempPos.z));
-					m_pUIDamage[2]->Update();
-					m_pUIDamage[2]->Render();
-					m_pUIDamage[2]->SetAlpha(m_vecDamage[i].alpha);
-				}
-				else if (damageChar[j] == '3')
-				{
-					m_pUIDamage[3]->SetPosition(D3DXVECTOR3(tempPos.x + 30 * j, tempPos.y , tempPos.z));
-					m_pUIDamage[3]->Update();
-					m_pUIDamage[3]->Render();
-					m_pUIDamage[3]->SetAlpha(m_vecDamage[i].alpha);
-				}
-				else if (damageChar[j] == '4')
-				{
-					m_pUIDamage[4]->SetPosition(D3DXVECTOR3(tempPos.x + 30 * j, tempPos.y , tempPos.z));
-					m_pUIDamage[4]->Update();
-					m_pUIDamage[4]->Render();
-					m_pUIDamage[4]->SetAlpha(m_vecDamage[i].alpha);
-				}
-				else if (damageChar[j] == '5')
-				{
-					m_pUIDamage[5]->SetPosition(D3DXVECTOR3(tempPos.x + 30 * j, tempPos.y , tempPos.z));
-					m_pUIDamage[5]->Update();
-					m_pUIDamage[5]->Render();
-					m_pUIDamage[5]->SetAlpha(m_vecDamage[i].alpha);
-				}
-				else if (damageChar[j] == '6')
-				{
-					m_pUIDamage[6]->SetPosition(D3DXVECTOR3(tempPos.x + 30 * j, tempPos.y , tempPos.z));
-					m_pUIDamage[6]->Update();
-					m_pUIDamage[6]->Render();
-					m_pUIDamage[6]->SetAlpha(m_vecDamage[i].alpha);
-				}
-				else if (damageChar[j] == '7')
-				{
-					m_pUIDamage[7]->SetPosition(D3DXVECTOR3(tempPos.x + 30 * j, tempPos.y , tempPos.z));
-					m_pUIDamage[7]->Update();
-					m_pUIDamage[7]->Render();
-					m_pUIDamage[7]->SetAlpha(m_vecDamage[i].alpha);
-				}
-				else if (damageChar[j] == '8')
-				{
-					m_pUIDamage[8]->SetPosition(D3DXVECTOR3(tempPos.x + 30 * j, tempPos.y , tempPos.z));
-					m_pUIDamage[8]->Update();
-					m_pUIDamage[8]->Render();
-					m_pUIDamage[8]->SetAlpha(m_vecDamage[i].alpha);
-				}
-				else if (damageChar[j] == '9')
-				{
-					m_pUIDamage[9]->SetPosition(D3DXVECTOR3(tempPos.x + 30 * j, tempPos.y , tempPos.z));
-					m_pUIDamage[9]->Update();
-					m_pUIDamage[9]->Render();
-					m_pUIDamage[9]->SetAlpha(m_vecDamage[i].alpha);
-				}
-			} 
-			i++; //위의 조건이 만족되면 i++해라
-		}
-		else
-		{
-			m_vecDamage.erase(m_vecDamage.begin() + i);
-		}
-	}
+	//	if (m_vecDamage[i].time < m_vecDamage[i].endTime) //만약 시작시간이 엔드시간보다 작으면 
+	//	{
+	//		m_vecDamage[i].angle++;
+	//		m_vecDamage[i].alpha-= 3.0f;
+	//		for (int j = 0; j < strlen(damageChar); j++)
+	//		{
+	//			if (damageChar[j] == '0')
+	//			{
+	//				m_pUIDamage[0]->SetPosition(D3DXVECTOR3(tempPos.x + 30 * j, tempPos.y , tempPos.z));
+	//				m_pUIDamage[0]->Update();
+	//				m_pUIDamage[0]->Render();
+	//				m_pUIDamage[0]->SetAlpha(m_vecDamage[i].alpha);
+	//			}
+	//			else if (damageChar[j] == '1')
+	//			{
+	//				m_pUIDamage[1]->SetPosition(D3DXVECTOR3(tempPos.x + 30 * j, tempPos.y , tempPos.z));
+	//				m_pUIDamage[1]->Update();
+	//				m_pUIDamage[1]->Render();
+	//				m_pUIDamage[1]->SetAlpha(m_vecDamage[i].alpha);
+	//			}
+	//			else if (damageChar[j] == '2')
+	//			{
+	//				m_pUIDamage[2]->SetPosition(D3DXVECTOR3(tempPos.x + 30 * j, tempPos.y , tempPos.z));
+	//				m_pUIDamage[2]->Update();
+	//				m_pUIDamage[2]->Render();
+	//				m_pUIDamage[2]->SetAlpha(m_vecDamage[i].alpha);
+	//			}
+	//			else if (damageChar[j] == '3')
+	//			{
+	//				m_pUIDamage[3]->SetPosition(D3DXVECTOR3(tempPos.x + 30 * j, tempPos.y , tempPos.z));
+	//				m_pUIDamage[3]->Update();
+	//				m_pUIDamage[3]->Render();
+	//				m_pUIDamage[3]->SetAlpha(m_vecDamage[i].alpha);
+	//			}
+	//			else if (damageChar[j] == '4')
+	//			{
+	//				m_pUIDamage[4]->SetPosition(D3DXVECTOR3(tempPos.x + 30 * j, tempPos.y , tempPos.z));
+	//				m_pUIDamage[4]->Update();
+	//				m_pUIDamage[4]->Render();
+	//				m_pUIDamage[4]->SetAlpha(m_vecDamage[i].alpha);
+	//			}
+	//			else if (damageChar[j] == '5')
+	//			{
+	//				m_pUIDamage[5]->SetPosition(D3DXVECTOR3(tempPos.x + 30 * j, tempPos.y , tempPos.z));
+	//				m_pUIDamage[5]->Update();
+	//				m_pUIDamage[5]->Render();
+	//				m_pUIDamage[5]->SetAlpha(m_vecDamage[i].alpha);
+	//			}
+	//			else if (damageChar[j] == '6')
+	//			{
+	//				m_pUIDamage[6]->SetPosition(D3DXVECTOR3(tempPos.x + 30 * j, tempPos.y , tempPos.z));
+	//				m_pUIDamage[6]->Update();
+	//				m_pUIDamage[6]->Render();
+	//				m_pUIDamage[6]->SetAlpha(m_vecDamage[i].alpha);
+	//			}
+	//			else if (damageChar[j] == '7')
+	//			{
+	//				m_pUIDamage[7]->SetPosition(D3DXVECTOR3(tempPos.x + 30 * j, tempPos.y , tempPos.z));
+	//				m_pUIDamage[7]->Update();
+	//				m_pUIDamage[7]->Render();
+	//				m_pUIDamage[7]->SetAlpha(m_vecDamage[i].alpha);
+	//			}
+	//			else if (damageChar[j] == '8')
+	//			{
+	//				m_pUIDamage[8]->SetPosition(D3DXVECTOR3(tempPos.x + 30 * j, tempPos.y , tempPos.z));
+	//				m_pUIDamage[8]->Update();
+	//				m_pUIDamage[8]->Render();
+	//				m_pUIDamage[8]->SetAlpha(m_vecDamage[i].alpha);
+	//			}
+	//			else if (damageChar[j] == '9')
+	//			{
+	//				m_pUIDamage[9]->SetPosition(D3DXVECTOR3(tempPos.x + 30 * j, tempPos.y , tempPos.z));
+	//				m_pUIDamage[9]->Update();
+	//				m_pUIDamage[9]->Render();
+	//				m_pUIDamage[9]->SetAlpha(m_vecDamage[i].alpha);
+	//			}
+	//		} 
+	//		i++; //위의 조건이 만족되면 i++해라
+	//	}
+	//	else
+	//	{
+	//		m_vecDamage.erase(m_vecDamage.begin() + i);
+	//	}
+	//}
 }
 
 void CharacterParant::Controller()
@@ -369,15 +370,17 @@ void CharacterParant::shield()
 
 void CharacterParant::SetCurrentHP(int hp)
 {
-	ST_DAMAGETEXT tempDMGTEXT;
+	/*ST_DAMAGETEXT tempDMGTEXT;
 	tempDMGTEXT.Damage = hp;
 	tempDMGTEXT.time = 0.0f;
 	tempDMGTEXT.endTime = 1.0f;
 	tempDMGTEXT.angle = rand() % 100;
 	tempDMGTEXT.alpha = 255.0f;
-	tempDMGTEXT.x = 0.0f;
-	m_vecDamage.push_back(tempDMGTEXT);
-	
+	tempDMGTEXT.x = 0.0f;*/
+	//m_vecDamage.push_back(tempDMGTEXT);
+	m_pDamage->AddDamage(hp);
+
+
 	m_Status->chr.nCurrentHP -= hp;
 	
 
@@ -405,7 +408,8 @@ void CharacterParant::CalculDamage(float damage)
 			m_eCondition = CHAR_HIT;
 			ChangeAnimation();
 		}
-		m_pCharacter->SetShaderAlpha(0.3f);
+		SetModelAlpha();
+		//m_pCharacter->SetShaderAlpha(0.3f);
 		//	m_bIsInvincible = true;
 		m_bIsUnderAttacked = true;
 		float totalRate =
@@ -1343,6 +1347,22 @@ void CharacterParant::CutScene()
 	}
 }
 
+void CharacterParant::SetModelAlpha()
+{
+	float tempPrevTime = 0.0f;
+	float tempInterval = 0.1f;
+
+	if (m_fElpTime < tempPrevTime + tempInterval) return;
+
+	tempPrevTime = m_fElpTime;
+	
+	m_fModelAlpha += 0.1f;
+	if (m_fModelAlpha <= 0.7f)
+	{
+		m_pCharacter->SetShaderAlpha(m_fModelAlpha);
+	}
+}
+
 
 CharacterParant::CharacterParant()
 {
@@ -1380,10 +1400,10 @@ CharacterParant::~CharacterParant()
 	SAFE_RELEASE(m_pHPBar);
 	SAFE_RELEASE(m_pStaminaBar);
 	SAFE_RELEASE(m_pShieldHp);
-	for (int i = 0; i < 10; i++)
-	{
-		SAFE_RELEASE(m_pUIDamage[i]);
-	}
+	//for (int i = 0; i < 10; i++)
+	//{
+	//	SAFE_RELEASE(m_pUIDamage[i]);
+	//}
 	
 	m_pMonsterManager = NULL; 
 	m_pSampleMap = NULL;
@@ -1449,6 +1469,8 @@ void CharacterParant::Init(CHRTYPE type, CHARSELECT order)
 	m_fElpTime = 0.0f;
 	m_fPrevTime = 0.0f;
 	m_nDamageCount = 0;
+	m_fModelAlpha = 0.0f;
+
 
 	m_fEffectInterval = 0.1f;
 
@@ -1460,6 +1482,10 @@ void CharacterParant::Init(CHRTYPE type, CHARSELECT order)
 	//포트레이트 UI
 	if(m_pUIobj == NULL) m_pUIobj = new UIObject;
 	
+
+	//데미지 
+	m_pDamage = new DamageUI;
+	m_pDamage->Setup(true);
 	
 	//프로그래스바
 	if (m_pHPBar == NULL)
@@ -1488,22 +1514,22 @@ void CharacterParant::Init(CHRTYPE type, CHARSELECT order)
 	}
 
 	
-	//데미지 UI
-	for (int i = 0; i < 10; i++)
-	{
-		if(m_pUIDamage[i] == NULL) m_pUIDamage[i] = new UIObject;
-	}
+	////데미지 UI
+	//for (int i = 0; i < 10; i++)
+	//{
+	//	if(m_pUIDamage[i] == NULL) m_pUIDamage[i] = new UIObject;
+	//}
 
-	m_pUIDamage[0]->SetTexture(TEXTUREMANAGER->GetTexture("숫자0"));
-	m_pUIDamage[1]->SetTexture(TEXTUREMANAGER->GetTexture("숫자1"));
-	m_pUIDamage[2]->SetTexture(TEXTUREMANAGER->GetTexture("숫자2"));
-	m_pUIDamage[3]->SetTexture(TEXTUREMANAGER->GetTexture("숫자3"));
-	m_pUIDamage[4]->SetTexture(TEXTUREMANAGER->GetTexture("숫자4"));
-	m_pUIDamage[5]->SetTexture(TEXTUREMANAGER->GetTexture("숫자5"));
-	m_pUIDamage[6]->SetTexture(TEXTUREMANAGER->GetTexture("숫자6"));
-	m_pUIDamage[7]->SetTexture(TEXTUREMANAGER->GetTexture("숫자7"));
-	m_pUIDamage[8]->SetTexture(TEXTUREMANAGER->GetTexture("숫자8"));
-	m_pUIDamage[9]->SetTexture(TEXTUREMANAGER->GetTexture("숫자9"));
+	//m_pUIDamage[0]->SetTexture(TEXTUREMANAGER->GetTexture("숫자0"));
+	//m_pUIDamage[1]->SetTexture(TEXTUREMANAGER->GetTexture("숫자1"));
+	//m_pUIDamage[2]->SetTexture(TEXTUREMANAGER->GetTexture("숫자2"));
+	//m_pUIDamage[3]->SetTexture(TEXTUREMANAGER->GetTexture("숫자3"));
+	//m_pUIDamage[4]->SetTexture(TEXTUREMANAGER->GetTexture("숫자4"));
+	//m_pUIDamage[5]->SetTexture(TEXTUREMANAGER->GetTexture("숫자5"));
+	//m_pUIDamage[6]->SetTexture(TEXTUREMANAGER->GetTexture("숫자6"));
+	//m_pUIDamage[7]->SetTexture(TEXTUREMANAGER->GetTexture("숫자7"));
+	//m_pUIDamage[8]->SetTexture(TEXTUREMANAGER->GetTexture("숫자8"));
+	//m_pUIDamage[9]->SetTexture(TEXTUREMANAGER->GetTexture("숫자9"));
 	
 
 	m_pParticle = PARTICLE->GetParticle("ATTACK");

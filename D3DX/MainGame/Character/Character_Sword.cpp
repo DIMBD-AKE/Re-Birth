@@ -6,6 +6,7 @@
 #include "Character_Shield.h"
 #include "../monster/MonsterManager.h"
 #include "../monster/MonsterParent.h"
+#include "../DamageUI.h"
 
 
 Character_Sword::Character_Sword()
@@ -136,7 +137,8 @@ void Character_Sword::Update()
 		Effect();
 
 		PlayerProgressBar();
-		CountAppearDamage();
+		//CountAppearDamage();
+		m_pDamage->Update(*m_pCharacter->GetPosition());
 	}
 	CutScene();
 	KeyControl();
@@ -159,8 +161,8 @@ void Character_Sword::Render()
 		m_pUIobj->Render();
 		m_pHPBar->Render();
 		m_pStaminaBar->Render();
-		AppearDamage();
-		
+	//	AppearDamage();
+		m_pDamage->Render();
 		CharacterParant::Render();
 	}
 }
@@ -505,8 +507,8 @@ void Character_Sword::Attack()
 				//tempEffect.isRY = true;
 				tempEffect.isRX = true;
 				tempEffect.height = 3.0f;
-				tempEffect.SetAlpha(255, 255, 0);
-				tempEffect.SetScale(2, 2, 2);
+				tempEffect.SetAlpha(FRand(100, 255), FRand(100, 255), 0);
+				tempEffect.SetScale(FRand(1.4, 3.0), FRand(1.4, 3.0), FRand(1.4, 3.0));
 				tempEffect.tex = TEXTUREMANAGER->AddTexture("Step", "Texture/Effect/step.png");
 				EffectObject* tempEFOBJ;
 				tempEFOBJ = new EffectObject;
@@ -516,11 +518,13 @@ void Character_Sword::Attack()
 				TempDir = *m_pCharacter->GetPosition() - *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
 				D3DXVec3Normalize(&TempDir, &TempDir);
 
+				float Length = D3DXVec3Length(&(MonPos - pos));
+
 				D3DXVECTOR3 testSkillpos = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
 				testSkillpos.y += 1.0f;
 				testSkillpos.x += FRand(-0.5, 0.5);
 				testSkillpos.z += FRand(-0.5, 0.5);
-				testSkillpos += TempDir * 4.0f;
+				testSkillpos += TempDir * (Length * 0.3f);
 				tempEFOBJ->Init(tempEffect, testSkillpos);
 
 				m_vecEffect.push_back(tempEFOBJ);
@@ -539,8 +543,8 @@ void Character_Sword::Attack()
 				//tempEffect.isRY = true;
 				tempEffect.isRX = true;
 				tempEffect.height = 3.0f;
-				tempEffect.SetAlpha(255, 255, 0);
-				tempEffect.SetScale(2, 2, 2);
+				tempEffect.SetAlpha(FRand(100, 255), FRand(100, 255), 0);
+				tempEffect.SetScale(FRand(1.4, 3.0), FRand(1.4, 3.0), FRand(1.4, 3.0));
 				tempEffect.tex = TEXTUREMANAGER->AddTexture("Blood", "Texture/Effect/velvet.png");
 				EffectObject* tempEFOBJ;
 				tempEFOBJ = new EffectObject;
@@ -549,11 +553,13 @@ void Character_Sword::Attack()
 				TempDir = *m_pCharacter->GetPosition() - *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
 				D3DXVec3Normalize(&TempDir, &TempDir);
 
+				float Length = D3DXVec3Length(&(MonPos - pos));
+
 				D3DXVECTOR3 testSkillpos = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
 				testSkillpos.y += 1.0f;
 				testSkillpos.x += FRand(-0.5, 0.5);
 				testSkillpos.z += FRand(-0.5, 0.5);
-				testSkillpos += TempDir * 4.0f;
+				testSkillpos += TempDir * (Length * 0.3f);
 				tempEFOBJ->Init(tempEffect, testSkillpos);
 
 				m_vecEffect.push_back(tempEFOBJ);

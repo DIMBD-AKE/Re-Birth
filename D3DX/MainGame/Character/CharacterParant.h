@@ -8,6 +8,7 @@ class UIObject;
 class MonsterManager;
 class ItemParent;
 class Character_Shield;
+class DamageUI;
 union STATUS;
 struct ST_DAMAGE;
 
@@ -16,16 +17,16 @@ struct ST_DAMAGE;
 
 //캐릭터의 원형 클래스
 
-struct ST_DAMAGETEXT			//데미지 텍스트용 구조체
-{
-	int Damage;
-	float time;
-	float endTime;
-	float angle;
-	float alpha;
-	float x;
-
-};
+//struct ST_DAMAGETEXT			//데미지 텍스트용 구조체
+//{
+//	int Damage;
+//	float time;
+//	float endTime;
+//	float angle;
+//	float alpha;
+//	float x;
+//
+//};
 
 
 struct ST_PLAYERDAMAGED
@@ -50,7 +51,7 @@ protected:
 	GET(Inventory*, m_pInventory, m_Inventory);		//인벤토리용 변수
 	GET(STATUS*, m_Status, status);					//스테이터스 유니온 변수 
 	UIObject*				m_pUIobj;				//UI오브젝트용 변수
-	UIObject*				m_pUIDamage[10];		//데미지용 UIObj변수
+	//UIObject*				m_pUIDamage[10];		//데미지용 UIObj변수
 	UIObject*				m_pHPBar;				//hp프로그래스바
 	UIObject*				m_pStaminaBar;			//스테미너 프로그래스바
 	UIObject*				m_pShieldHp;			//쉴드용 HP
@@ -70,8 +71,8 @@ protected:
 	int						m_nIndex3;				//몬스터 벡터용 인덱스3 
 	int						m_nDamageCount;			//데미지 카운트 
 	
-
-	vector<ST_DAMAGETEXT>		m_vecDamage;		//데미지 저장용 변수
+	DamageUI*				m_pDamage;				//데미지 클래스 포인터
+	//vector<ST_DAMAGETEXT>		m_vecDamage;		//데미지 저장용 변수
 
 	bool					m_bIsFront;				//앞인지 뒤인지
 	bool					m_bIsDash;				//대쉬했늬
@@ -88,7 +89,7 @@ protected:
 	float					m_fElpTime;				//이펙트용 일랩스 카운트
 	float					m_fPrevTime;			//이펙트 기준시간
 	float					m_fEffectInterval;		//이펙트 인터벌
-
+	float					m_fModelAlpha;			//모델 알파값
 
 	GET(bool, m_bIsDead, IsDead);						//죽었늬
 	float					m_fStamina;				//스테미나 게이지
@@ -127,6 +128,7 @@ protected:
 	void Reset(Map* map, MonsterManager* pMonsterManager);
 	void SetTarget();
 	void CutScene();
+	void SetModelAlpha();
 
 	int						m_temp;			//애니메이션 확인용 임시변수
 

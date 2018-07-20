@@ -4,6 +4,7 @@
 #include "Inventory.h"
 #include "../monster/MonsterManager.h"
 #include "../monster/MonsterParent.h"
+#include "../DamageUI.h"
 
 Character_Magic::Character_Magic()
 {
@@ -90,7 +91,8 @@ void Character_Magic::Update()
 		m_pUIobj->Update();
 
 		PlayerProgressBar();
-		CountAppearDamage();
+		//CountAppearDamage();
+		m_pDamage->Update(*m_pCharacter->GetPosition());
 
 	}
 }
@@ -106,7 +108,8 @@ void Character_Magic::Render()
 		m_pUIobj->Render();
 		m_pHPBar->Render();
 		m_pStaminaBar->Render();
-		AppearDamage();
+		m_pDamage->Render();
+		//AppearDamage();
 
 		CharacterParant::Render();
 	}

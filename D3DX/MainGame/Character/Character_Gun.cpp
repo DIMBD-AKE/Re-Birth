@@ -5,6 +5,7 @@
 #include "../Status.h"
 #include "../monster/MonsterManager.h"
 #include "../monster/MonsterParent.h"
+#include "../DamageUI.h"
 
 
 Character_Gun::Character_Gun()
@@ -94,7 +95,8 @@ void Character_Gun::Update()
 		Effect();
 
 		PlayerProgressBar();
-		CountAppearDamage();
+		//CountAppearDamage();
+		m_pDamage->Update(*m_pCharacter->GetPosition());
 	}
 }
 
@@ -110,7 +112,8 @@ void Character_Gun::Render()
 		m_pUIobj->Render();
 		m_pHPBar->Render();
 		m_pStaminaBar->Render();
-		AppearDamage();
+		m_pDamage->Render();
+		//AppearDamage();
 
 
 		CharacterParant::Render();
