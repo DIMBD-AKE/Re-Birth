@@ -15,6 +15,7 @@ MagicCircle::~MagicCircle()
 void MagicCircle::Setup()
 {
 	//PARTICLE->AddParticle("ttest", TEXTUREMANAGER->GetTexture("파티클시험"), "./Particle/ttest.ptc");
+	SAFE_DELETE(m_pParticle);
 	m_pParticle = PARTICLE->GetParticle("마법기본공격");
 	//
 	
