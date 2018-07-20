@@ -152,7 +152,8 @@ void SC_Loading::AddTexture()
 	m_pLoading->LoadTexture("마법_이동", "Texture/SkillIMG/Skill_Bati_Mana01_Icon.tga");
 	m_pLoading->LoadTexture("원거리_공격", "Texture/SkillIMG/Skill_Beholder_Active02_Icon.tga");
 
-	m_pLoading->LoadTexture("파티클시험", "Texture/Particle/Star.png");
+	//마법공격 파티클(이후 수정가능성 높음)
+	m_pLoading->LoadTexture("별모양파티클", "Texture/Particle/Star.png");
 }
 
 void SC_Loading::AddSound()
@@ -185,7 +186,8 @@ void SC_Loading::AddSound()
 
 void SC_Loading::AddParticle()
 {
-	m_pLoading->LoadParticle("마법기본공격", "파티클시험", "./Particle/ttest.ptc");
+	//마법공격 파티클(이후 수정가능성 높음)
+	m_pLoading->LoadParticle("마법기본공격", "별모양파티클", "./Particle/MagicBasicAttack.ptc");
 }
 
 void SC_Loading::InitUI()

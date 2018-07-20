@@ -33,6 +33,9 @@ public:
 	virtual ~MagicMonster();
 
 	virtual void Setup(Map* map, D3DXVECTOR3 spawnPos, bool isSummon = false) override;
+
+	virtual void Update() override;
+	virtual void Render() override;
 	
 };
 

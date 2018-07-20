@@ -19,6 +19,7 @@ void MagicMonster::Setup(Map* map, D3DXVECTOR3 spawnPos, bool isSummon)
 
 	m_bIsAttack = false;
 	m_pMagicCircle = new MagicCircle;
+	m_pMagicCircle->Setup();
 }
 
 void MagicMonster::SetupStat()
@@ -200,4 +201,24 @@ void MagicMonster::SummonMove()
 void MagicMonster::DropItemSetup()
 {
 
+}
+
+ void MagicMonster::Update()
+{
+	 MonsterParent::Update();
+
+	 if (m_bIsAttack)
+	 {
+		 if (m_pMagicCircle)		m_pMagicCircle->Update();
+	 }
+}
+
+void MagicMonster::Render()
+{
+	MonsterParent::Render();
+
+	if (m_bIsAttack)
+	{
+		if(m_pMagicCircle)		m_pMagicCircle->Render();
+	}
 }
