@@ -60,6 +60,7 @@ class Skill
 {
 private:
 	LPDIRECT3DTEXTURE9	m_pSkillIcon;
+	LPDIRECT3DTEXTURE9	m_pParticleTexture;
 	string				m_sSkillName;
 
 	// 처리 방식
@@ -117,7 +118,7 @@ public:
 	Skill();
 	Skill(SKILL_PROCESS damage, SKILL_PROCESS target, 
 		SKILL_EFFECT particleP, SKILL_EFFECT effectP, SKILL_BUFF buff, string particle, ST_EFFECT effect,
-		LPDIRECT3DTEXTURE9 iconTex, string name);
+		LPDIRECT3DTEXTURE9 iconTex, string name, LPDIRECT3DTEXTURE9 particleTex);
 	~Skill();
 
 	void Prepare(CharacterParant * pCharacter, MonsterParent* pMonster, vector<MonsterParent*> vecMonster, ST_SKILL skill, SKILL_OWNER owner);

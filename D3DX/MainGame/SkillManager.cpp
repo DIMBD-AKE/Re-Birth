@@ -206,13 +206,6 @@ void Skill::ParticleThis()
 		return;
 	}
 
-	if (m_vecParticle.empty())
-	{
-		PARTICLE->AddParticle(m_sParticle,
-			TEXTUREMANAGER->AddTexture("Particle Sphere", "Texture/Particle/Sphere.png"), m_sParticle);
-		m_vecParticle.push_back(PARTICLE->GetParticle(m_sParticle));
-	}
-
 	for (int i = 0; i < m_vecParticle.size(); i++)
 	{
 		if (m_eOwner == SKILLO_CHARACTER)
@@ -374,7 +367,7 @@ Skill::Skill()
 
 Skill::Skill(SKILL_PROCESS damage, SKILL_PROCESS target,
 	SKILL_EFFECT particleP, SKILL_EFFECT effectP, SKILL_BUFF buff, string particle, ST_EFFECT effect,
-	LPDIRECT3DTEXTURE9 iconTex, string name)
+	LPDIRECT3DTEXTURE9 iconTex, string name, LPDIRECT3DTEXTURE9 particleTex)
 {
 	ZeroMemory(this, sizeof(Skill));
 	m_eDamageProcess = damage;
@@ -386,12 +379,12 @@ Skill::Skill(SKILL_PROCESS damage, SKILL_PROCESS target,
 	m_stEffect = effect;
 	m_sSkillName = name;
 	m_pSkillIcon = iconTex;
+	m_pParticleTexture = particleTex;
 
 	m_stSphere.radius = 1;
 	m_stSphere.center = D3DXVECTOR3(0, 0, 0);
 
-	PARTICLE->AddParticle(m_sParticle,
-		TEXTUREMANAGER->AddTexture("Particle Sphere", "Texture/Particle/Sphere.png"), m_sParticle);
+	PARTICLE->AddParticle(m_sSkillName + " SP", particleTex, m_sParticle);
 }
 
 Skill::~Skill()
@@ -463,7 +456,7 @@ void Skill::Trigger()
 		{
 			if (m_eParticleProcess != SKILLE_NONE)
 			{
-				m_vecParticle.push_back(PARTICLE->GetParticle(m_sParticle));
+				m_vecParticle.push_back(PARTICLE->GetParticle(m_sSkillName + " SP"));
 				if (m_eOwner == SKILLO_CHARACTER)
 					m_vecParticle.back()->SetPosition(*m_pCharacter->GetCharacter()->GetPosition());
 				else
@@ -616,18 +609,6 @@ void Skill::Render()
 	if (DEBUG)
 		Debug();
 
-	//if (m_pSkillIcon)
-	//{
-	//	SPRITE_BEGIN;
-	//	D3DXMATRIX world;
-	//	D3DXMatrixIdentity(&world);
-	//	world._41 = 100;
-	//	world._42 = 200;
-	//	SPRITE->SetTransform(&world);
-	//	SPRITE->Draw(m_pSkillIcon, NULL, NULL, NULL, 0xFFFFFFFF);
-	//	SPRITE_END;
-	//}
-
 	for (auto p : m_vecParticle)
 		p->Render();
 
@@ -711,6 +692,7 @@ Skill SkillManager::SkillParse(string name, string path)
 	string particle;
 	ST_EFFECT effect;
 	LPDIRECT3DTEXTURE9 iconTex = NULL;
+	LPDIRECT3DTEXTURE9 particleTex = NULL;
 
 	ZeroMemory(&effect, sizeof(ST_EFFECT));
 
@@ -795,6 +777,12 @@ Skill SkillManager::SkillParse(string name, string path)
 			particle = string(tok);
 		}
 
+		if (strcmp(tok, "PARTICLE_TEXTURE") == 0)
+		{
+			tok = strtok_s(NULL, "\t\n", &context);
+			particleTex = TEXTUREMANAGER->AddTexture(tok, tok);
+		}
+
 		if (strcmp(tok, "EFFECT_TEXTURE") == 0)
 		{
 			tok = strtok_s(NULL, "\t\n", &context);
@@ -844,7 +832,7 @@ Skill SkillManager::SkillParse(string name, string path)
 
 	fclose(fp);
 
-	skill = Skill(damage, target, particleP, effectP, buff, particle, effect, iconTex, name);
+	skill = Skill(damage, target, particleP, effectP, buff, particle, effect, iconTex, name, particleTex);
 
 	return skill;
 }
