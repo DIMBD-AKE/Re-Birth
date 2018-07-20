@@ -1443,7 +1443,7 @@ void CharacterParant::Init(CHRTYPE type, CHARSELECT order)
 	m_eCharSelect = order;
 
 	m_pCharacter->SetScale(D3DXVECTOR3(0.02, 0.02, 0.02));
-
+	m_pCharacter->SetRotation(D3DXVECTOR3(0,3.2,0));
 	ST_SIZEBOX box;
 	box.highX = 50.0f;
 	box.highY = 180.0f;
@@ -1465,8 +1465,8 @@ void CharacterParant::Init(CHRTYPE type, CHARSELECT order)
 	m_pCharacter->SetBoundSphere(m_pCharacter->GetOrigBoundSphere().center, 100.0f);
 
 	CAMERA->SetMode(CAMERA_FOLLOW_HOLD);
-	CAMERA->SetCamOffset(D3DXVECTOR3(0, 5, 20));
-	CAMERA->SetTargetOffset(D3DXVECTOR3(0, 5, 0));
+	CAMERA->SetCamOffset(D3DXVECTOR3(0, 3, 20));
+	CAMERA->SetTargetOffset(D3DXVECTOR3(0, 4, 0));
 	CAMERA->SetTarget(m_pCharacter->GetPosition(), m_pCharacter->GetRotation());
 
 	m_temp = 0;
@@ -1537,22 +1537,7 @@ void CharacterParant::Init(CHRTYPE type, CHARSELECT order)
 	}
 
 	
-	////데미지 UI
-	//for (int i = 0; i < 10; i++)
-	//{
-	//	if(m_pUIDamage[i] == NULL) m_pUIDamage[i] = new UIObject;
-	//}
 
-	//m_pUIDamage[0]->SetTexture(TEXTUREMANAGER->GetTexture("숫자0"));
-	//m_pUIDamage[1]->SetTexture(TEXTUREMANAGER->GetTexture("숫자1"));
-	//m_pUIDamage[2]->SetTexture(TEXTUREMANAGER->GetTexture("숫자2"));
-	//m_pUIDamage[3]->SetTexture(TEXTUREMANAGER->GetTexture("숫자3"));
-	//m_pUIDamage[4]->SetTexture(TEXTUREMANAGER->GetTexture("숫자4"));
-	//m_pUIDamage[5]->SetTexture(TEXTUREMANAGER->GetTexture("숫자5"));
-	//m_pUIDamage[6]->SetTexture(TEXTUREMANAGER->GetTexture("숫자6"));
-	//m_pUIDamage[7]->SetTexture(TEXTUREMANAGER->GetTexture("숫자7"));
-	//m_pUIDamage[8]->SetTexture(TEXTUREMANAGER->GetTexture("숫자8"));
-	//m_pUIDamage[9]->SetTexture(TEXTUREMANAGER->GetTexture("숫자9"));
 	
 
 	m_pParticle = PARTICLE->GetParticle("ATTACK");

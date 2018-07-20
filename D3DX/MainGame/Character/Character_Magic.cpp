@@ -402,6 +402,12 @@ void Character_Magic::Attack()
 				tempEFOBJ = new EffectObject;
 
 
+				
+				//tempEffect.dir = D3DXVECTOR3(0, 0, 1); 방향을 주고
+				//tempEffect.SetSpeed(3, 3, 3); 스피드 주고 
+				//	tempEffect.time = FRand(0.1, 0.4) + 5; 타임 건드려주면 다양하게 활용 가능.(스피드 안주면 일정시간동안 설치형으로 사용가능)
+
+
 				D3DXVECTOR3 TempDir;
 				TempDir = *m_pCharacter->GetPosition() - *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
 				D3DXVec3Normalize(&TempDir, &TempDir);
@@ -462,6 +468,18 @@ void Character_Magic::Attack()
 
 		}
 	}
+}
+
+void Character_Magic::targetAttack()
+{
+
+	//1. 몬스터 타겟 구하고 
+	//2. 
+	//tempEFOBJ->GetOBB();
+	//m_pCharacter->GetBoundBox().obb;
+	//IntersectSphere(tempEFOBJ->GetBoundSphere(), m_pCharacter->GetBoundSphere());
+	//CollisionOBB(tempEFOBJ->GetOBB(), m_pCharacter->GetBoundBox().obb);
+
 }
 
 void Character_Magic::MgSkill()
