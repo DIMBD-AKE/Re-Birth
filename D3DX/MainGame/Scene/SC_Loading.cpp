@@ -132,6 +132,16 @@ void SC_Loading::AddTexture()
 	//쉴드 프로그래스바
 	m_pLoading->LoadTexture("실드_프론트바", "Texture/PlayerProgressBar/shieldHp.jpg");
 	m_pLoading->LoadTexture("실드_백바", "Texture/PlayerProgressBar/shieldBack.jpg");
+
+	// 메인 UI
+	m_pLoading->LoadTexture("Main Background", "Texture/Scene/Main BG.png");
+	m_pLoading->LoadTexture("Main Button", "Texture/Scene/Main Button.png");
+	m_pLoading->LoadTexture("Main Chr Select", "Texture/Scene/Main Character Select.png");
+	m_pLoading->LoadTexture("Character Background", "Texture/Scene/Character BG.png");
+	m_pLoading->LoadTexture("Character Chr Over", "Texture/Scene/Main Character Over.png");
+
+	// 게임 UI
+	m_pLoading->LoadTexture("Game ElapseTime", "Texture/UI/ElapseTime.png");
 }
 
 void SC_Loading::AddSound()

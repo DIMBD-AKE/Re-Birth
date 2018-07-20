@@ -21,6 +21,7 @@ void SC_Game::Release()
 	SAFE_DELETE(m_pMap);
 	SAFE_DELETE(m_pDropManager);
 	SAFE_DELETE(m_pMM);
+	SAFE_RELEASE(m_pUI);
 }
 
 void SC_Game::Init()
@@ -32,7 +33,7 @@ void SC_Game::Init()
 	if (m_pData[1])
 		m_nStage = *(int*)m_pData[1];
 	if (m_pData[2])
-		m_fPlayTime = *(float*)m_pData[2];
+		m_fElapseTime = *(float*)m_pData[2];
 
 	m_fGenTime = GetTickCount();
 
@@ -55,9 +56,13 @@ void SC_Game::Init()
 
 	m_pCharacter->Reset(m_pMap, m_pMM);
 
+	m_pUI = new UIObject;
+	m_pUI->SetTexture(TEXTUREMANAGER->GetTexture("Game ElapseTime"));
+	m_pUI->SetPosition(D3DXVECTOR3(1261, 754, 0));
+
 	m_fGenTime = (GetTickCount() - m_fGenTime) * 0.001;
-	if (m_fPlayTime > 0)
-		m_fPlayTime -= m_fGenTime;
+	if (m_fElapseTime > 0)
+		m_fElapseTime -= m_fGenTime;
 }
 
 void SC_Game::Update()
@@ -65,9 +70,11 @@ void SC_Game::Update()
 	m_pMM->Update();
 	m_pDropManager->GetDropItem(m_pCharacter);
 	m_pCharacter->Update();
+	m_pUI->Update();
+
+	ShowElapseTime();
 
 	TEXT->Add(to_string(TIME->GetFPS()), 0, 0, 20);
-	TEXT->Add(to_string(m_fPlayTime), 0, 20, 20);
 
 	if (INPUT->KeyDown(VK_RETURN))
 		NextStage();
@@ -75,9 +82,9 @@ void SC_Game::Update()
 	if (INPUT->KeyDown(VK_ESCAPE))
 		ClearStage();
 
-	if (m_fPlayTime < 0.0001)
-		m_fPlayTime -= m_fGenTime;
-	m_fPlayTime += TIME->GetElapsedTime();
+	if (m_fElapseTime < 0.0001)
+		m_fElapseTime -= m_fGenTime;
+	m_fElapseTime += TIME->GetElapsedTime();
 }
 
 void SC_Game::Render()
@@ -87,6 +94,23 @@ void SC_Game::Render()
 	m_pDropManager->Render();
 	m_pCharacter->Render();
 	m_pMM->Render();
+
+	m_pUI->Render();
+}
+
+void SC_Game::ShowElapseTime()
+{
+	string time = "";
+
+	int m = m_fElapseTime / 60;
+	int s = (int)m_fElapseTime % 60;
+
+	if (m > 0)
+		time += to_string(m) + "분 ";
+	if (s > 0)
+		time += to_string(s) + "초";
+
+	TEXT->Add(time, 1390, 767, 26, "나눔명조", 0xFFFFFFFF);
 }
 
 void SC_Game::ClearStage()

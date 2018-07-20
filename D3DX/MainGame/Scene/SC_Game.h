@@ -12,9 +12,10 @@ private:
 	CharacterParant *	m_pCharacter;
 	MonsterManager *	m_pMM;
 	DropManager *		m_pDropManager;
+	UIObject *			m_pUI;
 
 	int					m_nStage;
-	float				m_fPlayTime;
+	float				m_fElapseTime;
 	float				m_fGenTime;
 
 public:
@@ -26,6 +27,7 @@ public:
 	virtual void Update();
 	virtual void Render();
 
+	void ShowElapseTime();
 	void ClearStage();
 	void NextStage();
 };

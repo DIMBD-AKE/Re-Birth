@@ -23,6 +23,9 @@ void SC_Main::OnClick(UIObject * pSender)
 	if (pSender->GetName().compare("Option") == 0)
 		m_eState = MS_OPTION;
 
+	if (pSender->GetName().compare("Ranking") == 0)
+		m_eState = MS_RANKING;
+
 	if (pSender->GetName().compare("Start") == 0 && m_sSelect.compare("¾Æ¸°"))
 	{
 		SOUND->Stop("Main Theme");
@@ -74,7 +77,8 @@ void SC_Main::OnClick(UIObject * pSender)
 	if (pSender->GetName().compare("Character Select") && 
 		pSender->GetName().compare("Background") &&
 		pSender->GetName().compare("Start") &&
-		pSender->GetName().compare("Option"))
+		pSender->GetName().compare("Option") &&
+		pSender->GetName().compare("Ranking"))
 	{
 		m_sSelect = pSender->GetName();
 		MakeModel();
@@ -86,7 +90,8 @@ void SC_Main::OnOver(UIObject * pSender)
 	if (pSender->GetName().compare("Character Select") &&
 		pSender->GetName().compare("Background") && 
 		pSender->GetName().compare("Start") &&
-		pSender->GetName().compare("Option"))
+		pSender->GetName().compare("Option") &&
+		pSender->GetName().compare("Ranking"))
 	{
 		m_pChrOver->SetPosition(pSender->GetPosition() - D3DXVECTOR3(6, 6, 0));
 		m_pChrOver->SetScale(pSender->GetScale());
@@ -100,7 +105,8 @@ void SC_Main::OnExit(UIObject * pSender)
 	if (pSender->GetName().compare("Character Select") && 
 		pSender->GetName().compare("Background") &&
 		pSender->GetName().compare("Start") &&
-		pSender->GetName().compare("Option"))
+		pSender->GetName().compare("Option") &&
+		pSender->GetName().compare("Ranking"))
 		m_isPortrait = false;
 }
 
@@ -126,20 +132,27 @@ void SC_Main::Init()
 
 	m_pUI = new UIObject;
 	m_pUI->SetPosition(D3DXVECTOR3(0, 0, 1));
-	m_pUI->SetTexture(TEXTUREMANAGER->AddTexture("Main Background", "Texture/Scene/Main BG.png"));
+	m_pUI->SetTexture(TEXTUREMANAGER->GetTexture("Main Background"));
 	m_pUI->SetName("Background");
 	
 	UIObject * child = new UIObject;
 	child->SetPosition(D3DXVECTOR3(580, 351, 0));
-	child->SetTexture(TEXTUREMANAGER->AddTexture("Main Button", "Texture/Scene/Main Button.png"));
+	child->SetTexture(TEXTUREMANAGER->GetTexture("Main Button"));
 	child->SetName("Character Select");
 	child->SetFunction(this);
 	m_pUI->AddChild(child);
 
 	child = new UIObject;
 	child->SetPosition(D3DXVECTOR3(580, 450, 0));
-	child->SetTexture(TEXTUREMANAGER->AddTexture("Main Button", "Texture/Scene/Main Button.png"));
+	child->SetTexture(TEXTUREMANAGER->GetTexture("Main Button"));
 	child->SetName("Option");
+	child->SetFunction(this);
+	m_pUI->AddChild(child);
+
+	child = new UIObject;
+	child->SetPosition(D3DXVECTOR3(580, 550, 0));
+	child->SetTexture(TEXTUREMANAGER->GetTexture("Main Button"));
+	child->SetName("Ranking");
 	child->SetFunction(this);
 	m_pUI->AddChild(child);
 
@@ -152,15 +165,15 @@ void SC_Main::Init()
 
 	m_pSelect = new UIObject;
 	m_pSelect->SetName("Select");
-	m_pSelect->SetTexture(TEXTUREMANAGER->AddTexture("Main Chr Select", "Texture/Scene/Main Character Select.png"));
+	m_pSelect->SetTexture(TEXTUREMANAGER->GetTexture("Main Chr Select"));
 
 	m_pPortrait = new UIObject;
 	m_pPortrait->SetName("Root");
-	m_pPortrait->SetTexture(TEXTUREMANAGER->AddTexture("Character Background", "Texture/Scene/Character BG.png"));
+	m_pPortrait->SetTexture(TEXTUREMANAGER->GetTexture("Character Background"));
 
 	m_pChrOver = new UIObject;
 	m_pChrOver->SetName("Over");
-	m_pChrOver->SetTexture(TEXTUREMANAGER->AddTexture("Character Chr Over", "Texture/Scene/Main Character Over.png"));
+	m_pChrOver->SetTexture(TEXTUREMANAGER->GetTexture("Character Chr Over"));
 
 	child = new UIObject;
 	child->SetFunction(this);
@@ -259,11 +272,23 @@ void SC_Main::Update()
 	{
 		D3DXVECTOR2 mouse = D3DXVECTOR2(MOUSE_POS.x, MOUSE_POS.y);
 		m_fElapse += 0.05;
-		int alpha = sin(m_fElapse) * 30 + 150;
+		int alpha = sin(m_fElapse) * 30 + 180;
 		m_pUI->Find("Character Select")->SetAlpha(alpha);
 		m_pUI->Find("Option")->SetAlpha(alpha);
+		m_pUI->Find("Ranking")->SetAlpha(alpha);
 		TEXT->Add("½ÃÀÛ", 724, 382, 40, "³ª´®¸íÁ¶", D3DCOLOR_ARGB(alpha, 255, 255, 255));
 		TEXT->Add("¼³Á¤", 724, 482, 40, "³ª´®¸íÁ¶", D3DCOLOR_ARGB(alpha, 255, 255, 255));
+		TEXT->Add("·©Å·", 724, 582, 40, "³ª´®¸íÁ¶", D3DCOLOR_ARGB(alpha, 255, 255, 255));
+	}
+
+	if (m_eState == MS_OPTION)
+	{
+		TEXT->Add("¼³Á¤", 724, 50, 40, "³ª´®¸íÁ¶", 0xFFFFFFFF);
+	}
+
+	if (m_eState == MS_RANKING)
+	{
+		TEXT->Add("·©Å·", 724, 50, 40, "³ª´®¸íÁ¶", 0xFFFFFFFF);
 	}
 
 	if (INPUT->KeyDown(VK_BACK))

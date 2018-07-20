@@ -4,7 +4,8 @@ enum MainState
 {
 	MS_TITLE,
 	MS_PORTRAIT,
-	MS_OPTION
+	MS_OPTION,
+	MS_RANKING
 };
 
 class SC_Main : public Scene, public IUIFunction
