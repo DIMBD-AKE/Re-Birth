@@ -142,6 +142,14 @@ void SC_Loading::AddTexture()
 
 	// 게임 UI
 	m_pLoading->LoadTexture("Game ElapseTime", "Texture/UI/ElapseTime.png");
+	m_pLoading->LoadTexture("캐릭터_스테이터스", "Texture/UI/Character Status.png");
+	m_pLoading->LoadTexture("캐릭터_체력", "Texture/UI/Character HP.png");
+	m_pLoading->LoadTexture("캐릭터_스테미너", "Texture/UI/Character SM.png");
+
+	//플레이어 고유스킬
+	m_pLoading->LoadTexture("근접_방패", "Texture/SkillIMG/Skill_Ashu_Passive01_Icon.tga");
+	m_pLoading->LoadTexture("마법_이동", "Texture/SkillIMG/Skill_Bati_Mana01_Icon.tga");
+	m_pLoading->LoadTexture("원거리_공격", "Texture/SkillIMG/Skill_Beholder_Active02_Icon.tga");
 }
 
 void SC_Loading::AddSound()

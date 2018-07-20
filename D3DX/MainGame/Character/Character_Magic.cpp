@@ -43,9 +43,18 @@ void Character_Magic::Init(CHRTYPE type, CHARSELECT order)
 		m_Status->chr.fScale = 10.0f;
 		CharacterParant::Init(type, order);
 
-		m_pUIobj->SetTexture(TEXTUREMANAGER->GetTexture("아카날_사진"));
-		m_pUIobj->SetPosition(D3DXVECTOR3(1300, 550, 0));
 
+		m_pChrStat->SetTexture(TEXTUREMANAGER->GetTexture("캐릭터_스테이터스"));
+		m_pChrStat->SetPosition(D3DXVECTOR3(0, 550, 0));
+
+		m_pInheritateIco->SetTexture(TEXTUREMANAGER->GetTexture("마법_이동"));
+		m_pInheritateIco->SetPosition(D3DXVECTOR3(33, 598, 0));
+
+
+
+		m_pUIobj->SetTexture(TEXTUREMANAGER->GetTexture("아카날_사진"));
+		m_pUIobj->SetScale(D3DXVECTOR3(0.45, 0.45, 0.45));
+		m_pUIobj->SetPosition(D3DXVECTOR3(12, 679, 0));
 	
 	}
 	else if (order == CHAR_TWO)
@@ -70,8 +79,16 @@ void Character_Magic::Init(CHRTYPE type, CHARSELECT order)
 		m_Status->chr.fScale = 15.2f;
 		CharacterParant::Init(type, order);
 
+
+		m_pChrStat->SetTexture(TEXTUREMANAGER->GetTexture("캐릭터_스테이터스"));
+		m_pChrStat->SetPosition(D3DXVECTOR3(0, 550, 0));
+
+		m_pInheritateIco->SetTexture(TEXTUREMANAGER->GetTexture("마법_이동"));
+		m_pInheritateIco->SetPosition(D3DXVECTOR3(33, 598, 0));
+
 		m_pUIobj->SetTexture(TEXTUREMANAGER->GetTexture("헤스티아_사진"));
-		m_pUIobj->SetPosition(D3DXVECTOR3(1300, 550, 0));
+		m_pUIobj->SetScale(D3DXVECTOR3(0.45, 0.45, 0.45));
+		m_pUIobj->SetPosition(D3DXVECTOR3(12, 679, 0));
 
 	
 	}
@@ -89,6 +106,8 @@ void Character_Magic::Update()
 		m_pInventory->Update();
 		m_pCharacter->World();
 		m_pUIobj->Update();
+		m_pChrStat->Update();
+		m_pInheritateIco->Update();
 
 		PlayerProgressBar();
 		//CountAppearDamage();
@@ -103,14 +122,16 @@ void Character_Magic::Render()
 		m_pCharacter->Render();
 		m_pInventory->Render();
 
-		//포트레이트 
-		m_pUIobj->Render();
-		m_pHPBar->Render();
-		m_pStaminaBar->Render();
+		
 		m_pDamage->Render();
 		//AppearDamage();
 
 		CharacterParant::Render();
+
+		m_pUIobj->Render();
+		m_pInheritateIco->Render();
+		m_pHPBar->Render();
+		m_pStaminaBar->Render();
 	}
 }
 
