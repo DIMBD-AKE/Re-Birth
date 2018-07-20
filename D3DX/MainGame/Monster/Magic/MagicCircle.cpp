@@ -33,6 +33,11 @@ void MagicCircle::Render()
 
 bool MagicCircle::PlayerCollision(D3DXVECTOR3 targetPos, float targetR)
 {
+	SAFE_DELETE(m_pParticle);
+
+	m_pParticle = PARTICLE->GetParticle("Æø¹ß");
+	m_pParticle->SetPosition(m_vPos);
+
 	D3DXVECTOR3 tempVec = targetPos - m_vPos;
 	float tempLength = D3DXVec3Length(&tempVec);
 

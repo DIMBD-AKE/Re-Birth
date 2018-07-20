@@ -153,7 +153,8 @@ void SC_Loading::AddTexture()
 	m_pLoading->LoadTexture("원거리_공격", "Texture/SkillIMG/Skill_Beholder_Active02_Icon.tga");
 
 	//마법공격 파티클(이후 수정가능성 높음)
-	m_pLoading->LoadTexture("별모양파티클", "Texture/Particle/Star.png");
+	m_pLoading->LoadTexture("마법기본공격", "Texture/Particle/MagicCircle.png");
+	m_pLoading->LoadTexture("폭발", "Texture/Particle/Explosion.png");
 }
 
 void SC_Loading::AddSound()
@@ -187,7 +188,8 @@ void SC_Loading::AddSound()
 void SC_Loading::AddParticle()
 {
 	//마법공격 파티클(이후 수정가능성 높음)
-	m_pLoading->LoadParticle("마법기본공격", "별모양파티클", "./Particle/MagicBasicAttack.ptc");
+	m_pLoading->LoadParticle("마법기본공격", "마법기본공격", "./Particle/MagicBasicAttack.ptc");
+	m_pLoading->LoadParticle("폭발", "폭발", "./Particle/ttest.ptc");
 }
 
 void SC_Loading::InitUI()

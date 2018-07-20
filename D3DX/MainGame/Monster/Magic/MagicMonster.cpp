@@ -20,6 +20,7 @@ void MagicMonster::Setup(Map* map, D3DXVECTOR3 spawnPos, bool isSummon)
 	m_bIsAttack = false;
 	m_pMagicCircle = new MagicCircle;
 	m_pMagicCircle->Setup();
+
 }
 
 void MagicMonster::SetupStat()
@@ -90,7 +91,11 @@ void MagicMonster::Attack()
 			if (!m_bIsAttack)
 			{
 				//공격장판은 플레이어 위치를 중점으로 반지름 5만큼
+				m_pMagicCircle->Setup();
 				m_pMagicCircle->SetPosAndRad(*CHARACTER->GetPosition(), 3);
+				m_pMagicCircle->SetParticlePos(*CHARACTER->GetPosition());
+				
+
 				m_bIsAttack = true;
 				m_eState = MS_ATTACK;
 				ChangeAni();
@@ -122,16 +127,19 @@ void MagicMonster::Attack()
 					PCHARACTER->CalculDamage(tatalDamage);
 				}
 				
-				m_bIsAttack = false;
+				
 			}
+
+			if (m_pModel->IsAnimationEnd()) m_bIsAttack = false;
 		}
 
-		if (m_nTargetingCount >= 200)
+		if (m_nTargetingCount >= 200 && m_pModel->IsAnimationEnd())
 		{
 			m_eState = MS_IDLE;
 			ChangeAni();
 			m_nTargetingCount = 0;
 			m_bIsTargeting = false;
+			m_bIsAttack = false;
 		}
 
 	}
