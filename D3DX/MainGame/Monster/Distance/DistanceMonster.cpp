@@ -72,27 +72,7 @@ void DistanceMonster::Attack()
 		}
 		else
 		{
-			D3DXVECTOR3 dir =
-				*CHARACTER->GetPosition() - *m_pModel->GetPosition();
-
-			float angle = GetAngle(0, 0, dir.x, dir.z);
-
-			//float x = dir.x - 0;
-			//float y = dir.z - 0;
-			//
-			//float distance = sqrtf(x * x + y * y);
-			//
-			//float angle = acosf(x / distance);
-			//
-			//if (dir.z > 0)
-			//{
-			//	angle = D3DX_PI * 2 - angle;
-			//	if (angle >= D3DX_PI * 2) angle -= D3DX_PI * 2;
-			//}
-
-			angle -= D3DX_PI / 2;
-
-			m_pModel->SetRotation(D3DXVECTOR3(0, angle, 0));
+			ChangeRot();
 			//char test[111];
 			//sprintf_s(test, sizeof(test), "°ø°Ýµô·¹ÀÌ : %d", m_nAttackDelay);
 			//
@@ -170,10 +150,8 @@ void DistanceMonster::SummonMove()
 		D3DXVECTOR3 tempPos = *m_pModel->GetPosition() + m_vDir* SPEED(m_pMonsterStat);
 		tempPos.y = m_pMap->GetHeight(tempPos.x, tempPos.z);
 
-		float angle = GetAngle(0, 0, m_vDir.x, m_vDir.z);
-		angle -= D3DX_PI / 2;
+		ChangeRot();
 
-		m_pModel->SetRotation(D3DXVECTOR3(0, angle, 0));
 		m_pModel->SetPosition(tempPos);
 
 		float length = GetDistance(*m_pModel->GetPosition(), *CHARACTER->GetPosition());
@@ -195,14 +173,21 @@ bool DistanceMonster::AttackPossible()
 {
 	m_vWallVertex = m_pMap->GetWall();
 	D3DXVECTOR3 dir;
-	dir = *CHARACTER->GetPosition() - *m_pModel->GetPosition();
+	dir =  *CHARACTER->GetPosition() - *m_pModel->GetPosition();
 
 	float length = D3DXVec3Length(&dir);
+
+	D3DXVec3Normalize(&dir, &dir);
 
 	for (int i = 0; i < m_vWallVertex.size(); i += 3)
 	{
 		float wallLength;
-		if (D3DXIntersectTri(&m_vWallVertex[i], &m_vWallVertex[i + 1], &m_vWallVertex[i + 2], m_pModel->GetPosition(), &dir, NULL, NULL, &wallLength))
+		if (D3DXIntersectTri(&m_vWallVertex[i],
+			&m_vWallVertex[i + 1], 
+			&m_vWallVertex[i + 2], 
+			m_pModel->GetPosition(),
+			&dir,
+			NULL, NULL, &wallLength))
 		{
 			if (wallLength < length)
 				return false;

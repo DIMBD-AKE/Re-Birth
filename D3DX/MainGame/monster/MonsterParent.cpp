@@ -316,6 +316,21 @@ void MonsterParent::ChangeAni()
 	}
 }
 
+void MonsterParent::ChangeRot()
+{
+	D3DXVECTOR3 dir =
+		*CHARACTER->GetPosition() - *m_pModel->GetPosition();
+
+	//각도를 구하고
+	float angle = GetAngle(0, 0, dir.x, dir.z);
+
+
+	angle -= D3DX_PI / 2;
+
+	//각도만큼 로테이션
+	m_pModel->SetRotation(D3DXVECTOR3(0, angle, 0));
+}
+
 void MonsterParent::Respawn(D3DXVECTOR3 spawnPos)
 {
 	m_nResPawnCount = m_bIsRespawn = m_nTargetingCount = 0;
@@ -590,6 +605,7 @@ bool MonsterParent::AbleSkill()
 		&& !m_bUsingSkill
 		&& m_pModel->IsAnimationEnd())
 	{
+		ChangeRot();
 		m_bUsingSkill = true;
 		SkillPrepare();
 		return true;

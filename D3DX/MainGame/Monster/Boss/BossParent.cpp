@@ -166,6 +166,7 @@ bool BossParent::AbleSkill2()
 		&& !m_bSkill2Use
 		&& m_pModel->IsAnimationEnd())
 	{
+		ChangeRot();
 		m_bSkill2Use = true;
 		SkillPrepare2();
 		return true;

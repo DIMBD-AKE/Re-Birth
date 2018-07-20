@@ -281,15 +281,7 @@ void FinalBoss::Attack()
 	if (!m_bIsAttack)
 	{
 		//방향 및 각도를 구하고		
-		D3DXVECTOR3 dir =
-			*CHARACTER->GetPosition() - *m_pModel->GetPosition();
-
-		float angle = GetAngle(0, 0, dir.x, dir.z);
-
-		angle -= D3DX_PI / 2;
-
-		//모델을 로테이션 해라
-		m_pModel->SetRotation(D3DXVECTOR3(0, angle, 0));
+		ChangeRot();
 
 		//첫 판정후 이제 공격중으로 바꿔줌으로서 보스의 회전을 막는다.
 		m_bIsAttack = true;
@@ -340,10 +332,8 @@ void FinalBoss::Move()
 		D3DXVECTOR3 tempPos = *m_pModel->GetPosition() + m_vDir* SPEED(m_pMonsterStat);
 		tempPos.y = m_pMap->GetHeight(tempPos.x, tempPos.z);
 
-		float angle = GetAngle(0, 0, m_vDir.x, m_vDir.z);
-		angle -= D3DX_PI / 2;
+		ChangeRot();
 
-		m_pModel->SetRotation(D3DXVECTOR3(0, angle, 0));
 		m_pModel->SetPosition(tempPos);
 
 		float length = GetDistance(*m_pModel->GetPosition(), *CHARACTER->GetPosition());

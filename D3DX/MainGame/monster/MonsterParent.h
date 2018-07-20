@@ -135,6 +135,8 @@ protected:
 	
 
 	virtual void ChangeAni();
+
+	void ChangeRot();
 	
 	//스킬사용가능하냐
 	bool AbleSkill();

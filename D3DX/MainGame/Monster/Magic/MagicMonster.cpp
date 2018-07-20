@@ -83,14 +83,7 @@ void MagicMonster::Attack()
 		//사거리까지 도착하면 공격해야 하는데
 		else
 		{
-			D3DXVECTOR3 dir =
-				*CHARACTER->GetPosition() - *m_pModel->GetPosition();
-
-			float angle = GetAngle(0, 0, dir.x, dir.z);
-
-			angle -= D3DX_PI / 2;
-
-			m_pModel->SetRotation(D3DXVECTOR3(0, angle, 0));
+			ChangeRot();
 
 			//처음에 오면 이 값은 false이다.
 			if (!m_bIsAttack)
@@ -190,10 +183,8 @@ void MagicMonster::SummonMove()
 		D3DXVECTOR3 tempPos = *m_pModel->GetPosition() + m_vDir* SPEED(m_pMonsterStat);
 		tempPos.y = m_pMap->GetHeight(tempPos.x, tempPos.z);
 
-		float angle = GetAngle(0, 0, m_vDir.x, m_vDir.z);
-		angle -= D3DX_PI / 2;
+		ChangeRot();
 
-		m_pModel->SetRotation(D3DXVECTOR3(0, angle, 0));
 		m_pModel->SetPosition(tempPos);
 
 		float length = GetDistance(*m_pModel->GetPosition(), *CHARACTER->GetPosition());

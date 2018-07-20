@@ -78,17 +78,7 @@ void NearMonster::Attack()
 		else
 		{
 			//플레이어와의 방향벡터를 구하고
-			D3DXVECTOR3 dir =
-				*CHARACTER->GetPosition() - *m_pModel->GetPosition();
-
-			//각도를 구하고
-			float angle = GetAngle(0, 0, dir.x, dir.z);
-
-
-			angle -= D3DX_PI / 2;
-
-			//각도만큼 로테이션
-			m_pModel->SetRotation(D3DXVECTOR3(0, angle, 0));
+			ChangeRot();
 
 			
 			if (m_eState == MS_MOVEFORATTACK)
@@ -159,10 +149,8 @@ void NearMonster::SummonMove()
 		D3DXVECTOR3 tempPos = *m_pModel->GetPosition() + m_vDir* SPEED(m_pMonsterStat);
 		tempPos.y = m_pMap->GetHeight(tempPos.x, tempPos.z);
 
-		float angle = GetAngle(0, 0, m_vDir.x, m_vDir.z);
-		angle -= D3DX_PI / 2;
+		ChangeRot();
 
-		m_pModel->SetRotation(D3DXVECTOR3(0, angle, 0));
 		m_pModel->SetPosition(tempPos);
 
 		float length = GetDistance(*m_pModel->GetPosition(), *CHARACTER->GetPosition());
