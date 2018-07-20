@@ -29,6 +29,9 @@ private:
 	D3DXVECTOR3*	m_pTargetPos;
 	D3DXVECTOR3*	m_pTargetRot;
 
+	float			m_fElapse;
+	float			m_fShakePower;
+	float			m_fShakeTime;
 
 	CAMERAMODE		m_eMode;
 
@@ -46,6 +49,7 @@ public:
 	void SetMode(CAMERAMODE cm) { m_eMode = cm; }
 	void SetFog(bool enable, float start, float end, DWORD color, float density);
 	bool IsFrustum(ST_SPHERE sphere);
+	void Shake(float power, float time);
 };
 
 #define CAMERA CameraManager::GetInstance()

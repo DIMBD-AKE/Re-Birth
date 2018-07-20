@@ -15,8 +15,8 @@ private:
 	UIObject *			m_pUI;
 
 	int					m_nStage;
-	float				m_fElapseTime;
 	float				m_fGenTime;
+	static float		m_fElapseTime;
 
 public:
 	SC_Game();
@@ -30,5 +30,7 @@ public:
 	void ShowElapseTime();
 	void ClearStage();
 	void NextStage();
+
+	static void WriteRank(string name, int item = -1);
 };
 

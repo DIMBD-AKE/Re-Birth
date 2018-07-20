@@ -4,7 +4,10 @@
 #include "../monster/MonsterManager.h"
 #include "../Character/CharacterParant.h"
 #include "../Item/DropManager.h"
+#include "../Character/Inventory.h"
+#include "../Item/ItemParent.h"
 
+float SC_Game::m_fElapseTime = 0;
 
 SC_Game::SC_Game()
 {
@@ -131,4 +134,14 @@ void SC_Game::NextStage()
 	}
 	Release();
 	Init();
+}
+
+void SC_Game::WriteRank(string name, int item)
+{
+	ofstream outFile("Ranking.sav", ofstream::out | ofstream::app);
+
+	outFile << name << "\t" << m_fElapseTime << "\t"
+		<< item << endl;
+
+	outFile.close();
 }
