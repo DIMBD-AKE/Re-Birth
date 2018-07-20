@@ -36,6 +36,7 @@ void SC_Loading::Init()
 	AddModel();
 	AddTexture();
 	AddSound();
+	AddParticle();
 
 	//SCENE->ChangeScene("Test", true);
 }
@@ -150,6 +151,8 @@ void SC_Loading::AddTexture()
 	m_pLoading->LoadTexture("근접_방패", "Texture/SkillIMG/Skill_Ashu_Passive01_Icon.tga");
 	m_pLoading->LoadTexture("마법_이동", "Texture/SkillIMG/Skill_Bati_Mana01_Icon.tga");
 	m_pLoading->LoadTexture("원거리_공격", "Texture/SkillIMG/Skill_Beholder_Active02_Icon.tga");
+
+	m_pLoading->LoadTexture("파티클시험", "Texture/Particle/Star.png");
 }
 
 void SC_Loading::AddSound()
@@ -178,6 +181,11 @@ void SC_Loading::AddSound()
 	m_pLoading->LoadSound("베카_피격", "Sound/Beakah/Beakah_hitted.mp3", false);
 	m_pLoading->LoadSound("베카_죽음", "Sound/Beakah/Beakah_die.mp3", false);
 
+}
+
+void SC_Loading::AddParticle()
+{
+	m_pLoading->LoadParticle("마법기본공격", "파티클시험", "./Particle/ttest.ptc");
 }
 
 void SC_Loading::InitUI()

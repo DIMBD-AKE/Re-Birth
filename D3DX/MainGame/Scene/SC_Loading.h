@@ -15,6 +15,7 @@ private:
 	void AddModel();
 	void AddTexture();
 	void AddSound();
+	void AddParticle();
 
 	void InitUI();
 

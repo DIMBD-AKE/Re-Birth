@@ -49,6 +49,15 @@ void LoadItem::LoadSound(string keyName, string path, bool loop)
 	m_stResource.loop = loop;
 }
 
+void LoadItem::LoadParticle(string keyName, string TextureKeyName, string Path)
+{
+	//fileName
+	m_eKind = LK_PARTICLE;
+	m_stResource.keyName = keyName;
+	m_stResource.folderPath = TextureKeyName;
+	m_stResource.fileName = Path;
+}
+
 
 //로딩할 전체 클래스 함수들
 Loading::Loading()
@@ -99,29 +108,39 @@ BOOL Loading::LoadingDone()
 	case LK_MODEL:
 	{
 		RESOURCE resource = item->GetItemResource();
-		MODELMANAGER->AddModel(resource.keyName, 
+		MODELMANAGER->AddModel(resource.keyName,
 			resource.folderPath,
-			resource.fileName, 
+			resource.fileName,
 			resource.type);
 	}
-		break;
+	break;
 
 	case LK_TEXTURE:
 	{
 		RESOURCE resource = item->GetItemResource();
-		TEXTUREMANAGER->AddTexture(resource.keyName	,
+		TEXTUREMANAGER->AddTexture(resource.keyName,
 			resource.folderPath);
 	}
-		break;
+	break;
 
 	case LK_SOUND:
 	{
 		RESOURCE resource = item->GetItemResource();
 		SOUND->AddSound(resource.keyName, resource.folderPath, resource.loop);
 	}
-		break;
-	}
+	break;
 
+	case LK_PARTICLE:
+	{
+		////AddParticle("ttest", TEXTUREMANAGER->GetTexture("파티클시험"), "./Particle/ttest.ptc");z
+		RESOURCE resource = item->GetItemResource();
+		PARTICLE->AddParticle(resource.keyName, 
+			TEXTUREMANAGER->GetTexture(resource.folderPath),
+			resource.fileName);
+		//SOUND->AddSound(resource.keyName, resource.folderPath, resource.loop);
+	}
+	break;
+	}
 	m_nCurrentGauge++;
 
 	return false;
@@ -148,6 +167,14 @@ void Loading::LoadSound(string keyName, string path, bool loop)
 {
 	LoadItem* item = new LoadItem;
 	item->LoadSound(keyName, path, loop);
+
+	m_vLoadItem.push_back(item);
+}
+
+void Loading::LoadParticle(string keyName, string TextureKeyName, string Path)
+{
+	LoadItem* item = new LoadItem;
+	item->LoadParticle(keyName, TextureKeyName, Path);
 
 	m_vLoadItem.push_back(item);
 }
