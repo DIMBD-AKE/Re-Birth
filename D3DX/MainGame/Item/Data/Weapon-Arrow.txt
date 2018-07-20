@@ -38,7 +38,7 @@ D "d"
 I 231
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 ST 1.6 7.0 0.0 5 0 40 0 0 0.0 0.0 0.0
-SK1 NULL
+SK1 Item_Electric
 SK2 NULL
 E 0
 K MagicArrow
@@ -51,8 +51,8 @@ D "d"
 I 131
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 ST 1.8 7.0 20.0 5 20 45 0 0 0.0 0.0 0.0
-SK1 NULL
-SK2 NULL
+SK1 Item_Electric
+SK2 Item_Electric
 E 0
 K RareArrow
 T "Texture/Item/Item Num 131 Rare Arrow.jpg"
@@ -64,8 +64,8 @@ D "d"
 I 031
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 ST 2.0 7.0 20.0 5 20 50 0 0 0.0 0.0 0.0
-SK1 NULL
-SK2 NULL
+SK1 Item_Electric
+SK2 Item_Electric
 E 0
 K UniqueArrow
 T "Texture/Item/Item Num 031 Unique Arrow.jpg"

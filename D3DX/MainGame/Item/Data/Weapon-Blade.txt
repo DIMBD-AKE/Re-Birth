@@ -37,7 +37,7 @@ D "d"
 I 221
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 ST 1.3 10.0 0.0 20 0 60 0 0 0.0 0.0 0.0
-SK1 NULL
+SK1 Item_Electric
 SK2 NULL
 E 0
 K MagicBlade
@@ -50,8 +50,8 @@ D "d"
 I 121
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 ST 1.4 10.0 30.0 20 40 70 0 0 0.0 0.0 0.0
-SK1 NULL
-SK2 NULL
+SK1 Item_Electric
+SK2 Item_Electric
 E 0
 K RareBlade
 T "Texture/Item/Item Num 121 Rare Blade.jpg"
@@ -63,8 +63,8 @@ D "d"
 I 021
 //(AtkSpeed) (CoolTime1) (CoolTime2) (SkillAtk1) (SkillAtk2) (Atk) (Def) (HP) (Agi) (Hit) (Speed)
 ST 1.4 10.0 30.0 20 40 80 0 0 0.0 0.0 0.0
-SK1 NULL
-SK2 NULL
+SK1 Item_Electric
+SK2 Item_Electric
 E 0
 K UniqueBlade
 T "Texture/Item/Item Num 021 Unique Blade.jpg"

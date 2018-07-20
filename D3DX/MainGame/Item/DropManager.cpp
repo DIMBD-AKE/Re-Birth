@@ -28,20 +28,20 @@ void DropManager::AddDropItem(int itemID, D3DXVECTOR3 pos)
 {
 	if (itemID == -1) return;
 
-	//srand(time(NULL));
-	//
-	//int tempItemID = ( rand() % 4) * 100 + itemID % 100;
-	//
-	////아이템이 없으면 1값이 반환되어 반복실행
-	////있으면 0이 반환되므로 끝남
-	//while (ITEMMANAGER->FindItem(tempItemID))
-	//{
-	//	tempItemID = (rand() % 4) * 100 + itemID % 100;
-	//}
-	itemID = 51;
+	srand(time(NULL));
+	
+	int tempItemID = ( rand() % 4) * 100 + itemID % 100;
+	
+	//아이템이 없으면 1값이 반환되어 반복실행
+	//있으면 0이 반환되므로 끝남
+	while (ITEMMANAGER->FindItem(tempItemID))
+	{
+		tempItemID = (rand() % 4) * 100 + itemID % 100;
+	}
+	/*itemID = 51;*/
 
 	ST_DROPBOX box;
-	box.itemID = /*tempItemID*/itemID;
+	box.itemID = tempItemID/*itemID*/;
 	box.pos = pos;
 	box.pos.y += 1;
 	box.rot.x = D3DXToRadian(rand() % 360);
