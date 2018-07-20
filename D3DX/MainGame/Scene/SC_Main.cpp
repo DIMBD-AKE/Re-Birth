@@ -4,6 +4,8 @@
 #include "../Character/Character_Gun.h"
 #include "../Character/Character_Magic.h"
 #include "../Character/Character_Sword.h"
+#include "../Item/ItemManager.h"
+#include <algorithm>
 
 
 SC_Main::SC_Main()
@@ -17,17 +19,26 @@ SC_Main::~SC_Main()
 
 void SC_Main::OnClick(UIObject * pSender)
 {
-	if (pSender->GetName().compare("Character Select") == 0)
-		m_eState = MS_PORTRAIT;
+	if (m_eState == MS_TITLE)
+	{
+		if (pSender->GetName().compare("Character Select") == 0)
+			m_eState = MS_PORTRAIT;
 
-	if (pSender->GetName().compare("Option") == 0)
-		m_eState = MS_OPTION;
+		if (pSender->GetName().compare("Option") == 0)
+			m_eState = MS_OPTION;
 
-	if (pSender->GetName().compare("Ranking") == 0)
-		m_eState = MS_RANKING;
+		if (pSender->GetName().compare("Ranking") == 0)
+		{
+			m_eState = MS_RANKING;
+			CalcRank();
+		}
+	}
 
 	if (pSender->GetName().compare("Start") == 0 && m_sSelect.compare("¾Æ¸°"))
 	{
+		/*SCENE->ChangeScene("Test");
+		return;*/
+
 		SOUND->Stop("Main Theme");
 		SCENE->ChangeScene("Game", false);
 		CharacterParant * character = NULL;
@@ -71,6 +82,7 @@ void SC_Main::OnClick(UIObject * pSender)
 		SCENE->GetCurrentScene()->SetData(1, &stage);
 		float time = 0;
 		SCENE->GetCurrentScene()->SetData(2, &time);
+		SCENE->GetCurrentScene()->SetData(3, &m_sSelect);
 		SCENE->GetCurrentScene()->Init();
 	}
 
@@ -287,9 +299,7 @@ void SC_Main::Update()
 	}
 
 	if (m_eState == MS_RANKING)
-	{
-		TEXT->Add("·©Å·", 724, 50, 40, "³ª´®¸íÁ¶", 0xFFFFFFFF);
-	}
+		ShowRank();
 
 	if (INPUT->KeyDown(VK_BACK))
 		m_eState = MS_TITLE;
@@ -354,4 +364,66 @@ int SC_Main::GetIndex()
 	if (m_sSelect.compare("½ºÄ«µð") == 0) return 6;
 	if (m_sSelect.compare("º§ºª") == 0) return 7;
 	return -1;
+}
+
+void SC_Main::ShowRank()
+{
+	TEXT->Add("·©Å·", 724, 50, 40, "³ª´®¸íÁ¶", 0xFFFFFFFF);
+	TEXT->Add("Ä³¸¯ÅÍ", 415, 150, 36, "³ª´®¸íÁ¶", 0xFFFFFFFF);
+	TEXT->Add("½Ã°£", 730, 150, 36, "³ª´®¸íÁ¶", 0xFFFFFFFF);
+	TEXT->Add("¾ÆÀÌÅÛ", 1000, 150, 36, "³ª´®¸íÁ¶", 0xFFFFFFFF);
+
+	for (int i = 0; i < 10; i++)
+	{
+		if (m_vecRank.size() <= i) break;
+		TEXT->Add(m_vecRank[i].name, 415, 220 + 40 * i, 26, "³ª´®¸íÁ¶", 0xFFFFFFFF);
+		char temp[32];
+		sprintf_s(temp, "%.3f", m_vecRank[i].time);
+		TEXT->Add(temp, 730, 220 + 40 * i, 26, "³ª´®¸íÁ¶", 0xFFFFFFFF);
+		if (m_vecRank[i].item > 0)
+		{
+			ItemParent * item = ITEMMANAGER->GetItem(m_vecRank[i].item);
+			TEXT->Add(item->GetName(), 1000, 220 + 40 * i, 26, "³ª´®¸íÁ¶", 0xFFFFFFFF);
+			SAFE_DELETE(item);
+		}
+		else
+			TEXT->Add("¾øÀ½", 1000, 220 + 40 * i, 26, "³ª´®¸íÁ¶", 0xFFFFFFFF);
+	}
+}
+
+void SC_Main::CalcRank()
+{
+	m_vecRank.clear();
+
+	FILE* fp;
+	fopen_s(&fp, "Ranking.rev", "r");
+
+	if (!fp)
+		return;
+
+	while (!feof(fp))
+	{
+		char line[128];
+		fgets(line, 128, fp);
+
+		ST_RANK rank;
+		char * tok;
+		char * context;
+		tok = strtok_s(line, "\t\n", &context);
+		rank.name = tok;
+		tok = strtok_s(NULL, "\t\n", &context);
+		rank.time = atof(tok);
+		tok = strtok_s(NULL, "\t\n", &context);
+		rank.item = atoi(tok);
+		m_vecRank.push_back(rank);
+	}
+
+	fclose(fp);
+
+	sort(m_vecRank.begin(), m_vecRank.end(), RankSort);
+}
+
+bool SC_Main::RankSort(ST_RANK a, ST_RANK b)
+{
+	return (a.time < b.time);
 }

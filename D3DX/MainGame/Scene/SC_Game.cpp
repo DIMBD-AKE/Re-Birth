@@ -7,8 +7,6 @@
 #include "../Character/Inventory.h"
 #include "../Item/ItemParent.h"
 
-float SC_Game::m_fElapseTime = 0;
-
 SC_Game::SC_Game()
 {
 }
@@ -37,6 +35,8 @@ void SC_Game::Init()
 		m_nStage = *(int*)m_pData[1];
 	if (m_pData[2])
 		m_fElapseTime = *(float*)m_pData[2];
+	if (m_pData[3])
+		m_sChrName = *(string*)m_pData[3];
 
 	m_fGenTime = GetTickCount();
 
@@ -63,6 +63,8 @@ void SC_Game::Init()
 	m_pUI->SetTexture(TEXTUREMANAGER->GetTexture("Game ElapseTime"));
 	m_pUI->SetPosition(D3DXVECTOR3(1261, 754, 0));
 
+	m_isRank = false;
+
 	m_fGenTime = (GetTickCount() - m_fGenTime) * 0.001;
 	if (m_fElapseTime > 0)
 		m_fElapseTime -= m_fGenTime;
@@ -84,6 +86,12 @@ void SC_Game::Update()
 
 	if (INPUT->KeyDown(VK_ESCAPE))
 		ClearStage();
+
+	if (!m_isRank && m_pMM->IsBossDie())
+	{
+		m_isRank = true;
+		WriteRank();
+	}
 
 	if (m_fElapseTime < 0.0001)
 		m_fElapseTime -= m_fGenTime;
@@ -136,12 +144,16 @@ void SC_Game::NextStage()
 	Init();
 }
 
-void SC_Game::WriteRank(string name, int item)
+void SC_Game::WriteRank()
 {
-	ofstream outFile("Ranking.sav", ofstream::out | ofstream::app);
+	ofstream outFile("Ranking.rev", ofstream::out | ofstream::app);
 
-	outFile << name << "\t" << m_fElapseTime << "\t"
-		<< item << endl;
+	if (m_pCharacter->Getm_Inventory()->GetWeapon())
+		outFile << m_sChrName << "\t" << m_fElapseTime << "\t"
+			<< m_pCharacter->Getm_Inventory()->GetWeapon()->GetID() << endl;
+	else
+		outFile << m_sChrName << "\t" << m_fElapseTime << "\t"
+		<< -1 << endl;
 
 	outFile.close();
 }

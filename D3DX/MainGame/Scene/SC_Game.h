@@ -14,9 +14,12 @@ private:
 	DropManager *		m_pDropManager;
 	UIObject *			m_pUI;
 
+	bool				m_isRank;
+
 	int					m_nStage;
 	float				m_fGenTime;
-	static float		m_fElapseTime;
+	float				m_fElapseTime;
+	string				m_sChrName;
 
 public:
 	SC_Game();
@@ -31,6 +34,6 @@ public:
 	void ClearStage();
 	void NextStage();
 
-	static void WriteRank(string name, int item = -1);
+	void WriteRank();
 };
 

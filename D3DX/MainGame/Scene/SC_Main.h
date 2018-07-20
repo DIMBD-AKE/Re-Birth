@@ -8,6 +8,13 @@ enum MainState
 	MS_RANKING
 };
 
+struct ST_RANK
+{
+	string name;
+	float time;
+	int item;
+};
+
 class SC_Main : public Scene, public IUIFunction
 {
 private:
@@ -28,6 +35,8 @@ private:
 
 	D3DXVECTOR3	m_vPos;
 
+	vector<ST_RANK>		m_vecRank;
+
 public:
 	SC_Main();
 	virtual ~SC_Main();
@@ -43,5 +52,9 @@ public:
 
 	void MakeModel();
 	int GetIndex();
+
+	void ShowRank();
+	void CalcRank();
+	static bool RankSort(ST_RANK a, ST_RANK b);
 };
 
