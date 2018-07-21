@@ -16,7 +16,7 @@ Character_Magic::~Character_Magic()
 }
 
 
-void Character_Magic::Init(CHRTYPE type, CHARSELECT order, DropManager* Drop)
+void Character_Magic::Init(CHRTYPE type, CHARSELECT order)
 {
 	m_eChrType = CHRTYPE_MAGIC;
 
@@ -42,7 +42,7 @@ void Character_Magic::Init(CHRTYPE type, CHARSELECT order, DropManager* Drop)
 		m_Status->chr.nMaxStam = 10;
 		m_Status->chr.fRange = 15.0f;
 		m_Status->chr.fScale = 10.0f;
-		CharacterParant::Init(type, order, Drop);
+		CharacterParant::Init(type, order);
 
 
 		m_pChrStat->SetTexture(TEXTUREMANAGER->GetTexture("캐릭터_스테이터스"));
@@ -80,7 +80,7 @@ void Character_Magic::Init(CHRTYPE type, CHARSELECT order, DropManager* Drop)
 		m_Status->chr.nMaxStam = 10;
 		m_Status->chr.fRange = 10.0f;
 		m_Status->chr.fScale = 15.2f;
-		CharacterParant::Init(type, order, Drop);
+		CharacterParant::Init(type, order);
 
 
 		m_pChrStat->SetTexture(TEXTUREMANAGER->GetTexture("캐릭터_스테이터스"));

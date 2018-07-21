@@ -40,8 +40,8 @@ void SC_Test::Init()
 	m_pCharacter = new CharacterParant;
 	m_pMM = new MonsterManager;
 
-	m_pCharacter->Init(CHRTYPE_SWORD,CHAR_ONE, m_pDropManager);
-	m_pCharacter->Reset(m_pSampleMap, m_pMM);
+	m_pCharacter->Init(CHRTYPE_SWORD,CHAR_ONE);
+	m_pCharacter->Reset(m_pSampleMap, m_pMM, m_pDropManager);
 
 	m_pMM->Setup(m_pSampleMap, &m_pCharacter);
 	m_pMM->SetSpawnSpat(m_pSampleMap->GetSpawnEnemy());
@@ -97,8 +97,8 @@ void SC_Test::Update()
 			CharacterParant* L_TestModel = m_pCharacter;
 			CharacterParant* L_TestModel2;
 			L_TestModel2 = new Character_Sword;
-			L_TestModel2->Init(CHRTYPE_SWORD, CHAR_ONE, m_pDropManager);
-			L_TestModel2->Reset(m_pSampleMap, m_pMM);
+			L_TestModel2->Init(CHRTYPE_SWORD, CHAR_ONE);
+			L_TestModel2->Reset(m_pSampleMap, m_pMM, m_pDropManager);
 			m_pCharacter = L_TestModel2;
 			L_TestModel2 = NULL;
 			SAFE_DELETE(L_TestModel);
@@ -108,8 +108,8 @@ void SC_Test::Update()
 			CharacterParant* L_TestModel = m_pCharacter;
 			CharacterParant* L_TestModel2;
 			L_TestModel2 = new Character_Sword;
-			L_TestModel2->Init(CHRTYPE_SWORD, CHAR_TWO, m_pDropManager);
-			L_TestModel2->Reset(m_pSampleMap, m_pMM);
+			L_TestModel2->Init(CHRTYPE_SWORD, CHAR_TWO);
+			L_TestModel2->Reset(m_pSampleMap, m_pMM, m_pDropManager);
 			m_pCharacter = L_TestModel2;
 			L_TestModel2 = NULL;
 			SAFE_DELETE(L_TestModel);
@@ -119,8 +119,8 @@ void SC_Test::Update()
 			CharacterParant* L_TestModel = m_pCharacter;
 			CharacterParant* L_TestModel2;
 			L_TestModel2 = new Character_Gun;
-			L_TestModel2->Init(CHRTYPE_GUN, CHAR_ONE, m_pDropManager);
-			L_TestModel2->Reset(m_pSampleMap, m_pMM);
+			L_TestModel2->Init(CHRTYPE_GUN, CHAR_ONE);
+			L_TestModel2->Reset(m_pSampleMap, m_pMM, m_pDropManager);
 			m_pCharacter = L_TestModel2;
 			L_TestModel2 = NULL;
 			SAFE_DELETE(L_TestModel);
@@ -130,8 +130,8 @@ void SC_Test::Update()
 			CharacterParant* L_TestModel = m_pCharacter;
 			CharacterParant* L_TestModel2;
 			L_TestModel2 = new Character_Gun;
-			L_TestModel2->Init(CHRTYPE_GUN, CHAR_TWO, m_pDropManager);
-			L_TestModel2->Reset(m_pSampleMap, m_pMM);
+			L_TestModel2->Init(CHRTYPE_GUN, CHAR_TWO);
+			L_TestModel2->Reset(m_pSampleMap, m_pMM, m_pDropManager);
 			m_pCharacter = L_TestModel2;
 			L_TestModel2 = NULL;
 			SAFE_DELETE(L_TestModel);
@@ -141,8 +141,8 @@ void SC_Test::Update()
 			CharacterParant* L_TestModel = m_pCharacter;
 			CharacterParant* L_TestModel2;
 			L_TestModel2 = new Character_Magic;
-			L_TestModel2->Init(CHRTYPE_MAGIC, CHAR_ONE, m_pDropManager);
-			L_TestModel2->Reset(m_pSampleMap, m_pMM);
+			L_TestModel2->Init(CHRTYPE_MAGIC, CHAR_ONE);
+			L_TestModel2->Reset(m_pSampleMap, m_pMM, m_pDropManager);
 			m_pCharacter = L_TestModel2;
 			L_TestModel2 = NULL;
 			SAFE_DELETE(L_TestModel);
@@ -152,8 +152,8 @@ void SC_Test::Update()
 			CharacterParant* L_TestModel = m_pCharacter;
 			CharacterParant* L_TestModel2;
 			L_TestModel2 = new Character_Magic;
-			L_TestModel2->Init(CHRTYPE_MAGIC, CHAR_TWO, m_pDropManager);
-			L_TestModel2->Reset(m_pSampleMap, m_pMM);
+			L_TestModel2->Init(CHRTYPE_MAGIC, CHAR_TWO);
+			L_TestModel2->Reset(m_pSampleMap, m_pMM, m_pDropManager);
 			m_pCharacter = L_TestModel2;
 			L_TestModel2 = NULL;
 			SAFE_DELETE(L_TestModel);
@@ -163,8 +163,8 @@ void SC_Test::Update()
 			CharacterParant* L_TestModel = m_pCharacter;
 			CharacterParant* L_TestModel2;
 			L_TestModel2 = new Character_Sword;
-			L_TestModel2->Init(CHRTYPE_SWORD, CHAR_THREE, m_pDropManager);
-			L_TestModel2->Reset(m_pSampleMap, m_pMM);
+			L_TestModel2->Init(CHRTYPE_SWORD, CHAR_THREE);
+			L_TestModel2->Reset(m_pSampleMap, m_pMM, m_pDropManager);
 			m_pCharacter = L_TestModel2;
 			L_TestModel2 = NULL;
 			SAFE_DELETE(L_TestModel);
@@ -175,8 +175,8 @@ void SC_Test::Update()
 		CharacterParant* L_TestModel = m_pCharacter;
 		CharacterParant* L_TestModel2;
 		L_TestModel2 = new Character_Sword;
-		L_TestModel2->Init(CHRTYPE_SWORD, CHAR_TWO, m_pDropManager);
-		L_TestModel2->Reset(m_pSampleMap, m_pMM);
+		L_TestModel2->Init(CHRTYPE_SWORD, CHAR_TWO);
+		L_TestModel2->Reset(m_pSampleMap, m_pMM, m_pDropManager);
 		m_pCharacter = L_TestModel2;
 		L_TestModel2 = NULL;
 		SAFE_DELETE(L_TestModel);

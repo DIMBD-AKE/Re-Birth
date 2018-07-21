@@ -7,7 +7,7 @@ public:
 	Character_Magic();
 	virtual ~Character_Magic();
 
-	virtual void Init(CHRTYPE type, CHARSELECT order, DropManager* Drop);
+	virtual void Init(CHRTYPE type, CHARSELECT order);
 	virtual void Update();
 	virtual void Render();
 	virtual void KeyControl();

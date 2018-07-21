@@ -129,7 +129,7 @@ protected:
 	void Effect();
 	void StoreEffect(int index);
 	void StoreAttack(int index);
-	void Reset(Map* map, MonsterManager* pMonsterManager);
+	void Reset(Map* map, MonsterManager* pMonsterManager,DropManager* Drop);
 	void SetTarget();
 	void CutScene();
 	void SetModelAlpha();
@@ -141,7 +141,7 @@ public:
 	CharacterParant();
 	virtual ~CharacterParant();
 
-	virtual void Init(CHRTYPE type, CHARSELECT order, DropManager* Drop);
+	virtual void Init(CHRTYPE type, CHARSELECT order);
 	virtual void Update();
 	virtual void Render();
 	virtual void KeyControl();

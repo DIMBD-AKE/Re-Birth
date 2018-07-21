@@ -1248,10 +1248,11 @@ void CharacterParant::StoreAttack(int index)
 
 
 
-void CharacterParant::Reset(Map * map, MonsterManager * pMonsterManager)
+void CharacterParant::Reset(Map * map, MonsterManager * pMonsterManager, DropManager* Drop)
 {	
 	m_pSampleMap = map;
 	m_pMonsterManager = pMonsterManager;
+	m_pDropManager = Drop;
 
 	D3DXVECTOR3 startPos = map->GetSpawnPlayer();
 	m_pCharacter->SetPosition(D3DXVECTOR3(startPos.x, m_pSampleMap->GetHeight(startPos.x, startPos.z), startPos.z));
@@ -1401,15 +1402,16 @@ CharacterParant::~CharacterParant()
 	m_pMonsterManager = NULL; 
 	m_pSampleMap = NULL;
 	SAFE_DELETE(m_pInventory);
+	SAFE_DELETE(m_pDropManager);
 	
 }
 
-void CharacterParant::Init(CHRTYPE type, CHARSELECT order, DropManager* Drop)
+void CharacterParant::Init(CHRTYPE type, CHARSELECT order)
 {	
 
 	m_eChrType = type;
 	m_eCharSelect = order;
-	m_pDropManager = Drop;
+	
 
 
 	m_pCharacter->SetScale(D3DXVECTOR3(0.02, 0.02, 0.02));

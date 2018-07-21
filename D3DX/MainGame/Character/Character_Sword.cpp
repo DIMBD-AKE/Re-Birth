@@ -18,7 +18,7 @@ Character_Sword::~Character_Sword()
 {
 }
 
-void Character_Sword::Init(CHRTYPE type, CHARSELECT order, DropManager* Drop)
+void Character_Sword::Init(CHRTYPE type, CHARSELECT order)
 {
 	m_eChrType = CHRTYPE_SWORD;
 
@@ -44,7 +44,7 @@ void Character_Sword::Init(CHRTYPE type, CHARSELECT order, DropManager* Drop)
 		m_Status->chr.nMaxStam = 50;
 		m_Status->chr.fRange = 3.0f;
 		m_Status->chr.fScale = 5.0f;
-		CharacterParant::Init(type, order, Drop);
+		CharacterParant::Init(type, order);
 		
 
 		m_pChrStat->SetTexture(TEXTUREMANAGER->GetTexture("캐릭터_스테이터스"));
@@ -82,7 +82,7 @@ void Character_Sword::Init(CHRTYPE type, CHARSELECT order, DropManager* Drop)
 		m_Status->chr.nMaxStam = 40;
 		m_Status->chr.fRange = 5.0f;
 		m_Status->chr.fScale = 3.2f;
-		CharacterParant::Init(type, order, Drop);
+		CharacterParant::Init(type, order);
 
 
 
@@ -118,7 +118,7 @@ void Character_Sword::Init(CHRTYPE type, CHARSELECT order, DropManager* Drop)
 		m_Status->chr.nMaxStam = 100;
 		m_Status->chr.fRange = 5.0f;
 		m_Status->chr.fScale = 3.0f;
-		CharacterParant::Init(type, order, Drop);
+		CharacterParant::Init(type, order);
 
 
 		m_pChrStat->SetTexture(TEXTUREMANAGER->GetTexture("캐릭터_스테이터스"));

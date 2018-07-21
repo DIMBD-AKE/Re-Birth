@@ -57,7 +57,7 @@ void SC_Game::Init()
 	m_pMM->SetSpawnSpat(m_pMap->GetSpawnEnemy());
 	m_pMM->MakeMonster(m_pDropManager);
 
-	m_pCharacter->Reset(m_pMap, m_pMM);
+	m_pCharacter->Reset(m_pMap, m_pMM, m_pDropManager);
 
 	m_pUI = new UIObject;
 	m_pUI->SetTexture(TEXTUREMANAGER->GetTexture("Game ElapseTime"));
