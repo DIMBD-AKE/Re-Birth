@@ -79,23 +79,6 @@ void Loading::Setup()
 	m_nCurrentGauge = 0;
 }
 
-//백그라운드 및 프로그래스바 작업
-void Loading::Update()
-{
-
-	char test[111];
-	sprintf_s(test, sizeof(test), "로딩중 %d / %d", m_nCurrentGauge, m_vLoadItem.size());
-	TEXT->Add(test, 100, 100, 40);
-	
-}
-
-//백그라운드 및 프로그래스바 렌더
-void Loading::Render()
-{
-	TEXT->Render();
-}
-
-
 BOOL Loading::LoadingDone()
 {
 	if (m_nCurrentGauge >= m_vLoadItem.size())

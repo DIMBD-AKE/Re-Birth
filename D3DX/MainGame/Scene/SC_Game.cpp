@@ -46,7 +46,7 @@ void SC_Game::Init()
 	else if (m_nStage == 2)
 		m_pMap->Load("Map/Stage 1.map");
 	else if (m_nStage == 3)
-		m_pMap->Load("Map/Sample.map");
+		m_pMap->Load("Map/Stage 2.map");
 
 	m_pDropManager = new DropManager;
 	m_pDropManager->Init();

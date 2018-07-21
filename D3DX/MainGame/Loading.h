@@ -61,8 +61,6 @@ private:
 	int m_nCurrentGauge;
 public:
 	void Setup();
-	void Update();
-	void Render();
 
 	BOOL LoadingDone();
 	
