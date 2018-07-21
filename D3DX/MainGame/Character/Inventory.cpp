@@ -3,6 +3,7 @@
 #include "Inventory.h"
 #include "CharacterParant.h"
 #include "../Status.h"
+#include "../Item/DropManager.h"
 
 void Inventory::InitPos()
 {
@@ -65,6 +66,26 @@ void Inventory::PickItem()
 void Inventory::ChangeItem()
 {
 	if (!m_pHoldItem.item) return;
+
+	RECT invRect, equipRect;
+	invRect.left = m_vInvPos.x; invRect.top = m_vInvPos.y;
+	invRect.right = invRect.left + m_ptInvBGSize.x; invRect.bottom = invRect.top + m_ptInvBGSize.y;
+	equipRect.left = m_vEquipPos.x; equipRect.top = m_vEquipPos.y;
+	equipRect.right = equipRect.left + m_ptEquipSize.x; equipRect.bottom = equipRect.top + m_ptEquipSize.y;
+
+	if (!PtInRect(&invRect, MOUSE_POS) && !PtInRect(&equipRect, MOUSE_POS))
+	{
+		// 드랍매니저 버림
+		D3DXVECTOR3 front;
+		D3DXMATRIX matY;
+		D3DXMatrixRotationY(&matY, m_pCharacter->GetCharacter()->GetRotation()->y);
+		D3DXVec3TransformNormal(&front, &D3DXVECTOR3(0, 0, -1), &matY);
+		m_pCharacter->GetdropManager()->AddDropItem(m_pHoldItem.item->GetID(), 
+			*m_pCharacter->GetCharacter()->GetPosition() + front * 2);
+		SAFE_DELETE(m_pHoldItem.item);
+		m_pHoldItem.count = 0;
+		return;
+	}
 
 	bool find = false;
 	for (int i = 0; i < m_ptInvSize.y; i++)
