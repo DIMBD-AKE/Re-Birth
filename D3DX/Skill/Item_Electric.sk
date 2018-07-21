@@ -5,6 +5,7 @@ SKILL_EFFECT_PARTICLE	THIS
 SKILL_EFFECT_EFFECT	NONE
 
 PARTICLE	Particle/Particle/SkillEffect/Electric.ptc
+PARTICLE_TEXTURE	Electric
 
 EFFECT_TEXTURE	Texture/Effect/Fireball.png
 EFFECT_DIRECTION	0 -1 0

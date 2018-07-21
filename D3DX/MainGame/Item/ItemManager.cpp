@@ -16,6 +16,7 @@ ItemManager::~ItemManager()
 void ItemManager::SetUp()
 {
 	TEXTUREMANAGER->AddTexture("Star", "Texture/Particle/Star.png"),
+	TEXTUREMANAGER->AddTexture("Electric", "Texture/Particle/electric.png"),
 	PARTICLE->AddParticle("MAGIC", TEXTUREMANAGER->GetTexture("Star"), "Particle/Particle/Magic effect.ptc");
 	PARTICLE->AddParticle("RARE", TEXTUREMANAGER->GetTexture("Star"), "Particle/Particle/Rare effect.ptc");
 	PARTICLE->AddParticle("UNIQUE", TEXTUREMANAGER->GetTexture("Star"), "Particle/Particle/Unique effect.ptc");

@@ -66,8 +66,6 @@ void ItemParent::Render()
 		SPRITE->Draw(m_pSkill1->GetIcon(), NULL, NULL, NULL, D3DCOLOR_ARGB(alpha, 255, 255, 255));
 		SPRITE_END;
 
-		TEXT->Render();
-
 	}
 	if (m_pSkill2) m_pSkill2->Render();
 }
