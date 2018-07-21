@@ -231,6 +231,7 @@ void MonsterParent::Update()
 
 		if (m_pHitParticle)
 		{
+			m_pHitParticle->SetPosition(*m_pModel->GetPosition());
 			m_pHitParticle->World();
 			m_pHitParticle->Update();
 		}
