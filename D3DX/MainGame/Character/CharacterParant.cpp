@@ -1402,7 +1402,6 @@ CharacterParant::~CharacterParant()
 	m_pMonsterManager = NULL; 
 	m_pSampleMap = NULL;
 	SAFE_DELETE(m_pInventory);
-	SAFE_DELETE(m_pDropManager);
 	
 }
 
