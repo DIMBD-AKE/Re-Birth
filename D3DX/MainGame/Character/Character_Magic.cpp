@@ -138,6 +138,19 @@ void Character_Magic::Update()
 		PlayerProgressBar();
 		//CountAppearDamage();
 		m_pDamage->Update(*m_pCharacter->GetPosition());
+
+		if (m_bIsMeteo)
+		{
+			//CAMERA->SetTarget((m_vecEffect.back()->GetPos()), 0);
+			if (m_vecEffect.back()->GetPos().y >= 65)
+			{
+				CAMERA->Shake(0.3, 30);
+			}
+			else
+			{
+				CAMERA->Shake(5.8, 30);
+			}
+		}
 	}
 }
 
@@ -862,6 +875,7 @@ void Character_Magic::MgShield()
 
 
 	//╦чев©ю
+	m_bIsMeteo = true;
 	ST_EFFECT tempEffect;
 	ZeroMemory(&tempEffect, sizeof(tempEffect));
 	tempEffect.time = 300;
@@ -887,14 +901,7 @@ void Character_Magic::MgShield()
 	tempEFOBJ->Init(tempEffect, testSkillpos);
 	m_vecEffect.push_back(tempEFOBJ);
 	
-	if (m_vecEffect.back()->GetPos().y>= 65 )
-	{
-		CAMERA->Shake(0.3, 30);
-	}
-	else
-	{
-		CAMERA->Shake(5.8, 30);
-	}
+	
 	
 	if (DEBUG)
 	{

@@ -91,6 +91,7 @@ protected:
 	bool					m_bIsWalk;				//걷고 있니
 	bool					m_isCutScene;			//컷씬이니?
 	bool					m_bisMgShield;			//매직 실드 켜졌니?
+	bool					m_bIsMeteo;				//메테오 쾅
 	float					m_fDamageCount;			//데미지 띄우는 카운트
 	float					m_fDamageAngle;			//데미지 앵글
 	float					m_fElpTime;				//이펙트용 일랩스 카운트

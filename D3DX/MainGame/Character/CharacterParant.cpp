@@ -784,6 +784,11 @@ CharacterParant::~CharacterParant()
 	SAFE_RELEASE(m_pInheritateIco2);
 	SAFE_RELEASE(m_pInheritateIco3);
 	SAFE_RELEASE(m_pSkillBar);
+
+	for (auto e : m_vecEffect)
+	{
+		SAFE_DELETE(e);
+	}
 	
 
 	m_pMonsterManager = NULL; 
@@ -845,6 +850,7 @@ void CharacterParant::Init(CHRTYPE type, CHARSELECT order)
 	m_bIsSubChr = false;
 	m_isCutScene = false;
 	m_bisMgShield = false;
+	m_bIsMeteo = false;
 
 	m_fStamina = 10.0f;
 	m_nDamage = 0;
