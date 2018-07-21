@@ -92,6 +92,9 @@ protected:
 	bool	m_bUsingSkill;
 
 	DamageUI* m_pDamageUI;
+
+	Particle*	m_pHitParticle;
+
 	/*
 	int			nMaxTarget;
 	float		fMinLength;

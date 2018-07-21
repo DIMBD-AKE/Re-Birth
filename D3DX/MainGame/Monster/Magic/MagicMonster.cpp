@@ -215,6 +215,8 @@ void MagicMonster::DropItemSetup()
 {
 	 MonsterParent::Update();
 
+	 if (m_eState == MS_DIE || m_eState == MS_NONE) m_bIsAttack = false;
+
 	 if (m_bIsAttack)
 	 {
 		 if (m_pMagicCircle)		m_pMagicCircle->Update();

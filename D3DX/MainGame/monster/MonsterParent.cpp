@@ -23,6 +23,7 @@ MonsterParent::~MonsterParent()
 	SAFE_DELETE(m_pSkill);
 	SAFE_DELETE(m_pMonsterStat);
 	SAFE_DELETE(m_pDamageUI);
+	SAFE_DELETE(m_pHitParticle);
 	
 	/*
 	GET(Model*, m_pModel, Model);
@@ -90,11 +91,14 @@ void MonsterParent::Setup(Map* map, D3DXVECTOR3 spawnPos, bool isSummon)
 
 	m_pDamageUI = new DamageUI;
 	m_pDamageUI->Setup(false);
+
+	m_pHitParticle = NULL;
 	//ST_SIZEBOX box;
 }
 
 void MonsterParent::SetupBoss(Map* map, D3DXVECTOR3 pos)
 {
+	m_pHitParticle = NULL;
 	m_pMap = map;
 	m_pModel->SetPosition(D3DXVECTOR3(pos.x, m_pMap->GetHeight(pos.x, pos.z), pos.z));
 	m_pMonsterStat = new STATUS;
@@ -224,6 +228,12 @@ void MonsterParent::Update()
 		}
 
 		m_pSkill->Update();
+
+		if (m_pHitParticle)
+		{
+			m_pHitParticle->World();
+			m_pHitParticle->Update();
+		}
 	}
 	//ChangeAni();
 }
@@ -287,6 +297,8 @@ void MonsterParent::Render()
 		//m_pHPBar->SetPosition(UIPos);
 
 		if (m_bIsTargeting) m_pHPBar->Render();
+
+		if (m_pHitParticle) m_pHitParticle->Render();
 	}
 
 
@@ -553,6 +565,15 @@ void MonsterParent::SetCurrentHP(int hp)
 		{
 			m_eState = MS_ATTACK;
 			ChangeAni();
+		}
+
+		if (m_pHitParticle)
+		{
+			D3DXVECTOR3 tempPos = *m_pModel->GetPosition();
+			tempPos.y += 1.5f;
+			m_pHitParticle->SetPosition(tempPos);
+			m_pHitParticle->TimeReset();
+			
 		}
 
 		m_pModel->SetShaderAlpha(0.5f);
