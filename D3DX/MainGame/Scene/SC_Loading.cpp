@@ -195,6 +195,7 @@ void SC_Loading::AddParticle()
 {
 	//마법공격 파티클(이후 수정가능성 높음)
 	m_pLoading->LoadParticle("마법기본공격", "마법기본공격", "./Particle/MagicBasicAttack.ptc");
+	m_pLoading->LoadParticle("마법스킬공격", "마법기본공격", "./Particle/MagicSkill.ptc");
 	m_pLoading->LoadParticle("폭발", "폭발", "./Particle/Explosion.ptc");
 	m_pLoading->LoadParticle("석유", "석유", "./Particle/AssisHit.ptc");
 }

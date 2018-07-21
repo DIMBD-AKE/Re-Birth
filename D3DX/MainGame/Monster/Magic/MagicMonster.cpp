@@ -11,6 +11,7 @@ MagicMonster::MagicMonster()
 MagicMonster::~MagicMonster()
 {
 	SAFE_DELETE(m_pMagicCircle);
+	SAFE_DELETE(m_pParticle);
 }
 
 void MagicMonster::Setup(Map* map, D3DXVECTOR3 spawnPos, bool isSummon)
@@ -20,6 +21,8 @@ void MagicMonster::Setup(Map* map, D3DXVECTOR3 spawnPos, bool isSummon)
 	m_bIsAttack = false;
 	m_pMagicCircle = new MagicCircle;
 	m_pMagicCircle->Setup();
+
+	m_pParticle = PARTICLE->GetParticle("마법스킬공격");
 
 }
 
@@ -221,6 +224,12 @@ void MagicMonster::DropItemSetup()
 	 {
 		 if (m_pMagicCircle)		m_pMagicCircle->Update();
 	 }
+	 if (!m_bUsingSkill) m_pParticle->SetPosition(*CHARACTER->GetPosition());
+	 if (m_eState == MS_SKILL)
+	 {
+		 m_pParticle->World();
+		 m_pParticle->Update();
+	 }
 }
 
 void MagicMonster::Render()
@@ -230,5 +239,10 @@ void MagicMonster::Render()
 	if (m_bIsAttack)
 	{
 		if(m_pMagicCircle)		m_pMagicCircle->Render();
+	}
+
+	if (m_eState == MS_SKILL)
+	{
+		m_pParticle->Render();
 	}
 }
