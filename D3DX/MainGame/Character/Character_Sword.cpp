@@ -46,12 +46,20 @@ void Character_Sword::Init(CHRTYPE type, CHARSELECT order)
 		m_Status->chr.fScale = 5.0f;
 		CharacterParant::Init(type, order);
 		
-
-		m_pChrStat->SetTexture(TEXTUREMANAGER->GetTexture("캐릭터_스테이터스"));
-		m_pChrStat->SetPosition(D3DXVECTOR3(0, 550, 0));
+		m_pSkillBar->SetTexture(TEXTUREMANAGER->GetTexture("캐릭터_스킬창"));
+		m_pSkillBar->SetPosition(D3DXVECTOR3(588, 695, 0));
 
 		m_pInheritateIco->SetTexture(TEXTUREMANAGER->GetTexture("근접_방패"));
-		m_pInheritateIco->SetPosition(D3DXVECTOR3(33, 598, 0));
+		m_pInheritateIco->SetPosition(D3DXVECTOR3(609, 733, 0));
+
+		m_pInheritateIco2->SetTexture(TEXTUREMANAGER->GetTexture("근접_무적"));
+		m_pInheritateIco2->SetPosition(D3DXVECTOR3(722, 733, 0));
+
+		m_pInheritateIco3->SetTexture(TEXTUREMANAGER->GetTexture("근접_이동공격"));
+		m_pInheritateIco3->SetPosition(D3DXVECTOR3(839, 733, 0));
+
+		m_pChrStat->SetTexture(TEXTUREMANAGER->GetTexture("캐릭터_스테이터스"));
+		m_pChrStat->SetPosition(D3DXVECTOR3(0, 668, 0));
 
 		
 		//포트레이트 UI
@@ -85,12 +93,20 @@ void Character_Sword::Init(CHRTYPE type, CHARSELECT order)
 		CharacterParant::Init(type, order);
 
 
-
-		m_pChrStat->SetTexture(TEXTUREMANAGER->GetTexture("캐릭터_스테이터스"));
-		m_pChrStat->SetPosition(D3DXVECTOR3(0, 550, 0));
+		m_pSkillBar->SetTexture(TEXTUREMANAGER->GetTexture("캐릭터_스킬창"));
+		m_pSkillBar->SetPosition(D3DXVECTOR3(588, 695, 0));
 
 		m_pInheritateIco->SetTexture(TEXTUREMANAGER->GetTexture("근접_방패"));
-		m_pInheritateIco->SetPosition(D3DXVECTOR3(33, 598, 0));
+		m_pInheritateIco->SetPosition(D3DXVECTOR3(609, 733, 0));
+
+		m_pInheritateIco2->SetTexture(TEXTUREMANAGER->GetTexture("근접_무적"));
+		m_pInheritateIco2->SetPosition(D3DXVECTOR3(722, 733, 0));
+
+		m_pInheritateIco3->SetTexture(TEXTUREMANAGER->GetTexture("근접_이동공격"));
+		m_pInheritateIco3->SetPosition(D3DXVECTOR3(839, 733, 0));
+
+		m_pChrStat->SetTexture(TEXTUREMANAGER->GetTexture("캐릭터_스테이터스"));
+		m_pChrStat->SetPosition(D3DXVECTOR3(0, 668, 0));
 
 
 		m_pUIobj->SetTexture(TEXTUREMANAGER->GetTexture("리아_사진"));
@@ -121,11 +137,21 @@ void Character_Sword::Init(CHRTYPE type, CHARSELECT order)
 		CharacterParant::Init(type, order);
 
 
-		m_pChrStat->SetTexture(TEXTUREMANAGER->GetTexture("캐릭터_스테이터스"));
-		m_pChrStat->SetPosition(D3DXVECTOR3(0, 550, 0));
+
+		m_pSkillBar->SetTexture(TEXTUREMANAGER->GetTexture("캐릭터_스킬창"));
+		m_pSkillBar->SetPosition(D3DXVECTOR3(588, 695, 0));
 
 		m_pInheritateIco->SetTexture(TEXTUREMANAGER->GetTexture("근접_방패"));
-		m_pInheritateIco->SetPosition(D3DXVECTOR3(33, 598, 0));
+		m_pInheritateIco->SetPosition(D3DXVECTOR3(609, 733, 0));
+
+		m_pInheritateIco2->SetTexture(TEXTUREMANAGER->GetTexture("근접_무적"));
+		m_pInheritateIco2->SetPosition(D3DXVECTOR3(722, 733, 0));
+
+		m_pInheritateIco3->SetTexture(TEXTUREMANAGER->GetTexture("근접_이동공격"));
+		m_pInheritateIco3->SetPosition(D3DXVECTOR3(839, 733, 0));
+
+		m_pChrStat->SetTexture(TEXTUREMANAGER->GetTexture("캐릭터_스테이터스"));
+		m_pChrStat->SetPosition(D3DXVECTOR3(0, 668, 0));
 
 
 		m_pUIobj->SetTexture(TEXTUREMANAGER->GetTexture("벨벳_사진"));
@@ -148,6 +174,9 @@ void Character_Sword::Update()
 		m_pUIobj->Update();
 		m_pChrStat->Update();
 		m_pInheritateIco->Update();
+		m_pInheritateIco2->Update();
+		m_pInheritateIco3->Update();
+		m_pSkillBar->Update();
 		if (m_bIsSubChr)
 		{
 			if (m_pShieldChr)
@@ -191,9 +220,13 @@ void Character_Sword::Render()
 		//포트레이트 
 		m_pUIobj->Render();
 		m_pInventory->Render();
+		m_pSkillBar->Render();
 		m_pInheritateIco->Render();
+		m_pInheritateIco2->Render();
+		m_pInheritateIco3->Render();
 		m_pHPBar->Render();
 		m_pStaminaBar->Render();
+		
 	}
 }
 
@@ -367,16 +400,7 @@ void Character_Sword::KeyControl()
 		SKill();
 	}
 
-	//서브캐릭터 제어
-	if (INPUT->KeyDown('T'))
-	{
-		if(!m_bIsSubChr)
-		{
-			m_bIsSubChr = true;
-			CAMERA->Shake(0.2f, 0.5f);
-		}
-	}
-
+	
 
 	//애니메이션 한바퀴 돌고나서 상태제어
 	if (m_pCharacter->IsAnimationEnd())
@@ -426,8 +450,6 @@ void Character_Sword::KeyControl()
 			//Attack();
 			ChangeAnimation();
 		}
-		
-
 	}
 
 	//대쉬일때 애니메이션 스피드 제어
@@ -462,6 +484,22 @@ void Character_Sword::KeyControl()
 	{
 		m_isCutScene = false;
 	}
+
+
+	//고유스킬 제어======================================
+	
+	//서브캐릭터 제어
+	if (INPUT->KeyDown('R'))
+	{
+		if (!m_bIsSubChr)
+		{
+			m_bIsSubChr = true;
+			CAMERA->Shake(0.2f, 0.5f);
+		}
+	}
+
+
+
 
 }
 

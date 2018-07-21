@@ -49,17 +49,20 @@ protected:
 	TestItem*				m_pFirstItem;			//첫번쨰 스킬 장비
 
 	GET(Model*, m_pCharacter, Character);				//캐릭터 맴버 변수 
-	//GET(Model*, m_pShieldChr, ShiedldChr);			//쉴드 캐릭터 변수
+	
 	Map*					m_pSampleMap;			//맵정보 받는 맴버 변수
 	GET(Inventory*, m_pInventory, m_Inventory);		//인벤토리용 변수
 	GET(STATUS*, m_Status, status);					//스테이터스 유니온 변수 
 	UIObject*				m_pUIobj;				//UI오브젝트용 변수
-	//UIObject*				m_pUIDamage[10];		//데미지용 UIObj변수
+	
 	UIObject*				m_pHPBar;				//hp프로그래스바
 	UIObject*				m_pStaminaBar;			//스테미너 프로그래스바
 	UIObject*				m_pShieldHp;			//쉴드용 HP
 	UIObject*				m_pChrStat;				//캐릭터 스테이터스 
 	UIObject*				m_pInheritateIco;		//캐릭터 고유스킬UI
+	UIObject*				m_pInheritateIco2;		//캐릭터 고유스킬 아이콘
+	UIObject*				m_pInheritateIco3;		//캐릭터 고유스킬 아이콘
+	UIObject*				m_pSkillBar;			//캐릭터 스킬바
 
 	MonsterManager*			m_pMonsterManager;		//몬스터 매니저용 변수
 	Character_Shield*		m_pShieldChr;			//쉴드캐릭터용 변수 
@@ -75,8 +78,7 @@ protected:
 	int						m_nDamageCount;			//데미지 카운트 
 	
 	DamageUI*				m_pDamage;				//데미지 클래스 포인터
-	//vector<ST_DAMAGETEXT>		m_vecDamage;		//데미지 저장용 변수
-
+	
 	bool					m_bIsFront;				//앞인지 뒤인지
 	bool					m_bIsDash;				//대쉬했늬
 	bool					m_bIsAttack;			//일반공격 했늬?

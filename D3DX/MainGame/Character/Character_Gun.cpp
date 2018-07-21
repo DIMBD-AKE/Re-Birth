@@ -45,11 +45,21 @@ void Character_Gun::Init(CHRTYPE type, CHARSELECT order)
 		CharacterParant::Init(type, order);
 
 
-		m_pChrStat->SetTexture(TEXTUREMANAGER->GetTexture("캐릭터_스테이터스"));
-		m_pChrStat->SetPosition(D3DXVECTOR3(0, 550, 0));
+		m_pSkillBar->SetTexture(TEXTUREMANAGER->GetTexture("캐릭터_스킬창"));
+		m_pSkillBar->SetPosition(D3DXVECTOR3(588, 695, 0));
 
 		m_pInheritateIco->SetTexture(TEXTUREMANAGER->GetTexture("원거리_공격"));
-		m_pInheritateIco->SetPosition(D3DXVECTOR3(33, 598, 0));
+		m_pInheritateIco->SetPosition(D3DXVECTOR3(609, 733, 0));
+
+		m_pInheritateIco2->SetTexture(TEXTUREMANAGER->GetTexture("원거리_레이저"));
+		m_pInheritateIco2->SetPosition(D3DXVECTOR3(722, 733, 0));
+
+		m_pInheritateIco3->SetTexture(TEXTUREMANAGER->GetTexture("원거리_이동"));
+		m_pInheritateIco3->SetPosition(D3DXVECTOR3(839, 733, 0));
+
+		m_pChrStat->SetTexture(TEXTUREMANAGER->GetTexture("캐릭터_스테이터스"));
+		m_pChrStat->SetPosition(D3DXVECTOR3(0, 668, 0));
+
 
 
 		m_pUIobj->SetTexture(TEXTUREMANAGER->GetTexture("메그너스_사진"));
@@ -80,11 +90,20 @@ void Character_Gun::Init(CHRTYPE type, CHARSELECT order)
 		m_Status->chr.fScale = 3.2f;
 		CharacterParant::Init(type, order);
 
-		m_pChrStat->SetTexture(TEXTUREMANAGER->GetTexture("캐릭터_스테이터스"));
-		m_pChrStat->SetPosition(D3DXVECTOR3(0, 550, 0));
+		m_pSkillBar->SetTexture(TEXTUREMANAGER->GetTexture("캐릭터_스킬창"));
+		m_pSkillBar->SetPosition(D3DXVECTOR3(588, 695, 0));
 
 		m_pInheritateIco->SetTexture(TEXTUREMANAGER->GetTexture("원거리_공격"));
-		m_pInheritateIco->SetPosition(D3DXVECTOR3(33, 598, 0));
+		m_pInheritateIco->SetPosition(D3DXVECTOR3(609, 733, 0));
+
+		m_pInheritateIco2->SetTexture(TEXTUREMANAGER->GetTexture("원거리_레이저"));
+		m_pInheritateIco2->SetPosition(D3DXVECTOR3(722, 733, 0));
+
+		m_pInheritateIco3->SetTexture(TEXTUREMANAGER->GetTexture("원거리_이동"));
+		m_pInheritateIco3->SetPosition(D3DXVECTOR3(839, 733, 0));
+
+		m_pChrStat->SetTexture(TEXTUREMANAGER->GetTexture("캐릭터_스테이터스"));
+		m_pChrStat->SetPosition(D3DXVECTOR3(0, 668, 0));
 
 		m_pUIobj->SetTexture(TEXTUREMANAGER->GetTexture("스카디_사진"));
 		m_pUIobj->SetScale(D3DXVECTOR3(0.45, 0.45, 0.45));
@@ -109,6 +128,10 @@ void Character_Gun::Update()
 		m_pUIobj->Update();
 		m_pChrStat->Update();
 		m_pInheritateIco->Update();
+		m_pInheritateIco2->Update();
+		m_pInheritateIco3->Update();
+		m_pSkillBar->Update();
+
 		Effect();
 
 		PlayerProgressBar();
@@ -132,10 +155,15 @@ void Character_Gun::Render()
 
 
 		CharacterParant::Render();
+		
 		m_pUIobj->Render();
+		m_pSkillBar->Render();
 		m_pInheritateIco->Render();
+		m_pInheritateIco2->Render();
+		m_pInheritateIco3->Render();
 		m_pHPBar->Render();
 		m_pStaminaBar->Render();
+
 	}
 }
 
@@ -274,30 +302,7 @@ void Character_Gun::KeyControl()
 	}
 
 
-	//고유스킬
-	if (INPUT->KeyDown('T'))
-	{
-		if (m_eCharSelect == CHAR_ONE)
-		{
-			SOUND->Play("메그너스_고유_총");
-			SOUND->Play("메그너스_고유");
-		}
-		if (m_eCharSelect == CHAR_TWO)
-		{
-			SOUND->Play("스카디_고유");
-			SOUND->Play("BowAttack");
-		}
-		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_RUN_FRONT || m_eCondition == CHAR_RUN_BACK)
-		{
-			m_eCondition = CHAR_INHERENT1;
-			MultiAttack();
-			ChangeAnimation();
-		}
-	}
-	if (INPUT->KeyUp('T'))
-	{
-		m_nDamageCount = 0;
-	}
+	
 
 	
 	//애니메이션 한바퀴 돌고나서 상태제어
@@ -368,6 +373,34 @@ void Character_Gun::KeyControl()
 		if (SOUND->IsPlaySound("FootStep4")) SOUND->Stop("FootStep4");
 		if (SOUND->IsPlaySound("FootStep3")) SOUND->Stop("FootStep3");
 	}
+
+
+	//고유스킬======================================
+	if (INPUT->KeyDown('R'))
+	{
+		if (m_eCharSelect == CHAR_ONE)
+		{
+			SOUND->Play("메그너스_고유_총");
+			SOUND->Play("메그너스_고유");
+		}
+		if (m_eCharSelect == CHAR_TWO)
+		{
+			SOUND->Play("스카디_고유");
+			SOUND->Play("BowAttack");
+		}
+		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_RUN_FRONT || m_eCondition == CHAR_RUN_BACK)
+		{
+			m_eCondition = CHAR_INHERENT1;
+			MultiAttack();
+			ChangeAnimation();
+		}
+	}
+	if (INPUT->KeyUp('R'))
+	{
+		m_nDamageCount = 0;
+	}
+
+
 }
 
 void Character_Gun::Attack()
