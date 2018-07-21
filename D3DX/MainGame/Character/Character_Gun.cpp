@@ -289,7 +289,7 @@ void Character_Gun::KeyControl()
 		}
 		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_RUN_FRONT || m_eCondition == CHAR_RUN_BACK)
 		{
-			m_eCondition = CHAR_INHERENT;
+			m_eCondition = CHAR_INHERENT1;
 			MultiAttack();
 			ChangeAnimation();
 		}
@@ -314,7 +314,7 @@ void Character_Gun::KeyControl()
 		case CHAR_HIT:
 			m_eCondition = CHAR_IDLE;
 			break;
-		case CHAR_INHERENT:
+		case CHAR_INHERENT1:
 			m_eCondition = CHAR_IDLE;
 			break;
 		case CHAR_DIE:
