@@ -1,4 +1,5 @@
 #pragma once
+class DropManager;
 
 enum MainState
 {
@@ -26,6 +27,7 @@ private:
 
 	MainState	m_eState;
 
+	DropManager*	m_pDrop;
 	bool		m_isPortrait;
 	string		m_sSelect;
 	float		m_fElapse;

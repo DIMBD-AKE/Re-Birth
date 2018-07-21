@@ -155,6 +155,10 @@ void SC_Loading::AddTexture()
 	//마법공격 파티클(이후 수정가능성 높음)
 	m_pLoading->LoadTexture("마법기본공격", "Texture/Particle/MagicCircle.png");
 	m_pLoading->LoadTexture("폭발", "Texture/Particle/Explosion.png");
+
+	//플레이어 고유스킬용
+	m_pLoading->LoadTexture("수정", "Texture/Effect/cristal.png");
+	m_pLoading->LoadTexture("파이어볼_마법", "Texture/Effect/Fireball.png");
 }
 
 void SC_Loading::AddSound()

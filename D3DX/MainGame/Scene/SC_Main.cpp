@@ -5,6 +5,7 @@
 #include "../Character/Character_Magic.h"
 #include "../Character/Character_Sword.h"
 #include "../Item/ItemManager.h"
+#include "../Item/DropManager.h"
 #include <algorithm>
 
 
@@ -45,37 +46,37 @@ void SC_Main::OnClick(UIObject * pSender)
 		if (m_sSelect.compare("아카날") == 0)
 		{
 			character = new Character_Magic;
-			character->Init(CHRTYPE_MAGIC, CHAR_ONE);
+			character->Init(CHRTYPE_MAGIC, CHAR_ONE, m_pDrop);
 		}
 		if (m_sSelect.compare("헤스티아") == 0)
 		{
 			character = new Character_Magic;
-			character->Init(CHRTYPE_MAGIC, CHAR_TWO);
+			character->Init(CHRTYPE_MAGIC, CHAR_TWO, m_pDrop);
 		}
 		if (m_sSelect.compare("베카") == 0)
 		{
 			character = new Character_Sword;
-			character->Init(CHRTYPE_SWORD, CHAR_ONE);
+			character->Init(CHRTYPE_SWORD, CHAR_ONE, m_pDrop);
 		}
 		if (m_sSelect.compare("리아") == 0)
 		{
 			character = new Character_Sword;
-			character->Init(CHRTYPE_SWORD, CHAR_TWO);
+			character->Init(CHRTYPE_SWORD, CHAR_TWO, m_pDrop);
 		}
 		if (m_sSelect.compare("벨벳") == 0)
 		{
 			character = new Character_Sword;
-			character->Init(CHRTYPE_SWORD, CHAR_THREE);
+			character->Init(CHRTYPE_SWORD, CHAR_THREE, m_pDrop);
 		}
 		if (m_sSelect.compare("메그너스") == 0)
 		{
 			character = new Character_Gun;
-			character->Init(CHRTYPE_GUN, CHAR_ONE);
+			character->Init(CHRTYPE_GUN, CHAR_ONE, m_pDrop);
 		}
 		if (m_sSelect.compare("스카디") == 0)
 		{
 			character = new Character_Gun;
-			character->Init(CHRTYPE_GUN, CHAR_TWO);
+			character->Init(CHRTYPE_GUN, CHAR_TWO, m_pDrop);
 		}
 		SCENE->GetCurrentScene()->SetData(0, character);
 		int stage = 1;

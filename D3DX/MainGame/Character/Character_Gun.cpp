@@ -18,7 +18,7 @@ Character_Gun::~Character_Gun()
 }
 
 
-void Character_Gun::Init(CHRTYPE type, CHARSELECT order)
+void Character_Gun::Init(CHRTYPE type, CHARSELECT order, DropManager* Drop)
 {
 	m_eChrType = CHRTYPE_GUN;
 	if (order == CHAR_ONE)
@@ -42,7 +42,7 @@ void Character_Gun::Init(CHRTYPE type, CHARSELECT order)
 		m_Status->chr.nMaxStam = 50;
 		m_Status->chr.fRange = 20.0f;
 		m_Status->chr.fScale = 3.2f;
-		CharacterParant::Init(type, order);
+		CharacterParant::Init(type, order, Drop);
 
 
 		m_pChrStat->SetTexture(TEXTUREMANAGER->GetTexture("캐릭터_스테이터스"));
@@ -78,7 +78,7 @@ void Character_Gun::Init(CHRTYPE type, CHARSELECT order)
 		m_Status->chr.nMaxStam = 100;
 		m_Status->chr.fRange = 25.0f;
 		m_Status->chr.fScale = 3.2f;
-		CharacterParant::Init(type, order);
+		CharacterParant::Init(type, order, Drop);
 
 		m_pChrStat->SetTexture(TEXTUREMANAGER->GetTexture("캐릭터_스테이터스"));
 		m_pChrStat->SetPosition(D3DXVECTOR3(0, 550, 0));

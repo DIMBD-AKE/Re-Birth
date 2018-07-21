@@ -9,6 +9,7 @@
 #include "Character_Shield.h"
 #include "Character_Sword.h"
 #include "../DamageUI.h"
+#include "../Item/DropManager.h"
 
 
 void CharacterParant::SKill()
@@ -1403,11 +1404,13 @@ CharacterParant::~CharacterParant()
 	
 }
 
-void CharacterParant::Init(CHRTYPE type, CHARSELECT order)
+void CharacterParant::Init(CHRTYPE type, CHARSELECT order, DropManager* Drop)
 {	
 
 	m_eChrType = type;
 	m_eCharSelect = order;
+	m_pDropManager = Drop;
+
 
 	m_pCharacter->SetScale(D3DXVECTOR3(0.02, 0.02, 0.02));
 	m_pCharacter->SetRotation(D3DXVECTOR3(0,3.2,0));

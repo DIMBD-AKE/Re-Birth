@@ -9,6 +9,7 @@ class MonsterManager;
 class ItemParent;
 class Character_Shield;
 class DamageUI;
+class DropManager;
 union STATUS;
 struct ST_DAMAGE;
 
@@ -42,6 +43,7 @@ protected:
 	SYNTHESIZE(CHARSELECT, m_eCharSelect, CharSelect);	 //해당 클래스 캐릭터의 1번째 혹은 2번째
 	GET(CHAR_CONDITION, m_eCondition, Condition);		//캐릭터 상태
 	GET(CHAR_SUBCONDITION, m_eSubCondition, SubCondition); //서브 캐릭터 상태
+	GET(DropManager*, m_pDropManager, dropManager);			//드랍매니저
 	CHAR_NUMTARGET			m_eNumTarget;				//캐릭터 타겟수 
 
 	TestItem*				m_pFirstItem;			//첫번쨰 스킬 장비
@@ -139,7 +141,7 @@ public:
 	CharacterParant();
 	virtual ~CharacterParant();
 
-	virtual void Init(CHRTYPE type ,CHARSELECT order);
+	virtual void Init(CHRTYPE type, CHARSELECT order, DropManager* Drop);
 	virtual void Update();
 	virtual void Render();
 	virtual void KeyControl();

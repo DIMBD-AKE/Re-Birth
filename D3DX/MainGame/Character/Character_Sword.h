@@ -8,7 +8,7 @@ public:
 	virtual ~Character_Sword();
 
 
-	virtual void Init(CHRTYPE type, CHARSELECT order);
+	virtual void Init(CHRTYPE type, CHARSELECT order, DropManager* Drop);
 	virtual void Update();
 	virtual void Render();
 	virtual void KeyControl();

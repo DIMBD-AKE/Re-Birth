@@ -16,7 +16,7 @@ Character_Magic::~Character_Magic()
 }
 
 
-void Character_Magic::Init(CHRTYPE type, CHARSELECT order)
+void Character_Magic::Init(CHRTYPE type, CHARSELECT order, DropManager* Drop)
 {
 	m_eChrType = CHRTYPE_MAGIC;
 
@@ -42,7 +42,7 @@ void Character_Magic::Init(CHRTYPE type, CHARSELECT order)
 		m_Status->chr.nMaxStam = 10;
 		m_Status->chr.fRange = 15.0f;
 		m_Status->chr.fScale = 10.0f;
-		CharacterParant::Init(type, order);
+		CharacterParant::Init(type, order, Drop);
 
 
 		m_pChrStat->SetTexture(TEXTUREMANAGER->GetTexture("캐릭터_스테이터스"));
@@ -80,7 +80,7 @@ void Character_Magic::Init(CHRTYPE type, CHARSELECT order)
 		m_Status->chr.nMaxStam = 10;
 		m_Status->chr.fRange = 10.0f;
 		m_Status->chr.fScale = 15.2f;
-		CharacterParant::Init(type, order);
+		CharacterParant::Init(type, order, Drop);
 
 
 		m_pChrStat->SetTexture(TEXTUREMANAGER->GetTexture("캐릭터_스테이터스"));
@@ -365,11 +365,21 @@ void Character_Magic::KeyControl()
 		if (SOUND->IsPlaySound("FootStep3")) SOUND->Stop("FootStep3");
 	}
 
+	if (INPUT->KeyDown('R'))
+	{
+		SetTarget();
+		CristalField();
+		m_nDamageCount = 0;
+		if(!m_vecTarget.size() <=0) CAMERA->Shake(0.04f, 0.2f);
+	}
+
+
 	if (INPUT->KeyDown('M'))
 	{
 		SetTarget();
 		targetAttack();
 		m_nDamageCount = 0;
+		if (!m_vecTarget.size() <= 0) CAMERA->Shake(0.04f, 0.2f);
 	}
 }
 
@@ -476,6 +486,86 @@ void Character_Magic::Attack()
 
 void Character_Magic::targetAttack()
 {
+	m_nIndex = -1;
+	D3DXVECTOR3 pos = *m_pCharacter->GetPosition();
+
+	if (m_fElpTime < m_fPrevTime + m_fEffectInterval) return;
+
+	m_fPrevTime = m_fElpTime;
+
+	m_nDamageCount++;
+
+	for (int i = 0; i < m_pMonsterManager->GetMonsterVector().size(); i++)
+	{
+		if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn()) continue;
+		D3DXVECTOR3 MonPos = *m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetPosition();
+		float length = D3DXVec3Length(&(MonPos - pos));
+
+		if (length <= m_Status->chr.fRange)
+		{	// 시선
+			D3DXVECTOR3 front;
+			D3DXMATRIX matY;
+			D3DXMatrixRotationY(&matY, m_pCharacter->GetRotation()->y);
+			D3DXVec3TransformNormal(&front, &D3DXVECTOR3(0, 0, -1), &matY);
+			D3DXVECTOR3 v0 = front;
+			// 대상방향
+			D3DXVECTOR3 v1 = MonPos - pos;
+			D3DXVec3Normalize(&v1, &v1);
+			float dot = D3DXVec3Dot(&v0, &v1) / D3DXVec3Length(&v0) * D3DXVec3Length(&v1);
+			if (dot >= cos(m_Status->chr.fScale / 2))
+			{
+				m_nIndex = i;
+			}
+		}
+	}
+	
+	
+	if (m_nIndex <0) return;
+
+	D3DXVECTOR3 MonPos = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
+	D3DXVECTOR3 TempDir;
+	TempDir = MonPos - pos;
+	D3DXVec3Normalize(&TempDir, &TempDir);
+
+	float Length = D3DXVec3Length(&(MonPos - pos));
+	
+	ST_EFFECT tempEffect;
+	ZeroMemory(&tempEffect, sizeof(tempEffect));
+
+	tempEffect.time = FRand(0.4, 0.7);
+	tempEffect.isRY = true;
+	//tempEffect.isRX = true;
+	//tempEffect.isRZ = true;
+	tempEffect.dir = TempDir;
+	tempEffect.SetSpeed(0.2, 0.2, 0.2);
+	tempEffect.height = 3.0f;
+	tempEffect.SetAlpha(255, 255, 0);
+	tempEffect.SetScale(2, 2, 2);
+	tempEffect.tex = TEXTUREMANAGER->GetTexture("파이어볼_마법");
+	EffectObject* tempEFOBJ;
+	tempEFOBJ = new EffectObject;
+
+	//tempEffect.dir = D3DXVECTOR3(0, 0, 1); 방향을 주고
+	//tempEffect.SetSpeed(3, 3, 3); 스피드 주고 
+	//tempEffect.time = FRand(0.1, 0.4) + 5; 타임 건드려주면 다양하게 활용 가능.(스피드 안주면 일정시간동안 설치형으로 사용가능)
+
+
+	D3DXVECTOR3 testSkillpos = *m_pCharacter->GetPosition();
+	testSkillpos.y += 2.0f;
+	testSkillpos.x += FRand(-0.5, 0.5);
+	testSkillpos.z += FRand(-0.3, 0.3);
+	testSkillpos += TempDir * (Length * 0.3f);
+	tempEFOBJ->Init(tempEffect, testSkillpos);
+
+	m_vecEffect.push_back(tempEFOBJ);
+
+
+	m_pMonsterManager->GetMonsterVector()[m_vecTarget[m_nIndex]]->CalculDamage(1);
+		
+}
+
+void Character_Magic::CristalField()
+{
 	D3DXVECTOR3 pos = *m_pCharacter->GetPosition();
 
 	if (m_fElpTime < m_fPrevTime + m_fEffectInterval) return;
@@ -507,56 +597,36 @@ void Character_Magic::targetAttack()
 			}
 		}
 	}
-	for (int i = 0; i < m_pMonsterManager->GetMonsterVector().size(); i++)
-	{
-		for (int i = 0; i < m_vecTarget.size(); i++)
+	
+		if (m_vecTarget.size() <= 0) return;
+		
+		ST_EFFECT tempEffect;
+		ZeroMemory(&tempEffect, sizeof(tempEffect));
+		tempEffect.time = FRand(0.4, 0.7);
+		tempEffect.isRY = true;
+		//tempEffect.isRX = true;
+		//tempEffect.isRZ = true;
+		//tempEffect.dir = *m_pCharacter->GetRotation();
+		//tempEffect.SetSpeed(0, 0.2, 0);
+		tempEffect.height = 3.0f;
+		tempEffect.SetAlpha(255, 255, 0);
+		tempEffect.SetScale(FRand(2,5), FRand(2, 5), 0);
+		tempEffect.tex = TEXTUREMANAGER->GetTexture("수정");
+	
+		for (int j = 0; j < m_vecTarget.size(); j++)
 		{
-			if (m_vecTarget.size() <= 0) return;
-			if (m_nDamageCount <= 2)
-			{
-				D3DXVECTOR3 MonPos = *m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetPosition();
-				ST_EFFECT tempEffect;
-				ZeroMemory(&tempEffect, sizeof(tempEffect));
-
-				tempEffect.time = FRand(0.1, 0.4) + 3;
-				tempEffect.isRY = true;
-				tempEffect.isRX = true;
-				tempEffect.isRZ = true;
-				tempEffect.dir = D3DXVECTOR3(1, 0, 0);
-				tempEffect.height = 3.0f;
-				tempEffect.SetAlpha(255, 255, 0);
-				tempEffect.SetScale(1, 0.8, 0.8);
-				tempEffect.tex = TEXTUREMANAGER->AddTexture("akanal", "Texture/Effect/akanal.png");
-				EffectObject* tempEFOBJ;
-				tempEFOBJ = new EffectObject;
-
-
-
-				//tempEffect.dir = D3DXVECTOR3(0, 0, 1); 방향을 주고
-				//tempEffect.SetSpeed(3, 3, 3); 스피드 주고 
-				//tempEffect.time = FRand(0.1, 0.4) + 5; 타임 건드려주면 다양하게 활용 가능.(스피드 안주면 일정시간동안 설치형으로 사용가능)
-
-
-				D3DXVECTOR3 TempDir;
-				TempDir = pos - MonPos;
-				D3DXVec3Normalize(&TempDir, &TempDir);
-
-				float Length = D3DXVec3Length(&(MonPos - pos));
-
-				D3DXVECTOR3 testSkillpos = *m_pMonsterManager->GetMonsterVector()[m_vecTarget[i]]->GetModel()->GetPosition();
-				testSkillpos.y += 1.0f;
-				testSkillpos.x += FRand(-0.5, 0.5);
-				testSkillpos.z += FRand(-0.3, 0.3);
-				testSkillpos += TempDir * (Length * 0.3f);
-				tempEFOBJ->Init(tempEffect, testSkillpos);
-
-				m_vecEffect.push_back(tempEFOBJ);
-
-
-				m_pMonsterManager->GetMonsterVector()[m_vecTarget[i]]->CalculDamage(m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
-			}
+			EffectObject* tempEFOBJ;
+			tempEFOBJ = new EffectObject;
+			D3DXVECTOR3 testSkillpos = *m_pMonsterManager->GetMonsterVector()[m_vecTarget[j]]->GetModel()->GetPosition();
+			testSkillpos.y -= 1.0f;
+			//testSkillpos.x += FRand(-0.5, 0.5);
+			//testSkillpos.z += FRand(-0.3, 0.3);
+			//testSkillpos += TempDir * (Length * 0.3f);
+			tempEFOBJ->Init(tempEffect, testSkillpos);
+			m_vecEffect.push_back(tempEFOBJ);
+			m_pMonsterManager->GetMonsterVector()[m_vecTarget[j]]->CalculDamage(1);
 		}
-	}
+	
 }
 
 void Character_Magic::MgSkill()
