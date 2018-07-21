@@ -5,6 +5,7 @@ SKILL_EFFECT_EFFECT	NONE
 SKILL_BUFF	BEGIN
 
 PARTICLE	Particle/Tornado.ptc
+PARTICLE_TEXTURE	Texture/Particle/Star.png
 
 EFFECT_TEXTURE	Texture/Effect/TestSkill.png
 EFFECT_ROTATION	0 0 0
