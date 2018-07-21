@@ -146,11 +146,23 @@ void SC_Loading::AddTexture()
 	m_pLoading->LoadTexture("캐릭터_스테이터스", "Texture/UI/Character Status.png");
 	m_pLoading->LoadTexture("캐릭터_체력", "Texture/UI/Character HP.png");
 	m_pLoading->LoadTexture("캐릭터_스테미너", "Texture/UI/Character SM.png");
+	m_pLoading->LoadTexture("캐릭터_스킬창", "Texture/UI/Character Skill.png");
 
-	//플레이어 고유스킬
+	//플레이어 고유스킬아이콘
 	m_pLoading->LoadTexture("근접_방패", "Texture/SkillIMG/Skill_Ashu_Passive01_Icon.tga");
+	m_pLoading->LoadTexture("근접_무적", "Texture/SkillIMG/Skill_Anika_Active01_Icon.tga");
+	m_pLoading->LoadTexture("근접_이동공격", "Texture/SkillIMG/Skill_Arin_Passive01_Icon.tga");
+
 	m_pLoading->LoadTexture("마법_이동", "Texture/SkillIMG/Skill_Bati_Mana01_Icon.tga");
+	m_pLoading->LoadTexture("마법_파이어볼", "Texture/SkillIMG/Skill_Deemona_Active01_Icon.tga");
+	m_pLoading->LoadTexture("마법_메테오", "Texture/SkillIMG/Skill_RedEye_Active01_Icon.tga");
+
+	m_pLoading->LoadTexture("마법_아이스", "Texture/SkillIMG/Skill_HolyGhost_Active01_Icon.tga");
+	m_pLoading->LoadTexture("마법_방패", "Texture/SkillIMG/Skill_Elizabeth_Mana01_Icon.tga");
+
 	m_pLoading->LoadTexture("원거리_공격", "Texture/SkillIMG/Skill_Beholder_Active02_Icon.tga");
+	m_pLoading->LoadTexture("원거리_레이저", "Texture/SkillIMG/Skill_Charon_Active01_Icon.tga");
+	m_pLoading->LoadTexture("원거리_이동", "Texture/SkillIMG/Skill_RedHarpy_Mana01_Icon.tga");
 
 	//마법공격 파티클(이후 수정가능성 높음)
 	m_pLoading->LoadTexture("마법기본공격", "Texture/Particle/MagicCircle.png");

@@ -44,14 +44,20 @@ void Character_Magic::Init(CHRTYPE type, CHARSELECT order)
 		m_Status->chr.fScale = 10.0f;
 		CharacterParant::Init(type, order);
 
-
-		m_pChrStat->SetTexture(TEXTUREMANAGER->GetTexture("캐릭터_스테이터스"));
-		m_pChrStat->SetPosition(D3DXVECTOR3(0, 550, 0));
+		m_pSkillBar->SetTexture(TEXTUREMANAGER->GetTexture("캐릭터_스킬창"));
+		m_pSkillBar->SetPosition(D3DXVECTOR3(588, 695, 0));
 
 		m_pInheritateIco->SetTexture(TEXTUREMANAGER->GetTexture("마법_이동"));
-		m_pInheritateIco->SetPosition(D3DXVECTOR3(33, 598, 0));
+		m_pInheritateIco->SetPosition(D3DXVECTOR3(609, 733, 0));
 
+		m_pInheritateIco2->SetTexture(TEXTUREMANAGER->GetTexture("마법_아이스"));
+		m_pInheritateIco2->SetPosition(D3DXVECTOR3(722, 733, 0));
 
+		m_pInheritateIco3->SetTexture(TEXTUREMANAGER->GetTexture("마법_방패"));
+		m_pInheritateIco3->SetPosition(D3DXVECTOR3(839, 733, 0));
+
+		m_pChrStat->SetTexture(TEXTUREMANAGER->GetTexture("캐릭터_스테이터스"));
+		m_pChrStat->SetPosition(D3DXVECTOR3(0, 668, 0));
 
 		m_pUIobj->SetTexture(TEXTUREMANAGER->GetTexture("아카날_사진"));
 		m_pUIobj->SetScale(D3DXVECTOR3(0.45, 0.45, 0.45));
@@ -83,12 +89,20 @@ void Character_Magic::Init(CHRTYPE type, CHARSELECT order)
 		CharacterParant::Init(type, order);
 
 
-		m_pChrStat->SetTexture(TEXTUREMANAGER->GetTexture("캐릭터_스테이터스"));
-		m_pChrStat->SetPosition(D3DXVECTOR3(0, 550, 0));
+		m_pSkillBar->SetTexture(TEXTUREMANAGER->GetTexture("캐릭터_스킬창"));
+		m_pSkillBar->SetPosition(D3DXVECTOR3(588, 695, 0));
 
 		m_pInheritateIco->SetTexture(TEXTUREMANAGER->GetTexture("마법_이동"));
-		m_pInheritateIco->SetPosition(D3DXVECTOR3(33, 598, 0));
+		m_pInheritateIco->SetPosition(D3DXVECTOR3(609, 733, 0));
 
+		m_pInheritateIco2->SetTexture(TEXTUREMANAGER->GetTexture("마법_파이어볼"));
+		m_pInheritateIco2->SetPosition(D3DXVECTOR3(722, 733, 0));
+
+		m_pInheritateIco3->SetTexture(TEXTUREMANAGER->GetTexture("마법_메테오"));
+		m_pInheritateIco3->SetPosition(D3DXVECTOR3(839, 733, 0));
+
+		m_pChrStat->SetTexture(TEXTUREMANAGER->GetTexture("캐릭터_스테이터스"));
+		m_pChrStat->SetPosition(D3DXVECTOR3(0, 668, 0));
 		m_pUIobj->SetTexture(TEXTUREMANAGER->GetTexture("헤스티아_사진"));
 		m_pUIobj->SetScale(D3DXVECTOR3(0.45, 0.45, 0.45));
 		m_pUIobj->SetPosition(D3DXVECTOR3(12, 679, 0));
@@ -111,6 +125,9 @@ void Character_Magic::Update()
 		m_pUIobj->Update();
 		m_pChrStat->Update();
 		m_pInheritateIco->Update();
+		m_pInheritateIco2->Update();
+		m_pInheritateIco3->Update();
+		m_pSkillBar->Update();
 
 		PlayerProgressBar();
 		//CountAppearDamage();
@@ -132,7 +149,10 @@ void Character_Magic::Render()
 		CharacterParant::Render();
 
 		m_pUIobj->Render();
+		m_pSkillBar->Render();
 		m_pInheritateIco->Render();
+		m_pInheritateIco2->Render();
+		m_pInheritateIco3->Render();
 		m_pHPBar->Render();
 		m_pStaminaBar->Render();
 	}
@@ -260,42 +280,9 @@ void Character_Magic::KeyControl()
 		m_bIsAttack = false;
 	}
 
-	//스킬공격
-	if (INPUT->KeyDown('K'))
-	{
-		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_RUN_FRONT || m_eCondition == CHAR_RUN_BACK)
-		{
-			m_eCondition = CHAR_SKILL;
+	
 
-			m_bIsSkill = true;
-			ChangeAnimation();
-		}
-	}
-
-	//순간이동 제어
-	if (INPUT->KeyDown('T'))
-	{
-		m_bIsPotal = true;
-	}
-	else if (INPUT->KeyUp('T'))
-	{
-		m_bIsPotal = false;
-		m_pCharacter->SetPosition(D3DXVECTOR3(m_pParticle3->GetPosition()->x + 1.0f, m_pParticle3->GetPosition()->y, m_pParticle3->GetPosition()->z - 1.0f));
-		m_pParticle4->SetPosition(*m_pCharacter->GetPosition());
-		m_pParticle4->TimeReset();
-		CAMERA->Shake(0.1f, 0.7f);
-	}
-
-	if (m_bIsPotal)
-	{
-		if (INPUT->KeyDown(VK_LBUTTON))
-		{
-			m_bIsPotal = false;
-			m_pCharacter->SetPosition(D3DXVECTOR3(m_pParticle3->GetPosition()->x + 1.0f, m_pParticle3->GetPosition()->y, m_pParticle3->GetPosition()->z - 1.0f));
-			m_pParticle4->SetPosition(*m_pCharacter->GetPosition());
-			m_pParticle4->TimeReset();
-		}
-	}
+	
 
 
 	//애니메이션 한바퀴 돌고나서 상태제어
@@ -365,20 +352,65 @@ void Character_Magic::KeyControl()
 		if (SOUND->IsPlaySound("FootStep3")) SOUND->Stop("FootStep3");
 	}
 
-	if (INPUT->KeyDown('R'))
+
+	// 아이템 스킬공격
+	if (INPUT->KeyDown('K'))
 	{
-		CristalField();
-		m_nDamageCount = 0;
-		if(!m_vecTarget.size() <=0) CAMERA->Shake(0.04f, 0.2f);
+		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_RUN_FRONT || m_eCondition == CHAR_RUN_BACK)
+		{
+			m_eCondition = CHAR_SKILL;
+
+			m_bIsSkill = true;
+			ChangeAnimation();
+		}
 	}
 
 
+
+	//===========고유스킬 제어==========================//
+	//아이스헤지오그 or 파이어볼
 	if (INPUT->KeyDown('F'))
 	{
-		FireBall();
-		m_nDamageCount = 0;
-		if (m_nIndex > -1) CAMERA->Shake(0.1f, 0.2f);
+		if (m_eCharSelect == CHAR_ONE)
+		{
+			CristalField();
+			m_nDamageCount = 0;
+			if (!m_vecTarget.size() <= 0) CAMERA->Shake(0.04f, 0.2f);
+		}
+		if (m_eCharSelect == CHAR_TWO)
+		{
+			FireBall();
+			m_nDamageCount = 0;
+			if (m_nIndex > -1) CAMERA->Shake(0.1f, 0.2f);
+		}
 	}
+
+	//순간이동 제어
+	if (INPUT->KeyDown('R'))
+	{
+		m_bIsPotal = true;
+	}
+	else if (INPUT->KeyUp('R'))
+	{
+		m_bIsPotal = false;
+		m_pCharacter->SetPosition(D3DXVECTOR3(m_pParticle3->GetPosition()->x + 1.0f, m_pParticle3->GetPosition()->y, m_pParticle3->GetPosition()->z - 1.0f));
+		m_pParticle4->SetPosition(*m_pCharacter->GetPosition());
+		m_pParticle4->TimeReset();
+		CAMERA->Shake(0.1f, 0.7f);
+	}
+
+	if (m_bIsPotal)
+	{
+		if (INPUT->KeyDown(VK_LBUTTON))
+		{
+			m_bIsPotal = false;
+			m_pCharacter->SetPosition(D3DXVECTOR3(m_pParticle3->GetPosition()->x + 1.0f, m_pParticle3->GetPosition()->y, m_pParticle3->GetPosition()->z - 1.0f));
+			m_pParticle4->SetPosition(*m_pCharacter->GetPosition());
+			m_pParticle4->TimeReset();
+		}
+	}
+
+
 }
 
 void Character_Magic::Attack()

@@ -369,14 +369,7 @@ void CharacterParant::shield()
 
 void CharacterParant::SetCurrentHP(int hp)
 {
-	/*ST_DAMAGETEXT tempDMGTEXT;
-	tempDMGTEXT.Damage = hp;
-	tempDMGTEXT.time = 0.0f;
-	tempDMGTEXT.endTime = 1.0f;
-	tempDMGTEXT.angle = rand() % 100;
-	tempDMGTEXT.alpha = 255.0f;
-	tempDMGTEXT.x = 0.0f;*/
-	//m_vecDamage.push_back(tempDMGTEXT);
+	
 	m_pDamage->AddDamage(hp);
 
 
@@ -787,11 +780,11 @@ CharacterParant::~CharacterParant()
 	SAFE_RELEASE(m_pShieldHp);
 	SAFE_RELEASE(m_pChrStat);
 	SAFE_RELEASE(m_pInheritateIco);
-	//for (int i = 0; i < 10; i++)
-	//{
-	//	SAFE_RELEASE(m_pUIDamage[i]);
-	//}
+	SAFE_RELEASE(m_pInheritateIco2);
+	SAFE_RELEASE(m_pInheritateIco3);
+	SAFE_RELEASE(m_pSkillBar);
 	
+
 	m_pMonsterManager = NULL; 
 	m_pSampleMap = NULL;
 	SAFE_DELETE(m_pInventory);
@@ -877,6 +870,11 @@ void CharacterParant::Init(CHRTYPE type, CHARSELECT order)
 
 	//고유스킬 아이콘
 	if(m_pInheritateIco == NULL) m_pInheritateIco = new UIObject;
+	if (m_pInheritateIco2 == NULL) m_pInheritateIco2 = new UIObject;
+	if (m_pInheritateIco3 == NULL) m_pInheritateIco3 = new UIObject;
+
+	//스킬바 이미지
+	if (m_pSkillBar == NULL) m_pSkillBar = new UIObject;
 
 	//데미지 
 	m_pDamage = new DamageUI;
@@ -904,10 +902,10 @@ void CharacterParant::Init(CHRTYPE type, CHARSELECT order)
 
 	
 
-	m_pParticle = PARTICLE->GetParticle("ATTACK");
-	m_pParticle2 = PARTICLE->GetParticle("Die");
-	m_pParticle3 = PARTICLE->GetParticle("Potal");
-	m_pParticle4 = PARTICLE->GetParticle("teleport");
+	m_pParticle = PARTICLE->GetParticle("ATTACK"); //피격시 출혈파티클
+	m_pParticle2 = PARTICLE->GetParticle("Die");  //죽을때 나오는 파티클
+	m_pParticle3 = PARTICLE->GetParticle("Potal"); //텔레포트 위치 나타내는 파티클
+	m_pParticle4 = PARTICLE->GetParticle("teleport"); //텔레포트 끝나고 아래에서 피어오르는 파티클
 
 	m_pParticle3->SetPosition(D3DXVECTOR3(m_pCharacter->GetPosition()->x, m_pCharacter->GetPosition()->y, m_pCharacter->GetPosition()->z + 5.0f));
 
