@@ -172,7 +172,10 @@ void EffectObject::Debug()
 	// BoundSphere
 	LPD3DXMESH mesh;
 	D3DXMATRIX matT;
-	D3DXCreateSphere(DEVICE, GetBoundSphere().radius, 8, 8, &mesh, NULL);
+
+	float radius = GetBoundSphere().radius;
+	if (radius < 0) radius = 0;
+	D3DXCreateSphere(DEVICE, radius, 8, 8, &mesh, NULL);
 	D3DXVECTOR3 pos = GetBoundSphere().center;
 	D3DXMatrixTranslation(&matT, pos.x, pos.y, pos.z);
 	DEVICE->SetTransform(D3DTS_WORLD, &matT);

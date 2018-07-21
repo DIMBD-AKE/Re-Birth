@@ -206,6 +206,15 @@ void Skill::ParticleThis()
 		return;
 	}
 
+	if (m_vecParticle.empty())
+	{
+		m_vecParticle.push_back(PARTICLE->GetParticle(m_sSkillName + " SP"));
+		if (m_eOwner == SKILLO_CHARACTER)
+			m_vecParticle.back()->SetPosition(*m_pCharacter->GetCharacter()->GetPosition());
+		else
+			m_vecParticle.back()->SetPosition(*m_pMonster->GetModel()->GetPosition());
+	}
+
 	for (int i = 0; i < m_vecParticle.size(); i++)
 	{
 		if (m_eOwner == SKILLO_CHARACTER)
