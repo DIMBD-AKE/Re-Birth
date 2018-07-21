@@ -14,6 +14,7 @@ public:
 	virtual void Attack();
 	void targetAttack();
 	void CristalField();
+	void FireBall();
 
 	void MgSkill();
 	
