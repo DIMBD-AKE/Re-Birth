@@ -128,7 +128,7 @@ void ParticleSystem::Update()
 		{
 			D3DXVECTOR3 dir = (*iter)->vGravityPos - (*iter)->vPos;
 			D3DXVec3Normalize(&dir, &dir);
-			float f = (*iter)->fGravityForce * (m_fParticleSize / pow(dist, 2));
+			float f = (*iter)->fGravityForce * (pow(m_fParticleSize, 2) / pow(dist, 2));
 			(*iter)->vGravity += dir * f;
 		}
 
