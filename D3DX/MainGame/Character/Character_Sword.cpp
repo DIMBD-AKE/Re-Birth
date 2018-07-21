@@ -38,10 +38,10 @@ void Character_Sword::Init(CHRTYPE type, CHARSELECT order)
 		m_Status->chr.fSpeed = 0.32f;
 		m_Status->chr.nAtk = 100;
 		m_Status->chr.nCurrentHP = 10000;
-		m_Status->chr.nCurrentStam = 50;
+		m_Status->chr.nCurrentStam = 100;
 		m_Status->chr.nDef = 2;
 		m_Status->chr.nMaxHp = 10000;
-		m_Status->chr.nMaxStam = 50;
+		m_Status->chr.nMaxStam = 100;
 		m_Status->chr.fRange = 3.0f;
 		m_Status->chr.fScale = 5.0f;
 		CharacterParant::Init(type, order);
@@ -84,10 +84,10 @@ void Character_Sword::Init(CHRTYPE type, CHARSELECT order)
 		m_Status->chr.fSpeed = 0.32f;
 		m_Status->chr.nAtk = 60;
 		m_Status->chr.nCurrentHP = 100;
-		m_Status->chr.nCurrentStam = 40;
+		m_Status->chr.nCurrentStam = 100;
 		m_Status->chr.nDef = 26;
 		m_Status->chr.nMaxHp = 100;
-		m_Status->chr.nMaxStam = 40;
+		m_Status->chr.nMaxStam = 100;
 		m_Status->chr.fRange = 5.0f;
 		m_Status->chr.fScale = 3.2f;
 		CharacterParant::Init(type, order);

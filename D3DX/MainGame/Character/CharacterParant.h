@@ -63,6 +63,7 @@ protected:
 	UIObject*				m_pInheritateIco2;		//캐릭터 고유스킬 아이콘
 	UIObject*				m_pInheritateIco3;		//캐릭터 고유스킬 아이콘
 	UIObject*				m_pSkillBar;			//캐릭터 스킬바
+	UIObject*				m_pMagicShield;			//마법실드
 
 	MonsterManager*			m_pMonsterManager;		//몬스터 매니저용 변수
 	Character_Shield*		m_pShieldChr;			//쉴드캐릭터용 변수 
@@ -89,6 +90,7 @@ protected:
 	bool					m_bIsSubChr;			//서브캐릭터 나왔늬?
 	bool					m_bIsWalk;				//걷고 있니
 	bool					m_isCutScene;			//컷씬이니?
+	bool					m_bisMgShield;			//매직 실드 켜졌니?
 	float					m_fDamageCount;			//데미지 띄우는 카운트
 	float					m_fDamageAngle;			//데미지 앵글
 	float					m_fElpTime;				//이펙트용 일랩스 카운트

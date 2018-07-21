@@ -172,6 +172,7 @@ void SC_Loading::AddTexture()
 	//플레이어 고유스킬용
 	m_pLoading->LoadTexture("수정", "Texture/Effect/cristal.png");
 	m_pLoading->LoadTexture("파이어볼_마법", "Texture/Effect/Fireball.png");
+	m_pLoading->LoadTexture("실드_마법", "Texture/Particle/MagicShield.png");
 
 }
 

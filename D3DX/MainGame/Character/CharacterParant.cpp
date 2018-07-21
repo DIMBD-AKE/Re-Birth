@@ -311,7 +311,7 @@ void CharacterParant::Debug()
 		TEXT->Add(to_string(m_Status->chr.nMaxHp), pos1.x, pos1.y - 25.0f, 30);
 
 		TEXT->Add(to_string(m_Status->chr.nCurrentStam), pos1.x + 90, pos1.y, 30);
-		TEXT->Add(to_string(m_Status->chr.nMaxStam), pos1.x + 90, pos1.y - 25.0f, 30);
+		TEXT->Add(to_string(m_pCharacter->GetPosition()->y), pos1.x + 90, pos1.y - 25.0f, 30);
 		
 		//CAMERA->SetMode(CAMERA_FREE);
 	}
@@ -327,7 +327,7 @@ void CharacterParant::ControllStamina()
 	//스테미나 관리함수
 	if (m_eCondition == CHAR_DASH_FRONT || m_eCondition == CHAR_DASH_BACK)
 	{
-		m_Status->chr.nCurrentStam  -= 1;
+		m_Status->chr.nCurrentStam  -= 2;
 	}
 
 	if (m_Status->chr.nCurrentStam <= 0)
@@ -335,6 +335,7 @@ void CharacterParant::ControllStamina()
 		m_eCondition = CHAR_IDLE;
 		m_bIsDash = false;
 		ChangeAnimation();
+		m_Status->chr.nCurrentStam = 1;
 	}
 
 
@@ -342,7 +343,7 @@ void CharacterParant::ControllStamina()
 	{
 		if (m_Status->chr.nCurrentStam <= m_Status->chr.nMaxStam)
 		{
-			m_Status->chr.nCurrentStam += 1;
+			m_Status->chr.nCurrentStam += 0.01;
 			if (m_Status->chr.nCurrentStam >= m_Status->chr.nMaxStam)
 			{
 				m_Status->chr.nCurrentStam = m_Status->chr.nMaxStam;
@@ -843,6 +844,7 @@ void CharacterParant::Init(CHRTYPE type, CHARSELECT order)
 	m_bIsPotal = false;
 	m_bIsSubChr = false;
 	m_isCutScene = false;
+	m_bisMgShield = false;
 
 	m_fStamina = 10.0f;
 	m_nDamage = 0;
@@ -876,6 +878,7 @@ void CharacterParant::Init(CHRTYPE type, CHARSELECT order)
 	//스킬바 이미지
 	if (m_pSkillBar == NULL) m_pSkillBar = new UIObject;
 
+	
 	//데미지 
 	m_pDamage = new DamageUI;
 	m_pDamage->Setup(true);

@@ -15,8 +15,8 @@ public:
 	void targetAttack();
 	void CristalField();
 	void FireBall();
-
 	void MgSkill();
+	void MgShield();
 	
 };
 

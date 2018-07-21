@@ -36,10 +36,10 @@ void Character_Gun::Init(CHRTYPE type, CHARSELECT order)
 		m_Status->chr.fSpeed = 0.32f;
 		m_Status->chr.nAtk = 20;
 		m_Status->chr.nCurrentHP = 100;
-		m_Status->chr.nCurrentStam = 50;
+		m_Status->chr.nCurrentStam = 100;
 		m_Status->chr.nDef = 26;
 		m_Status->chr.nMaxHp = 100;
-		m_Status->chr.nMaxStam = 50;
+		m_Status->chr.nMaxStam = 100;
 		m_Status->chr.fRange = 20.0f;
 		m_Status->chr.fScale = 3.2f;
 		CharacterParant::Init(type, order);

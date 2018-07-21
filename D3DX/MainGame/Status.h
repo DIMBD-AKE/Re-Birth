@@ -27,7 +27,7 @@ union STATUS
 		int		nCurrentHP;		//캐릭터(적, 플레이어) 현재 피
 		int		nMaxHp;			//캐릭터(적, 플레이어) 최대 피
 
-		int		nCurrentStam;	//캐릭터 현재 스테미나
+		float	nCurrentStam;	//캐릭터 현재 스테미나
 		int		nMaxStam;		//캐릭터 전체 스테미나
 
 		int		nAtk;			//기본공격력

@@ -36,13 +36,19 @@ void Character_Magic::Init(CHRTYPE type, CHARSELECT order)
 		m_Status->chr.fSpeed = 0.32f;
 		m_Status->chr.nAtk = 35;
 		m_Status->chr.nCurrentHP = 100;
-		m_Status->chr.nCurrentStam = 10;
+		m_Status->chr.nCurrentStam = 100;
 		m_Status->chr.nDef = 26;
 		m_Status->chr.nMaxHp = 100;
-		m_Status->chr.nMaxStam = 10;
+		m_Status->chr.nMaxStam = 100;
 		m_Status->chr.fRange = 15.0f;
 		m_Status->chr.fScale = 10.0f;
 		CharacterParant::Init(type, order);
+
+		//매직실드 이미지
+		if (m_pMagicShield == NULL) m_pMagicShield = new UIObject;
+		m_pMagicShield->SetTexture(TEXTUREMANAGER->GetTexture("실드_마법"));
+		m_pMagicShield->SetPosition(*m_pCharacter->GetPosition() - m_vfront * 1.0f);
+
 
 		m_pSkillBar->SetTexture(TEXTUREMANAGER->GetTexture("캐릭터_스킬창"));
 		m_pSkillBar->SetPosition(D3DXVECTOR3(588, 695, 0));
@@ -80,10 +86,10 @@ void Character_Magic::Init(CHRTYPE type, CHARSELECT order)
 		m_Status->chr.fSpeed = 0.32f;
 		m_Status->chr.nAtk = 35;
 		m_Status->chr.nCurrentHP = 100;
-		m_Status->chr.nCurrentStam = 10;
+		m_Status->chr.nCurrentStam = 100;
 		m_Status->chr.nDef = 26;
 		m_Status->chr.nMaxHp = 100;
-		m_Status->chr.nMaxStam = 10;
+		m_Status->chr.nMaxStam = 100;
 		m_Status->chr.fRange = 10.0f;
 		m_Status->chr.fScale = 15.2f;
 		CharacterParant::Init(type, order);
@@ -128,7 +134,7 @@ void Character_Magic::Update()
 		m_pInheritateIco2->Update();
 		m_pInheritateIco3->Update();
 		m_pSkillBar->Update();
-
+	//	m_pMagicShield->Update();
 		PlayerProgressBar();
 		//CountAppearDamage();
 		m_pDamage->Update(*m_pCharacter->GetPosition());
@@ -147,6 +153,11 @@ void Character_Magic::Render()
 		//AppearDamage();
 
 		CharacterParant::Render();
+
+	//	if (m_bisMgShield)
+	//	{
+	//		m_pMagicShield->Render();
+	//	}
 
 		m_pUIobj->Render();
 		m_pSkillBar->Render();
@@ -280,10 +291,6 @@ void Character_Magic::KeyControl()
 		m_bIsAttack = false;
 	}
 
-	
-
-	
-
 
 	//애니메이션 한바퀴 돌고나서 상태제어
 	if (m_pCharacter->IsAnimationEnd())
@@ -408,6 +415,13 @@ void Character_Magic::KeyControl()
 			m_pParticle4->SetPosition(*m_pCharacter->GetPosition());
 			m_pParticle4->TimeReset();
 		}
+	}
+
+	//매직실드
+	if (INPUT->KeyDown('V'))
+	{
+		m_bisMgShield = true;
+		MgShield();
 	}
 
 
@@ -816,6 +830,79 @@ void Character_Magic::MgSkill()
 				}
 			}
 		}
+	}
+}
+
+void Character_Magic::MgShield()
+{
+	//ST_EFFECT tempEffect;
+	//ZeroMemory(&tempEffect, sizeof(tempEffect));
+	//tempEffect.time = 300;
+	//tempEffect.rot = D3DXVECTOR3(90,0,0);
+	////tempEffect.isRY = true;
+	////tempEffect.isRX = true;
+	////tempEffect.isRZ = true;
+	////tempEffect.dir = *m_pCharacter->GetRotation();
+	////tempEffect.SetSpeed(0, 0.2, 0);
+	//tempEffect.height = 3.0f;
+	//tempEffect.SetAlpha(255, 255, 0);
+	//tempEffect.SetScale(10, 10, 0);
+	//tempEffect.tex = TEXTUREMANAGER->GetTexture("실드_마법");
+
+	//
+	//EffectObject* tempEFOBJ;
+	//tempEFOBJ = new EffectObject;
+	//D3DXVECTOR3 testSkillpos = *m_pCharacter->GetPosition() - m_vfront * 1.0f;
+	//testSkillpos.y -= 1.0f;
+	////testSkillpos.x += FRand(-0.5, 0.5);
+	////testSkillpos.z += FRand(-0.3, 0.3);
+	////testSkillpos += TempDir * (Length * 0.3f);
+	//tempEFOBJ->Init(tempEffect, testSkillpos);
+	//m_vecEffect.push_back(tempEFOBJ);	
+
+
+	//메테오
+	ST_EFFECT tempEffect;
+	ZeroMemory(&tempEffect, sizeof(tempEffect));
+	tempEffect.time = 300;
+	tempEffect.rot = D3DXVECTOR3(90, 0, 0);
+	//tempEffect.isRY = true;
+	//tempEffect.isRX = true;
+	//tempEffect.isRZ = true;
+	tempEffect.dir = D3DXVECTOR3(1, -1, 3);
+	tempEffect.SetSpeed(0.05, 1, 0.05);
+	tempEffect.height = 3.0f;
+	tempEffect.SetAlpha(255, 255, 0);
+	tempEffect.SetScale(10, 10, 0);
+	tempEffect.tex = TEXTUREMANAGER->GetTexture("실드_마법");
+
+
+	EffectObject* tempEFOBJ;
+	tempEFOBJ = new EffectObject;
+	D3DXVECTOR3 testSkillpos = *m_pCharacter->GetPosition() - m_vfront * 5.0f;
+	testSkillpos.y += 20.0f;
+	//testSkillpos.x += FRand(-0.5, 0.5);
+	//testSkillpos.z += FRand(-0.3, 0.3);
+	//testSkillpos += TempDir * (Length * 0.3f);
+	tempEFOBJ->Init(tempEffect, testSkillpos);
+	m_vecEffect.push_back(tempEFOBJ);
+	
+	if (m_vecEffect.back()->GetPos().y>= 65 )
+	{
+		CAMERA->Shake(0.3, 30);
+	}
+	else
+	{
+		CAMERA->Shake(5.8, 30);
+	}
+	
+	if (DEBUG)
+	{
+		D3DXVECTOR3 tempPos1;
+		tempPos1 = *m_pCharacter->GetPosition();
+		tempPos1.y += 5;
+		D3DXVECTOR2 pos1 = Convert3DTo2D(tempPos1);
+		TEXT->Add(to_string(tempEFOBJ->GetPos().y), pos1.x, pos1.y, 30);
 	}
 }
 
