@@ -121,7 +121,6 @@ protected:
 
 	void SetCurrentHP(int hp);
 	void CalculDamage(float damage);
-	void Attack();
 	void CountAppearDamage();
 	void SkillIconAlpha();
 	void PlayerProgressBar();
