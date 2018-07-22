@@ -99,6 +99,7 @@ struct ST_EFFECT
 	LPDIRECT3DTEXTURE9 tex;
 	D3DXVECTOR3 dir;
 	D3DXVECTOR3 rot;
+	D3DXVECTOR3 mot;
 	bool isRX;
 	bool isRY;
 	bool isRZ;
@@ -107,6 +108,7 @@ struct ST_EFFECT
 	float time;
 	float sc0, sc1, sc2;
 	float sp0, sp1, sp2;
+	float ms0, ms1, ms2;
 	int a0, a1, a2;
 
 	void SetScale(float f0, float f1, float f2)
@@ -117,6 +119,11 @@ struct ST_EFFECT
 	void SetSpeed(float f0, float f1, float f2)
 	{
 		sp0 = f0; sp1 = f1; sp2 = f2;
+	}
+
+	void SetMotorSpeed(float f0, float f1, float f2)
+	{
+		ms0 = f0; ms1 = f1; ms2 = f2;
 	}
 
 	void SetAlpha(int n0, int n1, int n2)

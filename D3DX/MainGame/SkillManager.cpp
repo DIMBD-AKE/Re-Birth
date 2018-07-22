@@ -807,6 +807,11 @@ Skill SkillManager::SkillParse(string name, string path)
 			tok = strtok_s(NULL, "\t\n", &context);
 			sscanf_s(tok, "%f %f %f", &effect.rot.x, &effect.rot.y, &effect.rot.z);
 		}
+		if (strcmp(tok, "EFFECT_MOTOR") == 0)
+		{
+			tok = strtok_s(NULL, "\t\n", &context);
+			sscanf_s(tok, "%f %f %f", &effect.mot.x, &effect.mot.y, &effect.mot.z);
+		}
 		if (strcmp(tok, "EFFECT_RANDOM") == 0)
 		{
 			tok = strtok_s(NULL, "\t\n", &context);
@@ -831,6 +836,11 @@ Skill SkillManager::SkillParse(string name, string path)
 		{
 			tok = strtok_s(NULL, "\t\n", &context);
 			sscanf_s(tok, "%f %f %f", &effect.sp0, &effect.sp1, &effect.sp2);
+		}
+		if (strcmp(tok, "EFFECT_MSPEED") == 0)
+		{
+			tok = strtok_s(NULL, "\t\n", &context);
+			sscanf_s(tok, "%f %f %f", &effect.ms0, &effect.ms1, &effect.ms2);
 		}
 		if (strcmp(tok, "EFFECT_ALPHA") == 0)
 		{

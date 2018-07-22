@@ -18,6 +18,9 @@ void EffectObject::Init(ST_EFFECT info, D3DXVECTOR3 pos)
 	m_stInfo = info;
 	m_vPos = pos;
 	D3DXVec3Normalize(&m_stInfo.dir, &m_stInfo.dir);
+	D3DXVec3Normalize(&m_stInfo.mot, &m_stInfo.mot);
+
+	m_vMot = D3DXVECTOR3(0, 0, 0);
 
 	if (D3DXVec3Length(&m_stInfo.dir) < 0.1)
 		m_isFlash = true;
@@ -101,11 +104,16 @@ void EffectObject::Update()
 	int alpha = pow(1 - t, 2) * m_stInfo.a0 +
 		2 * t *(1 - t) * m_stInfo.a1 +
 		pow(t, 2) * m_stInfo.a2;
+	float mot = pow(1 - t, 2) * m_stInfo.ms0 +
+		2 * t *(1 - t) * m_stInfo.ms1 +
+		pow(t, 2) * m_stInfo.ms2;
 
 	m_fElapse += TIME->GetElapsedTime();
 
 	if (!m_isFlash)
 		m_vPos += m_stInfo.dir * speed;
+
+	m_vMot += m_stInfo.mot * mot;
 
 	for (int i = 0; i < m_vecVertex.size(); i++)
 		m_vecVertex[i].c = D3DCOLOR_ARGB(alpha, 255, 255, 255);
@@ -121,7 +129,7 @@ void EffectObject::Update()
 	}
 
 	D3DXMATRIX matS, matR, matT;
-	D3DXMatrixRotationYawPitchRoll(&matR, m_stInfo.rot.y, m_stInfo.rot.x, m_stInfo.rot.z);
+	D3DXMatrixRotationYawPitchRoll(&matR, m_stInfo.rot.y + m_vMot.y, m_stInfo.rot.x + m_vMot.x, m_stInfo.rot.z + m_vMot.z);
 	D3DXMatrixTranslation(&matT, m_vPos.x, m_vPos.y + m_stInfo.height / 2, m_vPos.z);
 	D3DXMatrixScaling(&matS, scale, scale, scale);
 

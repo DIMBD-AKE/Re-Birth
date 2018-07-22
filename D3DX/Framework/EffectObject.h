@@ -8,7 +8,8 @@ private:
 	ST_PCT_VERTEX *				m_pV;
 
 	ST_EFFECT			m_stInfo;
-	GET(D3DXVECTOR3,m_vPos,Pos);
+	D3DXVECTOR3			m_vPos;
+	D3DXVECTOR3			m_vMot;
 	D3DXMATRIX			m_matWorld;
 	float				m_fElapse;
 	bool				m_isFlash;
