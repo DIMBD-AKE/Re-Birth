@@ -215,7 +215,7 @@ ST_OBB EffectObject::GetOBB()
 		pow(t, 2) * m_stInfo.sc2;
 
 	D3DXMATRIX matR;
-	D3DXMatrixRotationYawPitchRoll(&matR, m_stInfo.rot.y, m_stInfo.rot.x, m_stInfo.rot.z);
+	D3DXMatrixRotationYawPitchRoll(&matR, m_stInfo.rot.y + m_vMot.y, m_stInfo.rot.x + m_vMot.x, m_stInfo.rot.z + m_vMot.z);
 
 	ST_OBB obb = m_stOBB;
 	for (int i = 0; i < 3; i++)
