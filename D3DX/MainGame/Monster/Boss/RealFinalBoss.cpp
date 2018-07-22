@@ -1,14 +1,14 @@
-#include "RealFinalBoss.h"
 #include "../MonsterUseHeader.h"
-#include "../MonsterManager.h"
 #include "../Magic/MagicCircle.h"
 
+#include "RealFinalboss.h"
 
-RealFinalBoss::RealFinalBoss()
+
+RealFinalboss::RealFinalboss()
 {
 }
 
 
-RealFinalBoss::~RealFinalBoss()
+RealFinalboss::~RealFinalboss()
 {
 }

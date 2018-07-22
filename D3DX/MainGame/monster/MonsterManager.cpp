@@ -346,11 +346,25 @@ bool MonsterManager::IsMiddleBossDie(OUT D3DXVECTOR3* diePos)
 	//bool endGame = false;
 	for (int i = 0; i < m_vMM.size(); i++)
 	{
-		if (m_vMM[i]->IsBossDie())
+		if (m_vMM[i]->IsMiddleBossDie())
 		{
 			*diePos = *m_vMM[i]->GetModel()->GetPosition();
 			return true;
 		}
 	}
+	return false;
+}
+
+bool MonsterManager::IsBossDie()
+{
+	for (int i = 0; i < m_vMM.size(); i++)
+	{
+		if (m_vMM[i]->IsBossDie())		
+		{
+			
+			return true;
+		}
+	}
+
 	return false;
 }

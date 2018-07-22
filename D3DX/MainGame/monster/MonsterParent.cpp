@@ -356,10 +356,24 @@ void MonsterParent::Respawn(D3DXVECTOR3 spawnPos)
 	m_pModel->SetPosition(D3DXVECTOR3(spawnPos.x, m_pMap->GetHeight(spawnPos.x, spawnPos.z), spawnPos.z));
 }
 
+bool MonsterParent::IsMiddleBossDie()
+{
+	if (MAXHP(m_pMonsterStat) <= 1000)
+	{
+		return false;
+	}
+	//보스이므로
+	else
+	{
+		//dynamic_cast<FinalBoss*>(finalBoss)->SetMM(this);
+		return dynamic_cast<BossParent*>(this)->IsDie();
+	}
+}
+
 bool MonsterParent::IsBossDie()
 {
 	//보스가 아니면 false 반환
-	if (MAXHP(m_pMonsterStat) < 1000)
+	if (MAXHP(m_pMonsterStat) <= 1500)
 	{
 		return false;
 	}
@@ -627,6 +641,9 @@ bool MonsterParent::AbleSkill()
 		&& !m_bUsingSkill
 		&& m_pModel->IsAnimationEnd())
 	{
+		
+		//m_stSkill.fEffectTime = leng / tempEffect.s
+
 		ChangeRot();
 		m_bUsingSkill = true;
 		SkillPrepare();

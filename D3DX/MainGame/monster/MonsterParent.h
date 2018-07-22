@@ -167,6 +167,7 @@ public:
 	
 	void Respawn(D3DXVECTOR3 spawnPos);
 
+	bool IsMiddleBossDie();
 	bool IsBossDie();
 };
 

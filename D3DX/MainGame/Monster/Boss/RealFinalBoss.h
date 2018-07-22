@@ -1,11 +1,11 @@
 #pragma once
-#include "Boss\BossParent.h"
+#include "BossParent.h"
 
-class RealFinalBoss :
+class RealFinalboss :
 	public BossParent
 {
 public:
-	RealFinalBoss();
-	~RealFinalBoss();
+	RealFinalboss();
+	virtual ~RealFinalboss();
 };
 

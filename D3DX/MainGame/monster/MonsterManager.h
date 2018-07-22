@@ -53,6 +53,7 @@ public:
 	void DeleteSummonMonster();
 
 	bool IsMiddleBossDie(OUT D3DXVECTOR3* diePos);
+	bool IsBossDie();
 
 	//void SetSpawnSpot(vector<D3DXVECTOR3> spawnVec) { m_vSpawnSpot = spawnVec; }
 	//

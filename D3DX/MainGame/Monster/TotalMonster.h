@@ -6,4 +6,4 @@
 #include "Distance/Nerisa.h"
 #include "Distance/Nike.h"
 #include "Boss/FinalBoss.h"
-#include "Boss/MiddleBoss.h"
+#include "Boss/RealFinalboss.h"
