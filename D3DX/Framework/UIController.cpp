@@ -16,6 +16,7 @@ UIObject::UIObject()
 	, m_pFunction(NULL)
 	, m_vPosition(D3DXVECTOR3(0, 0, 0))
 	, m_vScale(D3DXVECTOR3(1, 1, 1))
+	, m_eAnchor(UIAC_LT)
 {
 	for (int i = 0; i < UITEX_END; i++)
 		m_pTex[i] = NULL;
@@ -28,6 +29,9 @@ UIObject::~UIObject()
 
 void UIObject::Update()
 {
+	float width = m_ptTexWH[UITEX_NORMAL].x * m_vScale.x;
+	float height = m_ptTexWH[UITEX_NORMAL].y * m_vScale.y;
+
 	D3DXMatrixIdentity(&m_matWorld);
 	m_matWorld._11 = m_vScale.x;
 	m_matWorld._22 = m_vScale.y;
@@ -35,6 +39,21 @@ void UIObject::Update()
 	m_matWorld._41 = m_vPosition.x;
 	m_matWorld._42 = m_vPosition.y;
 	m_matWorld._43 = m_vPosition.z;
+
+	if (m_eAnchor == UIAC_RT)
+		m_matWorld._41 -= width;
+	if (m_eAnchor == UIAC_LB)
+		m_matWorld._42 -= height;
+	if (m_eAnchor == UIAC_RB)
+	{
+		m_matWorld._41 -= width;
+		m_matWorld._42 -= height;
+	}
+	if (m_eAnchor == UIAC_C)
+	{
+		m_matWorld._41 -= width / 2;
+		m_matWorld._42 -= height / 2;
+	}
 
 	if (m_pParent)
 	{
@@ -48,8 +67,8 @@ void UIObject::Update()
 		RECT rc;
 		rc.left = m_matWorld._41;
 		rc.top = m_matWorld._42;
-		rc.right = rc.left + m_ptTexWH[UITEX_NORMAL].x * m_vScale.x;
-		rc.bottom = rc.top + m_ptTexWH[UITEX_NORMAL].y * m_vScale.y;
+		rc.right = rc.left + width;
+		rc.bottom = rc.top + height;
 
 		if (PtInRect(&rc, MOUSE_POS))
 		{

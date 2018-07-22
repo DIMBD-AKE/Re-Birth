@@ -8,6 +8,15 @@ enum UITEXTURE
 	UITEX_END
 };
 
+enum UIANCHOR
+{
+	UIAC_LT,
+	UIAC_LB,
+	UIAC_RT,
+	UIAC_RB,
+	UIAC_C
+};
+
 class UIObject;
 
 class IUIFunction
@@ -33,6 +42,7 @@ protected:
 	UIObject *				m_pParent;
 	D3DXMATRIX				m_matWorld;
 	IUIFunction *			m_pFunction;
+	UIANCHOR				m_eAnchor;
 	bool					m_isOver;
 
 	void FindAllChild(vector<UIObject*>& vecChild);
@@ -47,6 +57,7 @@ public:
 	void AddChild(UIObject * pChild);
 	void SetTexture(LPDIRECT3DTEXTURE9 normal, LPDIRECT3DTEXTURE9 over = NULL, LPDIRECT3DTEXTURE9 down = NULL);
 	void SetFunction(IUIFunction * function);
+	void SetAnchor(UIANCHOR anchor) { m_eAnchor = anchor; }
 	UIObject * Find(string name);
 	void Release();
 };
