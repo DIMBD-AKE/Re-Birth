@@ -125,7 +125,7 @@ void * Skill::GetSingleTarget()
 			}
 		}
 
-		if (minIndex > 0)
+		if (minIndex >= 0)
 			return m_vecMonster[minIndex];
 	}
 
