@@ -112,6 +112,7 @@ void Character_Gun::Init(CHRTYPE type, CHARSELECT order)
 	
 	}
 
+	m_bshoot = false;
 	m_pAimLine->SetTexture(TEXTUREMANAGER->GetTexture("Á¶ÁØ¼±"));
 
 }
@@ -602,14 +603,26 @@ void Character_Gun::setCameraView()
 
 void Character_Gun::GunClick()
 {
-	auto nav = m_pSampleMap->GetNavMesh();
-	auto r = RayAtWorldSpace(g_ptMouse);
-	float tempdistance;
-	for (int i = 0; i < nav.size(); i += 3)
+	if (INPUT->KeyDown(VK_LBUTTON))
 	{
-		if (D3DXIntersectTri(&nav[i], &nav[i + 1], &nav[i + 2], &r.orig, &r.dir, NULL, NULL, &tempdistance))
+		m_bshoot = true;
+	}
+	else if (INPUT->KeyUp(VK_LBUTTON))
+	{
+		m_bshoot = false;
+	}
+
+	if (m_bshoot)
+	{
+		auto nav = m_pSampleMap->GetNavMesh();
+		auto r = RayAtWorldSpace(g_ptMouse);
+		float tempdistance;
+		for (int i = 0; i < nav.size(); i += 3)
 		{
-			m_vGun = r.orig + (r.dir* tempdistance);
+			if (D3DXIntersectTri(&nav[i], &nav[i + 1], &nav[i + 2], &r.orig, &r.dir, NULL, NULL, &tempdistance))
+			{
+				m_vGun = r.orig + (r.dir* tempdistance);
+			}
 		}
 	}
 }
@@ -617,58 +630,63 @@ void Character_Gun::GunClick()
 void Character_Gun::GunShot()
 {
 	m_nIndex = -1;
+	
 	D3DXVECTOR3 pos = m_vGun;
 
-
-
-	for (int i = 0; i < m_pMonsterManager->GetMonsterVector().size(); i++)
+	if (m_bshoot)
 	{
-		if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn()) continue;
-		D3DXVECTOR3 MonPos = *m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetPosition();
-		float length = D3DXVec3Length(&(MonPos - pos));
 
-		if (length <= 5.0f)
-		{	
-			m_nIndex = i;
-			
+		for (int i = 0; i < m_pMonsterManager->GetMonsterVector().size(); i++)
+		{
+			if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn()) continue;
+			D3DXVECTOR3 MonPos = *m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetPosition();
+			float length = D3DXVec3Length(&(MonPos - pos));
+
+			if (length <= 5.0f)
+			{
+				m_nIndex = i;
+
+			}
 		}
-	}
-	if (m_nIndex < 0)
-	{
-		return;
-	}
-	else
-	{
-		CAMERA->Shake(0.08, 0.3);
+		if (m_nIndex < 0)
+		{
+			return;
+		}
+		else
+		{
+			CAMERA->Shake(0.08, 0.3);
 
-		ST_EFFECT tempEffect;
-		ZeroMemory(&tempEffect, sizeof(tempEffect));
+			ST_EFFECT tempEffect;
+			ZeroMemory(&tempEffect, sizeof(tempEffect));
 
-		tempEffect.time = FRand(0.4, 0.7);
-		//tempEffect.isRY = true;
-		//tempEffect.isRX = true;
-		//tempEffect.isRZ = true;
-		//tempEffect.SetSpeed(0.2, 0.2, 0.2);
-		tempEffect.height = 3.0f;
-		tempEffect.SetAlpha(255, 255, 0);
-		tempEffect.SetScale(0.5, 0.5, 0);
-		tempEffect.isSphere = true;
-		tempEffect.tex = TEXTUREMANAGER->GetTexture("ÃÑ¾Ë");
-
+			tempEffect.time = FRand(0.4, 0.7);
+			//tempEffect.isRY = true;
+			//tempEffect.isRX = true;
+			//tempEffect.isRZ = true;
+			//tempEffect.SetSpeed(0.2, 0.2, 0.2);
+			tempEffect.height = 3.0f;
+			tempEffect.SetAlpha(255, 255, 0);
+			tempEffect.SetScale(0.5, 0.5, 0);
+			tempEffect.isSphere = true;
+			tempEffect.tex = TEXTUREMANAGER->GetTexture("ÃÑ¾Ë");
 
 
-		EffectObject* tempEFOBJ;
-		tempEFOBJ = new EffectObject;
 
-		D3DXVECTOR3 testSkillpos = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
-		testSkillpos.y += FRand(-2.0, 3.0);
-		testSkillpos.x += FRand(-2.0, 2.0);
-		testSkillpos.z += FRand(-1.3, 1.3);
-		//testSkillpos += TempDir * (Length * 0.3f);
-		tempEFOBJ->Init(tempEffect, testSkillpos);
+			EffectObject* tempEFOBJ;
+			tempEFOBJ = new EffectObject;
 
-		m_vecEffect.push_back(tempEFOBJ);
-		m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(1);
+			D3DXVECTOR3 testSkillpos = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
+			testSkillpos.y += FRand(-2.0, 3.0);
+			testSkillpos.x += FRand(-2.0, 2.0);
+			testSkillpos.z += FRand(-1.3, 1.3);
+			//testSkillpos += TempDir * (Length * 0.3f);
+			tempEFOBJ->Init(tempEffect, testSkillpos);
+
+			m_vecEffect.push_back(tempEFOBJ);
+			if (!SOUND->IsPlaySound("Å¾ºä¼¦")) SOUND->Play("Å¾ºä¼¦");
+			if (!SOUND->IsPlaySound("Å¾ºäÅºÇÇ")) SOUND->Play("Å¾ºäÅºÇÇ");
+			m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(1);
+		}
 	}
 }
 

@@ -487,13 +487,21 @@ void CharacterParant::PlayerProgressBar()
 	/*float TotalTime = 1.0f;
 	float CurrentTime;
 	CurrentTime += TIME->GetElapsedTime();*/
+	/*D3DXVECTOR3 tempPos1;
+	tempPos1 = *m_pCharacter->GetPosition();
+	tempPos1.y += 3;
+	D3DXVECTOR2 pos1 = Convert3DTo2D(tempPos1);
+	
+	TEXT->Add(to_string(m_Status->chr.nMaxHp), pos1.x, pos1.y - 25.0f, 30);
+*/
+
 
 	float tempF = (float)m_Status->chr.nCurrentHP / m_Status->chr.nMaxHp;
 	m_pHPBar->SetScale(D3DXVECTOR3(tempF, 1, 1));
 	D3DXVECTOR3 UIPos = D3DXVECTOR3(205, 685, 0);
 	m_pHPBar->SetPosition(UIPos);
 	m_pHPBar->Update();
-
+	TEXT->Add(to_string(m_Status->chr.nCurrentHP), 240, 700, 20);
 	
 
 
@@ -502,7 +510,7 @@ void CharacterParant::PlayerProgressBar()
 	D3DXVECTOR3 StaPos = D3DXVECTOR3(205, 746, 0);
 	m_pStaminaBar->SetPosition(StaPos);
 	m_pStaminaBar->Update();
-	
+	TEXT->Add(to_string((int)m_Status->chr.nCurrentStam), 240, 750, 20);
 
 }
 
@@ -732,12 +740,12 @@ void CharacterParant::Init(CHRTYPE type, CHARSELECT order)
 	m_pCharacter->SetScale(D3DXVECTOR3(0.02, 0.02, 0.02));
 	m_pCharacter->SetRotation(D3DXVECTOR3(0,3.2,0));
 	ST_SIZEBOX box;
-	box.highX = 50.0f;
+	box.highX = 30.0f;
 	box.highY = 180.0f;
-	box.highZ = 50.0f;
-	box.lowX = -50.0f;
+	box.highZ = 30.0f;
+	box.lowX = -30.0f;
 	box.lowY = 10.0f;
-	box.lowZ = -50.0f;
+	box.lowZ = -30.0f;
 
 
 	//인벤토리
