@@ -72,10 +72,10 @@ void Nerisa::SetupSkill()
 
 	m_stSkill.nMaxTarget = 1;
 	m_stSkill.fMinLength = 0;
-	m_stSkill.fMaxLength = 100;
+	m_stSkill.fMaxLength = 10;
 	m_stSkill.fAngle = 360;
 
-	m_stSkill.fDamage = 100; //v
+	m_stSkill.fDamage = 20; //v
 	m_stSkill.nDamageCount = 1;
 	m_stSkill.fDamageInterval = 0;
 	m_stSkill.fDamageDelay = 0;
@@ -91,7 +91,7 @@ void Nerisa::SetupSkill()
 	m_stSkill.fEffectTime = 0;
 
 	m_fSkillCoolTimeCount = 0;
-	m_nSkillCooltime = 100;
+	m_nSkillCooltime = 40;
 
 //	m_stSkill.buffStatus.chr.nCurrentHP = 100; //증가 될 스탯량 피뺴고 제로메모리;
 }
