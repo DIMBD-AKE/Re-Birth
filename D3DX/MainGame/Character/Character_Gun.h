@@ -14,6 +14,9 @@ public:
 	virtual void KeyControl();
 	virtual void Attack();
 	void MultiAttack();
+	void setCameraView();
+	void GunClick();
+	void GunShot();
 
 };
 

@@ -506,82 +506,6 @@ void CharacterParant::PlayerProgressBar()
 
 }
 
-void CharacterParant::MGSKill()
-{
-	//if (!m_bIsPotal) m_pParticle3->SetPosition(*m_pCharacter->GetPosition());
-
-
-	//D3DXVECTOR3 Potalpos = *m_pParticle3->GetPosition();
-	//D3DXVECTOR3	playerTempPos = *m_pCharacter->GetPosition();
-	//D3DXVECTOR3 Potalrot = *m_pParticle3->GetRotation();
-
-	//D3DXMATRIX matPotalAngle;
-	//D3DXMatrixRotationYawPitchRoll(&matPotalAngle, m_pParticle3->GetRotation()->y, m_pParticle3->GetRotation()->x, m_pParticle3->GetRotation()->z);
-
-	//m_vPotalfront = D3DXVECTOR3(0, 0, 1);
-	//D3DXVec3TransformNormal(&m_vPotalfront, &m_vPotalfront, &matPotalAngle);
-	////이동파티클 키보드 제어 
-	//if (INPUT->KeyPress(VK_LEFT))
-	//{
-	//	m_pParticle3->GetRotation()->y -= 0.05f;
-	//}
-	//if (INPUT->KeyPress(VK_RIGHT))
-	//{
-	//	m_pParticle3->GetRotation()->y += 0.05f;
-	//}
-	//if (INPUT->KeyPress(VK_UP))
-	//{
-	//	float Potalheight = m_pSampleMap->GetHeight(Potalpos.x - m_vPotalfront.x *0.3, Potalpos.z - m_vPotalfront.z *0.3);
-	//	if (Potalheight >= 0)
-	//	{
-	//		Potalpos.y = Potalheight;
-	//		if (D3DXVec3Length(&(playerTempPos - Potalpos)) <= 14.0f)
-	//		{
-	//			m_pParticle3->SetPosition(Potalpos + m_vPotalfront * 0.3);
-	//		}
-	//	}
-	//	else if (Potalheight == - 1)
-	//	{
-	//		return;
-	//	}
-	//}
-	//if (INPUT->KeyPress(VK_DOWN))
-	//{
-	//	float Potalheight = m_pSampleMap->GetHeight(Potalpos.x - m_vPotalfront.x *0.3, Potalpos.z - m_vPotalfront.z *0.3);
-	//	if (Potalheight >= 0)
-	//	{
-	//		Potalpos.y = Potalheight;
-	//		if (D3DXVec3Length(&(playerTempPos- Potalpos)) <= 7.0f)
-	//		{
-	//			m_pParticle3->SetPosition(Potalpos - m_vPotalfront * 0.3);
-	//		}
-	//	}
-	//	else if(Potalheight == -1)
-	//	{
-	//		return;
-	//	}
-	//}
-
-	//if (m_bIsPotal)
-	//{
-	//	m_pParticle3->World();
-	//	m_pParticle3->Update();
-
-	//	auto nav = m_pSampleMap->GetNavMesh();
-	//	auto r = RayAtWorldSpace(g_ptMouse);
-	//	float tempdistance;
-	//	for (int i = 0; i < nav.size(); i+=3)
-	//	{
-	//		if (D3DXIntersectTri(&nav[i], &nav[i + 1], &nav[i + 2], &r.orig, &r.dir, NULL, NULL, &tempdistance))
-	//		{
-	//			if (D3DXVec3Length(&(playerTempPos - Potalpos)) < 14.0f)
-	//			{
-	//				m_pParticle3->SetPosition(r.orig + r.dir* tempdistance);
-	//			}
-	//		}
-	//	}
-	//}
-}
 
 void CharacterParant::Effect()
 {
@@ -851,6 +775,8 @@ void CharacterParant::Init(CHRTYPE type, CHARSELECT order)
 	m_isCutScene = false;
 	m_bisMgShield = false;
 	m_bIsMeteo = false;
+	m_bIsMeteoClick = false;
+	m_bIsGunView = false;
 
 	m_fStamina = 10.0f;
 	m_nDamage = 0;
@@ -884,6 +810,7 @@ void CharacterParant::Init(CHRTYPE type, CHARSELECT order)
 	//스킬바 이미지
 	if (m_pSkillBar == NULL) m_pSkillBar = new UIObject;
 
+	if (m_pAimLine == NULL) m_pAimLine = new UIObject;
 	
 	//데미지 
 	m_pDamage = new DamageUI;
@@ -935,6 +862,7 @@ void CharacterParant::Render()
 	m_pParticle->Render();
 	m_pParticle2->Render();
 	if (m_bIsPotal) m_pParticle3->Render();
+	if (m_bIsMeteo) m_pParticle3->Render();
 	m_pParticle4->Render();
 
 	for (int i = 0; i < m_vecEffect.size(); i++)

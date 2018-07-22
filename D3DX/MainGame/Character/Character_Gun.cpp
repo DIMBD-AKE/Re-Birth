@@ -51,10 +51,10 @@ void Character_Gun::Init(CHRTYPE type, CHARSELECT order)
 		m_pInheritateIco->SetTexture(TEXTUREMANAGER->GetTexture("원거리_공격"));
 		m_pInheritateIco->SetPosition(D3DXVECTOR3(609, 733, 0));
 
-		m_pInheritateIco2->SetTexture(TEXTUREMANAGER->GetTexture("원거리_레이저"));
+		m_pInheritateIco2->SetTexture(TEXTUREMANAGER->GetTexture("원거리_이동"));
 		m_pInheritateIco2->SetPosition(D3DXVECTOR3(722, 733, 0));
 
-		m_pInheritateIco3->SetTexture(TEXTUREMANAGER->GetTexture("원거리_이동"));
+		m_pInheritateIco3->SetTexture(TEXTUREMANAGER->GetTexture("원거리_레이저"));
 		m_pInheritateIco3->SetPosition(D3DXVECTOR3(839, 733, 0));
 
 		m_pChrStat->SetTexture(TEXTUREMANAGER->GetTexture("캐릭터_스테이터스"));
@@ -96,10 +96,10 @@ void Character_Gun::Init(CHRTYPE type, CHARSELECT order)
 		m_pInheritateIco->SetTexture(TEXTUREMANAGER->GetTexture("원거리_공격"));
 		m_pInheritateIco->SetPosition(D3DXVECTOR3(609, 733, 0));
 
-		m_pInheritateIco2->SetTexture(TEXTUREMANAGER->GetTexture("원거리_레이저"));
+		m_pInheritateIco2->SetTexture(TEXTUREMANAGER->GetTexture("원거리_이동"));
 		m_pInheritateIco2->SetPosition(D3DXVECTOR3(722, 733, 0));
 
-		m_pInheritateIco3->SetTexture(TEXTUREMANAGER->GetTexture("원거리_이동"));
+		m_pInheritateIco3->SetTexture(TEXTUREMANAGER->GetTexture("원거리_레이저"));
 		m_pInheritateIco3->SetPosition(D3DXVECTOR3(839, 733, 0));
 
 		m_pChrStat->SetTexture(TEXTUREMANAGER->GetTexture("캐릭터_스테이터스"));
@@ -111,6 +111,9 @@ void Character_Gun::Init(CHRTYPE type, CHARSELECT order)
 
 	
 	}
+
+	m_pAimLine->SetTexture(TEXTUREMANAGER->GetTexture("조준선"));
+
 }
 
 void Character_Gun::Update()
@@ -121,8 +124,8 @@ void Character_Gun::Update()
 	
 		KeyControl();
 		Move();
-
-
+		setCameraView();
+		GunClick();
 		m_pInventory->Update();
 		m_pCharacter->World();
 		m_pUIobj->Update();
@@ -131,13 +134,20 @@ void Character_Gun::Update()
 		m_pInheritateIco2->Update();
 		m_pInheritateIco3->Update();
 		m_pSkillBar->Update();
-
 		Effect();
 
 		PlayerProgressBar();
 		//CountAppearDamage();
 		m_pDamage->Update(*m_pCharacter->GetPosition());
+
+
+		if (m_bIsGunView)
+		{
+			GunClick();
+			GunShot();
+		}
 	}
+
 }
 
 void Character_Gun::Render()
@@ -395,9 +405,18 @@ void Character_Gun::KeyControl()
 			ChangeAnimation();
 		}
 	}
-	if (INPUT->KeyUp('R'))
+	else if (INPUT->KeyUp('R'))
 	{
 		m_nDamageCount = 0;
+	}
+
+	if (INPUT->KeyDown('F'))
+	{
+		m_bIsGunView = true;
+	}
+	else if (INPUT->KeyUp('F'))
+	{
+		m_bIsGunView = false;
 	}
 
 
@@ -489,190 +508,168 @@ void Character_Gun::Attack()
 
 void Character_Gun::MultiAttack()
 {
-//	D3DXVECTOR3 pos = *m_pCharacter->GetPosition();														//플레이어 포지션 받고 
-//	D3DXVECTOR3 rot = *m_pCharacter->GetRotation();														//플레이어 각도 받고 
-//
-//	m_vecTarget.clear();
-//	m_nIndex = -1;
-////	m_nIndex2 = -1;
-////	m_nIndex3 = -1;
-//	int subMinIndex = -1;
-//
-//	int MINIndex2 = -1;
-//	float MinDistance = 0.0f;
-//	float radius;
-//	D3DXVECTOR3 mosPos;
-//	float distance;
-//	float subDistance = 0.0f;
-//	float subDistance2 = 0.0f;
-//
-//
-//	for (int i = 0; i < m_pMonsterManager->GetMonsterVector().size(); ++i)
-//	{
-//		if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn())continue;								//리젠할때는 건드리지 않고 
-//
-//		float radius1 = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().radius;		//몬스터의 바운드 스페어의 반지름 받고 
-//		mosPos = *(m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetPosition());		//몬스터 포지션 받고 
-//		float distance1 = D3DXVec3Length(&(mosPos - pos));
-//
-//		if (distance1 - radius1 > m_Status->chr.fRange) continue;
-//		distance = distance1;
-//		subDistance = distance;
-//		subDistance2 = distance;
-//
-//		m_nIndex = i;
-////		m_nIndex2 = i;
-////		m_nIndex3 = i;
-//		break;
-//	}
-//	if (m_nIndex != -1)//만약 기준점이 된 몬스터가 구해졌으면 
-//	{
-//		for (int i = m_nIndex + 1; i < m_pMonsterManager->GetMonsterVector().size(); ++i)
-//		{
-//			if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn())continue;	//리젠할때는 건드리지 않고 
-//			float radius2 = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().radius;
-//			mosPos = *(m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetPosition());		//몬스터 포지션 받고 
-//			float distance2 = D3DXVec3Length(&(mosPos - pos));
-//			if (distance2 - radius2 > m_Status->chr.fRange) continue;
-//			if (distance >= distance2)
-//			{
-//				distance = distance2;
-//				m_nIndex = i;
-//			}
-//		}
-//		m_vecTarget.push_back(m_nIndex);
-//		//두번째 가까운녀석도 추가
-//		for (int i = m_nIndex2 + 1; i < m_pMonsterManager->GetMonsterVector().size(); ++i)
-//		{
-//			if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn())continue;	//리젠할때는 건드리지 않고 
-//			if (i == m_nIndex) continue;//먼저 검출한 최소거리를 가진 몬스터면 재끼고 
-//			float radius3 = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().radius;
-//			mosPos = *(m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetPosition());		//몬스터 포지션 받고 
-//			float distance3 = D3DXVec3Length(&(mosPos - pos));
-//			if (distance3 - radius3 > m_Status->chr.fRange) continue;
-//			if (subDistance >= distance3)
-//			{
-//				subDistance = distance3;
-//				m_nIndex2 = i;
-//			}
-//		}
-//		m_vecTarget.push_back(m_nIndex2);
-//
-//		//세번째 가까운 녀석도 추가
-//		for (int i = m_nIndex3 + 1; i < m_pMonsterManager->GetMonsterVector().size(); ++i)
-//		{
-//			if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn())continue;	//리젠할때는 건드리지 않고 
-//			if (i == m_nIndex) continue;//먼저 검출한 최소거리를 가진 몬스터면 재끼고 
-//			if (i == m_nIndex2) continue;//먼저 검출한 최소거리를 가진 몬스터면 재끼고 
-//			float radius4 = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().radius;
-//			mosPos = *(m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetPosition());		//몬스터 포지션 받고 
-//			float distance4 = D3DXVec3Length(&(mosPos - pos));
-//			if (distance4 - radius4 > m_Status->chr.fRange) continue;
-//			if (subDistance2 >= distance4)
-//			{
-//				subDistance2 = distance4;
-//				m_nIndex3 = i;
-//			}
-//		}
-//		m_vecTarget.push_back(m_nIndex3);
-//	}
-//
-//	if (m_nIndex < 0) return;
-//	D3DXVECTOR3 front;
-//	D3DXMATRIX matY;
-//	D3DXMatrixRotationY(&matY, m_pCharacter->GetRotation()->y);
-//	D3DXVec3TransformNormal(&front, &D3DXVECTOR3(0, 0, -1), &matY);
-//	D3DXVECTOR3 v0 = front;
-//	//대상방향
-//	D3DXVECTOR3 MonPos = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
-//	//D3DXVECTOR3 pos = *m_pCharacter->GetPosition();
-//	D3DXVECTOR3 v1 = MonPos - pos;
-//	D3DXVec3Normalize(&v0, &v1);
-//	float dot = D3DXVec3Dot(&v0, &v1) / D3DXVec3Length(&v0) * D3DXVec3Length(&v1);
-//	if (dot >= cos(m_Status->chr.fScale / 2))
-//	{
-//		//if (m_nIndex == -1) return;
-//		if (m_fElpTime < m_fPrevTime + m_fEffectInterval) return;
-//
-//		m_fPrevTime = m_fElpTime;
-//
-//		m_nDamageCount++;
-//		if (m_eCharSelect == CHAR_ONE)
-//		{
-//			if (m_nDamageCount <= 3)
-//			{
-//				ST_EFFECT tempEffect;
-//				ZeroMemory(&tempEffect, sizeof(tempEffect));
-//
-//				tempEffect.time = FRand(0.1, 0.4);
-//				tempEffect.isRY = true;
-//				tempEffect.isRX = true;
-//				tempEffect.height = 3.0f;
-//				tempEffect.SetAlpha(255, 255, 0);
-//				tempEffect.SetScale(2, 2, 2);
-//				tempEffect.tex = TEXTUREMANAGER->AddTexture("Gun", "Texture/Effect/gun.png");
-//				EffectObject* tempEFOBJ;
-//				tempEFOBJ = new EffectObject;
-//
-//				D3DXVECTOR3 TempDir;
-//				TempDir = *m_pCharacter->GetPosition() - *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
-//				D3DXVec3Normalize(&TempDir, &TempDir);
-//
-//				D3DXVECTOR3 testSkillpos = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
-//				testSkillpos.y += 1.0f;
-//				testSkillpos.x += FRand(-0.5, 0.5);
-//				testSkillpos.z += FRand(-0.5, 0.5);
-//				testSkillpos += TempDir * 4.0f;
-//				tempEFOBJ->Init(tempEffect, testSkillpos);
-//
-//				m_vecEffect.push_back(tempEFOBJ);
-//
-//				for (int i = 0; i < m_vecTarget.size(); i++)
-//				{
-//					if (m_pMonsterManager->GetMonsterVector()[m_vecTarget[i]]->GetIsResPawn())return;
-//					m_pMonsterManager->GetMonsterVector()[m_vecTarget[i]]->CalculDamage(100);
-//				}
-//			}
-//		}
-//		else if (m_eCharSelect == CHAR_TWO)
-//		{
-//			if (m_nDamageCount <= 3)
-//			{
-//				ST_EFFECT tempEffect;
-//				ZeroMemory(&tempEffect, sizeof(tempEffect));
-//
-//				tempEffect.time = FRand(0.1, 0.4);
-//				tempEffect.isRY = true;
-//				tempEffect.isRX = true;
-//				tempEffect.height = 3.0f;
-//				tempEffect.SetAlpha(255, 255, 0);
-//				tempEffect.SetScale(2, 2, 2);
-//				tempEffect.tex = TEXTUREMANAGER->AddTexture("Gun", "Texture/Effect/gun.png");
-//				EffectObject* tempEFOBJ;
-//				tempEFOBJ = new EffectObject;
-//
-//				D3DXVECTOR3 TempDir;
-//				TempDir = *m_pCharacter->GetPosition() - *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
-//				D3DXVec3Normalize(&TempDir, &TempDir);
-//
-//				D3DXVECTOR3 testSkillpos = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
-//				testSkillpos.y += 1.0f;
-//				testSkillpos.x += FRand(-0.5, 0.5);
-//				testSkillpos.z += FRand(-0.5, 0.5);
-//				testSkillpos += TempDir * 4.0f;
-//				tempEFOBJ->Init(tempEffect, testSkillpos);
-//
-//				m_vecEffect.push_back(tempEFOBJ);
-//
-//				for (int i = 0; i < m_vecTarget.size(); i++)
-//				{
-//					if (m_pMonsterManager->GetMonsterVector()[m_vecTarget[i]]->GetIsResPawn())return;
-//					m_pMonsterManager->GetMonsterVector()[m_vecTarget[i]]->CalculDamage(100);
-//				}
-//			}
-//
-//		}
-//	}
+	m_vecTarget.clear();
+	D3DXVECTOR3 pos = *m_pCharacter->GetPosition();
+
+	if (m_fElpTime < m_fPrevTime + m_fEffectInterval) return;
+
+	m_fPrevTime = m_fElpTime;
+
+	m_nDamageCount++;
+
+	for (int i = 0; i < m_pMonsterManager->GetMonsterVector().size(); i++)
+	{
+		if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn()) continue;
+		D3DXVECTOR3 MonPos = *m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetPosition();
+		float length = D3DXVec3Length(&(MonPos - pos));
+
+		if (length <= m_Status->chr.fRange)
+		{	// 시선
+			D3DXVECTOR3 front;
+			D3DXMATRIX matY;
+			D3DXMatrixRotationY(&matY, m_pCharacter->GetRotation()->y);
+			D3DXVec3TransformNormal(&front, &D3DXVECTOR3(0, 0, -1), &matY);
+			D3DXVECTOR3 v0 = front;
+			// 대상방향
+			D3DXVECTOR3 v1 = MonPos - pos;
+			D3DXVec3Normalize(&v1, &v1);
+			float dot = D3DXVec3Dot(&v0, &v1) / D3DXVec3Length(&v0) * D3DXVec3Length(&v1);
+			if (dot >= cos(m_Status->chr.fScale / 2))
+			{
+				m_vecTarget.push_back(i);
+			}
+		}
+	}
+
+
+	for (int j = 0; j < m_vecTarget.size(); j++)
+	{
+		D3DXVECTOR3 MonPos = *m_pMonsterManager->GetMonsterVector()[m_vecTarget[j]]->GetModel()->GetPosition();
+		D3DXVECTOR3 TempDir;
+		TempDir = MonPos - pos;
+		D3DXVec3Normalize(&TempDir, &TempDir);
+
+		float Length = D3DXVec3Length(&(MonPos - pos));
+
+		ST_EFFECT tempEffect;
+		ZeroMemory(&tempEffect, sizeof(tempEffect));
+
+		tempEffect.time = FRand(0.4, 0.7);
+		//tempEffect.isRY = true;
+		//tempEffect.isRX = true;
+		//tempEffect.isRZ = true;
+		tempEffect.dir = TempDir;
+		tempEffect.SetSpeed(0.2, 0.2, 0.2);
+		tempEffect.height = 3.0f;
+		tempEffect.SetAlpha(255, 255, 0);
+		tempEffect.SetScale(0.5, 0.5, 0);
+		tempEffect.isSphere = true;
+		tempEffect.tex = TEXTUREMANAGER->GetTexture("총알");
+	
+
+	
+		EffectObject* tempEFOBJ;
+		tempEFOBJ = new EffectObject;
+
+		D3DXVECTOR3 testSkillpos = *m_pCharacter->GetPosition();
+		testSkillpos.y += 2.0f;
+		testSkillpos.x += FRand(-2.0, 2.0);
+		testSkillpos.z += FRand(-1.3, 1.3);
+		//testSkillpos += TempDir * (Length * 0.3f);
+		tempEFOBJ->Init(tempEffect, testSkillpos);
+
+		m_vecEffect.push_back(tempEFOBJ);
+		m_pMonsterManager->GetMonsterVector()[m_vecTarget[j]]->CalculDamage(1);
+	}
+}
+
+void Character_Gun::setCameraView()
+{
+
+	if (!m_bIsGunView)
+	{
+		CAMERA->SetCamOffset(D3DXVECTOR3(0, 3, 20));
+		CAMERA->SetTargetOffset(D3DXVECTOR3(0, 4, 0));
+		CAMERA->SetTarget(m_pCharacter->GetPosition(), m_pCharacter->GetRotation());
+	}
+	else
+	{
+		CAMERA->SetCamOffset(D3DXVECTOR3(0, 10, 20));
+		CAMERA->SetTargetOffset(D3DXVECTOR3(0, 10, 0));
+		CAMERA->SetTarget(m_pCharacter->GetPosition(), m_pCharacter->GetRotation());
+	}
+}
+
+void Character_Gun::GunClick()
+{
+	auto nav = m_pSampleMap->GetNavMesh();
+	auto r = RayAtWorldSpace(g_ptMouse);
+	float tempdistance;
+	for (int i = 0; i < nav.size(); i += 3)
+	{
+		if (D3DXIntersectTri(&nav[i], &nav[i + 1], &nav[i + 2], &r.orig, &r.dir, NULL, NULL, &tempdistance))
+		{
+			m_vGun = r.orig + (r.dir* tempdistance);
+		}
+	}
+}
+
+void Character_Gun::GunShot()
+{
+	m_nIndex = -1;
+	D3DXVECTOR3 pos = m_vGun;
+
+
+
+	for (int i = 0; i < m_pMonsterManager->GetMonsterVector().size(); i++)
+	{
+		if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn()) continue;
+		D3DXVECTOR3 MonPos = *m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetPosition();
+		float length = D3DXVec3Length(&(MonPos - pos));
+
+		if (length <= 5.0f)
+		{	
+			m_nIndex = i;
+			
+		}
+	}
+	if (m_nIndex < 0)
+	{
+		return;
+	}
+	else
+	{
+		CAMERA->Shake(0.08, 0.3);
+
+		ST_EFFECT tempEffect;
+		ZeroMemory(&tempEffect, sizeof(tempEffect));
+
+		tempEffect.time = FRand(0.4, 0.7);
+		//tempEffect.isRY = true;
+		//tempEffect.isRX = true;
+		//tempEffect.isRZ = true;
+		//tempEffect.SetSpeed(0.2, 0.2, 0.2);
+		tempEffect.height = 3.0f;
+		tempEffect.SetAlpha(255, 255, 0);
+		tempEffect.SetScale(0.5, 0.5, 0);
+		tempEffect.isSphere = true;
+		tempEffect.tex = TEXTUREMANAGER->GetTexture("총알");
+
+
+
+		EffectObject* tempEFOBJ;
+		tempEFOBJ = new EffectObject;
+
+		D3DXVECTOR3 testSkillpos = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
+		testSkillpos.y += FRand(-2.0, 3.0);
+		testSkillpos.x += FRand(-2.0, 2.0);
+		testSkillpos.z += FRand(-1.3, 1.3);
+		//testSkillpos += TempDir * (Length * 0.3f);
+		tempEFOBJ->Init(tempEffect, testSkillpos);
+
+		m_vecEffect.push_back(tempEFOBJ);
+		m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(1);
+	}
 }
 
 

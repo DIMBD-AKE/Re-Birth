@@ -59,7 +59,7 @@ void Character_Magic::Init(CHRTYPE type, CHARSELECT order)
 		m_pInheritateIco2->SetTexture(TEXTUREMANAGER->GetTexture("마법_아이스"));
 		m_pInheritateIco2->SetPosition(D3DXVECTOR3(722, 733, 0));
 
-		m_pInheritateIco3->SetTexture(TEXTUREMANAGER->GetTexture("마법_방패"));
+		m_pInheritateIco3->SetTexture(TEXTUREMANAGER->GetTexture("마법_메테오"));
 		m_pInheritateIco3->SetPosition(D3DXVECTOR3(839, 733, 0));
 
 		m_pChrStat->SetTexture(TEXTUREMANAGER->GetTexture("캐릭터_스테이터스"));
@@ -135,14 +135,24 @@ void Character_Magic::Update()
 		m_pInheritateIco2->Update();
 		m_pInheritateIco3->Update();
 		m_pSkillBar->Update();
-	//	m_pMagicShield->Update();
 		PlayerProgressBar();
-		//CountAppearDamage();
 		m_pDamage->Update(*m_pCharacter->GetPosition());
 	}
 	Effect();
 	
 	if (m_bIsMeteo)
+	{
+		MeteorClick();
+		//메테오 상황일때 클릭이 되면 
+		if (INPUT->KeyPress(VK_LBUTTON))
+		{
+			//m_bIsMeteo = false;
+			m_vMeteo = *m_pParticle3->GetPosition();
+			m_bIsMeteoClick = true;
+			Meteor();
+		}
+	}
+	if (m_bIsMeteoClick)
 	{
 		//CAMERA->SetTarget((m_vecEffect.back()->GetPos()), 0);
 		if (m_vecEffect.back()->GetBoundSphere().center.y>= 65)
@@ -151,10 +161,12 @@ void Character_Magic::Update()
 		}
 		else
 		{
+			MeteorDamage();
 			CAMERA->Shake(5.8, 1);
 		}
 		if (m_vecEffect.back()->GetBoundSphere().center.y <= 61)
 		{
+			m_bIsMeteoClick = false;
 			m_bIsMeteo = false;
 		}
 	}
@@ -173,11 +185,6 @@ void Character_Magic::Render()
 		//AppearDamage();
 
 		CharacterParant::Render();
-
-	//	if (m_bisMgShield)
-	//	{
-	//		m_pMagicShield->Render();
-	//	}
 
 		m_pUIobj->Render();
 		m_pSkillBar->Render();
@@ -425,7 +432,6 @@ void Character_Magic::KeyControl()
 		m_pParticle4->TimeReset();
 		CAMERA->Shake(0.1f, 0.7f);
 	}
-
 	if (m_bIsPotal)
 	{
 		if (INPUT->KeyDown(VK_LBUTTON))
@@ -437,13 +443,12 @@ void Character_Magic::KeyControl()
 		}
 	}
 
-	//매직실드
+	//메테오 제어 
 	if (INPUT->KeyDown('V'))
 	{
-		m_bisMgShield = true;
-		Meteor();
+		m_Status->chr.nCurrentStam -= 90;
+		m_bIsMeteo = true;
 	}
-
 
 }
 
@@ -860,61 +865,114 @@ void Character_Magic::MgShield()
 
 void Character_Magic::Meteor()
 {
-	m_bIsMeteo = true;
-	ST_EFFECT tempEffect1;
-	ZeroMemory(&tempEffect1, sizeof(tempEffect1));
-	tempEffect1.time = 5;
-	tempEffect1.rot = D3DXVECTOR3(90, 0, 0);
-	tempEffect1.mot = D3DXVECTOR3(0, 10, 0);
-	tempEffect1.ms0 = 9.0f;
-	//tempEffect.isRY = true;
-	//tempEffect.isRX = true;
-	//tempEffect.isRZ = true;
-	//tempEffect.dir = *m_pCharacter->GetRotation();
-	//tempEffect.SetSpeed(0, 0.2, 0);
-	tempEffect1.height = 3.0f;
-	tempEffect1.SetAlpha(255, 255, 0);
-	tempEffect1.SetScale(10, 10, 0);
-	tempEffect1.tex = TEXTUREMANAGER->GetTexture("실드_마법");
+		ST_EFFECT tempEffect1;
+		ZeroMemory(&tempEffect1, sizeof(tempEffect1));
+		tempEffect1.time = 5;
+		tempEffect1.rot = D3DXVECTOR3(90, 0, 0);
+		tempEffect1.mot = D3DXVECTOR3(0, 10, 0);
+		tempEffect1.ms0 = 9.0f;
+		//tempEffect.isRY = true;
+		//tempEffect.isRX = true;
+		//tempEffect.isRZ = true;
+		//tempEffect.dir = *m_pCharacter->GetRotation();
+		//tempEffect.SetSpeed(0, 0.2, 0);
+		tempEffect1.height = 3.0f;
+		tempEffect1.SetAlpha(255, 255, 0);
+		tempEffect1.SetScale(10, 10, 0);
+		tempEffect1.tex = TEXTUREMANAGER->GetTexture("실드_마법");
 
 
-	EffectObject* tempEFOBJ1;
-	tempEFOBJ1 = new EffectObject;
-	D3DXVECTOR3 testSkillpos1 = *m_pCharacter->GetPosition() - m_vfront * 1.0f;
-	testSkillpos1.y -= 1.0f;
-	//testSkillpos.x += FRand(-0.5, 0.5);
-	//testSkillpos.z += FRand(-0.3, 0.3);
-	//testSkillpos += TempDir * (Length * 0.3f);
-	tempEFOBJ1->Init(tempEffect1, testSkillpos1);
-	m_vecEffect.push_back(tempEFOBJ1);
+		EffectObject* tempEFOBJ1;
+		tempEFOBJ1 = new EffectObject;
+		D3DXVECTOR3 testSkillpos1 = *m_pCharacter->GetPosition() - m_vfront * 1.0f;
+		testSkillpos1.y -= 1.0f;
+		//testSkillpos.x += FRand(-0.5, 0.5);
+		//testSkillpos.z += FRand(-0.3, 0.3);
+		//testSkillpos += TempDir * (Length * 0.3f);
+		tempEFOBJ1->Init(tempEffect1, testSkillpos1);
+		m_vecEffect.push_back(tempEFOBJ1);
 
 
-	//메테오
+		//메테오
+		ST_EFFECT tempEffect;
+		ZeroMemory(&tempEffect, sizeof(tempEffect));
+		tempEffect.time = 10;
+		tempEffect.rot = D3DXVECTOR3(90, 0, 0);
+		tempEffect.isRY = true;
+		tempEffect.isRX = true;
+		tempEffect.isRZ = true;
+		tempEffect.dir = D3DXVECTOR3(1, -1, 1);
+		tempEffect.SetSpeed(0.05, 1, 0.05);
+		tempEffect.height = 3.0f;
+		tempEffect.SetAlpha(255, 255, 0);
+		tempEffect.SetScale(10, 10, 0);
+		tempEffect.tex = TEXTUREMANAGER->GetTexture("메테오");
+
+
+		
+
+		EffectObject* tempEFOBJ;
+		tempEFOBJ = new EffectObject;
+		D3DXVECTOR3 testSkillpos = m_vMeteo;
+		testSkillpos.y += 30.0f;
+		testSkillpos.x += -30.0f;
+		testSkillpos.z += -30.0f;
+		//testSkillpos += TempDir * (Length * 0.3f);
+		tempEFOBJ->Init(tempEffect, testSkillpos);
+		m_vecEffect.push_back(tempEFOBJ);
+
 	
-	ST_EFFECT tempEffect;
-	ZeroMemory(&tempEffect, sizeof(tempEffect));
-	tempEffect.time = 10;
-	tempEffect.rot = D3DXVECTOR3(90, 0, 0);
-	tempEffect.isRY = true;
-	tempEffect.isRX = true;
-	tempEffect.isRZ = true;
-	tempEffect.dir = D3DXVECTOR3(1, -1, 3);
-	tempEffect.SetSpeed(0.05, 1, 0.05);
-	tempEffect.height = 3.0f;
-	tempEffect.SetAlpha(255, 255, 0);
-	tempEffect.SetScale(10, 10, 0);
-	tempEffect.tex = TEXTUREMANAGER->GetTexture("메테오");
 
 
-	EffectObject* tempEFOBJ;
-	tempEFOBJ = new EffectObject;
-	D3DXVECTOR3 testSkillpos = *m_pCharacter->GetPosition() - m_vfront * 5.0f;
-	testSkillpos.y += 30.0f;
-	//testSkillpos.x += FRand(-0.5, 0.5);
-	//testSkillpos.z += FRand(-0.3, 0.3);
-	//testSkillpos += TempDir * (Length * 0.3f);
-	tempEFOBJ->Init(tempEffect, testSkillpos);
-	m_vecEffect.push_back(tempEFOBJ);
+}
+
+void Character_Magic::MeteorClick()
+{
+	//메테오 좌표를 받기위한 사전 실행
+	D3DXVECTOR3 Potalpos = *m_pParticle3->GetPosition();
+	D3DXVECTOR3	playerTempPos = *m_pCharacter->GetPosition();
+
+	
+	m_pParticle3->World();
+	m_pParticle3->Update();
+
+	auto nav = m_pSampleMap->GetNavMesh();
+	auto r = RayAtWorldSpace(g_ptMouse);
+	float tempdistance;
+	for (int i = 0; i < nav.size(); i += 3)
+	{
+		if (D3DXIntersectTri(&nav[i], &nav[i + 1], &nav[i + 2], &r.orig, &r.dir, NULL, NULL, &tempdistance))
+		{
+			if (D3DXVec3Length(&(playerTempPos - Potalpos)) < 14.0f)//최대 이동거리 안으로 
+			{
+				m_pParticle3->SetPosition(r.orig + r.dir* tempdistance);
+			}
+		}
+	}
+	
+}
+
+void Character_Magic::MeteorDamage()
+{
+	m_vecTarget.clear();
+	D3DXVECTOR3 pos = m_vMeteo;
+
+	for (int i = 0; i < m_pMonsterManager->GetMonsterVector().size(); i++)
+	{
+		if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn()) continue;
+		D3DXVECTOR3 MonPos = *m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetPosition();
+		float length = D3DXVec3Length(&(MonPos - pos));
+
+		if (length <= m_Status->chr.fRange)
+		{	
+			m_vecTarget.push_back(i);
+		}
+	}
+
+	for (int j = 0; j < m_vecTarget.size(); j++)
+	{
+		m_pMonsterManager->GetMonsterVector()[m_vecTarget[j]]->CalculDamage(999);
+	}
 }
 
 

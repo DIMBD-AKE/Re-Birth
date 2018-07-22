@@ -161,7 +161,7 @@ void SC_Loading::AddTexture()
 	m_pLoading->LoadTexture("마법_방패", "Texture/SkillIMG/Skill_Elizabeth_Mana01_Icon.tga");
 
 	m_pLoading->LoadTexture("원거리_공격", "Texture/SkillIMG/Skill_Beholder_Active02_Icon.tga");
-	m_pLoading->LoadTexture("원거리_레이저", "Texture/SkillIMG/Skill_Charon_Active01_Icon.tga");
+	m_pLoading->LoadTexture("원거리_레이저", "Texture/SkillIMG/Skill_Miach_Mana01_Icon.tga");
 	m_pLoading->LoadTexture("원거리_이동", "Texture/SkillIMG/Skill_RedHarpy_Mana01_Icon.tga");
 
 	//마법공격 파티클(이후 수정가능성 높음)
@@ -174,7 +174,8 @@ void SC_Loading::AddTexture()
 	m_pLoading->LoadTexture("파이어볼_마법", "Texture/Effect/Fireball.png");
 	m_pLoading->LoadTexture("실드_마법", "Texture/Particle/MagicShield.png");
 	m_pLoading->LoadTexture("메테오", "Texture/Particle/Meteor.png");
-	//m_pLoading->LoadTexture("메테오", "Texture/Particle/Meteor.png");
+	m_pLoading->LoadTexture("총알", "Texture/Particle/bullet.png");
+	m_pLoading->LoadTexture("조준선", "Texture/Particle/aim.png");
 
 }
 

@@ -390,8 +390,7 @@ void Character_Sword::KeyControl()
 	}
 	else if (INPUT->KeyUp(VK_SPACE))
 	{
-		m_bIsAttack = false;
-
+		//m_bIsAttack = false;
 	}
 
 	//스킬공격
@@ -401,7 +400,6 @@ void Character_Sword::KeyControl()
 	}
 
 	
-
 	//애니메이션 한바퀴 돌고나서 상태제어
 	if (m_pCharacter->IsAnimationEnd())
 	{

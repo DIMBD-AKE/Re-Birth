@@ -18,6 +18,8 @@ public:
 	void MgSkill();
 	void MgShield();
 	void Meteor();
+	void MeteorClick();
+	void MeteorDamage();
 	
 };
 
