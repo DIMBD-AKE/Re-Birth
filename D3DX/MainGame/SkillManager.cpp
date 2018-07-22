@@ -596,7 +596,7 @@ void Skill::Update()
 	// ¿Ã∆Â∆Æ √≥∏Æ
 	for (int i = 0; i < m_vecEffect.size();)
 	{
-		if (!m_vecEffect[i]->IsFinish())
+		if (!m_vecEffect[i]->IsFinish() && m_nDamageCount < m_stSkill.nDamageCount)
 		{
 			m_vecEffect[i]->Update();
 			i++;
