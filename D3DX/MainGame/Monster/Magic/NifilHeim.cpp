@@ -69,7 +69,7 @@ void NifilHeim::SetupStat()
 void NifilHeim::SetupSkill()
 {
 	ZeroMemory(&m_stSkill, sizeof(ST_SKILL));//
-	m_stSkill.fDamage = 200;				 //
+	m_stSkill.fDamage = 100;				 //
 	m_stSkill.fDamageDelay = 1.85f;			 //
 	m_stSkill.fDamageInterval = 0.1;		 //
 	m_stSkill.fMaxLength = 100;				 //
@@ -84,7 +84,7 @@ void NifilHeim::SetupSkill()
 	m_stSkill.fEffectTime = 1.85f;				 //
 
 	m_fSkillCoolTimeCount = 0;
-	m_nSkillCooltime = 100;
+	m_nSkillCooltime = 50;
 }
 
 
