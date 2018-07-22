@@ -87,7 +87,7 @@ void Assis::SetupSkill()
 	m_stSkill.nDamageCount = 0;
 	m_stSkill.isAutoRot = true;
 	m_stSkill.fYOffset = 1;
-	m_stSkill.fBuffTime = 0;
+	m_stSkill.fBuffTime = 30;
 	m_stSkill.fParticleTime = m_pModel->GetAnimationPeriod("SKILL");
 	m_stSkill.fParticleSpeed = 0;
 	m_stSkill.fEffectTime = 3;

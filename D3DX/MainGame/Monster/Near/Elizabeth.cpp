@@ -125,13 +125,13 @@ void Elizabeth::SetupSkill()
 {
 	//m_pSkill = new SkillParent;
 	ZeroMemory(&m_stSkill, sizeof(ST_SKILL));
-	m_stSkill.fDamage = 200;
+	m_stSkill.fDamage = 70;
 	m_stSkill.fDamageDelay = 0;
 	m_stSkill.fDamageInterval = 0.1;
-	m_stSkill.fMaxLength = 100;
+	m_stSkill.fMaxLength = 7;
 	m_stSkill.fAngle = 360;
 	m_stSkill.nMaxTarget = 5;
-	m_stSkill.nDamageCount = 100;
+	m_stSkill.nDamageCount = 1;
 	m_stSkill.isAutoRot = true;
 	m_stSkill.fYOffset = 1;
 	m_stSkill.fBuffTime = -1;
@@ -140,7 +140,7 @@ void Elizabeth::SetupSkill()
 	m_stSkill.fEffectTime = 3;
 
 	m_fSkillCoolTimeCount = 0;
-	m_nSkillCooltime = 100;
+	m_nSkillCooltime = 45;
 
 	//m_stSkill.fDamage = 10;
 	//m_stSkill.fDamageInterval = 0.1;
