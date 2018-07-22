@@ -684,7 +684,7 @@ void Character_Sword::Shunpo()
 			D3DXVec3TransformNormal(&front, &D3DXVECTOR3(0, 0, -1), &matY);
 
 			tempEffect.time = FRand(0.1, 0.5) + 2;
-			tempEffect.isRY = true;
+			//tempEffect.isRY = true;
 			tempEffect.isRX = true;
 			tempEffect.dir = front;
 			tempEffect.height = 3.0f;
@@ -820,7 +820,8 @@ void Character_Sword::SkillDealing()
 				//m_vecEffect.clear();
 				//return;
 				//m_vecTarget.push_back(i);
-				m_pCharacter->SetPosition(*m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition());
+				D3DXVECTOR3 pos = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
+				m_pCharacter->SetPosition(D3DXVECTOR3(pos.x, pos.y, pos.z-2.0f));
 				i++;
 				m_nDC++;
 			}
