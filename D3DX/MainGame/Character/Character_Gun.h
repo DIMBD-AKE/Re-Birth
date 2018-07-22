@@ -6,7 +6,7 @@ class Character_Gun :
 protected:
 
 	bool				m_bshoot;	//Å¾ºä½Ã ÃÑ½ú´Ï?
-
+	EffectObject*		m_pMagicBullet;
 
 public:
 	Character_Gun();
@@ -24,6 +24,10 @@ public:
 	void setCameraView();
 	void GunClick();
 	void GunShot();
+
+	void MagicBullet();
+	void MagicBulletUpdate();
+	int FindNearTarget(int ignore, D3DXVECTOR3 pos, float angle, float maxLength);
 
 };
 

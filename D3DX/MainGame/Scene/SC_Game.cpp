@@ -87,10 +87,9 @@ void SC_Game::Update()
 	if (INPUT->KeyDown(VK_ESCAPE))
 		ClearStage();
 
-	if (!m_isRank && m_pMM->IsBossDie())
+	if (!m_isRank && m_pMM->IsMiddleBossDie(NULL))
 	{
-		m_isRank = true;
-		WriteRank();
+		NextStage();
 	}
 
 	if (m_fElapseTime < 0.0001)

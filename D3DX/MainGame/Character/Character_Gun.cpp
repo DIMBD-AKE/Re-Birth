@@ -10,11 +10,13 @@
 
 Character_Gun::Character_Gun()
 {
+	m_pMagicBullet = NULL;
 }
 
 
 Character_Gun::~Character_Gun()
 {
+	SAFE_DELETE(m_pMagicBullet);
 }
 
 
@@ -149,6 +151,7 @@ void Character_Gun::Update()
 		}
 	}
 
+	MagicBulletUpdate();
 }
 
 void Character_Gun::Render()
@@ -176,6 +179,9 @@ void Character_Gun::Render()
 		m_pStaminaBar->Render();
 
 	}
+
+	if (m_pMagicBullet)
+		m_pMagicBullet->Render();
 }
 
 void Character_Gun::KeyControl()
@@ -420,7 +426,10 @@ void Character_Gun::KeyControl()
 		m_bIsGunView = false;
 	}
 
-
+	if (INPUT->KeyDown('V'))
+	{
+		MagicBullet();
+	}
 }
 
 void Character_Gun::Attack()
@@ -688,6 +697,153 @@ void Character_Gun::GunShot()
 			m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(1);
 		}
 	}
+}
+
+void Character_Gun::MagicBullet()
+{
+	// 첫 타겟 지정
+	m_vecTarget.clear();
+	//if (m_vecTarget.empty())
+	{
+		int minIndex = FindNearTarget(-1, *m_pCharacter->GetPosition(), D3DX_PI / 2, 20);
+
+		auto monsterVector = m_pMonsterManager->GetMonsterVector();
+		D3DXVECTOR3 chrPos = *m_pCharacter->GetPosition();
+		if (minIndex >= 0)
+		{
+			m_vecTarget.push_back(minIndex);
+
+			ST_EFFECT effect;
+			ZeroMemory(&effect, sizeof(ST_EFFECT));
+			effect.dir = *monsterVector[minIndex]->GetModel()->GetPosition() - chrPos;
+			effect.SetAlpha(255, 255, 255);
+			effect.isSphere = true;
+			effect.SetSpeed(2, 1, 0.5);
+			effect.SetScale(1, 1, 1);
+			effect.height = 2;
+			effect.time = 3;
+			effect.SetMotorSpeed(1, 1, 1);
+			effect.mot = D3DXVECTOR3(0, 0, 1);
+			effect.tex = TEXTUREMANAGER->AddTexture("Magic Bullet", "Texture/Effect/Hestia.png");
+
+			SAFE_DELETE(m_pMagicBullet);
+			m_pMagicBullet = new EffectObject;
+			m_pMagicBullet->Init(effect, chrPos + D3DXVECTOR3(0, 1.5, 0));
+		}
+	}
+}
+
+void Character_Gun::MagicBulletUpdate()
+{
+	if (m_pMagicBullet)
+	{
+		if (m_pMagicBullet->IsFinish())
+		{
+			m_vecTarget.clear();
+			SAFE_DELETE(m_pMagicBullet);
+		}
+		else if (!m_vecTarget.empty())
+		{
+			ST_SPHERE bullet = m_pMagicBullet->GetBoundSphere();
+			ST_SPHERE target = m_pMonsterManager->GetMonsterVector()[m_vecTarget[0]]->GetModel()->GetBoundSphere();
+
+			// 방향 조정
+			ST_EFFECT current = m_pMagicBullet->GetInfo();
+			current.dir = target.center - bullet.center;
+			D3DXVec3Normalize(&current.dir, &current.dir);
+			m_pMagicBullet->SetInfo(current);
+
+			m_pMagicBullet->Update();
+
+			// 잔상
+			ST_EFFECT effect;
+			ZeroMemory(&effect, sizeof(ST_EFFECT));
+			effect.SetAlpha(200, 100, 0);
+			effect.isSphere = true;
+			effect.SetScale(1, 0.5, 0);
+			effect.height = 2;
+			effect.time = 1;
+			effect.tex = TEXTUREMANAGER->GetTexture("Magic Bullet");
+			EffectObject * object = new EffectObject;
+			object->Init(effect, m_pMagicBullet->GetBoundSphere().center - D3DXVECTOR3(0, 1, 0));
+			m_vecEffect.push_back(object);
+
+			// 새 타겟 지정
+			if (IntersectSphere(bullet, target))
+			{
+				ST_OBB bul = m_pMagicBullet->GetOBB();
+				ST_OBB tar = m_pMonsterManager->GetMonsterVector()[m_vecTarget[0]]->GetModel()->GetBoundBox().obb;
+				if (CollisionOBB(bul, tar))
+				{
+					int minIndex = FindNearTarget(m_vecTarget[0], bullet.center, D3DX_PI * 2, 20);
+					if (!m_pMonsterManager->GetMonsterVector()[m_vecTarget[0]]->GetIsResPawn())
+					{
+						m_pMonsterManager->GetMonsterVector()[m_vecTarget[0]]->CalculDamage(10);
+						ZeroMemory(&effect, sizeof(ST_EFFECT));
+						effect.SetAlpha(200, 100, 0);
+						effect.isSphere = true;
+						effect.SetScale(1, 0.5, 0);
+						effect.height = FRand(1.5, 3);
+						effect.time = 1;
+						effect.SetMotorSpeed(0.5, 0.2, 0);
+						effect.mot = D3DXVECTOR3(0, 0, 1);
+						effect.tex = TEXTUREMANAGER->GetTexture("Magic Bullet");
+						object = new EffectObject;
+						object->Init(effect, m_pMagicBullet->GetBoundSphere().center -
+							D3DXVECTOR3(FRand(-1, 1), FRand(0, 2), FRand(-1, 1)));
+						m_vecEffect.push_back(object);
+					}
+					if (minIndex >= 0)
+					{
+						m_vecTarget.clear();
+						m_vecTarget.push_back(minIndex);
+					}
+					else
+					{
+						m_vecTarget.clear();
+						SAFE_DELETE(m_pMagicBullet);
+					}
+				}
+			}
+		}
+	}
+}
+
+int Character_Gun::FindNearTarget(int ignore, D3DXVECTOR3 pos, float angle, float maxLength)
+{
+	int minIndex = -1;
+	float minLength = maxLength;
+	auto monsterVector = m_pMonsterManager->GetMonsterVector();
+	for (int i = 0; i < monsterVector.size(); i++)
+	{
+		if (monsterVector[i]->GetIsResPawn()) continue;
+		if (i == ignore) continue;
+		float length = D3DXVec3Length(&(*monsterVector[i]->GetModel()->GetPosition() - pos));
+
+		if (length >= 0 && length <= maxLength)
+		{
+			// 시선
+			D3DXVECTOR3 front;
+			D3DXMATRIX matY;
+			D3DXMatrixRotationY(&matY, m_pCharacter->GetRotation()->y);
+			D3DXVec3TransformNormal(&front, &D3DXVECTOR3(0, 0, -1), &matY);
+			D3DXVECTOR3 v0 = front;
+			// 대상방향
+			D3DXVECTOR3 v1 = *monsterVector[i]->GetModel()->GetPosition() - pos;
+			D3DXVec3Normalize(&v1, &v1);
+			float dot = D3DXVec3Dot(&v0, &v1) / D3DXVec3Length(&v0) * D3DXVec3Length(&v1);
+			if (dot >= cos(angle / 2))
+			{
+				if (minLength > length)
+				{
+					minIndex = i;
+					minLength = length;
+				}
+			}
+		}
+	}
+
+	return minIndex;
 }
 
 
