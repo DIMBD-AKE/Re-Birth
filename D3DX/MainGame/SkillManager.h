@@ -58,6 +58,8 @@ struct ST_SKILL
 
 class Skill
 {
+	SYNTHESIZE(ST_EFFECT, m_stEffect, Effect);
+
 private:
 	LPDIRECT3DTEXTURE9	m_pSkillIcon;
 	LPDIRECT3DTEXTURE9	m_pParticleTexture;
@@ -90,7 +92,6 @@ private:
 	string					m_sParticle;
 
 	vector<Particle*>		m_vecParticle;
-	ST_EFFECT				m_stEffect;
 	vector<EffectObject*>	m_vecEffect;
 
 	bool					m_isProcess;
