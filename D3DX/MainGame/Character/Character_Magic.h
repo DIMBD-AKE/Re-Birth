@@ -17,6 +17,7 @@ public:
 	void FireBall();
 	void MgSkill();
 	void MgShield();
+	void Meteor();
 	
 };
 
