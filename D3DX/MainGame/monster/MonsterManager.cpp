@@ -43,10 +43,10 @@ void MonsterManager::Update()
 {
 	assert(m_vSpawnSpot.size() > 0 && "만들어진 몬스터가 없습니다.");
 
-	char temp[222];
-	sprintf_s(temp, sizeof(temp), "%f",
-		GetDistance(*m_vMM[0]->GetModel()->GetPosition(), *CHARACTER->GetPosition()));
-	TEXT->Add(temp, 100, 100, 20);
+	//char temp[222];
+	//sprintf_s(temp, sizeof(temp), "%f",
+	//	GetDistance(*m_vMM[0]->GetModel()->GetPosition(), *CHARACTER->GetPosition()));
+	//TEXT->Add(temp, 100, 100, 20);
 
 	for (int i = 0; i < m_vMM.size(); i++)
 	{
@@ -100,7 +100,7 @@ void MonsterManager::Render()
 {
 	assert(m_vSpawnSpot.size() > 0 && "만들어진 몬스터가 없습니다.");
 
-	TEXT->Render();
+	//TEXT->Render();
 	for (int i = 0; i < m_vMM.size(); i++)
 	{
 		m_vMM[i]->Render();
