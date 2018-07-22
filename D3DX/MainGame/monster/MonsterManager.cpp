@@ -43,6 +43,11 @@ void MonsterManager::Update()
 {
 	assert(m_vSpawnSpot.size() > 0 && "만들어진 몬스터가 없습니다.");
 
+	char temp[222];
+	sprintf_s(temp, sizeof(temp), "%f",
+		GetDistance(*m_vMM[0]->GetModel()->GetPosition(), *CHARACTER->GetPosition()));
+	TEXT->Add(temp, 100, 100, 20);
+
 	for (int i = 0; i < m_vMM.size(); i++)
 	{
 		if (m_vMM[i]->GetIsResPawn())
@@ -82,11 +87,12 @@ void MonsterManager::Update()
 	}
 	if (INPUT->KeyDown('2'))
 	{
-		m_vMM[2]->SetSkill();
+		m_vMM[0]->SetSkill();
+		//m_vMM[2]->SetSkill();
 	}
 	if (INPUT->KeyDown('3'))
 	{
-		MakeFinalBoss(NULL);
+		MakeMiddleBoss(NULL);
 	}
 }
 
@@ -94,6 +100,7 @@ void MonsterManager::Render()
 {
 	assert(m_vSpawnSpot.size() > 0 && "만들어진 몬스터가 없습니다.");
 
+	TEXT->Render();
 	for (int i = 0; i < m_vMM.size(); i++)
 	{
 		m_vMM[i]->Render();
@@ -113,17 +120,16 @@ void MonsterManager::MakeMonster(DropManager* pDropManager)
 	MakeElizabeth(pDropManager);
 	
 	MakeAssis(pDropManager);
-	
+	//
 	MakeDarkHell(pDropManager);
-	
+	//
 	MakeNifilHeim(pDropManager);
 	
 	MakeNerisa(pDropManager);
 	
 	MakeNike(pDropManager);
 	//
-	////MakeMiddleBoss(pDropManager);
-	////
+	//
 	//MakeFinalBoss(pDropManager);
 }
 
@@ -305,19 +311,6 @@ void MonsterManager::MakeNifilHeim(DropManager* pDropManager, bool isSummon)
 
 void MonsterManager::MakeMiddleBoss(DropManager* pDropManager)
 {
-	MonsterParent* middleBoss;
-
-	middleBoss = new MiddleBoss;
-	middleBoss->SetupBoss(m_pMap, m_pMap->GetSpawnBoss());
-	middleBoss->SetCharacter(m_ppCharacter);
-	middleBoss->SetDropManager(pDropManager);
-	//middleBoss->SetupBoss(m_pMap, m_vSpawnSpot[0]);
-
-	m_vMM.push_back(middleBoss);
-}
-
-void MonsterManager::MakeFinalBoss(DropManager* pDropManager)
-{
 
 	MonsterParent* finalBoss;
 
@@ -348,13 +341,14 @@ void MonsterManager::DeleteSummonMonster()
 	}
 }
 
-bool MonsterManager::IsBossDie()
+bool MonsterManager::IsMiddleBossDie(OUT D3DXVECTOR3* diePos)
 {
 	//bool endGame = false;
 	for (int i = 0; i < m_vMM.size(); i++)
 	{
 		if (m_vMM[i]->IsBossDie())
 		{
+			*diePos = *m_vMM[i]->GetModel()->GetPosition();
 			return true;
 		}
 	}

@@ -195,9 +195,6 @@
     <ClInclude Include="MainGame\Monster\Boss\BossParent.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="MainGame\Monster\Boss\MiddleBoss.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="MainGame\Monster\Boss\FinalBoss.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -363,9 +360,6 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="MainGame\Monster\Boss\BossParent.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="MainGame\Monster\Boss\MiddleBoss.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="MainGame\Monster\Boss\FinalBoss.cpp">
