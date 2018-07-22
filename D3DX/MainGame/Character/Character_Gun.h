@@ -3,10 +3,17 @@
 class Character_Gun :
 	public CharacterParant
 {
+protected:
+
+	bool				m_bshoot;	//Å¾ºä½Ã ÃÑ½ú´Ï?
+
+
 public:
 	Character_Gun();
 	virtual ~Character_Gun();
 
+
+	
 
 	virtual void Init(CHRTYPE type, CHARSELECT order);
 	virtual void Update();

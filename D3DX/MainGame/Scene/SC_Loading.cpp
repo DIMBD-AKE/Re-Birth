@@ -190,7 +190,11 @@ void SC_Loading::AddSound()
 	m_pLoading->LoadSound("SwordAttack_TWO", "Sound/Sword_Scrape_2.ogg", false);
 	m_pLoading->LoadSound("SwordAttack_THREE", "Sound/chainSaw.mp3", false);
 	m_pLoading->LoadSound("BowAttack", "Sound/Bow_3.ogg", false);
-	m_pLoading->LoadSound("GunAttack", "Sound/Rifle_Shot2.ogg", false);
+	
+
+
+	//인벤토리 오픈사운드
+	m_pLoading->LoadSound("인벤_오픈", "Sound/Inven_open.mp3", false);
 
 	//벨벳 사운드
 	m_pLoading->LoadSound("벨벳_공격", "Sound/Velvet/Attack.mp3", false);
@@ -205,6 +209,44 @@ void SC_Loading::AddSound()
 	m_pLoading->LoadSound("베카_피격", "Sound/Beakah/Beakah_hitted.mp3", false);
 	m_pLoading->LoadSound("베카_죽음", "Sound/Beakah/Beakah_die.mp3", false);
 
+	//리아 사운드
+	m_pLoading->LoadSound("리아_공격", "Sound/Riah/Riah_attack.mp3", false);
+	m_pLoading->LoadSound("리아_스킬", "Sound/Riah/Riah_skill.mp3", false);
+	m_pLoading->LoadSound("리아_피격", "Sound/Riah/Riah_hitted.mp3", false);
+	m_pLoading->LoadSound("리아_죽음", "Sound/Riah/Riah_die.mp3", false);
+
+
+	//메그너스 사운드
+	m_pLoading->LoadSound("메그너스_공격", "Sound/Megnus/Megnus_attack.mp3", false);
+	m_pLoading->LoadSound("메그너스_스킬", "Sound/Megnus/Megnus_skill.mp3", false);
+	m_pLoading->LoadSound("메그너스_피격", "Sound/Megnus/Megnus_hitted.mp3", false);
+	m_pLoading->LoadSound("메그너스_죽음", "Sound/Megnus/Megnus_die.mp3", false);
+	m_pLoading->LoadSound("메그너스_고유", "Sound/Megnus/Megnus_inheri.mp3", false);
+	m_pLoading->LoadSound("메그너스_고유_총", "Sound/Megnus/Megnus_inheri_gun.mp3", false);
+	m_pLoading->LoadSound("GunAttack", "Sound/Rifle_Shot2.ogg", false);
+	m_pLoading->LoadSound("탑뷰샷", "Sound/Rifle_Shot4.ogg", false);
+	m_pLoading->LoadSound("탑뷰탄피", "Sound/tanpi.mp3", false);
+
+	//스카디 사운드
+	m_pLoading->LoadSound("스카디_공격", "Sound/Sakadi/Sakadi_attack.mp3", false);
+	m_pLoading->LoadSound("스카디_스킬", "Sound/Sakadi/Sakadi_skill.mp3", false);
+	m_pLoading->LoadSound("스카디_피격", "Sound/Sakadi/Sakadi_hitted.mp3", false);
+	m_pLoading->LoadSound("스카디_죽음", "Sound/Sakadi/Sakadi_die.mp3", false);
+	m_pLoading->LoadSound("스카디_고유", "Sound/Sakadi/Sakadi_inheri.mp3", false);
+
+
+	//아카날 사운드
+	m_pLoading->LoadSound("아카날_공격", "Sound/Aknal/Aknal_attack.mp3", false);
+	m_pLoading->LoadSound("아카날_스킬", "Sound/Aknal/Aknal_skill.mp3", false);
+	m_pLoading->LoadSound("아카날_피격", "Sound/Aknal/Aknal_hitted.mp3", false);
+	m_pLoading->LoadSound("아카날_죽음", "Sound/Aknal/Aknal_die.mp3", false);
+
+
+	//헤스티아 사운드
+	m_pLoading->LoadSound("헤스티아_공격", "Sound/Hestia/Hestia_attack.mp3", false);
+	m_pLoading->LoadSound("헤스티아_스킬", "Sound/Hestia/Hestia_skill.mp3", false);
+	m_pLoading->LoadSound("헤스티아_피격", "Sound/Hestia/Hestia_hitted.mp3", false);
+	m_pLoading->LoadSound("헤스티아_죽음", "Sound/Hestia/Hestia_die.mp3", false);
 }
 
 void SC_Loading::AddParticle()

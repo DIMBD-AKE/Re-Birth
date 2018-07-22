@@ -44,8 +44,11 @@ void Character_Sword::Init(CHRTYPE type, CHARSELECT order)
 		m_Status->chr.nMaxStam = 100;
 		m_Status->chr.fRange = 3.0f;
 		m_Status->chr.fScale = 5.0f;
+
+		//
+		m_bIsShunpo = false;
 		CharacterParant::Init(type, order);
-		
+
 		m_pSkillBar->SetTexture(TEXTUREMANAGER->GetTexture("캐릭터_스킬창"));
 		m_pSkillBar->SetPosition(D3DXVECTOR3(588, 695, 0));
 
@@ -61,13 +64,13 @@ void Character_Sword::Init(CHRTYPE type, CHARSELECT order)
 		m_pChrStat->SetTexture(TEXTUREMANAGER->GetTexture("캐릭터_스테이터스"));
 		m_pChrStat->SetPosition(D3DXVECTOR3(0, 668, 0));
 
-		
+
 		//포트레이트 UI
 		m_pUIobj->SetTexture(TEXTUREMANAGER->GetTexture("베카_사진"));
 		m_pUIobj->SetScale(D3DXVECTOR3(0.45, 0.45, 0.45));
 		m_pUIobj->SetPosition(D3DXVECTOR3(12, 679, 0));
 
-	
+
 	}
 	else if (order == CHAR_TWO)
 	{
@@ -157,7 +160,7 @@ void Character_Sword::Init(CHRTYPE type, CHARSELECT order)
 		m_pUIobj->SetTexture(TEXTUREMANAGER->GetTexture("벨벳_사진"));
 		m_pUIobj->SetScale(D3DXVECTOR3(0.45, 0.45, 0.45));
 		m_pUIobj->SetPosition(D3DXVECTOR3(12, 679, 0));
-	
+
 	}
 
 }
@@ -168,7 +171,7 @@ void Character_Sword::Update()
 	{
 		Controller();
 		Move();
-		
+
 		m_pInventory->Update();
 		m_pCharacter->World();
 		m_pUIobj->Update();
@@ -177,6 +180,10 @@ void Character_Sword::Update()
 		m_pInheritateIco2->Update();
 		m_pInheritateIco3->Update();
 		m_pSkillBar->Update();
+
+
+
+
 		if (m_bIsSubChr)
 		{
 			if (m_pShieldChr)
@@ -190,13 +197,30 @@ void Character_Sword::Update()
 			}
 		}
 
+		if (m_bIsShunpo)
+		{
+			this->Shunpo();
+		}
+
+		this->SkillDealing();
+
 		Effect();
 
+
+
+
+
 		PlayerProgressBar();
+
+
 		m_pDamage->Update(*m_pCharacter->GetPosition());
+
+
 	}
 	CutScene();
 	KeyControl();
+
+
 }
 
 void Character_Sword::Render()
@@ -204,7 +228,7 @@ void Character_Sword::Render()
 	if (m_pCharacter && m_eCondition != CHAR_NONE)
 	{
 		m_pCharacter->Render();
-		
+
 
 
 		if (m_pShieldChr && m_bIsSubChr)
@@ -212,8 +236,8 @@ void Character_Sword::Render()
 			m_pShieldChr->Render();
 		}
 
-		
-		
+
+
 
 		m_pDamage->Render();
 		CharacterParant::Render();
@@ -226,7 +250,7 @@ void Character_Sword::Render()
 		m_pInheritateIco3->Render();
 		m_pHPBar->Render();
 		m_pStaminaBar->Render();
-		
+
 	}
 }
 
@@ -373,7 +397,7 @@ void Character_Sword::KeyControl()
 			SOUND->Play("SwordAttack_THREE");
 			SOUND->Play("벨벳_공격");
 		}
-		
+
 		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_RUN_FRONT || m_eCondition == CHAR_RUN_BACK)
 		{
 			m_eCondition = CHAR_ATTACK;
@@ -390,7 +414,8 @@ void Character_Sword::KeyControl()
 	}
 	else if (INPUT->KeyUp(VK_SPACE))
 	{
-		//m_bIsAttack = false;
+		m_bIsAttack = false;
+
 	}
 
 	//스킬공격
@@ -399,7 +424,8 @@ void Character_Sword::KeyControl()
 		SKill();
 	}
 
-	
+
+
 	//애니메이션 한바퀴 돌고나서 상태제어
 	if (m_pCharacter->IsAnimationEnd())
 	{
@@ -421,7 +447,6 @@ void Character_Sword::KeyControl()
 		}
 		ChangeAnimation();
 	}
-
 
 	//피격 도중에 공격 가능하게 만들기
 	if (m_eCondition == CHAR_HIT)
@@ -466,11 +491,12 @@ void Character_Sword::KeyControl()
 	if (m_eCondition == CHAR_ATTACK)
 	{
 		Attack();
+		//this->Shunpo();
 	}
 
 	if (m_eCondition == CHAR_IDLE)
 	{
-		if(SOUND->IsPlaySound("FootStep")) SOUND->Stop("FootStep");
+		if (SOUND->IsPlaySound("FootStep")) SOUND->Stop("FootStep");
 		if (SOUND->IsPlaySound("FootStep3")) SOUND->Stop("FootStep3");
 	}
 
@@ -485,7 +511,7 @@ void Character_Sword::KeyControl()
 
 
 	//고유스킬 제어======================================
-	
+
 	//서브캐릭터 제어
 	if (INPUT->KeyDown('R'))
 	{
@@ -494,6 +520,13 @@ void Character_Sword::KeyControl()
 			m_bIsSubChr = true;
 			CAMERA->Shake(0.2f, 0.5f);
 		}
+	}
+
+	if (INPUT->KeyDown('F'))
+	{
+		m_bIsShunpo = true;
+		m_nDamageCount = 0;
+		m_nDC = 0;
 	}
 
 
@@ -505,61 +538,19 @@ void Character_Sword::Attack()
 {
 	D3DXVECTOR3 pos = *m_pCharacter->GetPosition();
 
-		if (m_fElpTime < m_fPrevTime + m_fEffectInterval) return;
+	if (m_fElpTime < m_fPrevTime + m_fEffectInterval) return;
 
-		m_fPrevTime = m_fElpTime;
+	m_fPrevTime = m_fElpTime;
 
-		m_nDamageCount++;
-		if (m_eCharSelect == CHAR_ONE)
+	m_nDamageCount++;
+	if (m_eCharSelect == CHAR_ONE)
+	{
+		if (m_vecTarget.size() <= 0) return;
+		if (m_nDamageCount <= 3)
 		{
-			if (m_vecTarget.size() <= 0) return;
-			if (m_nDamageCount <= 3)
+			for (int i = 0; i < m_vecTarget.size(); i++)
 			{
-				for (int i = 0; i < m_vecTarget.size(); i++)
-				{
-					D3DXVECTOR3 MonPos = *m_pMonsterManager->GetMonsterVector()[m_vecTarget[i]]->GetModel()->GetPosition();
-					ST_EFFECT tempEffect;
-					ZeroMemory(&tempEffect, sizeof(tempEffect));
-
-					tempEffect.time = FRand(0.1, 0.4);
-					tempEffect.isRY = true;
-					tempEffect.isRX = true;
-					tempEffect.height = 3.0f;
-
-					//TODO : 알파값도 랜덤으로, 스케일도 랜덤으로 RND써서 수정
-					tempEffect.SetAlpha(FRand(100, 255), FRand(100, 255), 0);
-					tempEffect.SetScale(FRand(1.4, 3.0), FRand(1.4, 3.0), FRand(1.4, 3.0));
-					tempEffect.tex = TEXTUREMANAGER->AddTexture("testSkill", "Texture/Effect/TestSkill.png");
-					EffectObject* tempEFOBJ;
-					tempEFOBJ = new EffectObject;
-
-
-					D3DXVECTOR3 TempDir;
-					TempDir = *m_pCharacter->GetPosition() - *m_pMonsterManager->GetMonsterVector()[m_vecTarget[i]]->GetModel()->GetPosition();
-					D3DXVec3Normalize(&TempDir, &TempDir);
-
-					float Length = D3DXVec3Length(&(MonPos - pos));
-
-					D3DXVECTOR3 testSkillpos = *m_pMonsterManager->GetMonsterVector()[m_vecTarget[i]]->GetModel()->GetPosition();
-					testSkillpos.y += 1.0f;
-					testSkillpos.x += FRand(-0.5, 0.5);
-					testSkillpos.z += FRand(-0.3, 0.3);
-					testSkillpos += TempDir * (Length * 0.3f);
-					tempEFOBJ->Init(tempEffect, testSkillpos);
-
-					m_vecEffect.push_back(tempEFOBJ);
-
-					if (m_pMonsterManager->GetMonsterVector()[m_vecTarget[i]]->GetIsResPawn())return;
-					m_pMonsterManager->GetMonsterVector()[m_vecTarget[i]]->CalculDamage(m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
-				}
-			}
-		}
-		else if (m_eCharSelect == CHAR_TWO)
-		{
-			if (m_nIndex < 0) return;
-			if (m_nDamageCount <= 3)
-			{
-				D3DXVECTOR3 MonPos = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
+				D3DXVECTOR3 MonPos = *m_pMonsterManager->GetMonsterVector()[m_vecTarget[i]]->GetModel()->GetPosition();
 				ST_EFFECT tempEffect;
 				ZeroMemory(&tempEffect, sizeof(tempEffect));
 
@@ -567,68 +558,284 @@ void Character_Sword::Attack()
 				tempEffect.isRY = true;
 				tempEffect.isRX = true;
 				tempEffect.height = 3.0f;
+
+				//TODO : 알파값도 랜덤으로, 스케일도 랜덤으로 RND써서 수정
 				tempEffect.SetAlpha(FRand(100, 255), FRand(100, 255), 0);
 				tempEffect.SetScale(FRand(1.4, 3.0), FRand(1.4, 3.0), FRand(1.4, 3.0));
-				tempEffect.tex = TEXTUREMANAGER->AddTexture("Step", "Texture/Effect/step.png");
+				tempEffect.tex = TEXTUREMANAGER->AddTexture("testSkill", "Texture/Effect/TestSkill.png");
 				EffectObject* tempEFOBJ;
 				tempEFOBJ = new EffectObject;
 
-
 				D3DXVECTOR3 TempDir;
-				TempDir = *m_pCharacter->GetPosition() - *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
+				TempDir = *m_pCharacter->GetPosition() - *m_pMonsterManager->GetMonsterVector()[m_vecTarget[i]]->GetModel()->GetPosition();
 				D3DXVec3Normalize(&TempDir, &TempDir);
 
 				float Length = D3DXVec3Length(&(MonPos - pos));
 
-				D3DXVECTOR3 testSkillpos = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
+				D3DXVECTOR3 testSkillpos = *m_pMonsterManager->GetMonsterVector()[m_vecTarget[i]]->GetModel()->GetPosition();
 				testSkillpos.y += 1.0f;
 				testSkillpos.x += FRand(-0.5, 0.5);
-				testSkillpos.z += FRand(-0.5, 0.5);
+				testSkillpos.z += FRand(-0.3, 0.3);
 				testSkillpos += TempDir * (Length * 0.3f);
 				tempEFOBJ->Init(tempEffect, testSkillpos);
 
 				m_vecEffect.push_back(tempEFOBJ);
-				m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
+
+				if (m_pMonsterManager->GetMonsterVector()[m_vecTarget[i]]->GetIsResPawn())return;
+				m_pMonsterManager->GetMonsterVector()[m_vecTarget[i]]->CalculDamage(m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
 			}
 		}
-		else if (m_eCharSelect == CHAR_THREE)
+	}
+	else if (m_eCharSelect == CHAR_TWO)
+	{
+		if (m_nIndex < 0) return;
+		if (m_nDamageCount <= 3)
 		{
-			if (m_nIndex < 0) return;
-			if (m_nDamageCount <= 20)
-			{
-				D3DXVECTOR3 MonPos = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
-				ST_EFFECT tempEffect;
-				ZeroMemory(&tempEffect, sizeof(tempEffect));
+			D3DXVECTOR3 MonPos = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
+			ST_EFFECT tempEffect;
+			ZeroMemory(&tempEffect, sizeof(tempEffect));
 
-				tempEffect.time = FRand(0.1, 0.4);
-				tempEffect.isRY = true;
-				tempEffect.isRX = true;
-				tempEffect.height = 3.0f;
-				tempEffect.SetAlpha(FRand(100, 255), FRand(100, 255), 0);
-				tempEffect.SetScale(FRand(1.4, 3.0), FRand(1.4, 3.0), FRand(1.4, 3.0));
-				tempEffect.tex = TEXTUREMANAGER->AddTexture("Blood", "Texture/Effect/velvet.png");
-				EffectObject* tempEFOBJ;
-				tempEFOBJ = new EffectObject;
+			tempEffect.time = FRand(0.1, 0.4);
+			tempEffect.isRY = true;
+			tempEffect.isRX = true;
+			tempEffect.height = 3.0f;
+			tempEffect.SetAlpha(FRand(100, 255), FRand(100, 255), 0);
+			tempEffect.SetScale(FRand(1.4, 3.0), FRand(1.4, 3.0), FRand(1.4, 3.0));
+			tempEffect.tex = TEXTUREMANAGER->AddTexture("Step", "Texture/Effect/step.png");
+			EffectObject* tempEFOBJ;
+			tempEFOBJ = new EffectObject;
 
-				D3DXVECTOR3 TempDir;
-				TempDir = *m_pCharacter->GetPosition() - *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
-				D3DXVec3Normalize(&TempDir, &TempDir);
 
-				float Length = D3DXVec3Length(&(MonPos - pos));
+			D3DXVECTOR3 TempDir;
+			TempDir = *m_pCharacter->GetPosition() - *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
+			D3DXVec3Normalize(&TempDir, &TempDir);
 
-				D3DXVECTOR3 testSkillpos = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
-				testSkillpos.y += 1.0f;
-				testSkillpos.x += FRand(-0.5, 0.5);
-				testSkillpos.z += FRand(-0.5, 0.5);
-				testSkillpos += TempDir * (Length * 0.3f);
-				tempEFOBJ->Init(tempEffect, testSkillpos);
+			float Length = D3DXVec3Length(&(MonPos - pos));
 
-				m_vecEffect.push_back(tempEFOBJ);
-				m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
-			}
+			D3DXVECTOR3 testSkillpos = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
+			testSkillpos.y += 1.0f;
+			testSkillpos.x += FRand(-0.5, 0.5);
+			testSkillpos.z += FRand(-0.5, 0.5);
+			testSkillpos += TempDir * (Length * 0.3f);
+			tempEFOBJ->Init(tempEffect, testSkillpos);
+
+			m_vecEffect.push_back(tempEFOBJ);
+			m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
 		}
+	}
+	else if (m_eCharSelect == CHAR_THREE)
+	{
+		if (m_nIndex < 0) return;
+		if (m_nDamageCount <= 20)
+		{
+			D3DXVECTOR3 MonPos = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
+			ST_EFFECT tempEffect;
+			ZeroMemory(&tempEffect, sizeof(tempEffect));
+
+			tempEffect.time = FRand(0.1, 0.4);
+			tempEffect.isRY = true;
+			tempEffect.isRX = true;
+			tempEffect.height = 3.0f;
+			tempEffect.SetAlpha(FRand(100, 255), FRand(100, 255), 0);
+			tempEffect.SetScale(FRand(1.4, 3.0), FRand(1.4, 3.0), FRand(1.4, 3.0));
+			tempEffect.tex = TEXTUREMANAGER->AddTexture("Blood", "Texture/Effect/velvet.png");
+			EffectObject* tempEFOBJ;
+			tempEFOBJ = new EffectObject;
+
+			D3DXVECTOR3 TempDir;
+			TempDir = *m_pCharacter->GetPosition() - *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
+			D3DXVec3Normalize(&TempDir, &TempDir);
+
+			float Length = D3DXVec3Length(&(MonPos - pos));
+
+			D3DXVECTOR3 testSkillpos = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
+			testSkillpos.y += 1.0f;
+			testSkillpos.x += FRand(-0.5, 0.5);
+			testSkillpos.z += FRand(-0.5, 0.5);
+			testSkillpos += TempDir * (Length * 0.3f);
+			tempEFOBJ->Init(tempEffect, testSkillpos);
+
+			m_vecEffect.push_back(tempEFOBJ);
+			m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
+		}
+	}
 }
 
+void Character_Sword::Shunpo()
+{
+	D3DXVECTOR3 pos = *m_pCharacter->GetPosition();
+
+	//if (m_fElpTime < m_fPrevTime + m_fEffectInterval) return;
+
+	//m_fPrevTime = m_fElpTime;
 
 
+	if (m_eCharSelect == CHAR_ONE)
+	{
+		m_nDamageCount++;
+		if (m_nDamageCount <= 1)
+		{
+			ST_EFFECT tempEffect;
+			ZeroMemory(&tempEffect, sizeof(tempEffect));
 
+			D3DXVECTOR3 front;
+			D3DXMATRIX matY;
+			D3DXMatrixRotationY(&matY, m_pCharacter->GetRotation()->y);
+			D3DXVec3TransformNormal(&front, &D3DXVECTOR3(0, 0, -1), &matY);
+
+			tempEffect.time = FRand(0.1, 0.5) + 2;
+			tempEffect.isRY = true;
+			tempEffect.isRX = true;
+			tempEffect.dir = front;
+			tempEffect.height = 3.0f;
+			tempEffect.SetSpeed(1.0, 1.0, 1.0);
+			//TODO : 알파값도 랜덤으로, 스케일도 랜덤으로 RND써서 수정
+			tempEffect.SetAlpha(FRand(100, 255), FRand(100, 255), 0);
+			tempEffect.SetScale(FRand(1.4, 3.0), FRand(1.4, 3.0), FRand(1.4, 3.0));
+			tempEffect.tex = TEXTUREMANAGER->AddTexture("testSkill", "Texture/Effect/TestSkill.png");
+			EffectObject* tempEFOBJ;
+			tempEFOBJ = new EffectObject;
+
+
+			D3DXVECTOR3 TempDir;
+			TempDir = front;
+			D3DXVec3Normalize(&TempDir, &TempDir);
+
+
+			D3DXVECTOR3 testSkillpos = pos;
+			testSkillpos.y += 1.0f;
+			//testSkillpos.x += FRand(-0.5, 0.5);
+			//testSkillpos.z += FRand(-0.3, 0.3);
+			////testSkillpos += TempDir * (10.0f * 0.3f);
+			tempEFOBJ->Init(tempEffect, testSkillpos);
+
+			m_vecEffect.push_back(tempEFOBJ);
+
+		}
+		//SkillDealing();
+
+		if (m_vecEffect.size() <= 0)
+		{
+			m_bIsShunpo = false;
+		}
+	}
+	else if (m_eCharSelect == CHAR_TWO)
+	{
+		if (m_nIndex < 0) return;
+		if (m_nDamageCount <= 3)
+		{
+			D3DXVECTOR3 MonPos = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
+			ST_EFFECT tempEffect;
+			ZeroMemory(&tempEffect, sizeof(tempEffect));
+
+			tempEffect.time = FRand(0.1, 0.4);
+			tempEffect.isRY = true;
+			tempEffect.isRX = true;
+			tempEffect.height = 3.0f;
+			tempEffect.SetAlpha(FRand(100, 255), FRand(100, 255), 0);
+			tempEffect.SetScale(FRand(1.4, 3.0), FRand(1.4, 3.0), FRand(1.4, 3.0));
+			tempEffect.tex = TEXTUREMANAGER->AddTexture("Step", "Texture/Effect/step.png");
+			EffectObject* tempEFOBJ;
+			tempEFOBJ = new EffectObject;
+
+
+			D3DXVECTOR3 TempDir;
+			TempDir = *m_pCharacter->GetPosition() - *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
+			D3DXVec3Normalize(&TempDir, &TempDir);
+
+			float Length = D3DXVec3Length(&(MonPos - pos));
+
+			D3DXVECTOR3 testSkillpos = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
+			testSkillpos.y += 1.0f;
+			testSkillpos.x += FRand(-0.5, 0.5);
+			testSkillpos.z += FRand(-0.5, 0.5);
+			testSkillpos += TempDir * (Length * 0.3f);
+			tempEFOBJ->Init(tempEffect, testSkillpos);
+
+			m_vecEffect.push_back(tempEFOBJ);
+			m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
+		}
+	}
+	else if (m_eCharSelect == CHAR_THREE)
+	{
+		if (m_nIndex < 0) return;
+		if (m_nDamageCount <= 20)
+		{
+			D3DXVECTOR3 MonPos = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
+			ST_EFFECT tempEffect;
+			ZeroMemory(&tempEffect, sizeof(tempEffect));
+
+			tempEffect.time = FRand(0.1, 0.4);
+			tempEffect.isRY = true;
+			tempEffect.isRX = true;
+			tempEffect.height = 3.0f;
+			tempEffect.SetAlpha(FRand(100, 255), FRand(100, 255), 0);
+			tempEffect.SetScale(FRand(1.4, 3.0), FRand(1.4, 3.0), FRand(1.4, 3.0));
+			tempEffect.tex = TEXTUREMANAGER->AddTexture("Blood", "Texture/Effect/velvet.png");
+			EffectObject* tempEFOBJ;
+			tempEFOBJ = new EffectObject;
+
+			D3DXVECTOR3 TempDir;
+			TempDir = *m_pCharacter->GetPosition() - *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
+			D3DXVec3Normalize(&TempDir, &TempDir);
+
+			float Length = D3DXVec3Length(&(MonPos - pos));
+
+			D3DXVECTOR3 testSkillpos = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
+			testSkillpos.y += 1.0f;
+			testSkillpos.x += FRand(-0.5, 0.5);
+			testSkillpos.z += FRand(-0.5, 0.5);
+			testSkillpos += TempDir * (Length * 0.3f);
+			tempEFOBJ->Init(tempEffect, testSkillpos);
+
+			m_vecEffect.push_back(tempEFOBJ);
+			m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
+		}
+	}
+}
+
+void Character_Sword::SkillDealing()
+{
+	if (m_vecEffect.size() <= 0) return;
+	m_nIndex = -1;
+	//m_vecTarget.clear();
+
+	if (m_nDC < 1)
+	{
+		for (int i = 0; i < m_pMonsterManager->GetMonsterVector().size();)
+		{
+
+			D3DXVECTOR3 s1 = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().center;
+			D3DXVECTOR3 s2 = m_vecEffect.back()->GetBoundSphere().center;
+			D3DXVECTOR3 v = s1 - s2;
+			float distance = D3DXVec3Length(&v);
+
+			float r1 = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().radius;
+			float r2 = m_vecEffect.back()->GetBoundSphere().radius;
+
+			if (r1 + r2 >= distance)
+			{
+				m_pMonsterManager->GetMonsterVector()[i]->CalculDamage(1);
+				m_nIndex = i;
+				//m_vecEffect.clear();
+				//return;
+				//m_vecTarget.push_back(i);
+				m_pCharacter->SetPosition(*m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition());
+				i++;
+				m_nDC++;
+			}
+			else
+			{
+				i++;
+			}
+		}
+	}
+	else return;
+
+
+	//if (m_nIndex < 0) return;
+	//
+
+	//m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(1);
+
+}
