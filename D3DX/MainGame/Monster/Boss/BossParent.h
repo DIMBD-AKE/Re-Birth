@@ -20,27 +20,31 @@ enum BOSS_STATE{
 class BossParent :
 	public MonsterParent
 {
+	SET(MonsterManager*, m_pMM, MM);
+
 protected : 
 
 	//공격시 생성되는 구
 	MagicCircle* m_pMagicCircle;
 
-	//마법타입은 공격중 멀어져도 지속적인 공격이 되어야 한다.
+	//보스는 공격중 멀어져도 지속적인 공격이 되어야 한다.
 	bool m_bIsAttack;
+	//보스의 사망 여부
 	bool m_bIsDead;
 
 	BOSS_STATE m_eBossState;
 
-	//3타스킬
+	//보스만이 가지고 있는 2스킬
 	Skill* m_pSkill2;
 
-	//3타스킬 스탯
-	ST_SKILL m_stSkill2;
+	//2스킬 스탯
+	ST_SKILL m_stSkill2;	
 
-	SET(MonsterManager*, m_pMM, MM);
-
+	//2스킬 쿨타임 카운트
 	float m_fSkillCoolTimeCount2 ;
+	//2스킬 쿨타임
 	int m_nSkillCooltime2;
+	//사용가능하냐
 	bool m_bSkill2Use;
 	
 	/*
@@ -78,12 +82,27 @@ protected:
 
 	}
 
+	//보스 스탯 셋업
 	virtual void SetupStat() override;
+
+	//스킬1 셋업
 	virtual void SetupSkill() override;
-	//근접 몬스터 공격함수
+	//스킐2 셋업
+	virtual void SetupSkill2();
+
+	//보스 몬스터 공격함수
 	virtual void Attack() override;
-	//근접 몬스터 스킬함수
+
+	//보스 몬스터 스킬1 사용 함수
 	virtual void SkillUse() override;
+	//보스 몬스터 스킬2 사용 함수
+	virtual void Skill2() ;
+	//보스 몬스터 패시브 함수
+	virtual void Passive() ;
+
+	//스킬2 캐스팅 함수
+	virtual void Casting() ;
+
 	//근접 몬스터 기본 이동함수
 	virtual void Move() override;
 
@@ -95,6 +114,7 @@ protected:
 
 	virtual void SetCurrentHP(int hp);
 
+	virtual bool AbleSkill() override;
 	bool AbleSkill2();
 	void SkillPrepare2();
 

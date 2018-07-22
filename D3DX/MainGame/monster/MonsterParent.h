@@ -142,7 +142,7 @@ protected:
 	void ChangeRot();
 	
 	//스킬사용가능하냐
-	bool AbleSkill();
+	virtual bool AbleSkill();
 	void SkillPrepare();
 public:
 	MonsterParent();

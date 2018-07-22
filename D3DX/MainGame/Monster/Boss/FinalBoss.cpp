@@ -137,112 +137,70 @@ void FinalBoss::SetupSkill2()
 	//	m_stSkill.buffStatus.chr.nCurrentHP = 100; //증가 될 스탯량 피뺴고 제로메모리;
 }
 
-void FinalBoss::DropItemSetup()
-{
-	
-}
 
-void FinalBoss::ChangeAni()
-{
-	switch (m_eBossState)
-	{
-	case BS_ENTER:
-		m_pModel->SetAnimation("ENTER");
-		break;
-	case BS_IDLE:
-		m_pModel->SetAnimation("IDLE");
-		break;
-	case BS_RUN:
-		m_pModel->SetAnimation("RUN");
-		break;
-	case BS_PASSIVE:
-		m_pModel->SetAnimation("PASSIVE");
-		break;
-	case BS_ATTACK:
-		m_pModel->SetAnimation("ATTACK");
-		break;
-	case BS_SKILL1:
-		m_pModel->SetAnimation("SKILL2");
-		break;
-	case BS_SKILL2:
-		m_pModel->SetAnimation("SKILL1");
-		break;
-	case BS_CASTING:
-		m_pModel->SetAnimation("SKILL2_CASTING");
-		break;
-	case BS_DIE:
-		m_pModel->SetAnimation("DIE");
-		break;
-	case BS_NONE:
-		break;
-	default:
-		break;
-	}
 
-	if (m_eBossState == BS_CASTING)
-	{
-		m_pModel->SetAnimationSpeed(0.5f);
-	}
-	else m_pModel->SetAnimationSpeed(1.0f);
-}
+//void FinalBoss::ChangeAni()
+//{
+//
+//}
 
-void FinalBoss::Pattern()
-{
-	if (AbleSkill() && !m_bSkill2Use )
-	{
-		m_eBossState = BS_CASTING;
-		ChangeAni();
-	}
-
-	else if (AbleSkill2() )
-	{
-		m_eBossState = BS_SKILL2;
-		ChangeAni();
-	}
-
-	switch (m_eBossState)
-	{
-	case BS_ENTER:
-	{
-		if (m_pModel->IsAnimationEnd())
-		{
-			m_eBossState = BS_RUN;
-			ChangeAni();
-		}
-	}
-		break;
-	case BS_RUN:
-	{
-		Move();
-	}
-		break;
-	case BS_PASSIVE:
-		if (m_pModel->IsAnimationEnd())
-		{
-			m_eBossState = BS_RUN;
-			ChangeAni();
-		}
-		break;
-	case BS_ATTACK:
-		Attack();
-		break;
-	case BS_SKILL1:
-		SkillUse();
-		break;
-	case BS_SKILL2:
-		Skill2();
-		break;
-	case BS_CASTING:
-		Casting();
-		break;
-	case BS_DIE:
-	{
-				   if (m_pModel->IsAnimationEnd()) m_eBossState = BS_NONE;
-	}
-	default:
-		break;
-	}
-}
+//void FinalBoss::Pattern()
+//{
+//	if (AbleSkill() && !m_bSkill2Use )
+//	{
+//		m_eBossState = BS_CASTING;
+//		ChangeAni();
+//	}
+//
+//	else if (AbleSkill2() )
+//	{
+//		m_eBossState = BS_SKILL2;
+//		ChangeAni();
+//	}
+//
+//	switch (m_eBossState)
+//	{
+//	case BS_ENTER:
+//	{
+//		if (m_pModel->IsAnimationEnd())
+//		{
+//			m_eBossState = BS_RUN;
+//			ChangeAni();
+//		}
+//	}
+//		break;
+//	case BS_RUN:
+//	{
+//		Move();
+//	}
+//		break;
+//	case BS_PASSIVE:
+//		if (m_pModel->IsAnimationEnd())
+//		{
+//			m_eBossState = BS_RUN;
+//			ChangeAni();
+//		}
+//		break;
+//	case BS_ATTACK:
+//		Attack();
+//		break;
+//	case BS_SKILL1:
+//		SkillUse();
+//		break;
+//	case BS_SKILL2:
+//		Skill2();
+//		break;
+//	case BS_CASTING:
+//		Casting();
+//		break;
+//	case BS_DIE:
+//	{
+//				   if (m_pModel->IsAnimationEnd()) m_eBossState = BS_NONE;
+//	}
+//	default:
+//		break;
+//	}
+//}
 
 void FinalBoss::Attack()
 {
@@ -415,13 +373,13 @@ void FinalBoss::Skill2()
 	}
 }
 
-void FinalBoss::Casting()
-{
-	if (m_pModel->IsAnimationEnd())
-	//if (m_pModel->IsAnimationPercent(0.5f))
-	{
-		m_eBossState = BS_SKILL1;
-		ChangeAni();
-	//	m_pModel->SetAnimationPosition(0.5f);
-	}
-}
+//void FinalBoss::Casting()
+//{
+//	if (m_pModel->IsAnimationEnd())
+//	//if (m_pModel->IsAnimationPercent(0.5f))
+//	{
+//		m_eBossState = BS_SKILL1;
+//		ChangeAni();
+//	//	m_pModel->SetAnimationPosition(0.5f);
+//	}
+//}

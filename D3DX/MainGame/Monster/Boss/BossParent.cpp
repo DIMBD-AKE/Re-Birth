@@ -122,6 +122,10 @@ void BossParent::SetupSkill()
 
 }
 
+void BossParent::SetupSkill2()
+{
+}
+
 void BossParent::Attack()
 {
 
@@ -130,6 +134,25 @@ void BossParent::Attack()
 void BossParent::SkillUse()
 {
 
+}
+
+void BossParent::Skill2()
+{
+}
+
+void BossParent::Passive()
+{
+}
+
+void BossParent::Casting()
+{
+	if (m_pModel->IsAnimationEnd())
+		//if (m_pModel->IsAnimationPercent(0.5f))
+	{
+		m_eBossState = BS_SKILL1;
+		ChangeAni();
+		//	m_pModel->SetAnimationPosition(0.5f);
+	}
 }
 
 void BossParent::Move()
@@ -145,11 +168,131 @@ void BossParent::DropItemSetup()
 
 void BossParent::ChangeAni()
 {
+	switch (m_eBossState)
+	{
+	case BS_ENTER:
+		m_pModel->SetAnimation("ENTER");
+		break;
+	case BS_IDLE:
+		m_pModel->SetAnimation("IDLE");
+		break;
+	case BS_RUN:
+		m_pModel->SetAnimation("RUN");
+		break;
+	case BS_PASSIVE:
+		m_pModel->SetAnimation("PASSIVE");
+		break;
+	case BS_ATTACK:
+		m_pModel->SetAnimation("ATTACK");
+		break;
+	case BS_SKILL1:
+		m_pModel->SetAnimation("SKILL2");
+		break;
+	case BS_SKILL2:
+		m_pModel->SetAnimation("SKILL1");
+		break;
+	case BS_CASTING:
+		m_pModel->SetAnimation("SKILL2_CASTING");
+		break;
+	case BS_DIE:
+		m_pModel->SetAnimation("DIE");
+		break;
+	case BS_NONE:
+		break;
+	default:
+		break;
+	}
 
+	if (m_eBossState == BS_CASTING)
+	{
+		m_pModel->SetAnimationSpeed(0.5f);
+	}
+	else m_pModel->SetAnimationSpeed(1.0f);
 }
 void BossParent::Pattern()
 {
+	if (AbleSkill() && !m_bSkill2Use)
+	{
+		m_eBossState = BS_CASTING;
+		ChangeAni();
+	}
 
+	else if (AbleSkill2())
+	{
+		m_eBossState = BS_SKILL2;
+		ChangeAni();
+	}
+
+	switch (m_eBossState)
+	{
+	case BS_ENTER:
+	{
+		if (m_pModel->IsAnimationEnd())
+		{
+			m_eBossState = BS_RUN;
+			ChangeAni();
+		}
+	}
+	break;
+	case BS_RUN:
+	{
+		Move();
+	}
+	break;
+	case BS_PASSIVE:
+		if (m_pModel->IsAnimationEnd())
+		{
+			m_eBossState = BS_RUN;
+			ChangeAni();
+		}
+		break;
+	case BS_ATTACK:
+		Attack();
+		break;
+	case BS_SKILL1:
+		SkillUse();
+		break;
+	case BS_SKILL2:
+		Skill2();
+		break;
+	case BS_CASTING:
+		Casting();
+		break;
+	case BS_DIE:
+	{
+		if (m_pModel->IsAnimationEnd()) m_eBossState = BS_NONE;
+	}
+	default:
+		break;
+	}
+}
+
+bool BossParent::AbleSkill()
+{
+	float leng = GetDistance(*m_pModel->GetPosition(), *CHARACTER->GetPosition());
+
+	//쿨타임이 돌았고 스킬이 사용가능할때
+	//그리고 내가 타겟팅이 되었을때 스킬 사용
+	if (m_fSkillCoolTimeCount >= m_nSkillCooltime
+		&& leng <= m_stSkill.fMaxLength
+		&& m_bIsTargeting
+		&& !m_bIsRespawn
+		&& !m_bUsingSkill
+		&& m_pModel->IsAnimationEnd()
+		&& !m_bSkill2Use)
+	{
+
+		//m_stSkill.fEffectTime = leng / tempEffect.s
+
+		ChangeRot();
+		m_bUsingSkill = true;
+		SkillPrepare();
+		return true;
+	}
+
+	return false;
+
+	return false;
 }
 
 bool BossParent::AbleSkill2()
