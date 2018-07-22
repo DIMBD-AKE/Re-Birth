@@ -17,6 +17,7 @@ private:
 	int			m_nVBOffset;
 
 	bool		m_isRegen;
+	bool		m_isDie;
 
 	ST_PARTICLE_ATTRIBUTE*			m_pOrigAttribute;
 	ST_PARTICLE_ATTRIBUTE_VARIABLE*	m_pVarAttribute;
@@ -38,6 +39,7 @@ public:
 	void TimeReset();
 	void Update();
 	void ForceUpdate(int count, float time);
+	bool IsDie() { return m_isDie; }
 
 	void PreRender();
 	void Render();
@@ -67,6 +69,7 @@ public:
 	void ForceUpdate(int count, float time) { m_pParticleSystem->ForceUpdate(count, time); }
 	void Render() { m_pParticleSystem->Render(); }
 	void SetRegen(bool regen) { m_pParticleSystem->SetRegen(regen); }
+	bool IsDie() { return m_pParticleSystem->IsDie(); }
 };
 
 class ParticleManager

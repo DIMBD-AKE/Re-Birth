@@ -357,4 +357,13 @@ namespace UTIL
 
 		return true;
 	}
+
+	static D3DXVECTOR3 GetFront(D3DXVECTOR3 rot, D3DXVECTOR3 front)
+	{
+		D3DXVECTOR3 ret;
+		D3DXMATRIX matR;
+		D3DXMatrixRotationYawPitchRoll(&matR, rot.y, rot.x, rot.z);
+		D3DXVec3TransformCoord(&ret, &front, &matR);
+		return ret;
+	}
 };

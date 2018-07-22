@@ -119,9 +119,11 @@ void ParticleSystem::TimeReset()
 void ParticleSystem::Update()
 {
 	auto iter = m_lAttribute.begin();
+	int count = 0;
 	for (; iter != m_lAttribute.end(); iter++)
 	{
 		if (!(*iter)->isAlive) continue;
+		count++;
 
 		float dist = D3DXVec3Length(&((*iter)->vGravityPos - (*iter)->vPos));
 		if (dist > 1.0f && dist < (*iter)->fGravityRadius)
@@ -146,6 +148,10 @@ void ParticleSystem::Update()
 		if ((*iter)->fAge > (*iter)->fLifeTime)
 			*(*iter) = ResetParticle((*iter)->nLoop);
 	}
+	if (count == 0)
+		m_isDie = true;
+	else
+		m_isDie = false;
 }
 
 void ParticleSystem::ForceUpdate(int count, float time)

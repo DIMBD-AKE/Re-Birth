@@ -7,6 +7,8 @@ protected:
 
 	bool				m_bshoot;	//Å¾ºä½Ã ÃÑ½ú´Ï?
 	EffectObject*		m_pMagicBullet;
+	vector<Particle*>	m_vecWindStorm;
+	float				m_fWindTime;
 
 public:
 	Character_Gun();
@@ -27,7 +29,11 @@ public:
 
 	void MagicBullet();
 	void MagicBulletUpdate();
-	int FindNearTarget(int ignore, D3DXVECTOR3 pos, float angle, float maxLength);
 
+	void WindStorm();
+	void WindStormUpdate();
+
+	int FindNearTarget(int ignore, D3DXVECTOR3 pos, float angle, float maxLength);
+	int FindRandomTarget(int ignore, D3DXVECTOR3 pos, float angle, float maxLength);
 };
 

@@ -17,6 +17,8 @@ Character_Gun::Character_Gun()
 Character_Gun::~Character_Gun()
 {
 	SAFE_DELETE(m_pMagicBullet);
+	for (auto p : m_vecWindStorm)
+		SAFE_DELETE(p);
 }
 
 
@@ -152,6 +154,7 @@ void Character_Gun::Update()
 	}
 
 	MagicBulletUpdate();
+	WindStormUpdate();
 }
 
 void Character_Gun::Render()
@@ -182,6 +185,9 @@ void Character_Gun::Render()
 
 	if (m_pMagicBullet)
 		m_pMagicBullet->Render();
+
+	for (auto p : m_vecWindStorm)
+		p->Render();
 }
 
 void Character_Gun::KeyControl()
@@ -428,7 +434,10 @@ void Character_Gun::KeyControl()
 
 	if (INPUT->KeyDown('V'))
 	{
-		MagicBullet();
+		if (m_eCharSelect == CHAR_ONE)
+			MagicBullet();
+		if (m_eCharSelect == CHAR_TWO)
+			WindStorm();
 	}
 }
 
@@ -775,7 +784,7 @@ void Character_Gun::MagicBulletUpdate()
 				ST_OBB tar = m_pMonsterManager->GetMonsterVector()[m_vecTarget[0]]->GetModel()->GetBoundBox().obb;
 				if (CollisionOBB(bul, tar))
 				{
-					int minIndex = FindNearTarget(m_vecTarget[0], bullet.center, D3DX_PI * 2, 20);
+					int randIndex = FindRandomTarget(m_vecTarget[0], bullet.center, D3DX_PI * 2, 20);
 					if (!m_pMonsterManager->GetMonsterVector()[m_vecTarget[0]]->GetIsResPawn())
 					{
 						m_pMonsterManager->GetMonsterVector()[m_vecTarget[0]]->CalculDamage(10);
@@ -793,10 +802,10 @@ void Character_Gun::MagicBulletUpdate()
 							D3DXVECTOR3(FRand(-1, 1), FRand(0, 2), FRand(-1, 1)));
 						m_vecEffect.push_back(object);
 					}
-					if (minIndex >= 0)
+					if (randIndex >= 0)
 					{
 						m_vecTarget.clear();
-						m_vecTarget.push_back(minIndex);
+						m_vecTarget.push_back(randIndex);
 					}
 					else
 					{
@@ -807,6 +816,79 @@ void Character_Gun::MagicBulletUpdate()
 			}
 		}
 	}
+}
+
+void Character_Gun::WindStorm()
+{
+	for (auto p : m_vecWindStorm)
+		SAFE_DELETE(p);
+	m_vecWindStorm.clear();
+
+	int maxStorm = 10;
+	float radius = 8;
+	D3DXVECTOR3 pos = *m_pCharacter->GetPosition();
+	D3DXVECTOR3 front = GetFront(*m_pCharacter->GetRotation(), D3DXVECTOR3(0, 0, -1));
+	pos += front * (radius + 2);
+	vector<D3DXVECTOR3> vecPos;
+	for (int i = 0; vecPos.size() < maxStorm; i++)
+	{
+		D3DXVECTOR3 temp = pos;
+		temp.x += FRand(-radius, radius);
+		temp.z += FRand(-radius, radius);
+
+		float height = m_pSampleMap->GetHeight(temp.x, temp.z);
+		temp.y = height;
+		if (height > 0)
+			vecPos.push_back(temp);
+	}
+
+	for (int i = 0; i < vecPos.size(); i++)
+	{
+		Particle * particle = PARTICLE->GetParticle("WindStorm");
+		particle->SetPosition(vecPos[i]);
+		particle->World();
+		m_vecWindStorm.push_back(particle);
+	}
+
+	m_fWindTime = 0;
+}
+
+void Character_Gun::WindStormUpdate()
+{
+	for (int i = 0; i < m_vecWindStorm.size();)
+	{
+		if (!m_vecWindStorm[i]->IsDie())
+		{
+			if (m_fWindTime > 3)
+				m_vecWindStorm[i]->SetRegen(false);
+
+			m_vecWindStorm[i]->Update();
+			ST_SPHERE particle;
+			particle.center = *m_vecWindStorm[i]->GetPosition();
+			particle.radius = 2;
+
+			auto vecMonster = m_pMonsterManager->GetMonsterVector();
+			for (int i = 0; i < vecMonster.size(); i++)
+			{
+				ST_SPHERE monster = vecMonster[i]->GetModel()->GetBoundSphere();
+				if (IntersectSphere(particle, monster))
+				{
+					if (!vecMonster[i]->GetIsResPawn())
+					{
+						vecMonster[i]->CalculDamage(10);
+					}
+				}
+			}
+			i++;
+		}
+		else
+		{
+			SAFE_DELETE(m_vecWindStorm[i]);
+			m_vecWindStorm.erase(m_vecWindStorm.begin() + i);
+		}
+	}
+
+	m_fWindTime += TIME->GetElapsedTime();
 }
 
 int Character_Gun::FindNearTarget(int ignore, D3DXVECTOR3 pos, float angle, float maxLength)
@@ -844,6 +926,36 @@ int Character_Gun::FindNearTarget(int ignore, D3DXVECTOR3 pos, float angle, floa
 	}
 
 	return minIndex;
+}
+
+int Character_Gun::FindRandomTarget(int ignore, D3DXVECTOR3 pos, float angle, float maxLength)
+{
+	vector<int> vecIndex;
+	auto monsterVector = m_pMonsterManager->GetMonsterVector();
+	for (int i = 0; i < monsterVector.size(); i++)
+	{
+		if (monsterVector[i]->GetIsResPawn()) continue;
+		if (i == ignore) continue;
+		float length = D3DXVec3Length(&(*monsterVector[i]->GetModel()->GetPosition() - pos));
+
+		if (length >= 0 && length <= maxLength)
+		{
+			// 시선
+			D3DXVECTOR3 front;
+			D3DXMATRIX matY;
+			D3DXMatrixRotationY(&matY, m_pCharacter->GetRotation()->y);
+			D3DXVec3TransformNormal(&front, &D3DXVECTOR3(0, 0, -1), &matY);
+			D3DXVECTOR3 v0 = front;
+			// 대상방향
+			D3DXVECTOR3 v1 = *monsterVector[i]->GetModel()->GetPosition() - pos;
+			D3DXVec3Normalize(&v1, &v1);
+			float dot = D3DXVec3Dot(&v0, &v1) / D3DXVec3Length(&v0) * D3DXVec3Length(&v1);
+			if (dot >= cos(angle / 2))
+				vecIndex.push_back(i);
+		}
+	}
+
+	return vecIndex[rand() % vecIndex.size()];
 }
 
 

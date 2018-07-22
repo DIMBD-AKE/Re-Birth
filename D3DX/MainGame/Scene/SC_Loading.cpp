@@ -177,6 +177,8 @@ void SC_Loading::AddTexture()
 	m_pLoading->LoadTexture("총알", "Texture/Particle/bullet.png");
 	m_pLoading->LoadTexture("조준선", "Texture/Particle/aim.png");
 
+	m_pLoading->LoadTexture("Particle Sphere", "Texture/Particle/Sphere.png");
+
 }
 
 void SC_Loading::AddSound()
@@ -256,6 +258,8 @@ void SC_Loading::AddParticle()
 	m_pLoading->LoadParticle("마법스킬공격", "마법기본공격", "./Particle/MagicSkill.ptc");
 	m_pLoading->LoadParticle("폭발", "폭발", "./Particle/Explosion.ptc");
 	m_pLoading->LoadParticle("석유", "석유", "./Particle/AssisHit.ptc");
+
+	m_pLoading->LoadParticle("WindStorm", "Particle Sphere", "Particle/WindStorm.ptc");
 }
 
 void SC_Loading::InitUI()

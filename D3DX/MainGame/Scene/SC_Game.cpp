@@ -125,9 +125,9 @@ void SC_Game::ShowElapseTime()
 
 void SC_Game::ClearStage()
 {
-	SCENE->ChangeScene("Main");
 	CAMERA->SetTarget(NULL, NULL);
 	SAFE_DELETE(m_pCharacter);
+	SCENE->ChangeScene("Main");
 }
 
 void SC_Game::NextStage()
