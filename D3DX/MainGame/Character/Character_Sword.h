@@ -9,6 +9,7 @@ private:
 	int m_nDC;
 	float m_fDeltaY;
 	float m_fDelta;
+	bool m_bEnemySkillMoving;
 	//
 
 public:
@@ -28,5 +29,6 @@ public:
 	void GrabSlash(); //전기톱 여캐 벨벳 스킬
 
 	void SkillDealing();
+	void SkillEnemyMoving();
 	//
 };

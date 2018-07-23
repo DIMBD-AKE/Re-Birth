@@ -11,7 +11,7 @@
 
 Character_Sword::Character_Sword()
 {		//다이얼로그			위치				사이즈  폰트       속도    색깔
-	//	m_pContext->Init(D3DXVECTOR2(550, 280), 30, "나눔명조", 0.05, 0xFFFFFFFF);
+		//	m_pContext->Init(D3DXVECTOR2(550, 280), 30, "나눔명조", 0.05, 0xFFFFFFFF);
 
 }
 
@@ -23,6 +23,13 @@ Character_Sword::~Character_Sword()
 void Character_Sword::Init(CHRTYPE type, CHARSELECT order)
 {
 	m_eChrType = CHRTYPE_SWORD;
+
+	// 
+	m_bIsFskill = false;
+	m_fDeltaY = 3.0f;
+	m_fDelta = 10.0f;
+	m_bEnemySkillMoving = false;
+	//
 
 	if (order == CHAR_ONE)
 	{
@@ -46,12 +53,6 @@ void Character_Sword::Init(CHRTYPE type, CHARSELECT order)
 		m_Status->chr.nMaxStam = 100;
 		m_Status->chr.fRange = 3.0f;
 		m_Status->chr.fScale = 5.0f;
-
-		// 
-		m_bIsFskill = false;
-		m_fDeltaY = 3.0f;
-		m_fDelta = 5.0f;
-		//
 
 		CharacterParant::Init(type, order);
 
@@ -219,6 +220,11 @@ void Character_Sword::Update()
 			}
 			else return;
 
+		}
+
+		if (m_bEnemySkillMoving)
+		{
+			SkillEnemyMoving();
 		}
 
 		Effect();
@@ -544,27 +550,30 @@ void Character_Sword::KeyControl()
 		m_nDC = 0;
 		if (m_eCharSelect == CHAR_ONE)
 		{
-			SOUND->Play("SwordAttack", g_fVolume);
-			SOUND->Play("베카_공격", g_fVolume);
+			SOUND->Play("SwordAttack");
+			SOUND->Play("베카_공격");
 		}
 		if (m_eCharSelect == CHAR_TWO)
 		{
-			SOUND->Play("SwordAttack_TWO", g_fVolume);
-			SOUND->Play("리아_공격", g_fVolume);
+			SOUND->Play("SwordAttack_TWO");
+			SOUND->Play("리아_공격");
 		}
 		if (m_eCharSelect == CHAR_THREE)
 		{
-			SOUND->Play("SwordAttack_THREE", g_fVolume);
-			SOUND->Play("벨벳_공격", g_fVolume);
+			SOUND->Play("SwordAttack_THREE");
+			SOUND->Play("벨벳_공격");
 		}
 
+		if (m_eCharSelect == CHAR_TWO)
+		{
+			m_fDelta = 10.0f;
+		}
 		if (m_eCharSelect == CHAR_THREE)
 		{
 			m_fDeltaY = 3.0f;
 		}
 		ChangeAnimation();
 	}
-
 
 
 
@@ -780,12 +789,12 @@ void Character_Sword::Bash()
 			D3DXMatrixRotationY(&matY, m_pCharacter->GetRotation()->y);
 			D3DXVec3TransformNormal(&front, &D3DXVECTOR3(0, 0, -1), &matY);
 
-			tempEffect.time = FRand(0.1, 0.1);
+			tempEffect.time = FRand(0.5, 0.5);
 			//tempEffect.isRY = true;
 			tempEffect.isRX = true;
 			tempEffect.dir = front;
 			tempEffect.height = 3.0f;
-			tempEffect.SetSpeed(1.0, 1.0, 1.0);
+			//tempEffect.SetSpeed(1.0, 1.0, 1.0);
 			//TODO : 알파값도 랜덤으로, 스케일도 랜덤으로 RND써서 수정
 			tempEffect.SetAlpha(FRand(100, 255), FRand(100, 255), 0);
 			tempEffect.SetScale(FRand(1.4, 3.0), FRand(1.4, 3.0), FRand(1.4, 3.0));
@@ -801,9 +810,6 @@ void Character_Sword::Bash()
 
 			D3DXVECTOR3 testSkillpos = pos;
 			testSkillpos.y += 1.0f;
-			//testSkillpos.x += FRand(-0.5, 0.5);
-			//testSkillpos.z += FRand(-0.3, 0.3);
-			////testSkillpos += TempDir * (10.0f * 0.3f);
 			tempEFOBJ->Init(tempEffect, testSkillpos);
 
 			m_vecEffect.push_back(tempEFOBJ);
@@ -864,9 +870,6 @@ void Character_Sword::GrabSlash()
 
 			D3DXVECTOR3 testSkillpos = pos;
 			testSkillpos.y += 1.0f;
-			//testSkillpos.x += FRand(-0.5, 0.5);
-			//testSkillpos.z += FRand(-0.3, 0.3);
-			////testSkillpos += TempDir * (10.0f * 0.3f);
 			tempEFOBJ->Init(tempEffect, testSkillpos);
 
 			m_vecEffect.push_back(tempEFOBJ);
@@ -896,7 +899,7 @@ void Character_Sword::SkillDealing()
 		{
 			for (int i = 0; i < m_pMonsterManager->GetMonsterVector().size(); i++)
 			{
-				if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn()) continue;
+
 				D3DXVECTOR3 s1 = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().center;
 				D3DXVECTOR3 s2 = m_vecEffect.back()->GetBoundSphere().center;
 				D3DXVECTOR3 v = s1 - s2;
@@ -933,7 +936,7 @@ void Character_Sword::SkillDealing()
 		{
 			for (int i = 0; i < m_pMonsterManager->GetMonsterVector().size(); i++)
 			{
-				if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn()) continue;
+
 				D3DXVECTOR3 s1 = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().center;
 				D3DXVECTOR3 s2 = m_vecEffect.back()->GetBoundSphere().center;
 				D3DXVECTOR3 v = s1 - s2;
@@ -945,15 +948,9 @@ void Character_Sword::SkillDealing()
 				if (r1 + r2 >= distance)
 				{
 					m_fDelta -= 1.0f;
-					m_pMonsterManager->GetMonsterVector()[i]->CalculDamage(1);
+					m_pMonsterManager->GetMonsterVector()[i]->CalculDamage(999);
 					m_nIndex = i;
-					D3DXVECTOR3 front;
-					D3DXMATRIX matY;
-					D3DXMatrixRotationY(&matY, m_pCharacter->GetRotation()->y);
-					D3DXVec3TransformNormal(&front, &D3DXVECTOR3(0, 0, -1), &matY);
-					D3DXVECTOR3 pos = *m_pCharacter->GetPosition();
-					//m_pCharacter->SetPosition(pos - front * 5);
-					m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->SetPosition(pos + front * (10.0f - m_fDelta));
+					m_bEnemySkillMoving = true;
 					m_nDC++;
 				}
 
@@ -968,7 +965,7 @@ void Character_Sword::SkillDealing()
 
 		for (int i = 0; i < m_pMonsterManager->GetMonsterVector().size(); i++)
 		{
-			if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn()) continue;
+
 			D3DXVECTOR3 s1 = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().center;
 			D3DXVECTOR3 s2 = m_vecEffect.back()->GetBoundSphere().center;
 			D3DXVECTOR3 v = s1 - s2;
@@ -982,27 +979,62 @@ void Character_Sword::SkillDealing()
 				m_fDeltaY -= 0.5f;
 				m_pMonsterManager->GetMonsterVector()[i]->CalculDamage(1);
 				m_nIndex = i;
-				D3DXVECTOR3 front;
-				D3DXMATRIX matY;
-				D3DXMatrixRotationY(&matY, m_pCharacter->GetRotation()->y);
-				D3DXVec3TransformNormal(&front, &D3DXVECTOR3(0, 0, -1), &matY);
-				D3DXVECTOR3 pos = *m_pCharacter->GetPosition();
-				//m_pCharacter->SetPosition(pos - front*4);
-				/*if (m_fDeltaY <= 0.0f)
-				{
-				m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->SetPosition(pos + front * 5.0f);
-				}
-				else
-				{*/
-				m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->SetPosition(pos + front * 5.0f + D3DXVECTOR3(0, m_fDeltaY, 0));
-				//}
-
+				m_bEnemySkillMoving = true;
 			}
 
 		}
 	}
 
 }
+
+void Character_Sword::SkillEnemyMoving()
+{
+	if (!m_bEnemySkillMoving) return;
+
+	if (m_eCharSelect == CHAR_TWO)
+	{
+		m_fDelta -= 1.0f;
+		D3DXVECTOR3 front;
+		D3DXMATRIX matY;
+		D3DXMatrixRotationY(&matY, m_pCharacter->GetRotation()->y);
+		D3DXVec3TransformNormal(&front, &D3DXVECTOR3(0, 0, -1), &matY);
+		D3DXVECTOR3 pos = *m_pCharacter->GetPosition();
+
+		if (m_nIndex >= 0)
+		{
+			D3DXVECTOR3 pos2 = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
+			if (m_pSampleMap->GetHeight((pos2 + front * (10.0f - m_fDelta)).x, (pos2 + front * (10.0f - m_fDelta)).z) >= 0.0f)
+			{
+				m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->SetPosition(pos + front * (10.0f - m_fDelta));
+			}
+		}
+
+		if (m_fDelta < 0)
+		{
+			m_bEnemySkillMoving = false;
+		}
+	}
+	else if (m_eCharSelect == CHAR_THREE)
+	{
+		m_fDeltaY -= 0.5f;
+		D3DXVECTOR3 front;
+		D3DXMATRIX matY;
+		D3DXMatrixRotationY(&matY, m_pCharacter->GetRotation()->y);
+		D3DXVec3TransformNormal(&front, &D3DXVECTOR3(0, 0, -1), &matY);
+		D3DXVECTOR3 pos = *m_pCharacter->GetPosition();
+
+		if (m_nIndex >= 0)
+		{
+			m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->SetPosition(pos + front * 5.0f + D3DXVECTOR3(0, m_fDeltaY, 0));
+		}
+
+		if (m_fDeltaY < 0)
+		{
+			m_bEnemySkillMoving = false;
+		}
+	}
+}
+
 
 
 
