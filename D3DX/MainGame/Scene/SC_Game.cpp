@@ -23,6 +23,8 @@ void SC_Game::Release()
 	SAFE_DELETE(m_pDropManager);
 	SAFE_DELETE(m_pMM);
 	SAFE_RELEASE(m_pUI);
+	for (auto p : m_vecParticle)
+		SAFE_DELETE(p);
 }
 
 void SC_Game::Init()
@@ -41,12 +43,29 @@ void SC_Game::Init()
 	m_fGenTime = GetTickCount();
 
 	m_pMap = new Map;
-	if (m_nStage == 1)
+	if (m_nStage == 0)
 		m_pMap->Load("Map/Sample.map");
-	else if (m_nStage == 2)
+	else if (m_nStage == 1)
 		m_pMap->Load("Map/Stage 1.map");
-	else if (m_nStage == 3)
+	else if (m_nStage == 2)
 		m_pMap->Load("Map/Stage 2.map");
+	else if (m_nStage == 3)
+	{
+		m_pMap->Load("Map/Stage 3.map");
+		for (int i = 0; m_vecParticle.size() < 10; i++)
+		{
+			D3DXVECTOR3 pos = D3DXVECTOR3(FRand(-100, 100), 0, FRand(-100, 100));
+			float height = m_pMap->GetHeight(pos.x, pos.z);
+			if (height > 0)
+			{
+				pos.y = height;
+				Particle * particle = PARTICLE->GetParticle("Hell Smoke");
+				particle->SetPosition(pos);
+				particle->World();
+				m_vecParticle.push_back(particle);
+			}
+		}
+	}
 
 	m_pDropManager = new DropManager;
 	m_pDropManager->Init();
@@ -92,6 +111,9 @@ void SC_Game::Update()
 		NextStage();
 	}
 
+	for (auto p : m_vecParticle)
+		p->Update();
+
 	if (m_fElapseTime < 0.0001)
 		m_fElapseTime -= m_fGenTime;
 	m_fElapseTime += TIME->GetElapsedTime();
@@ -104,6 +126,9 @@ void SC_Game::Render()
 	m_pDropManager->Render();
 	m_pCharacter->Render();
 	m_pMM->Render();
+
+	for (auto p : m_vecParticle)
+		p->Render();
 
 	m_pUI->Render();
 }

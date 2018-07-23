@@ -362,10 +362,16 @@ void SkinnedMesh::Render(LPD3DXFRAME pFrame, D3DXMATRIX * matWorld)
 
 	if (false)
 	{
-		D3DXVECTOR3 pos = D3DXVECTOR3(0, 0, 0);
-		D3DXVec3TransformCoord(&pos, &pos, &pBone->CombinedTransformationMatrix);
-		D3DXVECTOR2 conv = Convert3DTo2D(pos);
-		TEXT->Add(name, conv.x, conv.y, 10, "", 0xFFFFFFFF);
+		if (name.compare("Bip001-Head") == 0 ||
+			name.compare("Bip001-L-Hand") == 0 || name.compare("Bip001-R-Hand") == 0 ||
+			name.compare("Bip001-L-Foot") == 0 || name.compare("Bip001-R-Foot") == 0 ||
+			name.compare("Bip001-Spine") == 0 || name.compare("Bip001-Spine1") == 0 || name.compare("Bip001-Spine2") == 0)
+		{
+			D3DXVECTOR3 pos = D3DXVECTOR3(0, 0, 0);
+			D3DXVec3TransformCoord(&pos, &pos, &pBone->CombinedTransformationMatrix);
+			D3DXVECTOR2 conv = Convert3DTo2D(pos);
+			TEXT->Add(name, conv.x, conv.y, 10, "", 0xFFFFFFFF);
+		}
 	}
 
 	if (pBone->pMeshContainer)
