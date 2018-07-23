@@ -8,6 +8,7 @@ protected:
 	bool				m_bshoot;	//Å¾ºä½Ã ÃÑ½ú´Ï?
 	EffectObject*		m_pMagicBullet;
 	vector<Particle*>	m_vecWindStorm;
+	vector<D3DXVECTOR3>	m_vecWSDir;
 	float				m_fWindTime;
 
 public:

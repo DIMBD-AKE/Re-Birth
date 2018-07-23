@@ -727,7 +727,7 @@ void Character_Gun::MagicBullet()
 			effect.dir = *monsterVector[minIndex]->GetModel()->GetPosition() - chrPos;
 			effect.SetAlpha(255, 255, 255);
 			effect.isSphere = true;
-			effect.SetSpeed(2, 1, 0.5);
+			effect.SetSpeed(3, 3, 2);
 			effect.SetScale(1, 1, 1);
 			effect.height = 2;
 			effect.time = 3;
@@ -823,6 +823,7 @@ void Character_Gun::WindStorm()
 	for (auto p : m_vecWindStorm)
 		SAFE_DELETE(p);
 	m_vecWindStorm.clear();
+	m_vecWSDir.clear();
 
 	int maxStorm = 10;
 	float radius = 8;
@@ -847,6 +848,7 @@ void Character_Gun::WindStorm()
 		Particle * particle = PARTICLE->GetParticle("WindStorm");
 		particle->SetPosition(vecPos[i]);
 		particle->World();
+		m_vecWSDir.push_back(D3DXVECTOR3(FRand(-1, 1), 0, FRand(-1, 1)));
 		m_vecWindStorm.push_back(particle);
 	}
 
@@ -862,7 +864,10 @@ void Character_Gun::WindStormUpdate()
 			if (m_fWindTime > 3)
 				m_vecWindStorm[i]->SetRegen(false);
 
+			m_vecWindStorm[i]->GetPosition()->x += m_vecWSDir[i].x * 0.1;
+			m_vecWindStorm[i]->GetPosition()->z += m_vecWSDir[i].z * 0.1;
 			m_vecWindStorm[i]->Update();
+			m_vecWindStorm[i]->World();
 			ST_SPHERE particle;
 			particle.center = *m_vecWindStorm[i]->GetPosition();
 			particle.radius = 2;
@@ -955,7 +960,10 @@ int Character_Gun::FindRandomTarget(int ignore, D3DXVECTOR3 pos, float angle, fl
 		}
 	}
 
-	return vecIndex[rand() % vecIndex.size()];
+	if (!vecIndex.empty())
+		return vecIndex[rand() % vecIndex.size()];
+	else
+		return -1;
 }
 
 
