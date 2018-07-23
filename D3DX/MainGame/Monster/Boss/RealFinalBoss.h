@@ -16,10 +16,21 @@ struct ST_HANDMAT
 class RealFinalboss :
 	public BossParent
 {
+protected:
+
+	//돌 떨어지는 위치의 마법진
 	vector<MagicCircle*> m_vMagicCircle;
 
+	//돌 떨궈주는 이펙트오브젝트 클래스
+	vector<EffectObject*> m_vEffectObject;
+
 	ST_HANDMAT m_stHandMat;
+
+	ST_EFFECT m_stEffect;
+
 	//virtual void ChangeAni() override;
+
+private:
 
 	virtual void Pattern() override;
 

@@ -12,6 +12,7 @@ RealFinalboss::~RealFinalboss()
 	for (int i = 0; i < STONENUM; ++i)
 	{
 		SAFE_DELETE(m_vMagicCircle[i]);
+		SAFE_DELETE(m_vEffectObject[i]);
 	}
 }
 
@@ -51,14 +52,30 @@ void RealFinalboss::SetupBoss(Map* map, D3DXVECTOR3 pos)
 	m_bIsTargeting = true;
 
 	m_vMagicCircle.resize(STONENUM);
+	m_vEffectObject.resize(STONENUM);
 	for (int i = 0; i < STONENUM; ++i)
 	{
 		m_vMagicCircle[i] = new MagicCircle;
 		m_vMagicCircle[i]->Setup();
+
+		m_vEffectObject[i] = new EffectObject;
 	}
 
 	m_pModel->SetPosition(D3DXVECTOR3(pos.x, pos.y, pos.z));
 
+
+	ZeroMemory(&m_stEffect, sizeof(ST_EFFECT));
+	m_stEffect.dir = D3DXVECTOR3(0,-1,0);
+	m_stEffect.SetAlpha(255, 255, 255);
+	m_stEffect.isSphere = true;
+	m_stEffect.SetSpeed(0.3f, 0.3f, 0.3f);
+	m_stEffect.SetScale(1, 1, 1);
+	m_stEffect.height = 3;
+	m_stEffect.time = 3;
+	//effect.SetMotorSpeed(1, 1, 1);
+	//effect.mot = D3DXVECTOR3(0, 0, 1);
+	m_stEffect.tex = TEXTUREMANAGER->GetTexture("µ¹");
+	
 }
 
 void RealFinalboss::Update()
@@ -68,6 +85,7 @@ void RealFinalboss::Update()
 		for (int i = 0; i < STONENUM; ++i)
 		{
 			m_vMagicCircle[i]->Update();
+			m_vEffectObject[i]->Update();
 		}
 	}
 
@@ -84,6 +102,7 @@ void RealFinalboss::Render()
 		for (int i = 0; i < STONENUM; ++i)
 		{
 			m_vMagicCircle[i]->Render();
+			m_vEffectObject[i]->Render();
 		}
 	}
 
@@ -505,6 +524,13 @@ void RealFinalboss::DropTheStone()
 		rndPos.x += FRand(RNDMIN,RNDMAX);
 		rndPos.z += FRand(RNDMIN,RNDMAX);
 
+		/* 	void Init(ST_EFFECT info, D3DXVECTOR3 pos);*/
+		
 		m_vMagicCircle[i]->SetParticlePos(rndPos);
+		m_vMagicCircle[i]->GetParticle()->TimeReset();
+
+		SAFE_DELETE(m_vEffectObject[i]);
+		m_vEffectObject[i] = new EffectObject;
+		m_vEffectObject[i]->Init(m_stEffect, rndPos + D3DXVECTOR3(0, 7.0f, 0));
 	}
 }

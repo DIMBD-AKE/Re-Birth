@@ -1,10 +1,14 @@
 #pragma once
 class MagicCircle
 {
+	GET(Particle*, m_pParticle, Particle);
+	//Particle* m_pParticle;
+
+private:
 	D3DXVECTOR3 m_vPos;
 	float m_fRadius;
 
-	Particle* m_pParticle;
+
 public:
 	MagicCircle();
 	~MagicCircle();
@@ -23,5 +27,7 @@ public:
 	void SetParticlePos(D3DXVECTOR3 pos){ 
 		m_vPos = pos;
 		m_pParticle->SetPosition(m_vPos); }
+
+	
 };
 
