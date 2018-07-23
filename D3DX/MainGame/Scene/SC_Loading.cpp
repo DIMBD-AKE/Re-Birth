@@ -178,6 +178,7 @@ void SC_Loading::AddTexture()
 
 	m_pLoading->LoadTexture("Particle Sphere", "Texture/Particle/Sphere.png");
 	m_pLoading->LoadTexture("Option Volume", "Texture/Scene/Volume.png");
+	m_pLoading->LoadTexture("Magic Bullet", "Texture/Effect/Magic Bullet.png");
 
 	//메테오 파티클 
 	m_pLoading->LoadTexture("MeteorAfter", "Texture/Particle/meteorAfter.png");
