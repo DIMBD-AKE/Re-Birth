@@ -729,11 +729,11 @@ void Character_Gun::MagicBullet()
 			effect.isSphere = true;
 			effect.SetSpeed(3, 3, 2);
 			effect.SetScale(1, 1, 1);
-			effect.height = 2;
+			effect.height = 2.5;
 			effect.time = 3;
 			effect.SetMotorSpeed(1, 1, 1);
 			effect.mot = D3DXVECTOR3(0, 0, 1);
-			effect.tex = TEXTUREMANAGER->AddTexture("Magic Bullet", "Texture/Effect/Hestia.png");
+			effect.tex = TEXTUREMANAGER->GetTexture("Magic Bullet");
 
 			SAFE_DELETE(m_pMagicBullet);
 			m_pMagicBullet = new EffectObject;
@@ -789,12 +789,12 @@ void Character_Gun::MagicBulletUpdate()
 					{
 						m_pMonsterManager->GetMonsterVector()[m_vecTarget[0]]->CalculDamage(10);
 						ZeroMemory(&effect, sizeof(ST_EFFECT));
-						effect.SetAlpha(200, 100, 0);
+						effect.SetAlpha(100, 50, 0);
 						effect.isSphere = true;
 						effect.SetScale(1, 0.5, 0);
-						effect.height = FRand(1.5, 3);
+						effect.height = FRand(2, 4);
 						effect.time = 1;
-						effect.SetMotorSpeed(0.5, 0.2, 0);
+						effect.SetMotorSpeed(0.3, 0.1, 0);
 						effect.mot = D3DXVECTOR3(0, 0, 1);
 						effect.tex = TEXTUREMANAGER->GetTexture("Magic Bullet");
 						object = new EffectObject;
