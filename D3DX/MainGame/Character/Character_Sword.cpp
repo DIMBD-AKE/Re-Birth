@@ -10,7 +10,9 @@
 
 
 Character_Sword::Character_Sword()
-{
+{		//다이얼로그			위치				사이즈  폰트       속도    색깔
+	//	m_pContext->Init(D3DXVECTOR2(550, 280), 30, "나눔명조", 0.05, 0xFFFFFFFF);
+
 }
 
 
@@ -272,7 +274,7 @@ void Character_Sword::KeyControl()
 	//앞으로 달리기
 	if (INPUT->KeyDown('W'))
 	{
-		SOUND->Play("FootStep");
+		SOUND->Play("FootStep", g_fVolume);
 		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_HIT)
 		{
 			m_eCondition = CHAR_RUN_FRONT;
@@ -301,7 +303,7 @@ void Character_Sword::KeyControl()
 	//뒤로 달리기
 	if (INPUT->KeyDown('S'))
 	{
-		SOUND->Play("FootStep");
+		SOUND->Play("FootStep", g_fVolume);
 		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_HIT)
 		{
 			m_eCondition = CHAR_RUN_BACK;
@@ -330,7 +332,7 @@ void Character_Sword::KeyControl()
 	//앞으로 대쉬
 	if (INPUT->KeyDown('Q'))
 	{
-		SOUND->Play("FootStep3");
+		SOUND->Play("FootStep3", g_fVolume);
 		SOUND->Stop("FootStep");
 		if (m_eCondition == CHAR_RUN_FRONT)
 		{
@@ -362,7 +364,7 @@ void Character_Sword::KeyControl()
 	//뒤로 대쉬
 	if (INPUT->KeyDown('E'))
 	{
-		SOUND->Play("FootStep3");
+		SOUND->Play("FootStep3", g_fVolume);
 		SOUND->Stop("FootStep");
 		if (m_eCondition == CHAR_RUN_BACK)
 		{
@@ -397,18 +399,18 @@ void Character_Sword::KeyControl()
 	{
 		if (m_eCharSelect == CHAR_ONE)
 		{
-			SOUND->Play("SwordAttack");
-			SOUND->Play("베카_공격");
+			SOUND->Play("SwordAttack", g_fVolume);
+			SOUND->Play("베카_공격", g_fVolume);
 		}
 		if (m_eCharSelect == CHAR_TWO)
 		{
-			SOUND->Play("SwordAttack_TWO");
-			SOUND->Play("리아_공격");
+			SOUND->Play("SwordAttack_TWO", g_fVolume);
+			SOUND->Play("리아_공격", g_fVolume);
 		}
 		if (m_eCharSelect == CHAR_THREE)
 		{
-			SOUND->Play("SwordAttack_THREE");
-			SOUND->Play("벨벳_공격");
+			SOUND->Play("SwordAttack_THREE", g_fVolume);
+			SOUND->Play("벨벳_공격", g_fVolume);
 		}
 
 		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_RUN_FRONT || m_eCondition == CHAR_RUN_BACK)
@@ -466,18 +468,18 @@ void Character_Sword::KeyControl()
 	{
 		if (m_eCharSelect == CHAR_ONE)
 		{
-			if (!SOUND->IsPlaySound("베카_피격")) SOUND->Play("베카_피격");
+			if (!SOUND->IsPlaySound("베카_피격")) SOUND->Play("베카_피격", g_fVolume);
 		}
 		if (m_eCharSelect == CHAR_TWO)
 		{
 			if (m_bIsUnderAttacked)
 			{
-				if (!SOUND->IsPlaySound("리아_피격")) SOUND->Play("리아_피격");
+				if (!SOUND->IsPlaySound("리아_피격")) SOUND->Play("리아_피격", g_fVolume);
 			}
 		}
 		if (m_eCharSelect == CHAR_THREE)
 		{
-			if (!SOUND->IsPlaySound("벨벳_피격")) SOUND->Play("벨벳_피격");
+			if (!SOUND->IsPlaySound("벨벳_피격")) SOUND->Play("벨벳_피격", g_fVolume);
 		}
 		if (INPUT->KeyDown(VK_SPACE))
 		{
@@ -542,18 +544,18 @@ void Character_Sword::KeyControl()
 		m_nDC = 0;
 		if (m_eCharSelect == CHAR_ONE)
 		{
-			SOUND->Play("SwordAttack");
-			SOUND->Play("베카_공격");
+			SOUND->Play("SwordAttack", g_fVolume);
+			SOUND->Play("베카_공격", g_fVolume);
 		}
 		if (m_eCharSelect == CHAR_TWO)
 		{
-			SOUND->Play("SwordAttack_TWO");
-			SOUND->Play("리아_공격");
+			SOUND->Play("SwordAttack_TWO", g_fVolume);
+			SOUND->Play("리아_공격", g_fVolume);
 		}
 		if (m_eCharSelect == CHAR_THREE)
 		{
-			SOUND->Play("SwordAttack_THREE");
-			SOUND->Play("벨벳_공격");
+			SOUND->Play("SwordAttack_THREE", g_fVolume);
+			SOUND->Play("벨벳_공격", g_fVolume);
 		}
 
 		if (m_eCharSelect == CHAR_THREE)

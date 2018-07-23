@@ -187,7 +187,7 @@ void Character_Magic::KeyControl()
 	//앞으로 달리기
 	if (INPUT->KeyDown('W'))
 	{
-		SOUND->Play("FootStep2");
+		SOUND->Play("FootStep2", g_fVolume);
 		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_HIT)
 		{
 			m_eCondition = CHAR_RUN_FRONT;
@@ -208,7 +208,7 @@ void Character_Magic::KeyControl()
 	//뒤로 달리기
 	if (INPUT->KeyDown('S'))
 	{
-		SOUND->Play("FootStep2");
+		SOUND->Play("FootStep2", g_fVolume);
 		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_HIT)
 		{
 			m_eCondition = CHAR_RUN_BACK;
@@ -230,7 +230,7 @@ void Character_Magic::KeyControl()
 	if (INPUT->KeyDown('Q'))
 	{
 		SOUND->Stop("FootStep2");
-		SOUND->Play("FootStep3");
+		SOUND->Play("FootStep3", g_fVolume);
 		if (m_eCondition == CHAR_RUN_FRONT)
 		{
 			m_eCondition = CHAR_DASH_FRONT;
@@ -254,7 +254,7 @@ void Character_Magic::KeyControl()
 	if (INPUT->KeyDown('E'))
 	{
 		SOUND->Stop("FootStep2");
-		SOUND->Play("FootStep3");
+		SOUND->Play("FootStep3", g_fVolume);
 		if (m_eCondition == CHAR_RUN_BACK)
 		{
 			m_eCondition = CHAR_DASH_BACK;
@@ -280,13 +280,13 @@ void Character_Magic::KeyControl()
 	{
 		if (m_eCharSelect == CHAR_ONE)
 		{
-			SOUND->Play("SwordAttack");
-			SOUND->Play("아카날_공격");
+			SOUND->Play("SwordAttack", g_fVolume);
+			SOUND->Play("아카날_공격", g_fVolume);
 		}
 		if (m_eCharSelect == CHAR_TWO)
 		{
-			SOUND->Play("SwordAttack");
-			SOUND->Play("헤스티아_공격");
+			SOUND->Play("SwordAttack", g_fVolume);
+			SOUND->Play("헤스티아_공격", g_fVolume);
 		}
 
 		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_RUN_FRONT || m_eCondition == CHAR_RUN_BACK)
@@ -333,11 +333,11 @@ void Character_Magic::KeyControl()
 	{
 		if (m_eCharSelect == CHAR_ONE)
 		{
-			if (!SOUND->IsPlaySound("아카날_피격")) SOUND->Play("아카날_피격");
+			if (!SOUND->IsPlaySound("아카날_피격")) SOUND->Play("아카날_피격", g_fVolume);
 		}
 		if (m_eCharSelect == CHAR_TWO)
 		{
-			if (!SOUND->IsPlaySound("헤스티아_피격")) SOUND->Play("헤스티아_피격");
+			if (!SOUND->IsPlaySound("헤스티아_피격")) SOUND->Play("헤스티아_피격", g_fVolume);
 		}
 
 		if (INPUT->KeyDown(VK_SPACE))
