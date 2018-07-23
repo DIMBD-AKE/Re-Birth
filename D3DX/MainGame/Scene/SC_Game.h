@@ -21,6 +21,8 @@ private:
 	float				m_fElapseTime;
 	string				m_sChrName;
 
+	vector<Particle*>	m_vecParticle;
+
 public:
 	SC_Game();
 	virtual ~SC_Game();

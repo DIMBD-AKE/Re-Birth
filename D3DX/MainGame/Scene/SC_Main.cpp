@@ -78,7 +78,7 @@ void SC_Main::OnClick(UIObject * pSender)
 			character->Init(CHRTYPE_GUN, CHAR_TWO);
 		}
 		SCENE->GetCurrentScene()->SetData(0, character);
-		int stage = 1;
+		int stage = 0;
 		SCENE->GetCurrentScene()->SetData(1, &stage);
 		float time = 0;
 		SCENE->GetCurrentScene()->SetData(2, &time);
