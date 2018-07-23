@@ -28,6 +28,8 @@ public:
 	void Render();
 	bool IsFinish();
 
+	D3DXVECTOR3* GetPosition() { return &m_vPos; }
+
 	void Debug();
 
 	ST_SPHERE GetBoundSphere();

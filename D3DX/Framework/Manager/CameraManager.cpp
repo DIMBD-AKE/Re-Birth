@@ -14,12 +14,13 @@ CameraManager::CameraManager()
 	, m_pTargetPos(NULL)
 	, m_pTargetRot(NULL)
 	, m_eMode(CAMERA_FREE)
+	, m_eAction(CAMERAA_NONE)
 	, m_fSpeed(0.5f)
 	, m_fSmooth(0.2f)
 	, m_fDistance(0)
 	, m_fElapse(0)
 	, m_fShakePower(0)
-	, m_fShakeTime(0)
+	, m_fActionTime(0)
 {
 	Setup();
 }
@@ -95,7 +96,6 @@ void CameraManager::Update()
 
 	if (m_eMode == CAMERA_FREE)
 	{
-
 		if (INPUT->KeyDown(VK_RBUTTON))
 			m_ptPrevMouse = MOUSE_POS;
 
@@ -155,13 +155,25 @@ void CameraManager::Update()
 		}
 	}
 
-	if (m_fElapse < m_fShakeTime)
+	if (m_fElapse < m_fActionTime)
 	{
-		float x = FRand(-m_fShakePower, m_fShakePower);
-		float y = FRand(-m_fShakePower, m_fShakePower);
-		float z = FRand(-m_fShakePower, m_fShakePower);
-		vEye += D3DXVECTOR3(x, y, z);
-		vLookAt += D3DXVECTOR3(x, y, z);
+		if (m_eAction == CAMERAA_SHAKE)
+		{
+			float x = FRand(-m_fShakePower, m_fShakePower);
+			float y = FRand(-m_fShakePower, m_fShakePower);
+			float z = FRand(-m_fShakePower, m_fShakePower);
+			vEye += D3DXVECTOR3(x, y, z);
+			vLookAt += D3DXVECTOR3(x, y, z);
+		}
+		if (m_eAction == CAMERAA_CINEMATIC && m_pTargetPos)
+		{
+			vEye = *m_pTargetPos;
+			m_vCinRot += m_vCinDir * TIME->GetElapsedTime();
+			m_fCinZoom += m_fCinZoomSpeed * TIME->GetElapsedTime();
+			D3DXVECTOR3 front = GetFront(D3DXVECTOR3(m_vCinRot.x, m_vCinRot.y, 0), D3DXVECTOR3(0, 0, m_fCinZoom));
+			vEye += front;
+			vEye.y += m_vTargetOffset.y;
+		}
 	}
 
 	D3DXMatrixLookAtLH(&matView, &vEye, &vLookAt, &m_vUp);
@@ -208,6 +220,18 @@ bool CameraManager::IsFrustum(ST_SPHERE sphere)
 void CameraManager::Shake(float power, float time)
 {
 	m_fShakePower = power;
-	m_fShakeTime = time;
+	m_fActionTime = time;
 	m_fElapse = 0;
+	m_eAction = CAMERAA_SHAKE;
+}
+
+void CameraManager::Cinematic(D3DXVECTOR2 startDir, D3DXVECTOR2 rotDir, float zoomStart, float zoomSpeed, float time)
+{
+	m_vCinDir = D3DXVECTOR2(D3DXToRadian(rotDir.x), D3DXToRadian(rotDir.y));
+	m_fCinZoom = zoomStart;
+	m_fCinZoomSpeed = zoomSpeed;
+	m_fActionTime = time;
+	m_vCinRot = D3DXVECTOR2(D3DXToRadian(startDir.x), D3DXToRadian(startDir.y));
+	m_fElapse = 0;
+	m_eAction = CAMERAA_CINEMATIC;
 }
