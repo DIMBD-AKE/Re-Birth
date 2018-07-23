@@ -65,6 +65,7 @@ public:
 	bool IsFrustum(ST_SPHERE sphere);
 	void Shake(float power, float time);
 	void Cinematic(D3DXVECTOR2 startDir, D3DXVECTOR2 rotDir, float zoomStart, float zoomSpeed, float time);
+	bool IsActionEnd() { return m_fActionTime <= m_fElapse; }
 };
 
 #define CAMERA CameraManager::GetInstance()
