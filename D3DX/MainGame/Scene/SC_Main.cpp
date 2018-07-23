@@ -111,7 +111,9 @@ void SC_Main::OnClick(UIObject * pSender)
 						m_pVolume->Find("Volume " + to_string(j))->SetColor(D3DXVECTOR3(128, 128, 128));
 				}
 
+				SOUND->Stop("Main Theme");
 				VOLUME = i / (float)19;
+				SOUND->Play("Main Theme", VOLUME);
 			}
 		}
 	}
@@ -158,7 +160,7 @@ void SC_Main::Release()
 void SC_Main::Init()
 {
 	g_clearColor = 0xFF000000;
-	SOUND->Play("Main Theme");
+	SOUND->Play("Main Theme", VOLUME);
 
 	m_eState = MS_TITLE;
 	m_isPortrait = false;
