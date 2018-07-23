@@ -34,7 +34,7 @@ private:
 	//중간보스
 	void MakeMiddleBoss(DropManager* pDropManager);
 
-	
+	void MakeFinalBoss(DropManager* pDropManager);
 	
 
 public:

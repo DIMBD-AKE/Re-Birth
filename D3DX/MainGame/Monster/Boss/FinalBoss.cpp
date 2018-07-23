@@ -144,63 +144,63 @@ void FinalBoss::SetupSkill2()
 //
 //}
 
-//void FinalBoss::Pattern()
-//{
-//	if (AbleSkill() && !m_bSkill2Use )
-//	{
-//		m_eBossState = BS_CASTING;
-//		ChangeAni();
-//	}
-//
-//	else if (AbleSkill2() )
-//	{
-//		m_eBossState = BS_SKILL2;
-//		ChangeAni();
-//	}
-//
-//	switch (m_eBossState)
-//	{
-//	case BS_ENTER:
-//	{
-//		if (m_pModel->IsAnimationEnd())
-//		{
-//			m_eBossState = BS_RUN;
-//			ChangeAni();
-//		}
-//	}
-//		break;
-//	case BS_RUN:
-//	{
-//		Move();
-//	}
-//		break;
-//	case BS_PASSIVE:
-//		if (m_pModel->IsAnimationEnd())
-//		{
-//			m_eBossState = BS_RUN;
-//			ChangeAni();
-//		}
-//		break;
-//	case BS_ATTACK:
-//		Attack();
-//		break;
-//	case BS_SKILL1:
-//		SkillUse();
-//		break;
-//	case BS_SKILL2:
-//		Skill2();
-//		break;
-//	case BS_CASTING:
-//		Casting();
-//		break;
-//	case BS_DIE:
-//	{
-//				   if (m_pModel->IsAnimationEnd()) m_eBossState = BS_NONE;
-//	}
-//	default:
-//		break;
-//	}
-//}
+void FinalBoss::Pattern()
+{
+	if (AbleSkill() && !m_bSkill2Use)
+	{
+		m_eBossState = BS_CASTING;
+		ChangeAni();
+	}
+
+	else if (AbleSkill2())
+	{
+		m_eBossState = BS_SKILL2;
+		ChangeAni();
+	}
+
+	switch (m_eBossState)
+	{
+	case BS_ENTER:
+	{
+		if (m_pModel->IsAnimationEnd())
+		{
+			m_eBossState = BS_RUN;
+			ChangeAni();
+		}
+	}
+	break;
+	case BS_RUN:
+	{
+		Move();
+	}
+	break;
+	case BS_PASSIVE:
+		if (m_pModel->IsAnimationEnd())
+		{
+			m_eBossState = BS_RUN;
+			ChangeAni();
+		}
+		break;
+	case BS_ATTACK:
+		Attack();
+		break;
+	case BS_SKILL1:
+		SkillUse();
+		break;
+	case BS_SKILL2:
+		Skill2();
+		break;
+	case BS_CASTING:
+		Casting();
+		break;
+	case BS_DIE:
+	{
+		if (m_pModel->IsAnimationEnd()) m_eBossState = BS_NONE;
+	}
+	default:
+		break;
+	}
+}
 
 void FinalBoss::Attack()
 {
