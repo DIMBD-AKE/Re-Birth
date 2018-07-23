@@ -85,6 +85,7 @@ void RealFinalboss::Update()
 		for (int i = 0; i < STONENUM; ++i)
 		{
 			m_vMagicCircle[i]->Update();
+			if (m_vEffectObject[i])
 			m_vEffectObject[i]->Update();
 		}
 	}
@@ -102,6 +103,7 @@ void RealFinalboss::Render()
 		for (int i = 0; i < STONENUM; ++i)
 		{
 			m_vMagicCircle[i]->Render();
+			if(m_vEffectObject[i])
 			m_vEffectObject[i]->Render();
 		}
 	}
@@ -398,6 +400,22 @@ void RealFinalboss::SkillUse()
 
 void RealFinalboss::Skill2()
 {
+	ST_SPHERE target = CHARACTER->GetBoundSphere();
+
+	for (int i = 0; i < m_vEffectObject.size(); ++i)
+	{
+		ST_SPHERE stone;
+			if (m_vEffectObject[i])
+			{
+				stone = m_vEffectObject[i]->GetBoundSphere();
+
+				if (IntersectSphere(target, stone))
+				{
+					PCHARACTER->CalculDamage(100);
+					SAFE_DELETE(m_vEffectObject[i]);
+				}
+			}
+	}
 	if (m_pModel->IsAnimationPercent(0.65f))
 	{
 		DropTheStone();

@@ -183,7 +183,7 @@ void SC_Loading::AddTexture()
 	m_pLoading->LoadTexture("MeteorAfter", "Texture/Particle/meteorAfter.png");
 
 	//최종보스 스킬 텍스쳐
-	m_pLoading->LoadTexture("돌", "Texture/Particle/stone.png");
+	m_pLoading->LoadTexture("돌", "Texture/Effect/stone.png");
 }
 
 void SC_Loading::AddSound()
