@@ -2,8 +2,8 @@
 #include "BossParent.h"
 
 #define STONENUM 5
-#define RNDMIN -5
-#define RNDMAX 5
+#define RNDMIN -10
+#define RNDMAX 10
 
 struct ST_HANDMAT
 {

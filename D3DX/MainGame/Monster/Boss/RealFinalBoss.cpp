@@ -166,32 +166,6 @@ void RealFinalboss::SetupSkill()
 
 void RealFinalboss::SetupSkill2()
 {
-	ZeroMemory(&m_stSkill2, sizeof(m_stSkill2));
-
-	m_stSkill2.nMaxTarget = 1;
-	m_stSkill2.fMinLength = 0;
-	m_stSkill2.fMaxLength = 100;
-	m_stSkill2.fAngle = 360;
-
-	m_stSkill2.fDamage = 100; //v
-	m_stSkill2.nDamageCount = 1;
-	m_stSkill2.fDamageInterval = 0;
-	m_stSkill2.fDamageDelay = 0;
-
-	m_stSkill2.fBuffTime = -1;//<0;
-
-	m_fSkillCoolTimeCount2 = 0;
-	m_nSkillCooltime2 = 30;
-
-
-
-	//m_stSkill.fYOffset ;
-	//m_stSkill.isAutoRot;
-	//m_stSkill.fParticleTime;
-	//m_stSkill.fParticleSpeed;
-	m_stSkill.fEffectTime = 0;
-
-	//	m_stSkill.buffStatus.chr.nCurrentHP = 100; //증가 될 스탯량 피뺴고 제로메모리;
 }
 
 //void RealFinalboss::ChangeAni()
@@ -266,7 +240,7 @@ void RealFinalboss::Pattern()
 		break;
 
 	case BS_ATTACK:
-		//Attack();
+		Attack();
 		break;
 
 	case BS_SKILL1:
@@ -411,6 +385,7 @@ void RealFinalboss::Skill2()
 
 				if (IntersectSphere(target, stone))
 				{
+					CAMERA->Shake(0.5f, 0.5f);
 					PCHARACTER->CalculDamage(100);
 					SAFE_DELETE(m_vEffectObject[i]);
 				}
