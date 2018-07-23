@@ -338,7 +338,7 @@ void MonsterManager::MakeFinalBoss(DropManager* pDropManager)
 
 	realFinalBoss = new RealFinalboss;
 	realFinalBoss->SetCharacter(m_ppCharacter);
-	realFinalBoss->SetupBoss(m_pMap, *CHARACTER->GetPosition());
+	realFinalBoss->SetupBoss(m_pMap, m_pMap->GetSpawnBoss());
 	realFinalBoss->SetDropManager(pDropManager);
 	//dynamic_cast<FinalBoss*>(realFinalBoss)->SetMM(this);
 	//finalBoss->SetupBoss(m_pMap, m_vSpawnSpot[0]);

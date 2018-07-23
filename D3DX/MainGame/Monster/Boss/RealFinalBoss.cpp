@@ -9,6 +9,10 @@ RealFinalboss::RealFinalboss()
 
 RealFinalboss::~RealFinalboss()
 {
+	for (int i = 0; i < STONENUM; ++i)
+	{
+		SAFE_DELETE(m_vMagicCircle[i]);
+	}
 }
 
 void RealFinalboss::SetupBoss(Map* map, D3DXVECTOR3 pos)
@@ -18,7 +22,7 @@ void RealFinalboss::SetupBoss(Map* map, D3DXVECTOR3 pos)
 
 	BossParent::SetupBoss(map, pos);
 
-	m_eBossState = BS_ENTER;
+	m_eBossState = BS_SKILL2;
 	ChangeAni();
 	//판정 박스 
 	ST_SIZEBOX box;
@@ -30,7 +34,7 @@ void RealFinalboss::SetupBoss(Map* map, D3DXVECTOR3 pos)
 	box.lowZ = -50.0f;
 
 
-	m_pModel->SetScale(D3DXVECTOR3(0.01f, 0.01f, 0.01f));
+	m_pModel->SetScale(D3DXVECTOR3(0.025f, 0.025f, 0.025f));
 
 	m_pModel->CreateBound(box);
 	m_pModel->SetBoundSphere(m_pModel->GetOrigBoundSphere().center, 100.0f);
@@ -46,9 +50,44 @@ void RealFinalboss::SetupBoss(Map* map, D3DXVECTOR3 pos)
 	m_bSkill2Use = m_bUsingSkill = false;
 	m_bIsTargeting = true;
 
+	m_vMagicCircle.resize(STONENUM);
+	for (int i = 0; i < STONENUM; ++i)
+	{
+		m_vMagicCircle[i] = new MagicCircle;
+		m_vMagicCircle[i]->Setup();
+	}
+
+	m_pModel->SetPosition(D3DXVECTOR3(pos.x, pos.y, pos.z));
+
+}
+
+void RealFinalboss::Update()
+{
+	if (m_bSkill2Use)
+	{
+		for (int i = 0; i < STONENUM; ++i)
+		{
+			m_vMagicCircle[i]->Update();
+		}
+	}
+
+	BossParent::Update();
+
+}
+
+void RealFinalboss::Render()
+{
 	
 
+	if (m_bSkill2Use)
+	{
+		for (int i = 0; i < STONENUM; ++i)
+		{
+			m_vMagicCircle[i]->Render();
+		}
+	}
 
+	BossParent::Render();
 }
 
 void RealFinalboss::SetupStat()
@@ -306,7 +345,7 @@ void RealFinalboss::Move()
 
 void RealFinalboss::Passive()
 {
-
+	//if (m_pModel->IsAnimationEnd());
 	
 }
 
@@ -327,48 +366,59 @@ void RealFinalboss::Passive()
 //}
 void RealFinalboss::SkillUse()
 {
-	m_pSkill->Trigger();
-
-	if (m_pModel->IsAnimationEnd())
-	{
-		m_bUsingSkill = false;
-		m_fSkillCoolTimeCount = 0;
-		m_eBossState = BS_RUN;
-		ChangeAni();
-	}
+	//m_pSkill->Trigger();
+	//
+	//if (m_pModel->IsAnimationEnd())
+	//{
+	//	m_bUsingSkill = false;
+	//	m_fSkillCoolTimeCount = 0;
+	//	m_eBossState = BS_RUN;
+	//	ChangeAni();
+	//}
 }
 
 void RealFinalboss::Skill2()
 {
-	vector<MonsterParent*> tt;
-
-
-	if (m_pModel->IsAnimationPercent(0.3))
+	if (m_pModel->IsAnimationPercent(0.65f))
 	{
-
-		m_pSkill->Trigger();
+		DropTheStone();
+		//돌을 떨구자
 	}
 
-	if (m_pModel->IsAnimationPercent(0.6))
-	{
-		SkillPrepare2();
-		m_pSkill->Trigger();
-	}
-
-	if (m_pModel->IsAnimationPercent(0.8))
-	{
-		SkillPrepare2();
-		m_pSkill->Trigger();
-	}
-
-	if (m_pModel->IsAnimationEnd())
-	{
-		m_bSkill2Use = false;
-
-		m_fSkillCoolTimeCount2 = 0;
-		m_eBossState = BS_RUN;
-		ChangeAni();
-	}
+	//if (m_pModel->IsAnimationEnd())
+	//{
+	//	m_eBossState = BS_IDLE;
+	//	ChangeAni();
+	//}
+	//vector<MonsterParent*> tt;
+	//
+	//
+	//if (m_pModel->IsAnimationPercent(0.3))
+	//{
+	//
+	//	m_pSkill->Trigger();
+	//}
+	//
+	//if (m_pModel->IsAnimationPercent(0.6))
+	//{
+	//	SkillPrepare2();
+	//	m_pSkill->Trigger();
+	//}
+	//
+	//if (m_pModel->IsAnimationPercent(0.8))
+	//{
+	//	SkillPrepare2();
+	//	m_pSkill->Trigger();
+	//}
+	//
+	//if (m_pModel->IsAnimationEnd())
+	//{
+	//	m_bSkill2Use = false;
+	//
+	//	m_fSkillCoolTimeCount2 = 0;
+	//	m_eBossState = BS_RUN;
+	//	ChangeAni();
+	//}
 }
 
 //void RealFinalboss::Casting()
@@ -430,4 +480,31 @@ void RealFinalboss::HandMatInit()
 	m_stHandMat.LeftHand2 = m_pModel->GetBoneMatrix("Bip002-L-Hand");
 	m_stHandMat.RightHand1 = m_pModel->GetBoneMatrix("Bip001-R-Hand");
 	m_stHandMat.RightHand2 = m_pModel->GetBoneMatrix("Bip002-R-Hand");
+}
+
+void RealFinalboss::DropTheStone()
+{
+	m_bSkill2Use = true;
+	//for (int i = 0; i < STONENUM; ++i)
+	//{
+	//	SAFE_DELETE(m_vMagicCircle[i]);
+	//}
+	//
+	//m_vMagicCircle.clear();
+	/*
+	
+	static float FRand(float low, float high)
+	{
+		return low + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (high - low)));
+	}
+	*/
+	for (int i = 0; i < STONENUM; ++i)
+	{
+		
+		D3DXVECTOR3 rndPos = *CHARACTER->GetPosition();
+		rndPos.x += FRand(RNDMIN,RNDMAX);
+		rndPos.z += FRand(RNDMIN,RNDMAX);
+
+		m_vMagicCircle[i]->SetParticlePos(rndPos);
+	}
 }

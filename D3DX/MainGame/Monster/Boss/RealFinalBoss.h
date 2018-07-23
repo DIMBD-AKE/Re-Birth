@@ -1,6 +1,10 @@
 #pragma once
 #include "BossParent.h"
 
+#define STONENUM 5
+#define RNDMIN -5
+#define RNDMAX 5
+
 struct ST_HANDMAT
 {
 	D3DXMATRIX* LeftHand1;	//왼쪽 아래 손
@@ -12,6 +16,8 @@ struct ST_HANDMAT
 class RealFinalboss :
 	public BossParent
 {
+	vector<MagicCircle*> m_vMagicCircle;
+
 	ST_HANDMAT m_stHandMat;
 	//virtual void ChangeAni() override;
 
@@ -39,10 +45,14 @@ class RealFinalboss :
 	//팔 들의 메트리스 지정
 	void HandMatInit();
 
+	void DropTheStone();
+
 public:
 	RealFinalboss();
 	virtual ~RealFinalboss();
 
 	virtual void SetupBoss(Map* map, D3DXVECTOR3 pos) override;
+	virtual void Update() override;
+	virtual void Render() override;
 };
 
