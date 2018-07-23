@@ -15,6 +15,7 @@ Character_Magic::~Character_Magic()
 {
 	SAFE_DELETE(m_pMeteorPaticle);
 	SAFE_DELETE(m_pMegaCristalPaticle);
+	SAFE_DELETE(m_pMeteorAfterPaticle);
 }
 
 
@@ -121,6 +122,10 @@ void Character_Magic::Init(CHRTYPE type, CHARSELECT order)
 	m_nMagicCount = 0;
 	m_pMeteorPaticle = PARTICLE->GetParticle("Meteor"); //메테오 파티클
 	m_pMegaCristalPaticle = PARTICLE->GetParticle("MegaCristal"); //메가 크리스탈 파티클
+	m_pMeteorAfterPaticle = PARTICLE->GetParticle("MeteorAfter");	//메테오 잔열 파티클
+
+
+	m_bIsFire = false;
 }
 
 void Character_Magic::Update()
@@ -145,8 +150,9 @@ void Character_Magic::Update()
 		m_pDamage->Update(*m_pCharacter->GetPosition());
 	}
 	Effect();
-	
 	VskillUpdate();
+	MeteorAfter();
+	
 
 }
 
@@ -172,6 +178,7 @@ void Character_Magic::Render()
 		m_pStaminaBar->Render();
 		if(m_bIsMeteoClick) m_pMeteorPaticle->Render();
 		if (m_bIsMegaCirstalClick) m_pMegaCristalPaticle->Render();
+		if (m_bIsFire) m_pMeteorAfterPaticle->Render();
 	}
 }
 
@@ -180,7 +187,7 @@ void Character_Magic::KeyControl()
 	//앞으로 달리기
 	if (INPUT->KeyDown('W'))
 	{
-		SOUND->Play("FootStep2");
+		SOUND->Play("FootStep2", g_fVolume);
 		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_HIT)
 		{
 			m_eCondition = CHAR_RUN_FRONT;
@@ -201,7 +208,7 @@ void Character_Magic::KeyControl()
 	//뒤로 달리기
 	if (INPUT->KeyDown('S'))
 	{
-		SOUND->Play("FootStep2");
+		SOUND->Play("FootStep2", g_fVolume);
 		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_HIT)
 		{
 			m_eCondition = CHAR_RUN_BACK;
@@ -223,7 +230,7 @@ void Character_Magic::KeyControl()
 	if (INPUT->KeyDown('Q'))
 	{
 		SOUND->Stop("FootStep2");
-		SOUND->Play("FootStep3");
+		SOUND->Play("FootStep3", g_fVolume);
 		if (m_eCondition == CHAR_RUN_FRONT)
 		{
 			m_eCondition = CHAR_DASH_FRONT;
@@ -247,7 +254,7 @@ void Character_Magic::KeyControl()
 	if (INPUT->KeyDown('E'))
 	{
 		SOUND->Stop("FootStep2");
-		SOUND->Play("FootStep3");
+		SOUND->Play("FootStep3", g_fVolume);
 		if (m_eCondition == CHAR_RUN_BACK)
 		{
 			m_eCondition = CHAR_DASH_BACK;
@@ -273,13 +280,13 @@ void Character_Magic::KeyControl()
 	{
 		if (m_eCharSelect == CHAR_ONE)
 		{
-			SOUND->Play("SwordAttack");
-			SOUND->Play("아카날_공격");
+			SOUND->Play("SwordAttack", g_fVolume);
+			SOUND->Play("아카날_공격", g_fVolume);
 		}
 		if (m_eCharSelect == CHAR_TWO)
 		{
-			SOUND->Play("SwordAttack");
-			SOUND->Play("헤스티아_공격");
+			SOUND->Play("SwordAttack", g_fVolume);
+			SOUND->Play("헤스티아_공격", g_fVolume);
 		}
 
 		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_RUN_FRONT || m_eCondition == CHAR_RUN_BACK)
@@ -326,11 +333,11 @@ void Character_Magic::KeyControl()
 	{
 		if (m_eCharSelect == CHAR_ONE)
 		{
-			if (!SOUND->IsPlaySound("아카날_피격")) SOUND->Play("아카날_피격");
+			if (!SOUND->IsPlaySound("아카날_피격")) SOUND->Play("아카날_피격", g_fVolume);
 		}
 		if (m_eCharSelect == CHAR_TWO)
 		{
-			if (!SOUND->IsPlaySound("헤스티아_피격")) SOUND->Play("헤스티아_피격");
+			if (!SOUND->IsPlaySound("헤스티아_피격")) SOUND->Play("헤스티아_피격", g_fVolume);
 		}
 
 		if (INPUT->KeyDown(VK_SPACE))
@@ -425,7 +432,8 @@ void Character_Magic::KeyControl()
 	//메테오 제어 
 	if (INPUT->KeyDown('V'))
 	{
-		if (m_Status->chr.nCurrentStam >= 90.0f);
+	
+		if (m_Status->chr.nCurrentStam >= 90.0f)
 		{
 			m_Status->chr.nCurrentStam -= 90.0f;
 			if (m_eCharSelect == CHAR_ONE)
@@ -1123,6 +1131,7 @@ void Character_Magic::VskillUpdate()
 		{
 			m_bIsMeteoClick = false;
 			m_bIsMeteo = false;
+			m_bIsFire = true;
 			m_nMagicCount = 0;
 		}
 		m_pMeteorPaticle->SetPosition(m_vecEffect.back()->GetBoundSphere().center);
@@ -1146,7 +1155,35 @@ void Character_Magic::VskillUpdate()
 
 	m_pMegaCristalPaticle->World();
 	m_pMegaCristalPaticle->Update();
+
 	
+
+	
+}
+
+void Character_Magic::MeteorAfter()
+{
+	if (m_bIsFire)
+	{
+		m_pMeteorAfterPaticle->World();
+		m_pMeteorAfterPaticle->Update();
+		m_pMeteorAfterPaticle->SetPosition(m_vMeteo);
+	
+	
+		ST_SPHERE particle;
+		particle.center = *m_pMeteorAfterPaticle->GetPosition();
+		particle.radius = 2;
+	
+	
+		if (IntersectSphere(particle, m_pCharacter->GetBoundSphere()))
+		{
+			SetCurrentHP(10);
+		}
+	}
+	if (m_pMeteorAfterPaticle->IsDie())
+	{
+		m_bIsFire = false;
+	}
 }
 
 

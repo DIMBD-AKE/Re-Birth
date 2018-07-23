@@ -178,6 +178,9 @@ void SC_Loading::AddTexture()
 
 	m_pLoading->LoadTexture("Particle Sphere", "Texture/Particle/Sphere.png");
 	m_pLoading->LoadTexture("Option Volume", "Texture/Scene/Volume.png");
+
+	//메테오 파티클 
+	m_pLoading->LoadTexture("MeteorAfter", "Texture/Particle/meteorAfter.png");
 }
 
 void SC_Loading::AddSound()
@@ -260,6 +263,7 @@ void SC_Loading::AddParticle()
 
 	m_pLoading->LoadParticle("WindStorm", "Particle Sphere", "Particle/WindStorm.ptc");
 	m_pLoading->LoadParticle("Meteor", "Meteor", "Particle/meteor.ptc");
+	m_pLoading->LoadParticle("MeteorAfter", "MeteorAfter", "Particle/MeteorAfter.ptc");
 	m_pLoading->LoadParticle("MegaCristal", "MegaCristal", "Particle/megaCristal.ptc");
 
 	m_pLoading->LoadParticle("Hell Smoke", "Particle Sphere", "Particle/Hell Smoke.ptc");

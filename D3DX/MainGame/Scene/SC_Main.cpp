@@ -90,10 +90,30 @@ void SC_Main::OnClick(UIObject * pSender)
 		pSender->GetName().compare("Background") &&
 		pSender->GetName().compare("Start") &&
 		pSender->GetName().compare("Option") &&
-		pSender->GetName().compare("Ranking"))
+		pSender->GetName().compare("Ranking") &&
+		m_eState == MS_PORTRAIT)
 	{
 		m_sSelect = pSender->GetName();
 		MakeModel();
+	}
+
+	if (m_eState == MS_OPTION)
+	{
+		for (int i = 0; i < 20; i++)
+		{
+			if (pSender->GetName().compare("Volume " + to_string(i)) == 0)
+			{
+				for (int j = 0; j < 20; j++)
+				{
+					if (j <= i)
+						m_pVolume->Find("Volume " + to_string(j))->SetColor(D3DXVECTOR3(255, 255, 255));
+					else
+						m_pVolume->Find("Volume " + to_string(j))->SetColor(D3DXVECTOR3(128, 128, 128));
+				}
+
+				VOLUME = i / (float)19;
+			}
+		}
 	}
 }
 
@@ -103,7 +123,8 @@ void SC_Main::OnOver(UIObject * pSender)
 		pSender->GetName().compare("Background") && 
 		pSender->GetName().compare("Start") &&
 		pSender->GetName().compare("Option") &&
-		pSender->GetName().compare("Ranking"))
+		pSender->GetName().compare("Ranking") &&
+		m_eState == MS_PORTRAIT)
 	{
 		m_pChrOver->SetPosition(pSender->GetPosition() - D3DXVECTOR3(6, 6, 0));
 		m_pChrOver->SetScale(pSender->GetScale());
@@ -118,7 +139,8 @@ void SC_Main::OnExit(UIObject * pSender)
 		pSender->GetName().compare("Background") &&
 		pSender->GetName().compare("Start") &&
 		pSender->GetName().compare("Option") &&
-		pSender->GetName().compare("Ranking"))
+		pSender->GetName().compare("Ranking") &&
+		m_eState == MS_PORTRAIT)
 		m_isPortrait = false;
 }
 
@@ -128,6 +150,7 @@ void SC_Main::Release()
 	SAFE_RELEASE(m_pPortrait);
 	SAFE_RELEASE(m_pSelect);
 	SAFE_RELEASE(m_pChrOver);
+	SAFE_RELEASE(m_pVolume);
 	SAFE_DELETE(m_pModel);
 	SAFE_DELETE(m_pContext);
 }
@@ -260,6 +283,21 @@ void SC_Main::Init()
 			m_pPortrait->AddChild(child);
 		}
 	}
+
+	m_pVolume = new UIObject;
+	m_pVolume->SetName("Root");
+	m_pVolume->SetPosition(D3DXVECTOR3(520, 270, 0));
+	for (size_t i = 0; i < 20; i++)
+	{
+		child = new UIObject;
+		child->SetName("Volume " + to_string(i));
+		child->SetPosition(D3DXVECTOR3(i * 24, 0, 0));
+		child->SetTexture(TEXTUREMANAGER->GetTexture("Option Volume"));
+		child->SetFunction(this);
+		if (VOLUME * 19 < i)
+			child->SetColor(D3DXVECTOR3(128, 128, 128));
+		m_pVolume->AddChild(child);
+	}
 }
 
 void SC_Main::Update()
@@ -296,6 +334,8 @@ void SC_Main::Update()
 	if (m_eState == MS_OPTION)
 	{
 		TEXT->Add("¼³Á¤", 724, 50, 40, "³ª´®¸íÁ¶", 0xFFFFFFFF);
+		TEXT->Add("º¼·ý", 724, 200, 40, "³ª´®¸íÁ¶", 0xFFFFFFFF);
+		m_pVolume->Update();
 	}
 
 	if (m_eState == MS_RANKING)
@@ -316,6 +356,11 @@ void SC_Main::Render()
 {
 	if (m_eState == MS_TITLE)
 		m_pUI->Render();
+
+	if (m_eState == MS_OPTION)
+	{
+		m_pVolume->Render();
+	}
 
 	if (m_eState == MS_PORTRAIT)
 	{

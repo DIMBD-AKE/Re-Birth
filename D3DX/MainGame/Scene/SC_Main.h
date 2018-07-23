@@ -23,6 +23,7 @@ private:
 	UIObject *	m_pSelect;
 	UIObject *	m_pChrOver;
 	UIObject *	m_pStart;
+	UIObject *	m_pVolume;
 
 	MainState	m_eState;
 

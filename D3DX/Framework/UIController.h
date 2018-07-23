@@ -34,6 +34,7 @@ class UIObject
 	SYNTHESIZE(D3DXVECTOR3, m_vScale, Scale);
 	SYNTHESIZE(string, m_sName, Name);
 	SYNTHESIZE(int, m_nAlpha, Alpha);
+	SYNTHESIZE(D3DXVECTOR3, m_vColor, Color);
 
 protected:
 	vector<UIObject*>		m_vecChild;

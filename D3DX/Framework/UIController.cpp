@@ -17,6 +17,7 @@ UIObject::UIObject()
 	, m_vPosition(D3DXVECTOR3(0, 0, 0))
 	, m_vScale(D3DXVECTOR3(1, 1, 1))
 	, m_eAnchor(UIAC_LT)
+	, m_vColor(255, 255, 255)
 {
 	for (int i = 0; i < UITEX_END; i++)
 		m_pTex[i] = NULL;
@@ -109,7 +110,7 @@ void UIObject::Render()
 		if (PtInRect(&rc, MOUSE_POS))
 		{
 			SPRITE->SetTransform(&m_matWorld);
-			SPRITE->Draw(m_pTex[UITEX_DOWN], NULL, NULL, NULL, D3DCOLOR_ARGB(m_nAlpha, 255, 255, 255));
+			SPRITE->Draw(m_pTex[UITEX_DOWN], NULL, NULL, NULL, D3DCOLOR_ARGB(m_nAlpha, (int)m_vColor.x, (int)m_vColor.y, (int)m_vColor.z));
 			draw = true;
 		}
 	}
@@ -121,7 +122,7 @@ void UIObject::Render()
 		if (PtInRect(&rc, MOUSE_POS))
 		{
 			SPRITE->SetTransform(&m_matWorld);
-			SPRITE->Draw(m_pTex[UITEX_OVER], NULL, NULL, NULL, D3DCOLOR_ARGB(m_nAlpha, 255, 255, 255));
+			SPRITE->Draw(m_pTex[UITEX_OVER], NULL, NULL, NULL, D3DCOLOR_ARGB(m_nAlpha, (int)m_vColor.x, (int)m_vColor.y, (int)m_vColor.z));
 			draw = true;
 		}
 	}
@@ -132,7 +133,7 @@ void UIObject::Render()
 		rc.bottom = rc.top + m_ptTexWH[UITEX_NORMAL].y;
 
 		SPRITE->SetTransform(&m_matWorld);
-		SPRITE->Draw(m_pTex[UITEX_NORMAL], NULL, NULL, NULL, D3DCOLOR_ARGB(m_nAlpha, 255, 255, 255));
+		SPRITE->Draw(m_pTex[UITEX_NORMAL], NULL, NULL, NULL, D3DCOLOR_ARGB(m_nAlpha, (int)m_vColor.x, (int)m_vColor.y, (int)m_vColor.z));
 	}
 
 	SPRITE_END;

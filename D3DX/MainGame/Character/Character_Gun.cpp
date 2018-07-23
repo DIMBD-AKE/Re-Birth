@@ -195,7 +195,7 @@ void Character_Gun::KeyControl()
 	//앞으로 달리기
 	if (INPUT->KeyDown('W'))
 	{
-		SOUND->Play("FootStep4");
+		SOUND->Play("FootStep4", g_fVolume);
 		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_HIT)
 		{
 			m_eCondition = CHAR_RUN_FRONT;
@@ -216,7 +216,7 @@ void Character_Gun::KeyControl()
 	//뒤로 달리기
 	if (INPUT->KeyDown('S'))
 	{
-		SOUND->Play("FootStep4");
+		SOUND->Play("FootStep4", g_fVolume);
 		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_HIT)
 		{
 			m_eCondition = CHAR_RUN_BACK;
@@ -237,7 +237,7 @@ void Character_Gun::KeyControl()
 	//앞으로 대쉬
 	if (INPUT->KeyDown('Q'))
 	{
-		SOUND->Play("FootStep3");
+		SOUND->Play("FootStep3", g_fVolume);
 		SOUND->Stop("FootStep4");
 		if (m_eCondition == CHAR_RUN_FRONT)
 		{
@@ -261,7 +261,7 @@ void Character_Gun::KeyControl()
 	//뒤로 대쉬
 	if (INPUT->KeyDown('E'))
 	{
-		SOUND->Play("FootStep3");
+		SOUND->Play("FootStep3", g_fVolume);
 		SOUND->Stop("FootStep4");
 		if (m_eCondition == CHAR_RUN_BACK)
 		{
@@ -288,13 +288,13 @@ void Character_Gun::KeyControl()
 	{
 		if (m_eCharSelect == CHAR_ONE)
 		{
-			SOUND->Play("GunAttack");
-			SOUND->Play("메그너스_공격");
+			SOUND->Play("GunAttack", g_fVolume);
+			SOUND->Play("메그너스_공격", g_fVolume);
 		}
 		if (m_eCharSelect == CHAR_TWO)
 		{
-			SOUND->Play("스카디_공격");
-			SOUND->Play("BowAttack");
+			SOUND->Play("스카디_공격", g_fVolume);
+			SOUND->Play("BowAttack", g_fVolume);
 		}
 		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_RUN_FRONT || m_eCondition == CHAR_RUN_BACK)
 		{
@@ -358,11 +358,11 @@ void Character_Gun::KeyControl()
 	{
 		if (m_eCharSelect == CHAR_ONE)
 		{
-			if (!SOUND->IsPlaySound("메그너스_피격")) SOUND->Play("메그너스_피격");
+			if (!SOUND->IsPlaySound("메그너스_피격")) SOUND->Play("메그너스_피격", g_fVolume);
 		}
 		if (m_eCharSelect == CHAR_TWO)
 		{
-			if (!SOUND->IsPlaySound("스카디_피격")) SOUND->Play("스카디_피격");
+			if (!SOUND->IsPlaySound("스카디_피격")) SOUND->Play("스카디_피격", g_fVolume);
 		}
 
 		if (INPUT->KeyDown(VK_SPACE))
@@ -403,13 +403,13 @@ void Character_Gun::KeyControl()
 	{
 		if (m_eCharSelect == CHAR_ONE)
 		{
-			SOUND->Play("메그너스_고유_총");
-			SOUND->Play("메그너스_고유");
+			SOUND->Play("메그너스_고유_총", g_fVolume);
+			SOUND->Play("메그너스_고유", g_fVolume);
 		}
 		if (m_eCharSelect == CHAR_TWO)
 		{
-			SOUND->Play("스카디_고유");
-			SOUND->Play("BowAttack");
+			SOUND->Play("스카디_고유", g_fVolume);
+			SOUND->Play("BowAttack", g_fVolume);
 		}
 		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_RUN_FRONT || m_eCondition == CHAR_RUN_BACK)
 		{
@@ -701,8 +701,8 @@ void Character_Gun::GunShot()
 			tempEFOBJ->Init(tempEffect, testSkillpos);
 
 			m_vecEffect.push_back(tempEFOBJ);
-			if (!SOUND->IsPlaySound("탑뷰샷")) SOUND->Play("탑뷰샷");
-			if (!SOUND->IsPlaySound("탑뷰탄피")) SOUND->Play("탑뷰탄피");
+			if (!SOUND->IsPlaySound("탑뷰샷")) SOUND->Play("탑뷰샷", g_fVolume);
+			if (!SOUND->IsPlaySound("탑뷰탄피")) SOUND->Play("탑뷰탄피", g_fVolume);
 			m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(1);
 		}
 	}
