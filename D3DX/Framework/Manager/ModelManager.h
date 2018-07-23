@@ -27,6 +27,7 @@ public:
 	virtual void World();
 	virtual void Update();
 	virtual void Render() = 0;
+	virtual void DummyRender() {}
 
 	// OBJ 파일 전용
 	SYNTHESIZE(bool, m_isAlpha, Alpha);
@@ -117,6 +118,7 @@ public:
 
 	void Setup(SkinnedMesh* data) { m_pSMesh = data; }
 	virtual void Render();
+	virtual void DummyRender();
 
 	virtual map<string, int> GetAnimation();
 	virtual bool SetAnimation(string name);

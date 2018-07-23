@@ -165,9 +165,9 @@ void SkinnedMesh::Setup(string szFolder, string szFile)
 	}
 }
 
-void SkinnedMesh::Update()
+void SkinnedMesh::Update(bool dummy)
 {
-	Update(m_pRoot, NULL);
+	Update(m_pRoot, NULL, dummy);
 	UpdateSkinnedMesh(m_pRoot);
 }
 
@@ -299,7 +299,7 @@ float SkinnedMesh::GetAnimationPeriod(int index)
 	return period;
 }
 
-void SkinnedMesh::Update(LPD3DXFRAME pFrame, LPD3DXFRAME pParent)
+void SkinnedMesh::Update(LPD3DXFRAME pFrame, LPD3DXFRAME pParent, bool dummy)
 {
 	ST_BONE * pBone = (ST_BONE*)pFrame;
 	pBone->CombinedTransformationMatrix = pBone->TransformationMatrix;
@@ -307,11 +307,17 @@ void SkinnedMesh::Update(LPD3DXFRAME pFrame, LPD3DXFRAME pParent)
 		pBone->CombinedTransformationMatrix *=
 			((ST_BONE*)pParent)->CombinedTransformationMatrix;
 
+	string name = "";
+	if (pBone->Name)
+		name = pBone->Name;
+	if (dummy && name.compare("Bip001") == 0)
+		pBone->CombinedTransformationMatrix = ((ST_BONE*)pParent)->CombinedTransformationMatrix;
+
 	if (pFrame->pFrameFirstChild)
-		Update(pFrame->pFrameFirstChild, pFrame);
+		Update(pFrame->pFrameFirstChild, pFrame, dummy);
 
 	if (pFrame->pFrameSibling)
-		Update(pFrame->pFrameSibling, pParent);
+		Update(pFrame->pFrameSibling, pParent, dummy);
 }
 
 void SkinnedMesh::UpdateSkinnedMesh(LPD3DXFRAME pFrame)
@@ -362,15 +368,15 @@ void SkinnedMesh::Render(LPD3DXFRAME pFrame, D3DXMATRIX * matWorld)
 
 	if (false)
 	{
-		if (name.compare("Bip001-Head") == 0 ||
+		/*if (name.compare("Bip001-Head") == 0 ||
 			name.compare("Bip001-L-Hand") == 0 || name.compare("Bip001-R-Hand") == 0 ||
 			name.compare("Bip001-L-Foot") == 0 || name.compare("Bip001-R-Foot") == 0 ||
 			name.compare("Bip001-Spine") == 0 || name.compare("Bip001-Spine1") == 0 || name.compare("Bip001-Spine2") == 0)
-		{
+		*/{
 			D3DXVECTOR3 pos = D3DXVECTOR3(0, 0, 0);
 			D3DXVec3TransformCoord(&pos, &pos, &pBone->CombinedTransformationMatrix);
 			D3DXVECTOR2 conv = Convert3DTo2D(pos);
-			TEXT->Add(name, conv.x, conv.y, 10, "", 0xFFFFFFFF);
+			TEXT->Add(name, conv.x, conv.y, 14, "", 0xFFFFFFFF);
 		}
 	}
 
@@ -462,10 +468,10 @@ D3DXMATRIX * SkinnedMesh::GetBoneMatrix(string boneName)
 	return NULL;
 }
 
-void SkinnedMesh::UpdateRender(D3DXMATRIX * matWorld)
+void SkinnedMesh::UpdateRender(D3DXMATRIX * matWorld, bool dummy)
 {
 	Animate();
-	Update();
+	Update(dummy);
 	Render(m_pRoot, matWorld);
 }
 

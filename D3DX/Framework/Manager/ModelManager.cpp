@@ -449,7 +449,17 @@ void ModelX::Render()
 	Debug();
 	DEVICE->SetRenderState(D3DRS_LIGHTING, true);
 
-	m_pSMesh->UpdateRender(&m_matWorld);
+	m_pSMesh->UpdateRender(&m_matWorld, false);
+}
+
+void ModelX::DummyRender()
+{
+	if (!CAMERA->IsFrustum(GetBoundSphere())) return;
+	DEVICE->SetRenderState(D3DRS_ALPHABLENDENABLE, true);
+	Debug();
+	DEVICE->SetRenderState(D3DRS_LIGHTING, true);
+
+	m_pSMesh->UpdateRender(&m_matWorld, true);
 }
 
 map<string, int> ModelX::GetAnimation()

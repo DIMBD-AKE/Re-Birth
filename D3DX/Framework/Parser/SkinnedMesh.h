@@ -63,7 +63,7 @@ public:
 	void CloneAnimation(SkinnedMesh * orig);
 
 	void Setup(string szFolder, string szFile);
-	void Update();
+	void Update(bool dummy);
 	void Animate();
 
 	void SetIndex(int index);
@@ -79,7 +79,7 @@ public:
 
 	float GetAnimationPeriod(int index);
 
-	void Update(LPD3DXFRAME pFrame, LPD3DXFRAME pParent);
+	void Update(LPD3DXFRAME pFrame, LPD3DXFRAME pParent, bool dummy);
 	void UpdateSkinnedMesh(LPD3DXFRAME pFrame);
 
 	void Render(LPD3DXFRAME pFrame, D3DXMATRIX * matWorld);
@@ -87,7 +87,7 @@ public:
 	void FindAllChild(LPD3DXFRAME pFrame, vector<LPD3DXFRAME>& vecChild);
 	D3DXMATRIX* GetBoneMatrix(string boneName);
 
-	void UpdateRender(D3DXMATRIX * matWorld);
+	void UpdateRender(D3DXMATRIX * matWorld, bool dummy);
 
 	void SetupBoneMatrixPtrs(LPD3DXFRAME pFrame);
 	void Destroy(D3DXFRAME* pFrame);
