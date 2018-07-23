@@ -894,7 +894,7 @@ void Character_Sword::SkillDealing()
 		{
 			for (int i = 0; i < m_pMonsterManager->GetMonsterVector().size(); i++)
 			{
-
+				if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn()) continue;
 				D3DXVECTOR3 s1 = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().center;
 				D3DXVECTOR3 s2 = m_vecEffect.back()->GetBoundSphere().center;
 				D3DXVECTOR3 v = s1 - s2;
@@ -931,7 +931,7 @@ void Character_Sword::SkillDealing()
 		{
 			for (int i = 0; i < m_pMonsterManager->GetMonsterVector().size(); i++)
 			{
-
+				if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn()) continue;
 				D3DXVECTOR3 s1 = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().center;
 				D3DXVECTOR3 s2 = m_vecEffect.back()->GetBoundSphere().center;
 				D3DXVECTOR3 v = s1 - s2;
@@ -966,7 +966,7 @@ void Character_Sword::SkillDealing()
 
 		for (int i = 0; i < m_pMonsterManager->GetMonsterVector().size(); i++)
 		{
-
+			if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn()) continue;
 			D3DXVECTOR3 s1 = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().center;
 			D3DXVECTOR3 s2 = m_vecEffect.back()->GetBoundSphere().center;
 			D3DXVECTOR3 v = s1 - s2;
