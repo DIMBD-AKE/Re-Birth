@@ -30,7 +30,7 @@ void RealFinalboss::SetupBoss(Map* map, D3DXVECTOR3 pos)
 	box.lowZ = -50.0f;
 
 
-	m_pModel->SetScale(D3DXVECTOR3(0.02f, 0.02f, 0.02f));
+	m_pModel->SetScale(D3DXVECTOR3(0.01f, 0.01f, 0.01f));
 
 	m_pModel->CreateBound(box);
 	m_pModel->SetBoundSphere(m_pModel->GetOrigBoundSphere().center, 100.0f);
@@ -47,7 +47,6 @@ void RealFinalboss::SetupBoss(Map* map, D3DXVECTOR3 pos)
 	m_bIsTargeting = true;
 
 	
-	test= m_pModel->GetBoneMatrix("Bip001-R-Hand");
 
 
 }
@@ -181,17 +180,18 @@ void RealFinalboss::SetupSkill2()
 
 void RealFinalboss::Pattern()
 {
-	if (AbleSkill() && !m_bSkill2Use)
-	{
-		m_eBossState = BS_CASTING;
-		ChangeAni();
-	}
-
-	else if (AbleSkill2())
-	{
-		m_eBossState = BS_SKILL2;
-		ChangeAni();
-	}
+	HandMatInit();
+	//if (AbleSkill() && !m_bSkill2Use)
+	//{
+	//	m_eBossState = BS_CASTING;
+	//	ChangeAni();
+	//}
+	//
+	//else if (AbleSkill2())
+	//{
+	//	m_eBossState = BS_SKILL2;
+	//	ChangeAni();
+	//}
 
 	switch (m_eBossState)
 	{
@@ -231,8 +231,6 @@ void RealFinalboss::Pattern()
 
 void RealFinalboss::Attack()
 {
-	test;
-	int a = 10;
 	if (PCHARACTER->GetIsDead())
 	{
 		m_eState = MS_IDLE;
@@ -396,15 +394,23 @@ void RealFinalboss::EnterAni()
 			ChangeAni();
 		}
 		break;
-	case BS_ENTER1:	case BS_ENTER2:	
-		if (m_pModel->IsAnimationEnd())
-		//if (m_pModel->IsAnimationPercent(98))
+	case BS_ENTER1:	//case BS_ENTER2:	
+		//if (m_pModel->IsAnimationEnd())
+		if (m_pModel->IsAnimationPercent(0.45f)
+			|| m_pModel->IsAnimationPercent(0.47f))
 		{
 			m_eBossState = BOSS_STATE(m_eBossState+1);
 			ChangeAni();
 		}
 		break;
-
+	case BS_ENTER2:	//case BS_ENTER2:	
+					//if (m_pModel->IsAnimationEnd())
+		if (m_pModel->IsAnimationPercent(0.8f))
+		{
+			m_eBossState = BOSS_STATE(m_eBossState + 1);
+			ChangeAni();
+		}
+		break;
 	case BS_ENTER3:
 		if (m_pModel->IsAnimationEnd())
 		//if (m_pModel->IsAnimationPercent(98))
@@ -416,4 +422,12 @@ void RealFinalboss::EnterAni()
 	default:
 		break;
 	}
+}
+
+void RealFinalboss::HandMatInit()
+{
+	m_stHandMat.LeftHand1 = m_pModel->GetBoneMatrix("Bip001-L-Hand");
+	m_stHandMat.LeftHand2 = m_pModel->GetBoneMatrix("Bip002-L-Hand");
+	m_stHandMat.RightHand1 = m_pModel->GetBoneMatrix("Bip001-R-Hand");
+	m_stHandMat.RightHand2 = m_pModel->GetBoneMatrix("Bip002-R-Hand");
 }

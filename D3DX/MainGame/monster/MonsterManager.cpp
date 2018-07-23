@@ -338,7 +338,7 @@ void MonsterManager::MakeFinalBoss(DropManager* pDropManager)
 
 	realFinalBoss = new RealFinalboss;
 	realFinalBoss->SetCharacter(m_ppCharacter);
-	realFinalBoss->SetupBoss(m_pMap, m_pMap->GetSpawnBoss());
+	realFinalBoss->SetupBoss(m_pMap, *CHARACTER->GetPosition());
 	realFinalBoss->SetDropManager(pDropManager);
 	//dynamic_cast<FinalBoss*>(realFinalBoss)->SetMM(this);
 	//finalBoss->SetupBoss(m_pMap, m_vSpawnSpot[0]);
@@ -349,6 +349,7 @@ void MonsterManager::MakeFinalBoss(DropManager* pDropManager)
 
 void MonsterManager::DeleteSummonMonster()
 {
+
 	for (int i = 0; i < m_vMM.size();++i)
 	{
 		//소환된몹이냐

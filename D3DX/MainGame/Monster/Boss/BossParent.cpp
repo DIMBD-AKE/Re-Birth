@@ -100,7 +100,7 @@ void BossParent::SetCurrentHP(int hp)
 	if (CURRENTHP(m_pMonsterStat) <= 0)
 	{
 		m_pModel->SetShaderAlpha(1.0f);
-
+		if (m_pMM)
 		m_pMM->DeleteSummonMonster();
 		CURRENTHP(m_pMonsterStat) = 0;
 		m_bIsDead = true;
@@ -180,6 +180,8 @@ void BossParent::ChangeAni()
 	{
 	case BS_ENTER:
 		m_pModel->SetAnimation("ENTER");
+		//m_pModel->SetBlendAnimation("ENTER");
+		//m_pModel->SetBlendTime(0.1f);
 		break;
 	case BS_IDLE:
 		m_pModel->SetAnimation("IDLE");
@@ -210,12 +212,21 @@ void BossParent::ChangeAni()
 		//이하 레알보스를 위한 체인지 애니메이션
 	case BS_ENTER1:
 		m_pModel->SetAnimation("ENTER1");
+		m_pModel->SetAnimationPosition(0.05f);
+		//m_pModel->SetBlendAnimation("ENTER1");
+		//m_pModel->SetBlendTime(0.1f);
 		break;
 	case BS_ENTER2:
 		m_pModel->SetAnimation("ENTER2");
+		m_pModel->SetAnimationPosition(0.3f);
+		//m_pModel->SetBlendAnimation("ENTER2");
+		//m_pModel->SetBlendTime(0.1f);
 		break;
 	case BS_ENTER3:
 		m_pModel->SetAnimation("ENTER3");
+		m_pModel->SetAnimationPosition(0.17f);
+		//m_pModel->SetBlendAnimation("ENTER3");
+		//m_pModel->SetBlendTime(0.1f);
 		break;
 	default:
 		break;
