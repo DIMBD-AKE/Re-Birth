@@ -74,6 +74,8 @@ protected:
 	D3DXVECTOR3				m_vPotalfront;			//포탈 이동을 위한 프론트 벡터
 	D3DXVECTOR3				m_vMeteo;				//메테오 벡터 
 	D3DXVECTOR3				m_vGun;					//총벡터
+	D3DXVECTOR3				m_vMegaCri;				//메가크리스탈클릭좌표
+
 
 	int						m_nCalAction;			//액션 프레임 계산용 변수
 	int						m_nDamage;				//데미지 띄우기용 변수 
@@ -97,6 +99,9 @@ protected:
 	bool					m_bIsMeteo;				//메테오 쾅
 	bool					m_bIsMeteoClick;		//메테오 쾅 하기전 클릭
 	bool					m_bIsGunView;			//총쏘기화면 전환불값
+	bool					m_bIsMegaCristal;				//메가크리스탈 했늬
+	bool					m_bIsMegaCirstalClick;			//메가크리스탈 클릭했늬
+
 	float					m_fDamageCount;			//데미지 띄우는 카운트
 	float					m_fDamageAngle;			//데미지 앵글
 	float					m_fElpTime;				//이펙트용 일랩스 카운트
@@ -117,6 +122,7 @@ protected:
 	Particle*		m_pParticle2;
 	Particle*		m_pParticle3;
 	Particle*		m_pParticle4;
+	Particle*		m_pParticle5;
 
 	void SKill();
 	void Move();

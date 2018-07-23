@@ -260,6 +260,8 @@ void SC_Loading::AddParticle()
 	m_pLoading->LoadParticle("석유", "석유", "./Particle/AssisHit.ptc");
 
 	m_pLoading->LoadParticle("WindStorm", "Particle Sphere", "Particle/WindStorm.ptc");
+	m_pLoading->LoadParticle("Meteor", "Meteor", "Particle/meteor.ptc");
+	m_pLoading->LoadParticle("MegaCristal", "MegaCristal", "Particle/megaCristal.ptc");
 }
 
 void SC_Loading::InitUI()

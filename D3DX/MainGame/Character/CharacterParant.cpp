@@ -706,6 +706,7 @@ CharacterParant::~CharacterParant()
 	SAFE_DELETE(m_pParticle2);
 	SAFE_DELETE(m_pParticle3);
 	SAFE_DELETE(m_pParticle4);
+	SAFE_DELETE(m_pParticle5);
 
 	SAFE_RELEASE(m_pUIobj);
 	SAFE_RELEASE(m_pHPBar);
@@ -785,6 +786,8 @@ void CharacterParant::Init(CHRTYPE type, CHARSELECT order)
 	m_bIsMeteo = false;
 	m_bIsMeteoClick = false;
 	m_bIsGunView = false;
+	m_bIsMegaCristal = false;
+	m_bIsMegaCirstalClick = false;
 
 	m_fStamina = 10.0f;
 	m_nDamage = 0;
@@ -842,14 +845,11 @@ void CharacterParant::Init(CHRTYPE type, CHARSELECT order)
 		m_pStaminaBar->SetPosition(StaPos);
 	}
 
-	
-
-	
-
 	m_pParticle = PARTICLE->GetParticle("ATTACK"); //피격시 출혈파티클
 	m_pParticle2 = PARTICLE->GetParticle("Die");  //죽을때 나오는 파티클
 	m_pParticle3 = PARTICLE->GetParticle("Potal"); //텔레포트 위치 나타내는 파티클
 	m_pParticle4 = PARTICLE->GetParticle("teleport"); //텔레포트 끝나고 아래에서 피어오르는 파티클
+	m_pParticle5 = PARTICLE->GetParticle("Potal"); //메가크리스탈 파티클
 
 	m_pParticle3->SetPosition(D3DXVECTOR3(m_pCharacter->GetPosition()->x, m_pCharacter->GetPosition()->y, m_pCharacter->GetPosition()->z + 5.0f));
 
@@ -871,6 +871,7 @@ void CharacterParant::Render()
 	m_pParticle2->Render();
 	if (m_bIsPotal) m_pParticle3->Render();
 	if (m_bIsMeteo) m_pParticle3->Render();
+	if (m_bIsMegaCristal) m_pParticle3->Render();
 	m_pParticle4->Render();
 
 	for (int i = 0; i < m_vecEffect.size(); i++)
