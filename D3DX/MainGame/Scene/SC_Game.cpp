@@ -43,6 +43,7 @@ void SC_Game::Init()
 	m_fGenTime = GetTickCount();
 
 	m_pMap = new Map;
+	CAMERA->SetFog(false, 0, 0, 0, 0);
 	if (m_nStage == 0)
 		m_pMap->Load("Map/Sample.map");
 	else if (m_nStage == 1)
@@ -52,6 +53,7 @@ void SC_Game::Init()
 	else if (m_nStage == 3)
 	{
 		m_pMap->Load("Map/Stage 3.map");
+		CAMERA->SetFog(true, 120, 150, D3DXCOLOR(0.3, 0.3, 0.3, 1), 0.2);
 		for (int i = 0; m_vecParticle.size() < 10; i++)
 		{
 			D3DXVECTOR3 pos = D3DXVECTOR3(FRand(-100, 100), 0, FRand(-100, 100));
