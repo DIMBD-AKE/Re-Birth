@@ -125,6 +125,7 @@ void SC_Game::ShowElapseTime()
 
 void SC_Game::ClearStage()
 {
+	WriteRank();
 	CAMERA->SetTarget(NULL, NULL);
 	SAFE_DELETE(m_pCharacter);
 	SCENE->ChangeScene("Main");
@@ -147,12 +148,14 @@ void SC_Game::WriteRank()
 {
 	ofstream outFile("Ranking.rev", ofstream::out | ofstream::app);
 
+	outFile << endl;
+
 	if (m_pCharacter->Getm_Inventory()->GetWeapon())
 		outFile << m_sChrName << "\t" << m_fElapseTime << "\t"
-			<< m_pCharacter->Getm_Inventory()->GetWeapon()->GetID() << endl;
+			<< m_pCharacter->Getm_Inventory()->GetWeapon()->GetID();
 	else
 		outFile << m_sChrName << "\t" << m_fElapseTime << "\t"
-		<< -1 << endl;
+		<< -1;
 
 	outFile.close();
 }

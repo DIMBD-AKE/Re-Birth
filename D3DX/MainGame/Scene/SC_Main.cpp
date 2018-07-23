@@ -401,7 +401,7 @@ void SC_Main::CalcRank()
 	if (!fp)
 		return;
 
-	while (!feof(fp))
+	while (true)
 	{
 		char line[128];
 		fgets(line, 128, fp);
@@ -410,12 +410,16 @@ void SC_Main::CalcRank()
 		char * tok;
 		char * context;
 		tok = strtok_s(line, "\t\n", &context);
+		if (!tok) continue;
 		rank.name = tok;
 		tok = strtok_s(NULL, "\t\n", &context);
 		rank.time = atof(tok);
 		tok = strtok_s(NULL, "\t\n", &context);
 		rank.item = atoi(tok);
 		m_vecRank.push_back(rank);
+
+		if (feof(fp))
+			break;
 	}
 
 	fclose(fp);
