@@ -78,7 +78,7 @@ void BossParent::Render()
 {
 	if (m_pModel && (m_eState != MS_NONE && m_eBossState != BS_NONE) )
 	{
-		m_pModel->Render();
+		m_pModel->DummyRender();
 		
 		if (m_bIsTargeting) m_pHPBar->Render();
 	}
@@ -142,6 +142,7 @@ void BossParent::Skill2()
 
 void BossParent::Passive()
 {
+	
 	//1회 행동 했을때 idle상태로 바꿔서 다시 행동 판단
 	if (m_pModel->IsAnimationEnd())
 	{

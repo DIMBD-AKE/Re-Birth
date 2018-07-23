@@ -58,6 +58,15 @@ private:
 
 	void DropTheStone();
 
+	bool IsEnter() {
+		if (m_eBossState == BS_ENTER ||
+			m_eBossState == BS_ENTER1 ||
+			m_eBossState == BS_ENTER2 ||
+			m_eBossState == BS_ENTER3)
+			return true;
+		return false;
+	}
+
 public:
 	RealFinalboss();
 	virtual ~RealFinalboss();

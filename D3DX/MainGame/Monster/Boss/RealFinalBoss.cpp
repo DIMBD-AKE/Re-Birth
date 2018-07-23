@@ -23,7 +23,7 @@ void RealFinalboss::SetupBoss(Map* map, D3DXVECTOR3 pos)
 
 	BossParent::SetupBoss(map, pos);
 
-	m_eBossState = BS_SKILL2;
+	m_eBossState = BS_ENTER;
 	ChangeAni();
 	//판정 박스 
 	ST_SIZEBOX box;
@@ -35,7 +35,7 @@ void RealFinalboss::SetupBoss(Map* map, D3DXVECTOR3 pos)
 	box.lowZ = -50.0f;
 
 
-	m_pModel->SetScale(D3DXVECTOR3(0.025f, 0.025f, 0.025f));
+	m_pModel->SetScale(D3DXVECTOR3(0.01f, 0.01f, 0.01f));
 
 	m_pModel->CreateBound(box);
 	m_pModel->SetBoundSphere(m_pModel->GetOrigBoundSphere().center, 100.0f);
@@ -108,7 +108,19 @@ void RealFinalboss::Render()
 		}
 	}
 
-	BossParent::Render();
+	if (m_pModel && (m_eState != MS_NONE && m_eBossState != BS_NONE))
+	{
+		if (IsEnter())
+			m_pModel->Render();
+		else
+			m_pModel->DummyRender();
+
+		if (m_bIsTargeting) m_pHPBar->Render();
+	}
+
+	if (m_pHPBar) m_pHPBar->Render();
+
+	if (m_pSkill) m_pSkill->Render();
 }
 
 void RealFinalboss::SetupStat()
@@ -285,14 +297,15 @@ void RealFinalboss::Attack()
 	float length = GetDistance(*m_pModel->GetPosition(), *CHARACTER->GetPosition());
 
 	//공격 모션중에 플레이어가 벗어나도 공격모션 및 판정진행해라
-	if (length > RANGE(m_pMonsterStat) && !m_bIsAttack)
+	if (length > RANGE(m_pMonsterStat))
 	{
-		if (m_eBossState == BS_ATTACK)
+		if (!m_bIsAttack)
 		{
-			m_eBossState = BS_RUN;
+			m_eBossState = BS_SKILL2;
 			ChangeAni();
+			
+			return;
 		}
-		return;
 
 	}
 
@@ -477,7 +490,7 @@ void RealFinalboss::EnterAni()
 		if (m_pModel->IsAnimationEnd())
 		//if (m_pModel->IsAnimationPercent(98))
 		{
-			m_eBossState = BS_IDLE;
+			m_eBossState = BS_ATTACK;
 			ChangeAni();
 		}
 		break;
