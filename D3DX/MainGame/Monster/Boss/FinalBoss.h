@@ -10,7 +10,7 @@ protected:
 
 	//virtual void ChangeAni() override;
 
-	//virtual void Pattern() override;
+	virtual void Pattern() override;
 
 	virtual void SetupStat() override;
 	virtual void SetupSkill() override;

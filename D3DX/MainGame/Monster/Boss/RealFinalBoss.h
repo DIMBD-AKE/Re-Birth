@@ -4,9 +4,10 @@
 class RealFinalboss :
 	public BossParent
 {
+	D3DXMATRIX* test;
 	//virtual void ChangeAni() override;
 
-	//virtual void Pattern() override;
+	virtual void Pattern() override;
 
 	virtual void SetupStat() override;
 	virtual void SetupSkill() override;
@@ -24,6 +25,8 @@ class RealFinalboss :
 	virtual void Skill2() override;
 	//스킬 2 캐스팅함수
 	//virtual void Casting() override;
+
+	void EnterAni();
 
 public:
 	RealFinalboss();
