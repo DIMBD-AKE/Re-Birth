@@ -494,8 +494,14 @@ POINT MonsterParent::MoveForAttack()
 		//assert(playerIndex != -1 && "현재 플레이어가 갈 수 없는 곳을 가려고 합니다.");
 
 		//플레이어가 갈수 없는 곳에 있을때의 예외처리
-		if (playerIndex == -1) return{ -1, -1 };
+		if (playerIndex == -1 || myIndex == -1)
+		{
+			m_eState = MS_IDLE;
 
+
+			return { -1, -1 };
+		}
+	
 		//내가 들고있는 플레이어의 인덱스가 현재 계산 한 결과랑 다르다면 A*를 돌린다.
 		if (m_nPrePosIndex != playerIndex)
 		{

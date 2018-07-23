@@ -94,6 +94,11 @@ void MonsterManager::Update()
 	{
 		MakeMiddleBoss(NULL);
 	}
+
+	if (INPUT->KeyDown('5'))
+	{
+		MakeFinalBoss(NULL);
+	}
 }
 
 void MonsterManager::Render()
@@ -117,20 +122,21 @@ void MonsterManager::MakeMonster(DropManager* pDropManager)
 	//초기값 랜덤 설정
 	overlapInt = rand() % spotSize;
 
-	MakeElizabeth(pDropManager);
-	
-	MakeAssis(pDropManager);
+	//MakeElizabeth(pDropManager);
 	//
-	MakeDarkHell(pDropManager);
+	//MakeAssis(pDropManager);
+	////
+	//MakeDarkHell(pDropManager);
+	////
+	//MakeNifilHeim(pDropManager);
 	//
-	MakeNifilHeim(pDropManager);
-	
-	MakeNerisa(pDropManager);
-	
-	MakeNike(pDropManager);
+	//MakeNerisa(pDropManager);
+	//
+	//MakeNike(pDropManager);
 	//
 	//
 	//MakeFinalBoss(pDropManager);
+	
 }
 
 void MonsterManager::MakeMonster()
@@ -325,6 +331,22 @@ void MonsterManager::MakeMiddleBoss(DropManager* pDropManager)
 
 }
 
+void MonsterManager::MakeFinalBoss(DropManager* pDropManager)
+{
+
+	MonsterParent* realFinalBoss;
+
+	realFinalBoss = new RealFinalboss;
+	realFinalBoss->SetCharacter(m_ppCharacter);
+	realFinalBoss->SetupBoss(m_pMap, m_pMap->GetSpawnBoss());
+	realFinalBoss->SetDropManager(pDropManager);
+	//dynamic_cast<FinalBoss*>(realFinalBoss)->SetMM(this);
+	//finalBoss->SetupBoss(m_pMap, m_vSpawnSpot[0]);
+
+	m_vMM.push_back(realFinalBoss);
+
+}
+
 void MonsterManager::DeleteSummonMonster()
 {
 	for (int i = 0; i < m_vMM.size();++i)
@@ -348,7 +370,8 @@ bool MonsterManager::IsMiddleBossDie(OUT D3DXVECTOR3* diePos)
 	{
 		if (m_vMM[i]->IsMiddleBossDie())
 		{
-			*diePos = *m_vMM[i]->GetModel()->GetPosition();
+			if(diePos)
+				*diePos = *m_vMM[i]->GetModel()->GetPosition();
 			return true;
 		}
 	}

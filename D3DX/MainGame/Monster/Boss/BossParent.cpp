@@ -142,14 +142,22 @@ void BossParent::Skill2()
 
 void BossParent::Passive()
 {
+	//1회 행동 했을때 idle상태로 바꿔서 다시 행동 판단
+	if (m_pModel->IsAnimationEnd())
+	{
+		m_eBossState = BS_IDLE;
+		ChangeAni();
+	}
 }
 
 void BossParent::Casting()
 {
+	
+	
 	if (m_pModel->IsAnimationEnd())
 		//if (m_pModel->IsAnimationPercent(0.5f))
 	{
-		m_eBossState = BS_SKILL1;
+		m_eBossState = BS_IDLE;
 		ChangeAni();
 		//	m_pModel->SetAnimationPosition(0.5f);
 	}
@@ -199,6 +207,16 @@ void BossParent::ChangeAni()
 		break;
 	case BS_NONE:
 		break;
+		//이하 레알보스를 위한 체인지 애니메이션
+	case BS_ENTER1:
+		m_pModel->SetAnimation("ENTER1");
+		break;
+	case BS_ENTER2:
+		m_pModel->SetAnimation("ENTER2");
+		break;
+	case BS_ENTER3:
+		m_pModel->SetAnimation("ENTER3");
+		break;
 	default:
 		break;
 	}
@@ -211,60 +229,7 @@ void BossParent::ChangeAni()
 }
 void BossParent::Pattern()
 {
-	if (AbleSkill() && !m_bSkill2Use)
-	{
-		m_eBossState = BS_CASTING;
-		ChangeAni();
-	}
-
-	else if (AbleSkill2())
-	{
-		m_eBossState = BS_SKILL2;
-		ChangeAni();
-	}
-
-	switch (m_eBossState)
-	{
-	case BS_ENTER:
-	{
-		if (m_pModel->IsAnimationEnd())
-		{
-			m_eBossState = BS_RUN;
-			ChangeAni();
-		}
-	}
-	break;
-	case BS_RUN:
-	{
-		Move();
-	}
-	break;
-	case BS_PASSIVE:
-		if (m_pModel->IsAnimationEnd())
-		{
-			m_eBossState = BS_RUN;
-			ChangeAni();
-		}
-		break;
-	case BS_ATTACK:
-		Attack();
-		break;
-	case BS_SKILL1:
-		SkillUse();
-		break;
-	case BS_SKILL2:
-		Skill2();
-		break;
-	case BS_CASTING:
-		Casting();
-		break;
-	case BS_DIE:
-	{
-		if (m_pModel->IsAnimationEnd()) m_eBossState = BS_NONE;
-	}
-	default:
-		break;
-	}
+	
 }
 
 bool BossParent::AbleSkill()

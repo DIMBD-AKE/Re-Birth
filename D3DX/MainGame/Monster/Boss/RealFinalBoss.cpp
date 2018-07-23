@@ -1,8 +1,6 @@
 #include "../MonsterUseHeader.h"
 #include "../Magic/MagicCircle.h"
-
 #include "RealFinalboss.h"
-
 
 RealFinalboss::RealFinalboss()
 {
@@ -16,7 +14,7 @@ RealFinalboss::~RealFinalboss()
 void RealFinalboss::SetupBoss(Map* map, D3DXVECTOR3 pos)
 {
 	//¸ðµ¨ ¹Ù²ã¾ßÇÔ
-	m_pModel = MODELMANAGER->GetModel("º¸½º", MODELTYPE_X);
+	m_pModel = MODELMANAGER->GetModel("ÃÖÁ¾º¸½º", MODELTYPE_X);
 
 	BossParent::SetupBoss(map, pos);
 
@@ -47,6 +45,10 @@ void RealFinalboss::SetupBoss(Map* map, D3DXVECTOR3 pos)
 
 	m_bSkill2Use = m_bUsingSkill = false;
 	m_bIsTargeting = true;
+
+	
+	test= m_pModel->GetBoneMatrix("Bip001-R-Hand");
+
 
 }
 
@@ -177,66 +179,60 @@ void RealFinalboss::SetupSkill2()
 //	else m_pModel->SetAnimationSpeed(1.0f);
 //}
 
-//void RealFinalboss::Pattern()
-//{
-//	if (AbleSkill() && !m_bSkill2Use)
-//	{
-//		m_eBossState = BS_CASTING;
-//		ChangeAni();
-//	}
-//
-//	else if (AbleSkill2())
-//	{
-//		m_eBossState = BS_SKILL2;
-//		ChangeAni();
-//	}
-//
-//	switch (m_eBossState)
-//	{
-//	case BS_ENTER:
-//	{
-//		if (m_pModel->IsAnimationEnd())
-//		{
-//			m_eBossState = BS_RUN;
-//			ChangeAni();
-//		}
-//	}
-//	break;
-//	case BS_RUN:
-//	{
-//		Move();
-//	}
-//	break;
-//	case BS_PASSIVE:
-//		if (m_pModel->IsAnimationEnd())
-//		{
-//			m_eBossState = BS_RUN;
-//			ChangeAni();
-//		}
-//		break;
-//	case BS_ATTACK:
-//		Attack();
-//		break;
-//	case BS_SKILL1:
-//		SkillUse();
-//		break;
-//	case BS_SKILL2:
-//		Skill2();
-//		break;
-//	case BS_CASTING:
-//		Casting();
-//		break;
-//	case BS_DIE:
-//	{
-//		if (m_pModel->IsAnimationEnd()) m_eBossState = BS_NONE;
-//	}
-//	default:
-//		break;
-//	}
-//}
+void RealFinalboss::Pattern()
+{
+	if (AbleSkill() && !m_bSkill2Use)
+	{
+		m_eBossState = BS_CASTING;
+		ChangeAni();
+	}
+
+	else if (AbleSkill2())
+	{
+		m_eBossState = BS_SKILL2;
+		ChangeAni();
+	}
+
+	switch (m_eBossState)
+	{
+	case BS_ENTER: case BS_ENTER1: case BS_ENTER2: case BS_ENTER3:
+	{
+		EnterAni();
+	}
+	break;
+
+	case BS_PASSIVE:
+		Passive();
+		break;
+
+	case BS_ATTACK:
+		//Attack();
+		break;
+
+	case BS_SKILL1:
+		SkillUse();
+		break;
+	case BS_SKILL2:
+		Skill2();
+		break;
+
+	case BS_CASTING:
+		Casting();
+		break;
+
+	case BS_DIE:
+	{
+		if (m_pModel->IsAnimationEnd()) m_eBossState = BS_NONE;
+	}
+	default:
+		break;
+	}
+}
 
 void RealFinalboss::Attack()
 {
+	test;
+	int a = 10;
 	if (PCHARACTER->GetIsDead())
 	{
 		m_eState = MS_IDLE;
@@ -307,42 +303,13 @@ void RealFinalboss::Attack()
 
 void RealFinalboss::Move()
 {
-	//if (AbleSummon())
-	//{
-	//	m_eBossState = BS_PASSIVE;
-	//	ChangeAni();
-	//	Passive();
-	//
-	//	//ÀÌµ¿ ¸ØÃß°í Àâ¸÷¼ÒÈ¯
-	//	return;
-	//}
-	if (m_eBossState == BS_RUN)
-	{
-		m_vDir = *CHARACTER->GetPosition() - *m_pModel->GetPosition();
-		D3DXVec3Normalize(&m_vDir, &m_vDir);
-		D3DXVECTOR3 tempPos = *m_pModel->GetPosition() + m_vDir * SPEED(m_pMonsterStat);
-		tempPos.y = m_pMap->GetHeight(tempPos.x, tempPos.z);
-
-		ChangeRot();
-
-		m_pModel->SetPosition(tempPos);
-
-		float length = GetDistance(*m_pModel->GetPosition(), *CHARACTER->GetPosition());
-
-		if (length < RANGE(m_pMonsterStat))
-		{
-			m_eBossState = BS_ATTACK;
-			ChangeAni();
-		}
-	}
+	
 }
 
 void RealFinalboss::Passive()
 {
 
-	//m_pMM->MakeMonster();
-
-
+	
 }
 
 //bool RealFinalboss::AbleSummon()
@@ -416,3 +383,37 @@ void RealFinalboss::Skill2()
 //		//	m_pModel->SetAnimationPosition(0.5f);
 //	}
 //}
+
+void RealFinalboss::EnterAni()
+{
+	switch (m_eBossState)
+	{
+	case BS_ENTER:
+		if (m_pModel->IsAnimationEnd())
+		//if (m_pModel->IsAnimationPercent(98))
+		{
+			m_eBossState = BS_ENTER1;
+			ChangeAni();
+		}
+		break;
+	case BS_ENTER1:	case BS_ENTER2:	
+		if (m_pModel->IsAnimationEnd())
+		//if (m_pModel->IsAnimationPercent(98))
+		{
+			m_eBossState = BOSS_STATE(m_eBossState+1);
+			ChangeAni();
+		}
+		break;
+
+	case BS_ENTER3:
+		if (m_pModel->IsAnimationEnd())
+		//if (m_pModel->IsAnimationPercent(98))
+		{
+			m_eBossState = BS_IDLE;
+			ChangeAni();
+		}
+		break;
+	default:
+		break;
+	}
+}

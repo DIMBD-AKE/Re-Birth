@@ -56,11 +56,10 @@ void SC_Loading::AddModel()
 	m_pLoading->LoadModel("다크헬", "Model/Enemy/DarkHell/", "DarkHell.x", MODELTYPE_X);
 	m_pLoading->LoadModel("아시스", "Model/Enemy/Assis/", "Assis.x", MODELTYPE_X);
 	m_pLoading->LoadModel("엘리자베스", "Model/Enemy/Elizabeth/", "Elizabeth.x", MODELTYPE_X);
-	//중간보스
-	m_pLoading->LoadModel("나그로", "Model/Enemy/Lagro/", "Lagro.x", MODELTYPE_X);
-	//최종보스
+	//중간 보스
 	m_pLoading->LoadModel("보스", "Model/Enemy/Boss/", "BOSS.x", MODELTYPE_X);
-
+	//최종 보스
+	m_pLoading->LoadModel("최종보스", "Model/Enemy/FinalBoss/", "LoadWell.x", MODELTYPE_X);
 	
 	//플레이어 
 	m_pLoading->LoadModel("아린", "Model/Character/Arin/", "Arin.x", MODELTYPE_X);
@@ -260,6 +259,8 @@ void SC_Loading::AddParticle()
 	m_pLoading->LoadParticle("석유", "석유", "./Particle/AssisHit.ptc");
 
 	m_pLoading->LoadParticle("WindStorm", "Particle Sphere", "Particle/WindStorm.ptc");
+	m_pLoading->LoadParticle("Meteor", "Meteor", "Particle/meteor.ptc");
+	m_pLoading->LoadParticle("MegaCristal", "MegaCristal", "Particle/megaCristal.ptc");
 }
 
 void SC_Loading::InitUI()
