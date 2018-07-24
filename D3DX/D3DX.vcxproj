@@ -212,6 +212,7 @@
     <ClInclude Include="MainGame\Status.h" />
     <ClInclude Include="MainGame\AStar\PathFind.h" />
     <ClInclude Include="MainGame\Monster\Boss\RealFinalboss.h" />
+    <ClInclude Include="MainGame\Character\Npc.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Framework\Manager\SceneManager.h" />
     <ClInclude Include="MainGame\Scene\SC_Test.h" />
@@ -279,6 +280,7 @@
     <ClCompile Include="MainGame\Scene\SC_Main.cpp" />
     <ClCompile Include="Framework\Shader.cpp" />
     <ClCompile Include="MainGame\Monster\Boss\RealFinalboss.cpp" />
+    <ClCompile Include="MainGame\Character\Npc.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

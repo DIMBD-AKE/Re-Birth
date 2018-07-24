@@ -13,6 +13,9 @@ private:
 	CharacterParant*	m_pPlayer;		//플레이어
 	bool				m_bIsCollision;	//충돌했늬?
 	Dialogue*			m_pContext;		//다이얼로그
+	GET(bool, m_bIsAppear, IsAppear);	//등장했늬?
+
+
 public:
 	Npc();
 	~Npc();

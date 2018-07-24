@@ -25,6 +25,8 @@ void Npc::Init(D3DXVECTOR3 pos, Map* map)
 	m_pMap = map;
 
 	m_bIsCollision = false;
+	m_bIsAppear = false;
+
 
 	ST_SIZEBOX box;
 	box.highX = 30.0f;
