@@ -40,6 +40,69 @@ void ModelManager::AddModel(string keyName, string folderPath, string fileName, 
 		skin->Setup(folderPath, fileName);
 		m_mX.insert(make_pair(keyName, skin));
 	}
+
+	if (type == MODELTYPE_STATICX)
+	{
+		if (m_mStaticX.find(keyName) != m_mStaticX.end())
+			return;
+
+		ST_STATICX * staticX = new ST_STATICX;
+		LPD3DXBUFFER mtrlBuffer;
+		LPD3DXBUFFER adjBuffer;
+		DWORD numMtrl;
+		D3DXLoadMeshFromX((folderPath + fileName).c_str(),
+			D3DXMESH_MANAGED,
+			DEVICE,
+			&adjBuffer, &mtrlBuffer, NULL, &numMtrl,
+			&staticX->mesh);
+
+		if (mtrlBuffer)
+		{
+			D3DXMATERIAL * mtrls = (D3DXMATERIAL*)mtrlBuffer->GetBufferPointer();
+			staticX->numMtrl = numMtrl;
+			for (int i = 0; i < numMtrl; i++)
+			{
+				mtrls[i].MatD3D.Ambient = mtrls[i].MatD3D.Diffuse;
+				staticX->vecMtl.push_back(mtrls[i].MatD3D);
+				if (mtrls[i].pTextureFilename)
+					staticX->vecTex.push_back(TEXTUREMANAGER->AddTexture(mtrls[i].pTextureFilename, folderPath + mtrls[i].pTextureFilename));
+				else
+					staticX->vecTex.push_back(NULL);
+			}
+		}
+
+		BYTE * pVertex;
+		D3DXVECTOR3 min;
+		D3DXVECTOR3 max;
+		staticX->mesh->LockVertexBuffer(0, (void**)&pVertex);
+		D3DXComputeBoundingBox((D3DXVECTOR3*)pVertex, staticX->mesh->GetNumVertices(),
+			D3DXGetFVFVertexSize(staticX->mesh->GetFVF()), &min, &max);
+
+		D3DXVECTOR3 offset;
+		offset.x = -min.x - (max.x - min.x) / 2;
+		offset.y = -min.y;
+		offset.z = -min.z - (max.z - min.z) / 2;
+		staticX->offset = offset;
+
+		staticX->sizeBox.highX = max.x + offset.x;
+		staticX->sizeBox.highY = max.y + offset.y;
+		staticX->sizeBox.highZ = max.z + offset.z;
+		staticX->sizeBox.lowX = min.x + offset.x;
+		staticX->sizeBox.lowY = min.y + offset.y;
+		staticX->sizeBox.lowZ = min.z + offset.z;
+
+		staticX->mesh->UnlockVertexBuffer();
+
+		SAFE_RELEASE(mtrlBuffer);
+
+		staticX->mesh->OptimizeInplace(
+			D3DXMESHOPT_ATTRSORT | D3DXMESHOPT_COMPACT | D3DXMESHOPT_VERTEXCACHE,
+			(DWORD*)adjBuffer->GetBufferPointer(), 0, 0, 0);
+
+		SAFE_RELEASE(adjBuffer);
+
+		m_mStaticX.insert(make_pair(keyName, staticX));
+	}
 }
 
 Model * ModelManager::GetModel(string keyName, MODELTYPE type)
@@ -82,6 +145,17 @@ Model * ModelManager::GetModel(string keyName, MODELTYPE type)
 			return x;
 		}
 	}
+	if (type == MODELTYPE_STATICX)
+	{
+		if (m_mStaticX.find(keyName) != m_mStaticX.end())
+		{
+			ModelStaticX * staticX = new ModelStaticX();
+			staticX->Setup(m_mStaticX[keyName]);
+			staticX->CreateBound(m_mStaticX[keyName]->sizeBox);
+			staticX->SetKeyName(keyName);
+			return staticX;
+		}
+	}
 	return NULL;
 }
 
@@ -98,6 +172,13 @@ void ModelManager::Release()
 	auto xIter = m_mX.begin();
 	for (; xIter != m_mX.end(); xIter++)
 		SAFE_DELETE(xIter->second);
+
+	auto sXIter = m_mStaticX.begin();
+	for (; sXIter != m_mStaticX.end(); sXIter++)
+	{
+		SAFE_RELEASE(sXIter->second->mesh);
+		SAFE_DELETE(sXIter->second);
+	}
 }
 
 ModelOBJ * ModelOBJ::Clone() const
@@ -566,4 +647,28 @@ D3DXMATRIX * ModelX::GetBoneMatrix(string name)
 void ModelX::SetShaderAlpha(float alpha)
 {
 	m_pSMesh->SetAlpha(Clamp(0, 1, alpha));
+}
+
+ModelStaticX * ModelStaticX::Clone() const
+{
+	return new ModelStaticX(*this);
+}
+
+ModelStaticX::~ModelStaticX()
+{
+}
+
+void ModelStaticX::Render()
+{
+	DEVICE->SetRenderState(D3DRS_LIGHTING, true);
+	Debug();
+	D3DXMATRIX matT;
+	D3DXMatrixTranslation(&matT, m_pStaticX->offset.x, m_pStaticX->offset.y, m_pStaticX->offset.z);
+	for (int i = 0; i < m_pStaticX->numMtrl; i++)
+	{
+		DEVICE->SetTexture(0, m_pStaticX->vecTex[i]);
+		DEVICE->SetMaterial(&m_pStaticX->vecMtl[i]);
+		DEVICE->SetTransform(D3DTS_WORLD, &(matT * m_matWorld));
+		m_pStaticX->mesh->DrawSubset(i);
+	}
 }

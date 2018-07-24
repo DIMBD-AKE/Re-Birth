@@ -7,7 +7,8 @@ enum MODELTYPE
 {
 	MODELTYPE_OBJ,
 	MODELTYPE_ASE,
-	MODELTYPE_X
+	MODELTYPE_X,
+	MODELTYPE_STATICX
 };
 
 class Model
@@ -50,7 +51,7 @@ public:
 	virtual float GetShaderAlpha() { return 0; }
 	virtual D3DXMATRIX* GetBoneMatrix(string name) { return NULL; }
 
-private:
+protected:
 	ST_BOUNDBOX	m_stBoundBox;
 	ST_SPHERE	m_stBoundSphere;
 
@@ -137,6 +138,20 @@ public:
 	virtual D3DXMATRIX* GetBoneMatrix(string name);
 };
 
+class ModelStaticX : public Model
+{
+private:
+	ST_STATICX * m_pStaticX;
+
+public:
+	ModelStaticX() {}
+	virtual ModelStaticX * Clone() const;
+	virtual ~ModelStaticX();
+
+	void Setup(ST_STATICX* data) { m_pStaticX = data; }
+	virtual void Render();
+};
+
 class ModelManager
 {
 	SINGLETONE(ModelManager);
@@ -145,6 +160,7 @@ private:
 	map<string, ST_OBJECT*>		m_mObj;
 	map<string, ST_ASE*>		m_mAse;
 	map<string, SkinnedMesh*>	m_mX;
+	map<string, ST_STATICX*>	m_mStaticX;
 
 public:
 	void AddModel(string keyName, string folderPath, string fileName, MODELTYPE type);

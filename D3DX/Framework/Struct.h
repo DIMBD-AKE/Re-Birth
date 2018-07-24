@@ -177,3 +177,13 @@ struct Ray
 	D3DXVECTOR3 dir;
 	D3DXVECTOR3 orig;
 };
+
+struct ST_STATICX
+{
+	LPD3DXMESH mesh;
+	vector<D3DMATERIAL9>		vecMtl;
+	vector<LPDIRECT3DTEXTURE9>	vecTex;
+	D3DXVECTOR3 offset;
+	DWORD numMtrl;
+	ST_SIZEBOX sizeBox;
+};

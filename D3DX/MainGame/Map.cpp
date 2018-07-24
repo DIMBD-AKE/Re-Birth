@@ -257,14 +257,21 @@ void Map::Load(string mapPath)
 			string key = string(tok);
 			string folder = GetFileFolder((char*)string(tok).c_str());
 			string file = GetFileName((char*)string(tok).c_str());
-			MODELMANAGER->AddModel(key, folder, file, MODELTYPE_OBJ);
+			if (key[key.size() - 1] == 'x' || key[key.size() - 1] == 'X')
+				MODELMANAGER->AddModel(key, folder, file, MODELTYPE_STATICX);
+			else
+				MODELMANAGER->AddModel(key, folder, file, MODELTYPE_OBJ);
 			tok = strtok_s(NULL, "\t", &context);
 			D3DXVECTOR3 p, r, s;
 			int b;
 			sscanf_s(tok, "%f %f %f %f %f %f %f %f %f %d",
 				&p.x, &p.y, &p.z, &r.x, &r.y, &r.z, &s.x, &s.y, &s.z, &b);
 
-			Model * model = MODELMANAGER->GetModel(key, MODELTYPE_OBJ);
+			Model * model = NULL;
+			if (key[key.size() - 1] == 'x' || key[key.size() - 1] == 'X')
+				model = MODELMANAGER->GetModel(key, MODELTYPE_STATICX);
+			else
+				model = MODELMANAGER->GetModel(key, MODELTYPE_OBJ);
 			model->SetKeyName(key);
 			model->SetPosition(p);
 			model->SetRotation(r);
