@@ -6,7 +6,6 @@ RealFinalboss::RealFinalboss()
 {
 }
 
-
 RealFinalboss::~RealFinalboss()
 {
 	for (int i = 0; i < STONENUM; ++i)
@@ -23,7 +22,7 @@ void RealFinalboss::SetupBoss(Map* map, D3DXVECTOR3 pos)
 
 	BossParent::SetupBoss(map, pos);
 
-	m_eBossState = BS_ENTER;
+	m_eBossState = BS_ATTACK;
 	ChangeAni();
 	//판정 박스 
 	ST_SIZEBOX box;
@@ -96,7 +95,7 @@ void RealFinalboss::Update()
 
 void RealFinalboss::Render()
 {
-	
+	Debug();
 
 	if (m_bSkill2Use)
 	{
@@ -142,7 +141,7 @@ void RealFinalboss::SetupStat()
 	AGI(m_pMonsterStat) = 10.0f;
 	HIT(m_pMonsterStat) = 10.0f;
 	SPEED(m_pMonsterStat) = 0.9f;
-	RANGE(m_pMonsterStat) = 6.0f;
+	RANGE(m_pMonsterStat) = 10.0f;
 }
 
 void RealFinalboss::SetupSkill()
@@ -227,6 +226,8 @@ void RealFinalboss::SetupSkill2()
 void RealFinalboss::Pattern()
 {
 	HandMatInit();
+
+
 	//if (AbleSkill() && !m_bSkill2Use)
 	//{
 	//	m_eBossState = BS_CASTING;
@@ -276,13 +277,16 @@ void RealFinalboss::Pattern()
 }
 
 void RealFinalboss::Attack()
-{
+{{
 	if (PCHARACTER->GetIsDead())
 	{
 		m_eState = MS_IDLE;
 		ChangeAni();
 		return;
 	}
+
+	MakeSphere();
+
 
 	//if (AbleSummon())
 	//{
@@ -309,36 +313,42 @@ void RealFinalboss::Attack()
 
 	}
 
+	m_bSkill2Use = false;
+
 	//사거리 안에 들어왔는데 이제 공격을 시작할려고 한다면
 	if (!m_bIsAttack)
 	{
 		//방향 및 각도를 구하고		
-		ChangeRot();
+		//ChangeRot();
 
 		//첫 판정후 이제 공격중으로 바꿔줌으로서 보스의 회전을 막는다.
 		m_bIsAttack = true;
 
-		//플레이어 위치 기준으로 구 생성
-		m_pMagicCircle->SetPosAndRad(*CHARACTER->GetPosition(), 3);
 	}
 
-	//플레이어 공격기능 설정
-	if (m_pModel->IsAnimationPercent(ATKSPEED(m_pMonsterStat)))
+	if (HandCollision())
 	{
-		if (m_pMagicCircle->PlayerCollision(
-			*CHARACTER->GetPosition(),
-			CHARACTER->GetBoundSphere().radius))
-		{
+		float tatalRate = PHYRATE(m_pMonsterStat) + MAGICRATE(m_pMonsterStat) + CHERATE(m_pMonsterStat);
+		float tatalDamage = tatalRate * ATK(m_pMonsterStat);
 
-			float tatalRate = PHYRATE(m_pMonsterStat) + MAGICRATE(m_pMonsterStat) + CHERATE(m_pMonsterStat);
-			float tatalDamage = tatalRate * ATK(m_pMonsterStat);
-			PCHARACTER->CalculDamage(tatalDamage);
-		}
-
-
-		//float tatalRate = PHYRATE(m_pMonsterStat) + MAGICRATE(m_pMonsterStat) + CHERATE(m_pMonsterStat);
-		//float tatalDamage = tatalRate * ATK(m_pMonsterStat);
-		//PCHARACTER->CalculDamage(tatalDamage);
+		PCHARACTER->CalculDamage(tatalDamage);
+	}
+	//플레이어 공격기능 설정
+	//if (m_pModel->IsAnimationPercent(ATKSPEED(m_pMonsterStat)))
+	//{
+	//	if (m_pMagicCircle->PlayerCollision(
+	//		*CHARACTER->GetPosition(),
+	//		CHARACTER->GetBoundSphere().radius))
+	//	{
+	//
+	//		
+	//		PCHARACTER->CalculDamage(tatalDamage);
+	//	}
+	//
+	//
+	//	//float tatalRate = PHYRATE(m_pMonsterStat) + MAGICRATE(m_pMonsterStat) + CHERATE(m_pMonsterStat);
+	//	//float tatalDamage = tatalRate * ATK(m_pMonsterStat);
+	//	//PCHARACTER->CalculDamage(tatalDamage);
 	}
 	if (m_pModel->IsAnimationEnd())
 	{
@@ -410,11 +420,11 @@ void RealFinalboss::Skill2()
 		//돌을 떨구자
 	}
 
-	//if (m_pModel->IsAnimationEnd())
-	//{
-	//	m_eBossState = BS_IDLE;
-	//	ChangeAni();
-	//}
+	if (m_pModel->IsAnimationEnd())
+	{
+		m_eBossState = BS_ATTACK;
+		ChangeAni();
+	}
 	//vector<MonsterParent*> tt;
 	//
 	//
@@ -539,4 +549,81 @@ void RealFinalboss::DropTheStone()
 		m_vEffectObject[i] = new EffectObject;
 		m_vEffectObject[i]->Init(m_stEffect, rndPos + D3DXVECTOR3(0, 7.0f, 0));
 	}
+}
+
+void RealFinalboss::MakeSphere()
+{
+	D3DXVECTOR3 temp(0, 0, 0);
+	D3DXVec3TransformCoord(&temp, &temp, m_stHandMat.LeftHand1);
+	m_stHandSphere.LeftHand1.center = temp;
+
+	temp = D3DXVECTOR3(0, 0, 0);
+	D3DXVec3TransformCoord(&temp, &temp, m_stHandMat.LeftHand2);
+	m_stHandSphere.LeftHand2.center = temp;
+
+	temp = D3DXVECTOR3(0, 0, 0);
+	D3DXVec3TransformCoord(&temp, &temp, m_stHandMat.RightHand1);
+	m_stHandSphere.RightHand1.center = temp;
+
+	temp = D3DXVECTOR3(0, 0, 0);
+	D3DXVec3TransformCoord(&temp, &temp, m_stHandMat.RightHand2);
+	m_stHandSphere.RightHand2.center = temp;
+
+	m_stHandSphere.LeftHand1.radius =
+		m_stHandSphere.LeftHand2.radius =
+		m_stHandSphere.RightHand1.radius =
+		m_stHandSphere.RightHand2.radius = 2;
+}
+
+void RealFinalboss::Debug()
+{
+	DWORD prevFillMode;
+	DEVICE->GetRenderState(D3DRS_FILLMODE, &prevFillMode);
+	DEVICE->SetTexture(0, NULL);
+	DEVICE->SetRenderState(D3DRS_LIGHTING, false);
+	DEVICE->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+
+	// BoundSphere
+	LPD3DXMESH mesh;
+	D3DXMATRIX matT;
+
+	float radius = m_stHandSphere.LeftHand1.radius;
+	if (radius < 0) radius = 0;
+	D3DXCreateSphere(DEVICE, radius, 8, 8, &mesh, NULL);
+	D3DXVECTOR3 pos = m_stHandSphere.LeftHand1.center;
+	D3DXMatrixTranslation(&matT, pos.x, pos.y, pos.z);
+	DEVICE->SetTransform(D3DTS_WORLD, &matT);
+	mesh->DrawSubset(0);
+	SAFE_RELEASE(mesh);
+
+	LPD3DXMESH mesh;
+	D3DXMATRIX matT;
+
+	float radius = m_stHandSphere.LeftHand1.radius;
+	if (radius < 0) radius = 0;
+	D3DXCreateSphere(DEVICE, radius, 8, 8, &mesh, NULL);
+	D3DXVECTOR3 pos = m_stHandSphere.LeftHand1.center;
+	D3DXMatrixTranslation(&matT, pos.x, pos.y, pos.z);
+	DEVICE->SetTransform(D3DTS_WORLD, &matT);
+	mesh->DrawSubset(0);
+	SAFE_RELEASE(mesh);
+
+	DEVICE->SetRenderState(D3DRS_FILLMODE, prevFillMode);
+}
+
+bool RealFinalboss::HandCollision()
+{
+	if (IntersectSphere(m_stHandSphere.LeftHand1, CHARACTER->GetBoundSphere()))
+		return true;
+
+	if (IntersectSphere(m_stHandSphere.LeftHand2, CHARACTER->GetBoundSphere()))
+		return true;
+
+	if (IntersectSphere(m_stHandSphere.RightHand1, CHARACTER->GetBoundSphere()))
+		return true;
+
+	if (IntersectSphere(m_stHandSphere.RightHand2, CHARACTER->GetBoundSphere()))
+		return true;
+
+	return false;
 }

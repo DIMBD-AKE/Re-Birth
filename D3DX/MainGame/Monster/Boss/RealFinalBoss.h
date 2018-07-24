@@ -13,6 +13,14 @@ struct ST_HANDMAT
 	D3DXMATRIX* RightHand2;	//오른쪽 위 손
 };
 
+struct ST_HANDSPHERE
+{
+	ST_SPHERE LeftHand1;	//왼쪽 아래 손
+	ST_SPHERE LeftHand2; 	//왼쪽 위 손
+	ST_SPHERE RightHand1;	//오른쪽 아래 손
+	ST_SPHERE RightHand2;	//오른쪽 위 손
+};
+
 class RealFinalboss :
 	public BossParent
 {
@@ -24,7 +32,10 @@ protected:
 	//돌 떨궈주는 이펙트오브젝트 클래스
 	vector<EffectObject*> m_vEffectObject;
 
+	//손들의 매트리스 구조체
 	ST_HANDMAT m_stHandMat;
+	//매트리스를 이용한 손들의 구조체
+	ST_HANDSPHERE m_stHandSphere;
 
 	ST_EFFECT m_stEffect;
 
@@ -66,6 +77,11 @@ private:
 			return true;
 		return false;
 	}
+
+	void MakeSphere();
+	void Debug();
+
+	bool HandCollision();
 
 public:
 	RealFinalboss();
