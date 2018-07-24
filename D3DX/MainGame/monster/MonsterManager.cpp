@@ -122,17 +122,17 @@ void MonsterManager::MakeMonster(DropManager* pDropManager)
 	//초기값 랜덤 설정
 	overlapInt = rand() % spotSize;
 
-	//MakeElizabeth(pDropManager);
+	MakeElizabeth(pDropManager);
+	
+	MakeAssis(pDropManager);
 	//
-	//MakeAssis(pDropManager);
-	////
-	//MakeDarkHell(pDropManager);
-	////
-	//MakeNifilHeim(pDropManager);
+	MakeDarkHell(pDropManager);
 	//
-	//MakeNerisa(pDropManager);
-	//
-	//MakeNike(pDropManager);
+	MakeNifilHeim(pDropManager);
+	
+	MakeNerisa(pDropManager);
+	
+	MakeNike(pDropManager);
 	//
 	//
 	//MakeFinalBoss(pDropManager);

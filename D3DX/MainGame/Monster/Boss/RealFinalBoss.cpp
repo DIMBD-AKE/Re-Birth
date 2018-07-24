@@ -22,7 +22,7 @@ void RealFinalboss::SetupBoss(Map* map, D3DXVECTOR3 pos)
 
 	BossParent::SetupBoss(map, pos);
 
-	m_eBossState = BS_ATTACK;
+	m_eBossState = BS_ENTER;
 	ChangeAni();
 	//판정 박스 
 	ST_SIZEBOX box;
@@ -76,10 +76,15 @@ void RealFinalboss::SetupBoss(Map* map, D3DXVECTOR3 pos)
 	m_stEffect.tex = TEXTUREMANAGER->GetTexture("돌");
 	
 	BoolInit();
+
+	CAMERA->SetTarget(m_pModel->GetPosition(), m_pModel->GetRotation());
+	CAMERA->Cinematic(D3DXVECTOR2(70.0f, 60.0f), D3DXVECTOR2(-10.0f, 10.0f), 10, 1,10);
 }
 
 void RealFinalboss::Update()
 {
+	if (CAMERA->IsActionEnd())
+		CAMERA->SetTarget(CHARACTER->GetPosition(), CHARACTER->GetRotation());
 	if (m_bSkill2Use)
 	{
 		for (int i = 0; i < STONENUM; ++i)
@@ -504,6 +509,7 @@ void RealFinalboss::EnterAni()
 		{
 			m_eBossState = BOSS_STATE(m_eBossState+1);
 			ChangeAni();
+			
 		}
 		break;
 	case BS_ENTER2:	//case BS_ENTER2:	
@@ -511,6 +517,7 @@ void RealFinalboss::EnterAni()
 		if (m_pModel->IsAnimationPercent(0.8f))
 		{
 			m_eBossState = BOSS_STATE(m_eBossState + 1);
+			CAMERA->Shake(0.5f, 3.5f);
 			ChangeAni();
 		}
 		break;
