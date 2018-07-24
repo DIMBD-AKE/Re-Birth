@@ -75,6 +75,7 @@ void RealFinalboss::SetupBoss(Map* map, D3DXVECTOR3 pos)
 	//effect.mot = D3DXVECTOR3(0, 0, 1);
 	m_stEffect.tex = TEXTUREMANAGER->GetTexture("돌");
 	
+	BoolInit();
 }
 
 void RealFinalboss::Update()
@@ -321,6 +322,18 @@ void RealFinalboss::Attack()
 		//방향 및 각도를 구하고		
 		//ChangeRot();
 
+		D3DXVECTOR3 dir =
+			*CHARACTER->GetPosition() - *m_pModel->GetPosition();
+
+		//각도를 구하고
+		float angle = GetAngle(0, 0, dir.x, dir.z);
+
+
+		//angle -= D3DX_PI / 2;
+
+		//각도만큼 로테이션
+		m_pModel->SetRotation(D3DXVECTOR3(0, angle, 0));
+
 		//첫 판정후 이제 공격중으로 바꿔줌으로서 보스의 회전을 막는다.
 		m_bIsAttack = true;
 
@@ -352,6 +365,7 @@ void RealFinalboss::Attack()
 	}
 	if (m_pModel->IsAnimationEnd())
 	{
+		BoolInit();
 		m_bIsAttack = false;
 	}
 }
@@ -596,34 +610,39 @@ void RealFinalboss::Debug()
 	mesh->DrawSubset(0);
 	SAFE_RELEASE(mesh);
 
-	LPD3DXMESH mesh;
-	D3DXMATRIX matT;
-
-	float radius = m_stHandSphere.LeftHand1.radius;
-	if (radius < 0) radius = 0;
-	D3DXCreateSphere(DEVICE, radius, 8, 8, &mesh, NULL);
-	D3DXVECTOR3 pos = m_stHandSphere.LeftHand1.center;
-	D3DXMatrixTranslation(&matT, pos.x, pos.y, pos.z);
-	DEVICE->SetTransform(D3DTS_WORLD, &matT);
-	mesh->DrawSubset(0);
-	SAFE_RELEASE(mesh);
 
 	DEVICE->SetRenderState(D3DRS_FILLMODE, prevFillMode);
 }
 
 bool RealFinalboss::HandCollision()
 {
-	if (IntersectSphere(m_stHandSphere.LeftHand1, CHARACTER->GetBoundSphere()))
+	if (IntersectSphere(m_stHandSphere.LeftHand1, CHARACTER->GetBoundSphere())
+		&& !m_stHandSphere.IsOnceAttack1)
+	{
+		m_stHandSphere.IsOnceAttack1 = true;
 		return true;
+	}
 
-	if (IntersectSphere(m_stHandSphere.LeftHand2, CHARACTER->GetBoundSphere()))
+	if (IntersectSphere(m_stHandSphere.LeftHand2, CHARACTER->GetBoundSphere())
+		&& !m_stHandSphere.IsOnceAttack2)
+	{
+		m_stHandSphere.IsOnceAttack2 = true;
 		return true;
+	}
 
-	if (IntersectSphere(m_stHandSphere.RightHand1, CHARACTER->GetBoundSphere()))
+	if (IntersectSphere(m_stHandSphere.RightHand1, CHARACTER->GetBoundSphere())
+		&& !m_stHandSphere.IsOnceAttack3)
+	{
+		m_stHandSphere.IsOnceAttack3 = true;
 		return true;
+	}
 
-	if (IntersectSphere(m_stHandSphere.RightHand2, CHARACTER->GetBoundSphere()))
+	if (IntersectSphere(m_stHandSphere.RightHand2, CHARACTER->GetBoundSphere())
+		&& !m_stHandSphere.IsOnceAttack4)
+	{
+		m_stHandSphere.IsOnceAttack4 = true;
 		return true;
+	}
 
 	return false;
 }

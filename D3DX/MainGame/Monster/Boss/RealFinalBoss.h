@@ -16,9 +16,16 @@ struct ST_HANDMAT
 struct ST_HANDSPHERE
 {
 	ST_SPHERE LeftHand1;	//왼쪽 아래 손
+	bool IsOnceAttack1;		//이 손에 맞았냐
+
 	ST_SPHERE LeftHand2; 	//왼쪽 위 손
+	bool IsOnceAttack2;		//이 손에 맞았냐
+
 	ST_SPHERE RightHand1;	//오른쪽 아래 손
+	bool IsOnceAttack3;		//이 손에 맞았냐
+
 	ST_SPHERE RightHand2;	//오른쪽 위 손
+	bool IsOnceAttack4;		//이 손에 맞았냐
 };
 
 class RealFinalboss :
@@ -82,6 +89,13 @@ private:
 	void Debug();
 
 	bool HandCollision();
+	void BoolInit()
+	{
+		m_stHandSphere.IsOnceAttack1 =
+			m_stHandSphere.IsOnceAttack2 =
+			m_stHandSphere.IsOnceAttack3 =
+			m_stHandSphere.IsOnceAttack4 = false;
+	}
 
 public:
 	RealFinalboss();
