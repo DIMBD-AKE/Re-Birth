@@ -24,7 +24,8 @@ MonsterParent::~MonsterParent()
 	SAFE_DELETE(m_pMonsterStat);
 	SAFE_DELETE(m_pDamageUI);
 	SAFE_DELETE(m_pHitParticle);
-	
+	SAFE_DELETE(m_pHPBar);
+
 	/*
 	GET(Model*, m_pModel, Model);
 	SET(CharacterParant**, m_ppCharacter, Character);

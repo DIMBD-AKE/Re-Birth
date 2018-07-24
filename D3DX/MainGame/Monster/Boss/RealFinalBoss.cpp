@@ -13,6 +13,8 @@ RealFinalboss::~RealFinalboss()
 		SAFE_DELETE(m_vMagicCircle[i]);
 		SAFE_DELETE(m_vEffectObject[i]);
 	}
+	SAFE_DELETE(m_pSkill);
+	
 }
 
 void RealFinalboss::SetupBoss(Map* map, D3DXVECTOR3 pos)
@@ -23,7 +25,7 @@ void RealFinalboss::SetupBoss(Map* map, D3DXVECTOR3 pos)
 	BossParent::SetupBoss(map, pos);
 
 	//m_eBossState = BS_ENTER;
-	m_eBossState = BS_ATTACK;
+	m_eBossState = BS_SKILL1;
 
 	ChangeAni();
 	//판정 박스 
@@ -118,7 +120,7 @@ void RealFinalboss::Render()
 
 	if (m_pModel && (m_eState != MS_NONE && m_eBossState != BS_NONE))
 	{
-		if (IsEnter())
+		if (IsEnter() || m_eBossState == BS_SKILL1)
 			m_pModel->Render();
 		else
 			m_pModel->DummyRender();
