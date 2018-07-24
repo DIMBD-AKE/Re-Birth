@@ -21,8 +21,7 @@ public:
 	~DamageUI();
 
 	void Setup(bool IsPlayer);
-	void Update(D3DXVECTOR3 pos);
-	void Render();
+	void Render(D3DXVECTOR3 pos);
 
 	void AddDamage(int damage, float angle = rand()%100, float time = 0.0f,
 		float endtime = 1.0f, float alpha = 255.0f, float x = 0.0f);
