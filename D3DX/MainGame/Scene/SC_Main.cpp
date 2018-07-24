@@ -35,7 +35,7 @@ void SC_Main::OnClick(UIObject * pSender)
 		}
 	}
 
-	if (pSender->GetName().compare("Start") == 0 && m_sSelect.compare("아린"))
+	if (pSender->GetName().compare("Start") == 0)
 	{
 		/*SCENE->ChangeScene("Test");
 		return;*/
@@ -43,7 +43,7 @@ void SC_Main::OnClick(UIObject * pSender)
 		SOUND->Stop("Main Theme");
 		SCENE->ChangeScene("Game", false);
 		CharacterParant * character = NULL;
-		if (m_sSelect.compare("파이날") == 0)
+		if (m_sSelect.compare("파이란") == 0)
 		{
 			character = new Character_fist;
 			character->Init(CHRTYPE_FIST, CHAR_ONE);
@@ -92,11 +92,8 @@ void SC_Main::OnClick(UIObject * pSender)
 		SCENE->GetCurrentScene()->Init();
 	}
 
-	if (pSender->GetName().compare("Character Select") && 
-		pSender->GetName().compare("Background") &&
+	if (pSender->GetName().compare("Character Select") &&
 		pSender->GetName().compare("Start") &&
-		pSender->GetName().compare("Option") &&
-		pSender->GetName().compare("Ranking") &&
 		m_eState == MS_PORTRAIT)
 	{
 		m_sSelect = pSender->GetName();
