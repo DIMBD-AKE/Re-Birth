@@ -350,6 +350,7 @@ void RealFinalboss::Attack()
 
 	if (HandCollision())
 	{
+		CAMERA->Shake(0.1f, 0.3f);
 		float tatalRate = PHYRATE(m_pMonsterStat) + MAGICRATE(m_pMonsterStat) + CHERATE(m_pMonsterStat);
 		float tatalDamage = tatalRate * ATK(m_pMonsterStat);
 
@@ -572,7 +573,7 @@ void RealFinalboss::DropTheStone()
 
 		SAFE_DELETE(m_vEffectObject[i]);
 		m_vEffectObject[i] = new EffectObject;
-		m_vEffectObject[i]->Init(m_stEffect, rndPos + D3DXVECTOR3(0, 7.0f, 0));
+		m_vEffectObject[i]->Init(m_stEffect, rndPos + D3DXVECTOR3(0, FRand(5.0f, 10.0f), 0));
 	}
 }
 
