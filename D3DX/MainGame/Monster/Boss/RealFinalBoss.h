@@ -55,6 +55,7 @@ private:
 	virtual void SetupStat() override;
 	virtual void SetupSkill() override;
 
+	//패시브 설정함수임 이 보스한테는
 	virtual void SetupSkill2() override;
 
 	virtual void Attack() override;
@@ -96,6 +97,9 @@ private:
 			m_stHandSphere.IsOnceAttack3 =
 			m_stHandSphere.IsOnceAttack4 = false;
 	}
+
+	bool AblePassive();
+	void BuffDecide();
 
 public:
 	RealFinalboss();

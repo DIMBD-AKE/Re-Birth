@@ -42,9 +42,9 @@ void RealFinalboss::SetupBoss(Map* map, D3DXVECTOR3 pos)
 	m_pModel->SetBoundSphere(m_pModel->GetOrigBoundSphere().center - D3DXVECTOR3(0,300,0), 300.0f);
 
 	//피흡 바꿔야함
-	m_pSkill = SKILL->GetSkill("Boss Skill1");
-	//3타스킬 바꿔야함
-	m_pSkill2 = SKILL->GetSkill("Boss Skill2");
+	m_pSkill = SKILL->GetSkill("RealBossPassive");
+	
+	m_pSkill2 = NULL;
 
 	//2스킬 셋업
 	SetupSkill2();
@@ -149,43 +149,36 @@ void RealFinalboss::SetupStat()
 	DEF(m_pMonsterStat) = 5;
 	AGI(m_pMonsterStat) = 10.0f;
 	HIT(m_pMonsterStat) = 10.0f;
-	SPEED(m_pMonsterStat) = 0.9f;
 	RANGE(m_pMonsterStat) = 35.0f;
 }
 
 void RealFinalboss::SetupSkill()
 {
-	ZeroMemory(&m_stSkill, sizeof(m_stSkill));
-
-	m_stSkill.nMaxTarget = 1;
-	m_stSkill.fMinLength = 0;
-	m_stSkill.fMaxLength = 10;
-	m_stSkill.fAngle = 360;
-
-	m_stSkill.fDamage = 100; //v
-	m_stSkill.nDamageCount = 5;
-	m_stSkill.fDamageInterval =
-		((m_pModel->GetAnimationPeriod("SKILL2") * 3) / 4) / m_stSkill.nDamageCount;
-	m_stSkill.fDamageDelay = 0;
-
-	m_stSkill.fBuffTime = -1;//<0;
-
-
-
-							 //m_stSkill.fYOffset ;
-							 //m_stSkill.isAutoRot;
-							 //m_stSkill.fParticleTime;
-							 //m_stSkill.fParticleSpeed;
-	m_stSkill.fEffectTime = m_pModel->GetAnimationPeriod("SKILL2") / 4;
-
-	m_stSkill.buffStatus.chr.nCurrentHP = 100; //증가 될 스탯량 피뺴고 제로메모리;
-
-	m_fSkillCoolTimeCount = 0;
-	m_nSkillCooltime = 200;
+	
 }
 
+//패시브 설정
 void RealFinalboss::SetupSkill2()
 {
+	ZeroMemory(&m_stSkill, sizeof(ST_SKILL));
+	m_stSkill.fDamage = 0;
+	m_stSkill.fDamageDelay = 0;
+	m_stSkill.fDamageInterval = 0;
+	m_stSkill.fMaxLength = 0;
+	m_stSkill.fAngle = 0;
+	m_stSkill.nMaxTarget = 5;
+	m_stSkill.nDamageCount = 0;
+	m_stSkill.isAutoRot = true;
+	m_stSkill.fYOffset = 1;
+	m_stSkill.fBuffTime = 60;
+	m_stSkill.fParticleTime = m_pModel->GetAnimationPeriod("PASSIVE");
+	m_stSkill.fParticleSpeed = 0;
+	m_stSkill.fEffectTime = 3;
+
+	
+
+	m_fSkillCoolTimeCount = 0;
+	m_nSkillCooltime = 120;
 }
 
 //void RealFinalboss::ChangeAni()
@@ -236,6 +229,17 @@ void RealFinalboss::Pattern()
 {
 	HandMatInit();
 
+	//패시브가 발동 가능한 상태면
+	bool plesawf = AblePassive();
+	if (plesawf)
+	{
+
+		BuffDecide();
+		m_bUsingSkill = true;
+		SkillPrepare();
+		m_eBossState = BS_PASSIVE;
+		ChangeAni();
+	}
 	//char temp[222];
 	//sprintf_s(temp, sizeof(temp), "%f",
 	//	GetDistance(*m_pModel->GetPosition(), *CHARACTER->GetPosition()));
@@ -290,7 +294,7 @@ void RealFinalboss::Pattern()
 }
 
 void RealFinalboss::Attack()
-{{
+{
 	if (PCHARACTER->GetIsDead())
 	{
 		m_eState = MS_IDLE;
@@ -379,7 +383,7 @@ void RealFinalboss::Attack()
 	//	//float tatalRate = PHYRATE(m_pMonsterStat) + MAGICRATE(m_pMonsterStat) + CHERATE(m_pMonsterStat);
 	//	//float tatalDamage = tatalRate * ATK(m_pMonsterStat);
 	//	//PCHARACTER->CalculDamage(tatalDamage);
-	}
+	
 	if (m_pModel->IsAnimationEnd())
 	{
 		BoolInit();
@@ -394,7 +398,15 @@ void RealFinalboss::Move()
 
 void RealFinalboss::Passive()
 {
-	//if (m_pModel->IsAnimationEnd());
+	m_pSkill->Trigger();
+
+	if (m_pModel->IsAnimationEnd())
+	{
+		m_bUsingSkill = false;
+		m_fSkillCoolTimeCount = 0;
+		m_eBossState = BS_ATTACK;
+		ChangeAni();
+	}
 	
 }
 
@@ -664,4 +676,52 @@ bool RealFinalboss::HandCollision()
 	}
 
 	return false;
+}
+
+bool RealFinalboss::AblePassive()
+{
+	/*
+	if (m_fSkillCoolTimeCount >= m_nSkillCooltime
+	&& leng <= m_stSkill.fMaxLength
+	&& m_bIsTargeting
+	&& !m_bIsRespawn
+	&& !m_bUsingSkill
+	&& m_pModel->IsAnimationEnd())
+	*/
+	//패시브 발동 조건
+	if (m_pModel->IsAnimationEnd()
+		&& m_fSkillCoolTimeCount >= m_nSkillCooltime
+		&& !m_bIsDead
+		&& !m_bUsingSkill)
+	{
+
+		return true;
+	}
+
+	return false;
+}
+
+void RealFinalboss::BuffDecide()
+{
+	ZeroMemory(&m_stSkill.buffStatus, sizeof(STATUS));
+
+	int rndNum = rand() % 3;
+
+	switch (rndNum)
+	{
+	case 0:
+		m_stSkill.buffStatus.chr.nAtk = ATK(m_pMonsterStat);
+		break;
+
+	case 1:
+		m_stSkill.buffStatus.chr.nDef = DEF(m_pMonsterStat);
+		break;
+
+	case 2:
+		m_stSkill.buffStatus.chr.fHit = HIT(m_pMonsterStat);
+		break;
+	default:
+		break;
+	}
+	
 }
