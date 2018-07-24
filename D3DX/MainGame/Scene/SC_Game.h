@@ -2,6 +2,7 @@
 
 class Map;
 class CharacterParant;
+class Npc;
 class MonsterManager;
 class DropManager;
 
@@ -13,6 +14,8 @@ private:
 	MonsterManager *	m_pMM;
 	DropManager *		m_pDropManager;
 	UIObject *			m_pUI;
+	Npc*				m_pNpc;
+
 
 	bool				m_isRank;
 

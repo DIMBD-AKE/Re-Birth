@@ -147,7 +147,7 @@ void Character_Magic::Update()
 		m_pInheritateIco3->Update();
 		m_pSkillBar->Update();
 		PlayerProgressBar();
-		m_pDamage->Update(*m_pCharacter->GetPosition());
+		//m_pDamage->Update(*m_pCharacter->GetPosition());
 	}
 	Effect();
 	VskillUpdate();
@@ -164,7 +164,7 @@ void Character_Magic::Render()
 		m_pInventory->Render();
 
 		
-		m_pDamage->Render();
+		//m_pDamage->Render();
 		//AppearDamage();
 
 		CharacterParant::Render();

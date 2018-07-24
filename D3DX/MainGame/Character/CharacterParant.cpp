@@ -311,7 +311,9 @@ void CharacterParant::Debug()
 		TEXT->Add(to_string(m_Status->chr.nMaxHp), pos1.x, pos1.y - 25.0f, 30);
 
 		TEXT->Add(to_string(m_Status->chr.nCurrentStam), pos1.x + 90, pos1.y, 30);
-		TEXT->Add(to_string(m_pCharacter->GetPosition()->y), pos1.x + 90, pos1.y - 25.0f, 30);
+		TEXT->Add(to_string(m_pCharacter->GetPosition()->x), pos1.x + 150, pos1.y - 25.0f, 30);
+		TEXT->Add(to_string(m_pCharacter->GetPosition()->y), pos1.x + 150, pos1.y - 40.0f, 30);
+		TEXT->Add(to_string(m_pCharacter->GetPosition()->z), pos1.x + 150, pos1.y - 55.0f, 30);
 		
 		//CAMERA->SetMode(CAMERA_FREE);
 	}
@@ -880,6 +882,11 @@ void CharacterParant::Render()
 	}
 
 	m_pChrStat->Render();
+
+	D3DXVECTOR3 temp = *m_pCharacter->GetPosition();
+	temp.y += 0.4f;
+
+	m_pDamage->Render(temp);
 }
 
 void CharacterParant::KeyControl()

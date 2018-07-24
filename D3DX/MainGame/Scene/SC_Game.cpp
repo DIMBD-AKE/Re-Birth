@@ -3,6 +3,7 @@
 #include "../Map.h"
 #include "../monster/MonsterManager.h"
 #include "../Character/CharacterParant.h"
+#include "../Character/Npc.h"
 #include "../Item/DropManager.h"
 #include "../Character/Inventory.h"
 #include "../Item/ItemParent.h"
@@ -15,6 +16,7 @@ SC_Game::SC_Game()
 SC_Game::~SC_Game()
 {
 	SAFE_DELETE(m_pCharacter);
+	SAFE_DELETE(m_pNpc);
 }
 
 void SC_Game::Release()
@@ -81,6 +83,10 @@ void SC_Game::Init()
 
 	m_pCharacter->Reset(m_pMap, m_pMM, m_pDropManager);
 
+	m_pNpc = new Npc;
+	m_pNpc->Init(m_pMap->GetSpawnPlayer(), m_pMap);
+	m_pNpc->SetPlayerMemoryAddressLink(m_pCharacter);
+
 	m_pUI = new UIObject;
 	m_pUI->SetTexture(TEXTUREMANAGER->GetTexture("Game ElapseTime"));
 	m_pUI->SetPosition(D3DXVECTOR3(1261, 754, 0));
@@ -98,7 +104,7 @@ void SC_Game::Update()
 	m_pDropManager->GetDropItem(m_pCharacter);
 	m_pCharacter->Update();
 	m_pUI->Update();
-
+	m_pNpc->Update();
 	ShowElapseTime();
 
 	TEXT->Add(to_string(TIME->GetFPS()), 0, 0, 20);
@@ -128,6 +134,7 @@ void SC_Game::Render()
 
 	m_pDropManager->Render();
 	m_pCharacter->Render();
+	m_pNpc->Render();
 	m_pMM->Render();
 
 	for (auto p : m_vecParticle)

@@ -234,7 +234,7 @@ void Character_Sword::Update()
 		PlayerProgressBar();
 
 
-		m_pDamage->Update(*m_pCharacter->GetPosition());
+	//	m_pDamage->Update(*m_pCharacter->GetPosition());
 
 
 	}
@@ -260,7 +260,7 @@ void Character_Sword::Render()
 
 
 
-		m_pDamage->Render();
+	//	m_pDamage->Render();
 		CharacterParant::Render();
 		//포트레이트 
 		m_pUIobj->Render();

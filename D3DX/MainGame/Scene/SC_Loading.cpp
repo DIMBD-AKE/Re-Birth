@@ -73,6 +73,9 @@ void SC_Loading::AddModel()
 	m_pLoading->LoadModel("파이란", "Model/Character/Pyran/", "Pyran.x", MODELTYPE_X);
 	//실드캐릭터
 	m_pLoading->LoadModel("렘논", "Model/Character/Lemnon/", "Lemnon.x", MODELTYPE_X);
+
+	//NPC
+	m_pLoading->LoadModel("리무", "Model/NPC/Rimoo/", "Rimoo.x", MODELTYPE_X);
 }
 
 void SC_Loading::AddTexture()

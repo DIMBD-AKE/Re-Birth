@@ -1,8 +1,25 @@
 #pragma once
 #include "CharacterParant.h"
+enum FISTBODY
+{
+	FISTBODY_LEFTHAND,
+	FISTBODY_RIGHTHAND,
+	FISTBODY_LEFTLEG,
+	FISTBODY_RIGHTLEG,
+	FISTBODY_END
+};
+
 class Character_fist :
 	public CharacterParant
 {
+private:
+
+	D3DXMATRIX*				m_pFistBody[FISTBODY_END];			//본 매트릭스 받기 위함
+	ST_SPHERE				m_stBound[FISTBODY_END];			//바운드 박스 씌우기 위함
+
+	float					m_fAttackInterval;					//어택용 인터벌
+
+
 public:
 	Character_fist();
 	virtual ~Character_fist();
@@ -13,6 +30,7 @@ public:
 	virtual void Render();
 	virtual void KeyControl();
 	virtual void Attack();
+	void Debug();
 
 };
 

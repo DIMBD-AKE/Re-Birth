@@ -143,7 +143,7 @@ void Character_Gun::Update()
 
 		PlayerProgressBar();
 		//CountAppearDamage();
-		m_pDamage->Update(*m_pCharacter->GetPosition());
+//		m_pDamage->Update(*m_pCharacter->GetPosition());
 
 
 		if (m_bIsGunView)
@@ -167,7 +167,7 @@ void Character_Gun::Render()
 
 		//포트레이트 
 	
-		m_pDamage->Render();
+	//	m_pDamage->Render();
 		//AppearDamage();
 
 

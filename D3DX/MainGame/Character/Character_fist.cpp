@@ -25,7 +25,13 @@ void Character_fist::Init(CHRTYPE type, CHARSELECT order)
 	if (order == CHAR_ONE)
 	{
 		m_pCharacter = MODELMANAGER->GetModel("파이란", MODELTYPE_X);
-		
+	
+		m_pFistBody[FISTBODY_LEFTHAND] = m_pCharacter->GetBoneMatrix("Bip001-L-Hand");
+		m_pFistBody[FISTBODY_RIGHTHAND] = m_pCharacter->GetBoneMatrix("Bip001-R-Hand");
+		m_pFistBody[FISTBODY_LEFTLEG] = m_pCharacter->GetBoneMatrix("Bip001-L-Foot");
+		m_pFistBody[FISTBODY_RIGHTLEG] = m_pCharacter->GetBoneMatrix("Bip001-R-Foot");
+
+
 		m_eNumTarget = NUM_SINGLE;
 		m_eCharSelect = CHAR_ONE;
 		m_Status->chr.fAgi = 50.0f;
@@ -71,6 +77,15 @@ void Character_fist::Init(CHRTYPE type, CHARSELECT order)
 	}
 
 
+	m_fAttackInterval = 0.7f;
+
+	//for (int i = 0; i < FISTBODY_END; i++)
+	//{
+	//	D3DXVECTOR3 temp(0, 0, 0);
+	//	D3DXVec3TransformCoord(&temp, &temp, m_pFistBody[i]);
+	//	m_stBound[i].center = temp;
+	//	m_stBound[i].radius = 0.5f;
+	//}
 
 }
 
@@ -82,7 +97,7 @@ void Character_fist::Update()
 
 		KeyControl();
 		Move();
-	
+		//Attack();
 		m_pInventory->Update();
 		m_pCharacter->World();
 		m_pUIobj->Update();
@@ -95,7 +110,16 @@ void Character_fist::Update()
 
 		PlayerProgressBar();
 		//CountAppearDamage();
-		m_pDamage->Update(*m_pCharacter->GetPosition());
+		//m_pDamage->Update(*m_pCharacter->GetPosition());
+		
+		
+		for (int i = 0; i < FISTBODY_END; i++)
+		{
+			D3DXVECTOR3 temp(0, 0, 0);
+			D3DXVec3TransformCoord(&temp, &temp, m_pFistBody[i]);
+			m_stBound[i].center = temp;
+			m_stBound[i].radius = 0.5f;
+		}
 	}
 }
 
@@ -109,7 +133,7 @@ void Character_fist::Render()
 
 		//포트레이트 
 
-		m_pDamage->Render();
+		//m_pDamage->Render();
 		//AppearDamage();
 
 
@@ -122,7 +146,7 @@ void Character_fist::Render()
 		m_pInheritateIco3->Render();
 		m_pHPBar->Render();
 		m_pStaminaBar->Render();
-
+		Debug();
 	}
 }
 
@@ -237,7 +261,8 @@ void Character_fist::KeyControl()
 			m_eCondition = CHAR_ATTACK;
 
 			m_bIsAttack = true;
-			SetTarget();
+			//SetTarget();
+		
 			m_nDamageCount = 0;
 			ChangeAnimation();
 		}
@@ -256,6 +281,7 @@ void Character_fist::KeyControl()
 			m_eCondition = CHAR_SKILL;
 
 			m_bIsSkill = true;
+			Attack();
 			ChangeAnimation();
 		}
 	}
@@ -305,7 +331,7 @@ void Character_fist::KeyControl()
 		{
 			m_eCondition = CHAR_ATTACK;
 			m_bIsAttack = true;
-			//Attack();
+			Attack();
 			ChangeAnimation();
 		}
 	}
@@ -337,4 +363,69 @@ void Character_fist::KeyControl()
 
 void Character_fist::Attack()
 {
+
+	if (m_fElpTime < m_fPrevTime + m_fAttackInterval) return;
+
+	m_fPrevTime = m_fElpTime;
+	
+	//m_nDamageCount++;
+
+	//if (m_nDamageCount <= 1)
+	
+		for (int i = 0; i < FISTBODY_END; i++)
+		{
+			for (int j = 0; j < m_pMonsterManager->GetMonsterVector().size(); j++)
+			{
+				if (m_pMonsterManager->GetMonsterVector()[j]->GetIsResPawn()) continue;
+				if (IntersectSphere(m_stBound[i], m_pMonsterManager->GetMonsterVector()[j]->GetModel()->GetBoundSphere()))
+				{
+					m_pMonsterManager->GetMonsterVector()[j]->CalculDamage(10);
+					
+
+					ST_EFFECT tempEffect;
+					ZeroMemory(&tempEffect, sizeof(tempEffect));
+					tempEffect.time = FRand(3, 5);
+					tempEffect.height = 1.0f;
+					tempEffect.SetAlpha(255, 255, 0);
+					tempEffect.SetScale(1,1,1);
+					tempEffect.tex = TEXTUREMANAGER->GetTexture("숫자0");
+
+					EffectObject* tempEFOBJ;
+					tempEFOBJ = new EffectObject;
+					D3DXVECTOR3 testSkillpos = m_stBound[i].center;
+					tempEFOBJ->Init(tempEffect, testSkillpos);
+					m_vecEffect.push_back(tempEFOBJ);
+				}
+			}
+		}
+
+}
+
+void Character_fist::Debug()
+{
+	//if (DEBUG)
+	//{
+		DWORD prevFillMode;
+		DEVICE->GetRenderState(D3DRS_FILLMODE, &prevFillMode);
+		DEVICE->SetTexture(0, NULL);
+		DEVICE->SetRenderState(D3DRS_LIGHTING, false);
+		DEVICE->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+
+		// BoundSphere
+		LPD3DXMESH mesh;
+		D3DXMATRIX matT;
+
+		for (int i = 0; i < FISTBODY_END; i++)
+		{
+			float radius = m_stBound[i].radius;
+			if (radius < 0) radius = 0;
+			D3DXCreateSphere(DEVICE, radius, 8, 8, &mesh, NULL);
+			D3DXVECTOR3 pos = m_stBound[i].center;
+			D3DXMatrixTranslation(&matT, pos.x, pos.y, pos.z);
+			DEVICE->SetTransform(D3DTS_WORLD, &matT);
+			mesh->DrawSubset(0);
+			SAFE_RELEASE(mesh);
+		}
+		DEVICE->SetRenderState(D3DRS_FILLMODE, prevFillMode);
+	//}
 }
