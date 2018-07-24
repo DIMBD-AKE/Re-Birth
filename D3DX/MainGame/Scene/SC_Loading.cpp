@@ -70,6 +70,7 @@ void SC_Loading::AddModel()
 	m_pLoading->LoadModel("스카디", "Model/Character/Skadi/", "Skadi.x", MODELTYPE_X);
 	m_pLoading->LoadModel("베카", "Model/Character/Beakah/", "Beakah.x", MODELTYPE_X);
 	m_pLoading->LoadModel("벨벳", "Model/Character/Velvet/", "Velvet.x", MODELTYPE_X);
+	m_pLoading->LoadModel("파이란", "Model/Character/Pyran/", "Pyran.x", MODELTYPE_X);
 	//실드캐릭터
 	m_pLoading->LoadModel("렘논", "Model/Character/Lemnon/", "Lemnon.x", MODELTYPE_X);
 }
@@ -107,6 +108,8 @@ void SC_Loading::AddTexture()
 	m_pLoading->LoadTexture("리아_사진", "Texture/Portrait/Portrait_PC_Riah_S_Icon.png");
 	m_pLoading->LoadTexture("스카디_사진", "Texture/Portrait/Portrait_PC_Skadi_S_Icon.png");
 	m_pLoading->LoadTexture("벨벳_사진", "Texture/Portrait/velvet.png");
+	m_pLoading->LoadTexture("파이란_사진", "Texture/Portrait/Portrait_PC_Pyran_S_Icon.png");
+
 
 	//플레이어 데미지 이미지 
 	m_pLoading->LoadTexture("숫자0", "Texture/Damage/0.png");

@@ -25,6 +25,7 @@ void SC_Game::Release()
 	SAFE_RELEASE(m_pUI);
 	for (auto p : m_vecParticle)
 		SAFE_DELETE(p);
+	m_vecParticle.clear();
 }
 
 void SC_Game::Init()

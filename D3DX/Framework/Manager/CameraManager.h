@@ -7,6 +7,13 @@ enum CAMERAMODE
 	CAMERA_FOLLOW_FREE
 };
 
+enum CAMERAACTION
+{
+	CAMERAA_NONE,
+	CAMERAA_SHAKE,
+	CAMERAA_CINEMATIC
+};
+
 class CameraManager
 {
 	SINGLETONE(CameraManager);
@@ -31,14 +38,21 @@ private:
 
 	float			m_fElapse;
 	float			m_fShakePower;
-	float			m_fShakeTime;
+
+	float			m_fActionTime;
 
 	CAMERAMODE		m_eMode;
+	CAMERAACTION	m_eAction;
 
 	POINT			m_ptPrevMouse;
 	float			m_fSpeed;
 	float			m_fSmooth;
 	float			m_fDistance;
+
+	D3DXVECTOR2		m_vCinDir;
+	D3DXVECTOR2		m_vCinRot;
+	float			m_fCinZoom;
+	float			m_fCinZoomSpeed;
 
 	void UpdateFrustum();
 
@@ -50,6 +64,8 @@ public:
 	void SetFog(bool enable, float start, float end, DWORD color, float density);
 	bool IsFrustum(ST_SPHERE sphere);
 	void Shake(float power, float time);
+	void Cinematic(D3DXVECTOR2 startDir, D3DXVECTOR2 rotDir, float zoomStart, float zoomSpeed, float time);
+	bool IsActionEnd() { return m_fActionTime <= m_fElapse; }
 };
 
 #define CAMERA CameraManager::GetInstance()
