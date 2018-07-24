@@ -30,6 +30,8 @@ public:
 	void SetKey(DWORD next, DWORD prev, DWORD rewrite);
 	void AddText(string text) { m_vecAllText.push_back(text); }
 	void SetIndex(int index);
+	int GetIndex() { return m_nIndex; }
+	int GetPage() { return m_vecAllText.size(); }
 	void Update();
 };
 
