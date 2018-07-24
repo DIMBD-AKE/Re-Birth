@@ -157,15 +157,7 @@ void CameraManager::Update()
 
 	if (m_fElapse < m_fActionTime)
 	{
-		if (m_eAction == CAMERAA_SHAKE)
-		{
-			float x = FRand(-m_fShakePower, m_fShakePower);
-			float y = FRand(-m_fShakePower, m_fShakePower);
-			float z = FRand(-m_fShakePower, m_fShakePower);
-			vEye += D3DXVECTOR3(x, y, z);
-			vLookAt += D3DXVECTOR3(x, y, z);
-		}
-		if (m_eAction == CAMERAA_CINEMATIC && m_pTargetPos)
+		if (m_eAction == CAMERAA_CINEMATIC && m_pTargetPos || m_eAction == CAMERAA_SHAKECINEMATIC)
 		{
 			vEye = *m_pTargetPos;
 			m_vCinRot += m_vCinDir * TIME->GetElapsedTime();
@@ -173,6 +165,14 @@ void CameraManager::Update()
 			D3DXVECTOR3 front = GetFront(D3DXVECTOR3(m_vCinRot.x, m_vCinRot.y, 0), D3DXVECTOR3(0, 0, m_fCinZoom));
 			vEye += front;
 			vEye.y += m_vTargetOffset.y;
+		}
+		if (m_eAction == CAMERAA_SHAKE || m_eAction == CAMERAA_SHAKECINEMATIC)
+		{
+			float x = FRand(-m_fShakePower, m_fShakePower);
+			float y = FRand(-m_fShakePower, m_fShakePower);
+			float z = FRand(-m_fShakePower, m_fShakePower);
+			vEye += D3DXVECTOR3(x, y, z);
+			vLookAt += D3DXVECTOR3(x, y, z);
 		}
 	}
 
@@ -220,9 +220,14 @@ bool CameraManager::IsFrustum(ST_SPHERE sphere)
 void CameraManager::Shake(float power, float time)
 {
 	m_fShakePower = power;
-	m_fActionTime = time;
-	m_fElapse = 0;
-	m_eAction = CAMERAA_SHAKE;
+	if (m_eAction == CAMERAA_CINEMATIC && m_fActionTime > m_fElapse)
+		m_eAction = CAMERAA_SHAKECINEMATIC;
+	else
+	{
+		m_fActionTime = time;
+		m_fElapse = 0;
+		m_eAction = CAMERAA_SHAKE;
+	}
 }
 
 void CameraManager::Cinematic(D3DXVECTOR2 startDir, D3DXVECTOR2 rotDir, float zoomStart, float zoomSpeed, float time)
