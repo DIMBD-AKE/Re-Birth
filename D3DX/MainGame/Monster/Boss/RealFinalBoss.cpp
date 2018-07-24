@@ -142,7 +142,7 @@ void RealFinalboss::SetupStat()
 	AGI(m_pMonsterStat) = 10.0f;
 	HIT(m_pMonsterStat) = 10.0f;
 	SPEED(m_pMonsterStat) = 0.9f;
-	RANGE(m_pMonsterStat) = 10.0f;
+	RANGE(m_pMonsterStat) = 12.0f;
 }
 
 void RealFinalboss::SetupSkill()
@@ -228,6 +228,10 @@ void RealFinalboss::Pattern()
 {
 	HandMatInit();
 
+	//char temp[222];
+	//sprintf_s(temp, sizeof(temp), "%f",
+	//	GetDistance(*m_pModel->GetPosition(), *CHARACTER->GetPosition()));
+	//TEXT->Add(temp, 100, 100, 20);
 
 	//if (AbleSkill() && !m_bSkill2Use)
 	//{
@@ -311,7 +315,7 @@ void RealFinalboss::Attack()
 			
 			return;
 		}
-
+	
 	}
 
 	m_bSkill2Use = false;
