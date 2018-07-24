@@ -20,7 +20,7 @@ public:
 	Npc();
 	~Npc();
 
-	void Init(D3DXVECTOR3 pos, Map* map);
+	void Init(D3DXVECTOR3 pos);
 	void Update();
 	void Render();
 	void CheckCollision();

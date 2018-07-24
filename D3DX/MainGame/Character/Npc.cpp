@@ -15,14 +15,14 @@ Npc::~Npc()
 	SAFE_DELETE(m_pNpc);
 }
 
-void Npc::Init(D3DXVECTOR3 pos, Map* map)
+void Npc::Init(D3DXVECTOR3 pos)
 {
 
 	m_pNpc = MODELMANAGER->GetModel("¸®¹«", MODELTYPE_X);
 	m_pNpc->SetScale(D3DXVECTOR3(0.02, 0.02, 0.02));
 	m_pNpc->SetRotation(D3DXVECTOR3(0, 3.2, 0));
 	m_pNpc->SetPosition(pos);
-	m_pMap = map;
+	
 
 	m_bIsCollision = false;
 	m_bIsAppear = false;

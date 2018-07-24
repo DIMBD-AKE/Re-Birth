@@ -84,7 +84,7 @@ void SC_Game::Init()
 	m_pCharacter->Reset(m_pMap, m_pMM, m_pDropManager);
 
 	m_pNpc = new Npc;
-	m_pNpc->Init(m_pMap->GetSpawnPlayer(), m_pMap);
+	m_pNpc->Init(m_pMap->GetSpawnPlayer());
 	m_pNpc->SetPlayerMemoryAddressLink(m_pCharacter);
 
 	m_pUI = new UIObject;
