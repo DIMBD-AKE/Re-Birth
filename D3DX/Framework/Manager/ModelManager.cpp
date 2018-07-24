@@ -454,7 +454,6 @@ void ModelX::Render()
 
 void ModelX::DummyRender()
 {
-	if (!CAMERA->IsFrustum(GetBoundSphere())) return;
 	DEVICE->SetRenderState(D3DRS_ALPHABLENDENABLE, true);
 	Debug();
 	DEVICE->SetRenderState(D3DRS_LIGHTING, true);

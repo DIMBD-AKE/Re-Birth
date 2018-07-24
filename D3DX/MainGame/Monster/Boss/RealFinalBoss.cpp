@@ -23,21 +23,23 @@ void RealFinalboss::SetupBoss(Map* map, D3DXVECTOR3 pos)
 	BossParent::SetupBoss(map, pos);
 
 	m_eBossState = BS_ENTER;
+	//m_eBossState = BS_ATTACK;
+
 	ChangeAni();
 	//판정 박스 
 	ST_SIZEBOX box;
-	box.highX = 50.0f;
-	box.highY = 180.0f;
-	box.highZ = 50.0f;
-	box.lowX = -50.0f;
+	box.highX = 200.0f;
+	box.highY = 1000.0f;
+	box.highZ = 200.0f;
+	box.lowX = -200.0f;
 	box.lowY = 10.0f;
-	box.lowZ = -50.0f;
+	box.lowZ = -200.0f;
 
 
-	m_pModel->SetScale(D3DXVECTOR3(0.01f, 0.01f, 0.01f));
+	m_pModel->SetScale(D3DXVECTOR3(0.025f, 0.025f, 0.025f));
 
 	m_pModel->CreateBound(box);
-	m_pModel->SetBoundSphere(m_pModel->GetOrigBoundSphere().center, 100.0f);
+	m_pModel->SetBoundSphere(m_pModel->GetOrigBoundSphere().center - D3DXVECTOR3(0,300,0), 300.0f);
 
 	//피흡 바꿔야함
 	m_pSkill = SKILL->GetSkill("Boss Skill1");
@@ -67,18 +69,19 @@ void RealFinalboss::SetupBoss(Map* map, D3DXVECTOR3 pos)
 	m_stEffect.dir = D3DXVECTOR3(0,-1,0);
 	m_stEffect.SetAlpha(255, 255, 255);
 	m_stEffect.isSphere = true;
-	m_stEffect.SetSpeed(0.3f, 0.3f, 0.3f);
+	m_stEffect.SetSpeed(0.9f, 0, 1.5f);
 	m_stEffect.SetScale(1, 1, 1);
 	m_stEffect.height = 3;
-	m_stEffect.time = 3;
+	m_stEffect.time = 3.5;
 	//effect.SetMotorSpeed(1, 1, 1);
 	//effect.mot = D3DXVECTOR3(0, 0, 1);
 	m_stEffect.tex = TEXTUREMANAGER->GetTexture("돌");
 	
 	BoolInit();
 
+	CAMERA->SetCamOffset(D3DXVECTOR3(0, 15, 40));
 	CAMERA->SetTarget(m_pModel->GetPosition(), m_pModel->GetRotation());
-	CAMERA->Cinematic(D3DXVECTOR2(70.0f, 60.0f), D3DXVECTOR2(-10.0f, 10.0f), 10, 1,10);
+	CAMERA->Cinematic(D3DXVECTOR2(85.0f, 60.0f), D3DXVECTOR2(-10.0f, 10.0f), 40, 1,10);
 }
 
 void RealFinalboss::Update()
@@ -94,7 +97,7 @@ void RealFinalboss::Update()
 			m_vEffectObject[i]->Update();
 		}
 	}
-
+		
 	BossParent::Update();
 
 }
@@ -573,7 +576,7 @@ void RealFinalboss::DropTheStone()
 
 		SAFE_DELETE(m_vEffectObject[i]);
 		m_vEffectObject[i] = new EffectObject;
-		m_vEffectObject[i]->Init(m_stEffect, rndPos + D3DXVECTOR3(0, FRand(5.0f, 10.0f), 0));
+		m_vEffectObject[i]->Init(m_stEffect, rndPos + D3DXVECTOR3(0, FRand(7.0f, 27.0f), 0));
 	}
 }
 
