@@ -62,10 +62,9 @@ void DamageUI::Setup(bool IsPlayer)
 
 }
 
-void DamageUI::Update(D3DXVECTOR3 pos)
+void DamageUI::Render(D3DXVECTOR3 pos)
 {
 	D3DXVECTOR3 tempPos;
-
 
 	//TODO : 데미지를 벡터에 담아서 [순차적으로] 출력하고 지우고 하는걸 생각해보자. 동시에 데미지가 들어오는데 지금은 하나씩만 띄우고 있음.
 
@@ -175,10 +174,6 @@ void DamageUI::Update(D3DXVECTOR3 pos)
 			m_vecDamage.erase(m_vecDamage.begin() + i);
 		}
 	}
-}
-
-void DamageUI::Render()
-{
 }
 
 void DamageUI::AddDamage(int damage, float angle, float time, float endtime, float alpha, float x)
