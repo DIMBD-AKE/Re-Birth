@@ -6,6 +6,7 @@ class ItemParent;
 union STATUS;
 enum EQUIPTYPE;
 class MonsterManager;
+class CharacterParant;
 
 struct ST_ITEMSTACK
 {
