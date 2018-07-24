@@ -4,6 +4,7 @@
 #include "../Character/Character_Gun.h"
 #include "../Character/Character_Magic.h"
 #include "../Character/Character_Sword.h"
+#include "../Character/Character_fist.h"
 #include "../Item/ItemManager.h"
 #include <algorithm>
 
@@ -42,6 +43,11 @@ void SC_Main::OnClick(UIObject * pSender)
 		SOUND->Stop("Main Theme");
 		SCENE->ChangeScene("Game", false);
 		CharacterParant * character = NULL;
+		if (m_sSelect.compare("파이날") == 0)
+		{
+			character = new Character_fist;
+			character->Init(CHRTYPE_FIST, CHAR_ONE);
+		}
 		if (m_sSelect.compare("아카날") == 0)
 		{
 			character = new Character_Magic;
@@ -241,9 +247,9 @@ void SC_Main::Init()
 			}
 			if (index == 1)
 			{
-				child->SetName("아린");
-				child->SetTexture(TEXTUREMANAGER->GetTexture("아린_사진"));
-				m_pContext->AddText("아린 - 검사\n\n초반에 쓰려했지만\n애니메이션이 이동을해서\n이미 존재하지 않는 캐릭터다...\n\n(머릿수 채우기 용)");
+				child->SetName("파이란");
+				child->SetTexture(TEXTUREMANAGER->GetTexture("파이란_사진"));
+				m_pContext->AddText("파이란 - 권사\n\n나도 바운딩스페어쓰고싶당\n바우우우우우우운딩스페어!!!!!!!\n\n바운딩!!!스페어!!!!!");
 			}
 			if (index == 2)
 			{
@@ -403,7 +409,7 @@ void SC_Main::MakeModel()
 int SC_Main::GetIndex()
 {
 	if (m_sSelect.compare("아카날") == 0) return 0;
-	if (m_sSelect.compare("아린") == 0) return 1;
+	if (m_sSelect.compare("파이란") == 0) return 1;
 	if (m_sSelect.compare("베카") == 0) return 2;
 	if (m_sSelect.compare("헤스티아") == 0) return 3;
 	if (m_sSelect.compare("메그너스") == 0) return 4;
