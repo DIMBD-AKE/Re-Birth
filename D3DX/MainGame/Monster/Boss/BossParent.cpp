@@ -31,7 +31,7 @@ void BossParent::Update()
 	if (INPUT->KeyDown('4'))
 		SetCurrentHP(10000);
 
-	m_pDamageUI->Update(*m_pModel->GetPosition());
+	
 
 	m_fAlphaCount += TIME->GetElapsedTime();
 
@@ -76,6 +76,8 @@ void BossParent::Update()
 		//1536
 void BossParent::Render()
 {
+	m_pDamageUI->Render(*m_pModel->GetPosition());
+
 	if (m_pModel && (m_eState != MS_NONE && m_eBossState != BS_NONE) )
 	{
 		m_pModel->DummyRender();

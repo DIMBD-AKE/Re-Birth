@@ -134,7 +134,7 @@ void MonsterParent::SetupStat()
 
 void MonsterParent::Update()
 {
-	m_pDamageUI->Update(*m_pModel->GetPosition());
+	
 	//if (INPUT->KeyDown('L'))
 	//{
 	//	
@@ -279,6 +279,7 @@ void MonsterParent::Render()
 	*/
 	if (m_pModel && m_eState != MS_NONE)
 	{
+		m_pDamageUI->Render(*m_pModel->GetPosition());
 		m_pModel->Render();
 		if (DEBUG)
 		{
