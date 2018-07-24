@@ -22,8 +22,8 @@ void RealFinalboss::SetupBoss(Map* map, D3DXVECTOR3 pos)
 
 	BossParent::SetupBoss(map, pos);
 
-	m_eBossState = BS_ENTER;
-	//m_eBossState = BS_ATTACK;
+	//m_eBossState = BS_ENTER;
+	m_eBossState = BS_ATTACK;
 
 	ChangeAni();
 	//판정 박스 
@@ -80,8 +80,8 @@ void RealFinalboss::SetupBoss(Map* map, D3DXVECTOR3 pos)
 	BoolInit();
 
 	CAMERA->SetCamOffset(D3DXVECTOR3(0, 15, 40));
-	CAMERA->SetTarget(m_pModel->GetPosition(), m_pModel->GetRotation());
-	CAMERA->Cinematic(D3DXVECTOR2(85.0f, 60.0f), D3DXVECTOR2(-10.0f, 10.0f), 40, 1,10);
+	//CAMERA->SetTarget(m_pModel->GetPosition(), m_pModel->GetRotation());
+	//CAMERA->Cinematic(D3DXVECTOR2(85.0f, 60.0f), D3DXVECTOR2(-10.0f, 10.0f), 40, 1,10);
 }
 
 void RealFinalboss::Update()
@@ -150,7 +150,7 @@ void RealFinalboss::SetupStat()
 	AGI(m_pMonsterStat) = 10.0f;
 	HIT(m_pMonsterStat) = 10.0f;
 	SPEED(m_pMonsterStat) = 0.9f;
-	RANGE(m_pMonsterStat) = 12.0f;
+	RANGE(m_pMonsterStat) = 35.0f;
 }
 
 void RealFinalboss::SetupSkill()
@@ -350,15 +350,19 @@ void RealFinalboss::Attack()
 		m_bIsAttack = true;
 
 	}
+	
+		if (HandCollision())
+		{
+			if (m_pModel->IsAnimationPercent(0.35)
+				|| m_pModel->IsAnimationPercent(0.7))
+				BoolInit();
+			CAMERA->Shake(0.1f, 0.3f);
+			float tatalRate = PHYRATE(m_pMonsterStat) + MAGICRATE(m_pMonsterStat) + CHERATE(m_pMonsterStat);
+			float tatalDamage = tatalRate * ATK(m_pMonsterStat);
 
-	if (HandCollision())
-	{
-		CAMERA->Shake(0.1f, 0.3f);
-		float tatalRate = PHYRATE(m_pMonsterStat) + MAGICRATE(m_pMonsterStat) + CHERATE(m_pMonsterStat);
-		float tatalDamage = tatalRate * ATK(m_pMonsterStat);
-
-		PCHARACTER->CalculDamage(tatalDamage);
-	}
+			PCHARACTER->CalculDamage(tatalDamage);
+		}
+	
 	//플레이어 공격기능 설정
 	//if (m_pModel->IsAnimationPercent(ATKSPEED(m_pMonsterStat)))
 	//{
@@ -601,7 +605,7 @@ void RealFinalboss::MakeSphere()
 	m_stHandSphere.LeftHand1.radius =
 		m_stHandSphere.LeftHand2.radius =
 		m_stHandSphere.RightHand1.radius =
-		m_stHandSphere.RightHand2.radius = 2;
+		m_stHandSphere.RightHand2.radius = 8;
 }
 
 void RealFinalboss::Debug()
