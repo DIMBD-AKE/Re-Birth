@@ -50,7 +50,7 @@ protected :
 	//2스킬 쿨타임
 	int m_nSkillCooltime2;
 	//사용가능하냐
-	bool m_bSkill2Use;
+	bool m_bUsingSkill2;
 	
 	/*
 	

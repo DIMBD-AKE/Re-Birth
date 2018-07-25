@@ -49,7 +49,7 @@ void FinalBoss::SetupBoss(Map* map, D3DXVECTOR3 pos)
 
 	SetupSkill2();
 
-	m_bSkill2Use = m_bUsingSkill = false;
+	m_bUsingSkill = m_bUsingSkill2 = false;
 	m_bIsTargeting = true;
 
 }
@@ -146,7 +146,7 @@ void FinalBoss::SetupSkill2()
 
 void FinalBoss::Pattern()
 {
-	if (AbleSkill() && !m_bSkill2Use)
+	if (AbleSkill() && !m_bUsingSkill2)
 	{
 		m_eBossState = BS_CASTING;
 		ChangeAni();
@@ -365,7 +365,7 @@ void FinalBoss::Skill2()
 
 	if (m_pModel->IsAnimationEnd())
 	{
-		m_bSkill2Use = false;
+		m_bUsingSkill2 = false;
 		
 		m_fSkillCoolTimeCount2 = 0;
 		m_eBossState = BS_RUN;

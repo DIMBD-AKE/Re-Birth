@@ -30,7 +30,7 @@ void BossParent::Update()
 {
 	if (INPUT->KeyDown('4'))
 		SetCurrentHP(10000);
-
+	
 	
 
 	m_fAlphaCount += TIME->GetElapsedTime();
@@ -46,18 +46,18 @@ void BossParent::Update()
 		m_pModel->Update();
 	}
 
-	if (INPUT->KeyDown('L'))
-	{
-		//vector<MonsterParent*> tt;
-		//m_pSkill->Prepare(PCHARACTER,
-		//	this,
-		//	tt,
-		//	m_stSkill,
-		//	SKILLO_MONSTER);
-
-		m_eBossState = BS_SKILL2;
-		ChangeAni();
-	}
+	//if (INPUT->KeyDown('L'))
+	//{
+	//	//vector<MonsterParent*> tt;
+	//	//m_pSkill->Prepare(PCHARACTER,
+	//	//	this,
+	//	//	tt,
+	//	//	m_stSkill,
+	//	//	SKILLO_MONSTER);
+	//
+	//	m_eBossState = BS_SKILL2;
+	//	ChangeAni();
+	//}
 
 	if (m_pHPBar)
 	{
@@ -160,7 +160,7 @@ void BossParent::Casting()
 	if (m_pModel->IsAnimationEnd())
 		//if (m_pModel->IsAnimationPercent(0.5f))
 	{
-		m_eBossState = BS_IDLE;
+		m_eBossState = BS_SKILL1;
 		ChangeAni();
 		//	m_pModel->SetAnimationPosition(0.5f);
 	}
@@ -258,7 +258,7 @@ bool BossParent::AbleSkill()
 		&& !m_bIsRespawn
 		&& !m_bUsingSkill
 		&& m_pModel->IsAnimationEnd()
-		&& !m_bSkill2Use)
+		&& !m_bUsingSkill)
 	{
 
 		//m_stSkill.fEffectTime = leng / tempEffect.s
@@ -285,11 +285,11 @@ bool BossParent::AbleSkill2()
 		&& m_bIsTargeting
 		&& !m_bIsRespawn
 		&& !m_bUsingSkill
-		&& !m_bSkill2Use
+		&& !m_bUsingSkill
 		&& m_pModel->IsAnimationEnd())
 	{
 		ChangeRot();
-		m_bSkill2Use = true;
+		m_bUsingSkill2 = true;
 		SkillPrepare2();
 		return true;
 	}
