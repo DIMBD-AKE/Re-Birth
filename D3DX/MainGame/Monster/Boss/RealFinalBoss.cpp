@@ -13,6 +13,7 @@ RealFinalboss::~RealFinalboss()
 		SAFE_DELETE(m_vMagicCircle[i]);
 		SAFE_DELETE(m_vEffectObject[i]);
 	}
+
 	SAFE_DELETE(m_pSkill);
 	SAFE_DELETE(m_pSkill2);
 	SAFE_DELETE(m_pPassive);
@@ -26,8 +27,8 @@ void RealFinalboss::SetupBoss(Map* map, D3DXVECTOR3 pos)
 
 	BossParent::SetupBoss(map, pos);
 
-	m_eBossState = BS_ENTER;
-	//m_eBossState = BS_ATTACK;
+	//m_eBossState = BS_ENTER;
+	m_eBossState = BS_ATTACK;
 
 	ChangeAni();
 	//판정 박스 
@@ -55,7 +56,7 @@ void RealFinalboss::SetupBoss(Map* map, D3DXVECTOR3 pos)
 
 	SetupPassive();
 
-	m_bUsingSkill = m_bUsingSkill = m_bUsingPassive = false;
+	m_bUsingSkill = m_bUsingSkill = m_bUsingPassive = m_bDropStone = false;
 	m_fSkillCoolTimeCount = m_fSkillCoolTimeCount2 = m_fPassiveCooltimeCount = 0;
 	m_bIsTargeting = true;
 
@@ -115,7 +116,15 @@ void RealFinalboss::Update()
 		}
 	}
 
-	if (m_pPassive) m_pPassive->Update();
+	if (m_eBossState == BS_ATTACK && m_bDropStone)
+	{
+		m_vMagicCircle[0]->Update();
+		if (m_vEffectObject[0])
+			m_vEffectObject[0]->Update();
+	}
+	
+
+	//if (m_pPassive) m_pPassive->Update();
 		
 
 	BossParent::Update();
@@ -144,6 +153,13 @@ void RealFinalboss::Render()
 			m_pModel->DummyRender();
 
 		if (m_bIsTargeting) m_pHPBar->Render();
+
+		if (m_eBossState == BS_ATTACK && m_bDropStone)
+		{
+			m_vMagicCircle[0]->Render();
+			if (m_vEffectObject[0])
+				m_vEffectObject[0]->Render();
+		}
 	}
 
 	if (m_pHPBar) m_pHPBar->Render();
@@ -380,7 +396,7 @@ void RealFinalboss::Attack()
 	
 	}
 
-	m_bUsingSkill = false;
+	m_bUsingSkill2 = false;
 
 	//사거리 안에 들어왔는데 이제 공격을 시작할려고 한다면
 	if (!m_bIsAttack)
@@ -405,17 +421,38 @@ void RealFinalboss::Attack()
 
 	}
 	
-		if (HandCollision())
-		{
-			if (m_pModel->IsAnimationPercent(0.35)
-				|| m_pModel->IsAnimationPercent(0.7))
-				BoolInit();
-			CAMERA->Shake(0.1f, 0.3f);
-			float tatalRate = PHYRATE(m_pMonsterStat) + MAGICRATE(m_pMonsterStat) + CHERATE(m_pMonsterStat);
-			float tatalDamage = tatalRate * ATK(m_pMonsterStat);
+	if (HandCollision())
+	{
+		if (m_pModel->IsAnimationPercent(0.35)
+			|| m_pModel->IsAnimationPercent(0.7))
+			BoolInit();
+		CAMERA->Shake(0.1f, 0.3f);
+		float tatalRate = PHYRATE(m_pMonsterStat) + MAGICRATE(m_pMonsterStat) + CHERATE(m_pMonsterStat);
+		float tatalDamage = tatalRate * ATK(m_pMonsterStat);
 
-			PCHARACTER->CalculDamage(tatalDamage);
+		PCHARACTER->CalculDamage(tatalDamage);
+	}
+	ST_SPHERE target = CHARACTER->GetBoundSphere();
+
+	
+	ST_SPHERE stone;
+	if (m_vEffectObject[0])
+	{
+		stone = m_vEffectObject[0]->GetBoundSphere();
+
+		if (IntersectSphere(target, stone))
+		{
+			CAMERA->Shake(0.5f, 0.5f);
+			PCHARACTER->CalculDamage(100);
+			SAFE_DELETE(m_vEffectObject[0]);
 		}
+	}
+	
+
+	if (m_pModel->IsAnimationPercent(0.8))
+	{
+		DropTheStone();
+	}
 	
 	//플레이어 공격기능 설정
 	//if (m_pModel->IsAnimationPercent(ATKSPEED(m_pMonsterStat)))
@@ -477,6 +514,7 @@ void RealFinalboss::SkillUse()
 
 void RealFinalboss::Skill2()
 {
+	m_bDropStone = false;
 	ST_SPHERE target = CHARACTER->GetBoundSphere();
 
 	for (int i = 0; i < m_vEffectObject.size(); ++i)
@@ -496,7 +534,7 @@ void RealFinalboss::Skill2()
 	}
 	if (m_pModel->IsAnimationPercent(0.65f))
 	{
-		DropTheStone();
+		DropTheStones();
 		//돌을 떨구자
 	}
 
@@ -573,6 +611,20 @@ void RealFinalboss::HandMatInit()
 }
 
 void RealFinalboss::DropTheStone()
+{
+	m_bDropStone = true;
+
+	D3DXVECTOR3 rndPos = *CHARACTER->GetPosition();
+			
+	m_vMagicCircle[0]->SetParticlePos(rndPos);
+	m_vMagicCircle[0]->GetParticle()->TimeReset();
+
+	SAFE_DELETE(m_vEffectObject[0]);
+	m_vEffectObject[0] = new EffectObject;
+	m_vEffectObject[0]->Init(m_stEffect, rndPos + D3DXVECTOR3(0, FRand(7.0f, 27.0f), 0));
+}
+
+void RealFinalboss::DropTheStones()
 {
 	m_bUsingSkill2 = true;
 	//for (int i = 0; i < STONENUM; ++i)

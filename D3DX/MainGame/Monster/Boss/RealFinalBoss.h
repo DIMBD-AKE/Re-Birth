@@ -65,6 +65,7 @@ protected:
 	int m_nPassiveCooltime;
 
 	bool m_bUsingPassive;
+	bool m_bDropStone;
 	//virtual void ChangeAni() override;
 
 private:
@@ -93,6 +94,7 @@ private:
 	//팔 들의 메트리스 지정
 	void HandMatInit();
 
+	void DropTheStones();
 	void DropTheStone();
 
 	bool IsEnter() {
