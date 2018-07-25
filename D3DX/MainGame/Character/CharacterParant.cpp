@@ -583,6 +583,7 @@ void CharacterParant::Reset(Map * map, MonsterManager * pMonsterManager, DropMan
 void CharacterParant::SetTarget()
 {
 	m_nIndex = -1;
+	float minLength = 100;
 	m_vecTarget.clear();
 	D3DXVECTOR3 pos = *m_pCharacter->GetPosition();														//ÇÃ·¹ÀÌ¾î Æ÷Áö¼Ç ¹Þ°í 
 	D3DXVECTOR3 rot = *m_pCharacter->GetRotation();														//ÇÃ·¹ÀÌ¾î °¢µµ ¹Þ°í 
@@ -612,7 +613,11 @@ void CharacterParant::SetTarget()
 				float dot = D3DXVec3Dot(&v0, &v1) / D3DXVec3Length(&v0) * D3DXVec3Length(&v1);
 				if (dot >= cos(m_Status->chr.fScale / 2))
 				{
-					m_nIndex = i;
+					if (minLength > length)
+					{
+						m_nIndex = i;
+						minLength = length;
+					}
 				}
 			}
 		}
@@ -679,16 +684,7 @@ void CharacterParant::SetModelAlpha()
 
 void CharacterParant::SetCameraNpc()
 {
-	if (m_pNpc->GetCollision())
-	{
-		CAMERA->SetCamOffset(D3DXVECTOR3(0, 3, 13));
-		CAMERA->SetTargetOffset(D3DXVECTOR3(0, 4, 0));
-	}
-	else
-	{
-		CAMERA->SetCamOffset(D3DXVECTOR3(0, 3, 20));
-		CAMERA->SetTargetOffset(D3DXVECTOR3(0, 4, 0));
-	}
+	
 }
 
 void CharacterParant::SetPlayerStatus()
@@ -752,7 +748,7 @@ void CharacterParant::SkillToolTip(D3DXVECTOR3 pos)
 	//pos.z = 0.1;
 	//pItem->Render(pos + vItemPos, m_fSlotSize);
 
-	//// ½ºÅÝ
+	// ½ºÅÝ
 	//if (pItem->GetEquipType() != EQUIP_POTION)
 	//{
 	//	TEXT->Add("°ø°Ý·Â " + to_string(pItem->GetItemStat()->item.nAtk),
@@ -792,7 +788,7 @@ void CharacterParant::SkillToolTip(D3DXVECTOR3 pos)
 	//		36 * m_fSlotResize, "³ª´®½ºÄù¾î Regular", 0xFFFFFFFF);
 	//}
 
-	//// ÀÌ¸§
+	// ÀÌ¸§
 	//if (pItem->GetRarity() == RARITY_NORMAL)
 	//	TEXT->Add(pItem->GetName(), pos.x + vNamePos.x, pos.y + vNamePos.y, 40 * m_fSlotResize,
 	//		"³ª´®½ºÄù¾î Regular", 0xFFFFFFFF);
@@ -806,7 +802,7 @@ void CharacterParant::SkillToolTip(D3DXVECTOR3 pos)
 	//	TEXT->Add(pItem->GetName(), pos.x + vNamePos.x, pos.y + vNamePos.y, 40 * m_fSlotResize,
 	//		"³ª´®½ºÄù¾î Regular", 0xFFF2CB68);
 
-	//// ¼³¸í
+	// ¼³¸í
 	//char * desc = _strdup(pItem->GetDesc().c_str());
 	//char * tok;
 	//char * context;
@@ -817,6 +813,13 @@ void CharacterParant::SkillToolTip(D3DXVECTOR3 pos)
 	//if (tok)
 	//	TEXT->Add(tok, pos.x + vItemPos.x, pos.y + (wh.y - 50) * m_fSlotResize, 30 * m_fSlotResize,
 	//		"³ª´®½ºÄù¾î Regular", 0xFFFFFFFF);
+}
+
+void CharacterParant::SetCameraNormalView()
+{
+	CAMERA->SetCamOffset(D3DXVECTOR3(0, 3, 20));
+	CAMERA->SetTargetOffset(D3DXVECTOR3(0, 4, 0));
+	CAMERA->SetTarget(m_pCharacter->GetPosition(), m_pCharacter->GetRotation());
 }
 
 

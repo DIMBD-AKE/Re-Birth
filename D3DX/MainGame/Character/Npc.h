@@ -29,6 +29,7 @@ public:
 	void Debug();
 	void SkillUnSeal();
 	void PlusAttack();
+	void CameraViewChange();
 
 
 

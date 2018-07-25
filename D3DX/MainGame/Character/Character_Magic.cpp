@@ -134,7 +134,7 @@ void Character_Magic::Update()
 	if (m_pCharacter && !m_bIsMeteo &&!m_bIsMegaCristal && !m_pNpc->GetCollision())
 	{
 		Controller();
-		
+		SetCameraNormalView();
 		Move();
 		MgSkill();
 		if(!m_bIsStun)KeyControl();
@@ -163,7 +163,7 @@ void Character_Magic::Render()
 	if (m_pCharacter)
 	{
 		m_pCharacter->Render();
-		m_pInventory->Render();
+		
 
 		
 		//m_pDamage->Render();
@@ -182,6 +182,7 @@ void Character_Magic::Render()
 		if(m_bIsMeteoClick) m_pMeteorPaticle->Render();
 		if (m_bIsMegaCirstalClick) m_pMegaCristalPaticle->Render();
 		if (m_bIsFire) m_pMeteorAfterPaticle->Render();
+		m_pInventory->Render();
 	}
 }
 

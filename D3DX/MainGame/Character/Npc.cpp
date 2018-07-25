@@ -59,9 +59,13 @@ void Npc::Update()
 	{
 		m_pNpc->World();
 		CheckCollision();
-		
+	
 		SkillUnSeal();
-		if(m_bIsCollision) m_pContext->Update();
+		if (m_bIsCollision)
+		{
+			m_pContext->Update();
+			CameraViewChange();
+		}
 		//m_pNpc->Update();
 
 		if (m_pContext->GetIndex() == 3)
@@ -72,7 +76,6 @@ void Npc::Update()
 			}
 		}
 	}
-
 }
 
 void Npc::Render()
@@ -110,6 +113,14 @@ void Npc::SkillUnSeal()
 
 void Npc::PlusAttack()
 {
+}
+
+void Npc::CameraViewChange()
+{
+	
+	CAMERA->SetCamOffset(D3DXVECTOR3(0, 3, 13));
+	CAMERA->SetTargetOffset(D3DXVECTOR3(0, 4, 0));
+	
 }
 
 

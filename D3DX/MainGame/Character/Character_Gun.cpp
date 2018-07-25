@@ -129,8 +129,8 @@ void Character_Gun::Update()
 	
 		if (!m_bIsStun)KeyControl();
 		Move();
-		setCameraView();
-		GunClick();
+		
+		//GunClick();
 		m_pInventory->Update();
 		m_pCharacter->World();
 		m_pUIobj->Update();
@@ -140,7 +140,7 @@ void Character_Gun::Update()
 		m_pInheritateIco3->Update();
 		m_pSkillBar->Update();
 		Effect();
-
+		SetCameraNormalView();
 		PlayerProgressBar();
 		//CountAppearDamage();
 //		m_pDamage->Update(*m_pCharacter->GetPosition());
@@ -148,6 +148,7 @@ void Character_Gun::Update()
 
 		if (m_bIsGunView)
 		{
+			setCameraView();
 			GunClick();
 			GunShot();
 		}
@@ -163,7 +164,7 @@ void Character_Gun::Render()
 	{
 		m_pCharacter->Render();
 		//CharacterParant::Render();
-		m_pInventory->Render();
+		
 
 		//포트레이트 
 	
@@ -180,6 +181,7 @@ void Character_Gun::Render()
 		m_pInheritateIco3->Render();
 		m_pHPBar->Render();
 		m_pStaminaBar->Render();
+		m_pInventory->Render();
 
 	}
 
@@ -605,18 +607,17 @@ void Character_Gun::MultiAttack()
 void Character_Gun::setCameraView()
 {
 
-	if (!m_bIsGunView)
-	{
-		CAMERA->SetCamOffset(D3DXVECTOR3(0, 3, 20));
-		CAMERA->SetTargetOffset(D3DXVECTOR3(0, 4, 0));
-		CAMERA->SetTarget(m_pCharacter->GetPosition(), m_pCharacter->GetRotation());
-	}
-	else
-	{
-		CAMERA->SetCamOffset(D3DXVECTOR3(0, 10, 20));
-		CAMERA->SetTargetOffset(D3DXVECTOR3(0, 10, 0));
-		CAMERA->SetTarget(m_pCharacter->GetPosition(), m_pCharacter->GetRotation());
-	}
+	//if (!m_bIsGunView)
+	//{
+	//	CAMERA->SetCamOffset(D3DXVECTOR3(0, 3, 20));
+	//	CAMERA->SetTargetOffset(D3DXVECTOR3(0, 4, 0));
+	//	CAMERA->SetTarget(m_pCharacter->GetPosition(), m_pCharacter->GetRotation());
+	//}
+	
+	CAMERA->SetCamOffset(D3DXVECTOR3(0, 10, 20));
+	CAMERA->SetTargetOffset(D3DXVECTOR3(0, 10, 0));
+	CAMERA->SetTarget(m_pCharacter->GetPosition(), m_pCharacter->GetRotation());
+	
 }
 
 void Character_Gun::GunClick()
