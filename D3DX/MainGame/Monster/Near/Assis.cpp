@@ -50,6 +50,7 @@ void Assis::Setup(Map* map, D3DXVECTOR3 spawnPos, bool isSummon)
 
 	//스킬
 	m_pSkill = SKILL->GetSkill("Assis Skill");
+	SAFE_DELETE(m_pHitParticle);
 	m_pHitParticle = PARTICLE->GetParticle("석유");
 }
 

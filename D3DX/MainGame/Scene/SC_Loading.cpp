@@ -191,6 +191,9 @@ void SC_Loading::AddTexture()
 
 	//최종보스 스킬 텍스쳐
 	m_pLoading->LoadTexture("돌", "Texture/Effect/stone.png");
+
+	//몬스터 피격 텍스쳐
+	m_pLoading->LoadTexture("피", "Texture/Particle/Blood.png");
 }
 
 void SC_Loading::AddSound()
@@ -277,6 +280,8 @@ void SC_Loading::AddParticle()
 	m_pLoading->LoadParticle("MegaCristal", "MegaCristal", "Particle/megaCristal.ptc");
 
 	m_pLoading->LoadParticle("Hell Smoke", "Particle Sphere", "Particle/Hell Smoke.ptc");
+
+	m_pLoading->LoadParticle("몬스터기본피격", "피", "Particle/Blood Hit.ptc");
 }
 
 void SC_Loading::InitUI()

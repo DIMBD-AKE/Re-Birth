@@ -93,7 +93,7 @@ void MonsterParent::Setup(Map* map, D3DXVECTOR3 spawnPos, bool isSummon)
 	m_pDamageUI = new DamageUI;
 	m_pDamageUI->Setup(false);
 
-	m_pHitParticle = NULL;
+	m_pHitParticle = PARTICLE->GetParticle("몬스터기본피격");
 	//ST_SIZEBOX box;
 }
 
@@ -232,8 +232,13 @@ void MonsterParent::Update()
 
 		if (m_pHitParticle)
 		{
-			m_pHitParticle->SetPosition(*m_pModel->GetPosition());
-			m_pHitParticle->World();
+			D3DXVECTOR3 tempVec = *m_pModel->GetPosition();
+			tempVec.y += 4.0f;
+			m_pHitParticle->SetPosition(tempVec);
+			tempVec = *m_pModel->GetPosition() - *CHARACTER->GetPosition();
+			m_pHitParticle->SetRotation(D3DXVECTOR3(0, tempVec.y, 0));
+			m_pHitParticle->ApplyWorld();
+			//m_pHitParticle->World();
 			m_pHitParticle->Update();
 		}
 	}
