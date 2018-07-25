@@ -96,6 +96,7 @@ void SC_Game::Init()
 	m_pUI->SetPosition(D3DXVECTOR3(1261, 754, 0));
 
 	m_isRank = false;
+	m_isStart = false;
 
 	m_fGenTime = (GetTickCount() - m_fGenTime) * 0.001;
 	if (m_fElapseTime > 0)
@@ -131,8 +132,11 @@ void SC_Game::Update()
 	for (auto p : m_vecParticle)
 		p->Update();
 
-	if (m_fElapseTime < 0.0001)
+	if (!m_isStart)
+	{
+		m_isStart = true;
 		m_fElapseTime -= m_fGenTime;
+	}
 	m_fElapseTime += TIME->GetElapsedTime();
 }
 
