@@ -94,6 +94,7 @@ protected:
 	DamageUI* m_pDamageUI;
 
 	Particle*	m_pHitParticle;
+	bool		m_bSpecial;
 
 	/*
 	int			nMaxTarget;

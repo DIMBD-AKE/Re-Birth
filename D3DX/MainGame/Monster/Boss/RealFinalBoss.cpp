@@ -36,14 +36,14 @@ void RealFinalboss::SetupBoss(Map* map, D3DXVECTOR3 pos)
 	box.highY = 1000.0f;
 	box.highZ = 200.0f;
 	box.lowX = -200.0f;
-	box.lowY = 10.0f;
+	box.lowY = 0.0f;
 	box.lowZ = -200.0f;
 
 
 	m_pModel->SetScale(D3DXVECTOR3(0.025f, 0.025f, 0.025f));
 
 	m_pModel->CreateBound(box);
-	m_pModel->SetBoundSphere(m_pModel->GetOrigBoundSphere().center - D3DXVECTOR3(0,300,0), 300.0f);
+	m_pModel->SetBoundSphere(m_pModel->GetOrigBoundSphere().center - D3DXVECTOR3(0,330,0), 300.0f);
 
 	//ÇÇÈí ¹Ù²ã¾ßÇÔ
 	m_pPassive = SKILL->GetSkill("RealBossPassive");

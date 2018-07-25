@@ -52,6 +52,7 @@ void Assis::Setup(Map* map, D3DXVECTOR3 spawnPos, bool isSummon)
 	m_pSkill = SKILL->GetSkill("Assis Skill");
 	SAFE_DELETE(m_pHitParticle);
 	m_pHitParticle = PARTICLE->GetParticle("¼®À¯");
+	m_bSpecial = true;
 }
 
 void Assis::SetupStat()

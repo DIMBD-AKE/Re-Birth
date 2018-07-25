@@ -6,7 +6,8 @@
 #include "Boss/BossParent.h"
 
 MonsterParent::MonsterParent()
-: m_pModel(NULL)
+	: m_pModel(NULL)
+	, m_bSpecial(false)
 {
 }
 
@@ -233,10 +234,16 @@ void MonsterParent::Update()
 		if (m_pHitParticle)
 		{
 			D3DXVECTOR3 tempVec = *m_pModel->GetPosition();
-			tempVec.y += 4.0f;
-			m_pHitParticle->SetPosition(tempVec);
-			tempVec = *m_pModel->GetPosition() - *CHARACTER->GetPosition();
-			m_pHitParticle->SetRotation(D3DXVECTOR3(0, tempVec.y, 0));
+			if (!m_bSpecial)
+			{
+				tempVec.y += 2.0f;
+				m_pHitParticle->SetPosition(tempVec);
+				tempVec.y = GetAngle(m_pModel->GetPosition()->x, m_pModel->GetPosition()->z,
+					CHARACTER->GetPosition()->x, CHARACTER->GetPosition()->z);
+				tempVec.y -= D3DX_PI / 2;
+
+				m_pHitParticle->SetRotation(D3DXVECTOR3(0, tempVec.y, 0));
+			}
 			m_pHitParticle->ApplyWorld();
 			//m_pHitParticle->World();
 			m_pHitParticle->Update();
