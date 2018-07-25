@@ -20,6 +20,7 @@ private:
 	bool		m_isDie;
 
 	ST_PARTICLE_ATTRIBUTE*			m_pOrigAttribute;
+	ST_PARTICLE_ATTRIBUTE*			m_pApplyAttribute;
 	ST_PARTICLE_ATTRIBUTE_VARIABLE*	m_pVarAttribute;
 
 	list<ST_PARTICLE_ATTRIBUTE*>	m_lAttribute;
@@ -34,7 +35,8 @@ public:
 	ST_PARTICLE_ATTRIBUTE ResetParticle(int loop);
 	void SetRegen(bool regen) { m_isRegen = regen; }
 
-	void Attribute(ST_PARTICLE_ATTRIBUTE orig, ST_PARTICLE_ATTRIBUTE_VARIABLE var);
+	ST_PARTICLE_ATTRIBUTE GetOrig() { return *m_pOrigAttribute; }
+	void SetApply(ST_PARTICLE_ATTRIBUTE apply) { *m_pApplyAttribute = apply; }
 
 	void TimeReset();
 	void Update();
@@ -64,6 +66,7 @@ public:
 
 	void Init(ST_PARTICLE_INFO * info);
 	void World();
+	void ApplyWorld();
 	void TimeReset() { m_pParticleSystem->TimeReset(); }
 	void Update() { m_pParticleSystem->Update(); }
 	void ForceUpdate(int count, float time) { m_pParticleSystem->ForceUpdate(count, time); }

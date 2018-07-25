@@ -22,6 +22,9 @@ ParticleSystem::~ParticleSystem()
 	SAFE_RELEASE(m_pVB);
 	for (auto a : m_lAttribute)
 		SAFE_DELETE(a);
+	SAFE_DELETE(m_pApplyAttribute);
+	SAFE_DELETE(m_pOrigAttribute);
+	SAFE_DELETE(m_pVarAttribute);
 }
 
 void ParticleSystem::Init(LPDIRECT3DTEXTURE9 texture, float size, int count,
@@ -44,6 +47,8 @@ void ParticleSystem::Init(LPDIRECT3DTEXTURE9 texture, float size, int count,
 		&m_pVB, NULL);
 
 	m_pOrigAttribute = orig;
+	m_pApplyAttribute = new ST_PARTICLE_ATTRIBUTE;
+	*m_pApplyAttribute = *orig;
 	m_pVarAttribute = var;
 
 	m_isRegen = true;
@@ -59,7 +64,7 @@ void ParticleSystem::Init(LPDIRECT3DTEXTURE9 texture, float size, int count,
 
 ST_PARTICLE_ATTRIBUTE ParticleSystem::ResetParticle(int loop)
 {
-	ST_PARTICLE_ATTRIBUTE att = *m_pOrigAttribute;
+	ST_PARTICLE_ATTRIBUTE att = *m_pApplyAttribute;
 	ST_PARTICLE_ATTRIBUTE_VARIABLE var = *m_pVarAttribute;
 
 	att.nLoop = loop;
@@ -88,12 +93,6 @@ ST_PARTICLE_ATTRIBUTE ParticleSystem::ResetParticle(int loop)
 	att.fRadiusSpeed += FRand(-var.fRadiusSpeedVar, var.fRadiusSpeedVar);
 
 	return att;
-}
-
-void ParticleSystem::Attribute(ST_PARTICLE_ATTRIBUTE orig, ST_PARTICLE_ATTRIBUTE_VARIABLE var)
-{
-	*m_pOrigAttribute = orig;
-	*m_pVarAttribute = var;
 }
 
 void ParticleSystem::TimeReset()
@@ -494,8 +493,12 @@ void Particle::Init(ST_PARTICLE_INFO * info)
 {
 	SAFE_DELETE(m_pParticleSystem);
 	m_pParticleSystem = new ParticleSystem;
+	ST_PARTICLE_ATTRIBUTE * orig = new ST_PARTICLE_ATTRIBUTE;
+	ST_PARTICLE_ATTRIBUTE_VARIABLE * var = new ST_PARTICLE_ATTRIBUTE_VARIABLE;
+	*orig = info->origAttribute;
+	*var = info->varAttribute;
 	m_pParticleSystem->Init(info->pTexture, info->fParticleSize, info->nParticleCount,
-		&info->origAttribute, &info->varAttribute);
+		orig, var);
 }
 
 void Particle::World()
@@ -507,4 +510,26 @@ void Particle::World()
 	D3DXMatrixTranslation(&matT, m_vPosition.x, m_vPosition.y, m_vPosition.z);
 
 	m_pParticleSystem->SetWorld(matS * matR * matT);
+	auto orig = m_pParticleSystem->GetOrig();
+	m_pParticleSystem->SetApply(orig);
+}
+
+void Particle::ApplyWorld()
+{
+	D3DXMATRIX identity;
+	D3DXMatrixIdentity(&identity);
+	m_pParticleSystem->SetWorld(identity);
+
+	D3DXMATRIX matS, matR, matT, matWorld;
+
+	D3DXMatrixScaling(&matS, m_vScale.x, m_vScale.y, m_vScale.z);
+	D3DXMatrixRotationYawPitchRoll(&matR, m_vRotation.y, m_vRotation.x, m_vRotation.z);
+	D3DXMatrixTranslation(&matT, m_vPosition.x, m_vPosition.y, m_vPosition.z);
+	matWorld = matS * matR * matT;
+
+	auto orig = m_pParticleSystem->GetOrig();
+	D3DXVec3TransformCoord(&orig.vPos, &orig.vPos, &matWorld);
+	D3DXVec3TransformCoord(&orig.vVelocity, &orig.vVelocity, &matR);
+	D3DXVec3TransformCoord(&orig.vAcceleration, &orig.vAcceleration, &matR);
+	m_pParticleSystem->SetApply(orig);
 }
