@@ -4,6 +4,7 @@
 #include "Inventory.h"
 #include "../monster/MonsterManager.h"
 #include "../monster/MonsterParent.h"
+#include "Npc.h"
 #include "../DamageUI.h"
 
 Character_Magic::Character_Magic()
@@ -130,21 +131,22 @@ void Character_Magic::Init(CHRTYPE type, CHARSELECT order)
 
 void Character_Magic::Update()
 {
-	if (m_pCharacter && !m_bIsMeteo &&!m_bIsMegaCristal)
+	if (m_pCharacter && !m_bIsMeteo &&!m_bIsMegaCristal && !m_pNpc->GetCollision())
 	{
 		Controller();
 		
 		Move();
 		MgSkill();
-		KeyControl();
-	
+		if(!m_bIsStun)KeyControl();
+		CharacterParant::Update();
 		m_pInventory->Update();
 		m_pCharacter->World();
 		m_pUIobj->Update();
 		m_pChrStat->Update();
+		m_pTalkBar->Update();
 		m_pInheritateIco->Update();
 		m_pInheritateIco2->Update();
-		m_pInheritateIco3->Update();
+		if(m_bSkillUnSealed)m_pInheritateIco3->Update();
 		m_pSkillBar->Update();
 		PlayerProgressBar();
 		//m_pDamage->Update(*m_pCharacter->GetPosition());
@@ -173,9 +175,10 @@ void Character_Magic::Render()
 		m_pSkillBar->Render();
 		m_pInheritateIco->Render();
 		m_pInheritateIco2->Render();
-		m_pInheritateIco3->Render();
+		if (m_bSkillUnSealed)m_pInheritateIco3->Render();
 		m_pHPBar->Render();
 		m_pStaminaBar->Render();
+		if (m_pNpc->GetCollision()) m_pTalkBar->Render();
 		if(m_bIsMeteoClick) m_pMeteorPaticle->Render();
 		if (m_bIsMegaCirstalClick) m_pMegaCristalPaticle->Render();
 		if (m_bIsFire) m_pMeteorAfterPaticle->Render();
@@ -430,19 +433,22 @@ void Character_Magic::KeyControl()
 	}
 
 	//메테오 제어 
-	if (INPUT->KeyDown('V'))
+	if (m_bSkillUnSealed)
 	{
-	
-		if (m_Status->chr.nCurrentStam >= 90.0f)
+		if (INPUT->KeyDown('V'))
 		{
-			m_Status->chr.nCurrentStam -= 90.0f;
-			if (m_eCharSelect == CHAR_ONE)
+
+			if (m_Status->chr.nCurrentStam >= 90.0f)
 			{
-				m_bIsMegaCristal = true;
-			}
-			if (m_eCharSelect == CHAR_TWO)
-			{
-				m_bIsMeteo = true;
+				m_Status->chr.nCurrentStam -= 90.0f;
+				if (m_eCharSelect == CHAR_ONE)
+				{
+					m_bIsMegaCristal = true;
+				}
+				if (m_eCharSelect == CHAR_TWO)
+				{
+					m_bIsMeteo = true;
+				}
 			}
 		}
 	}
@@ -838,7 +844,7 @@ void Character_Magic::MgSkill()
 
 	if (m_bIsPotal)
 	{
-		m_pParticle3->World();
+		m_pParticle3->ApplyWorld();
 		m_pParticle3->Update();
 
 		auto nav = m_pSampleMap->GetNavMesh();
@@ -932,7 +938,7 @@ void Character_Magic::MeteorClick()
 	D3DXVECTOR3	playerTempPos = *m_pCharacter->GetPosition();
 
 	
-	m_pParticle3->World();
+	m_pParticle3->ApplyWorld ();
 	m_pParticle3->Update();
 
 	auto nav = m_pSampleMap->GetNavMesh();
@@ -980,8 +986,8 @@ void Character_Magic::MegaCristalReady()
 	D3DXVECTOR3 Potalpos = *m_pParticle3->GetPosition();
 	D3DXVECTOR3	playerTempPos = *m_pCharacter->GetPosition();
 
-
-	m_pParticle3->World();
+	
+	m_pParticle3->ApplyWorld();
 	m_pParticle3->Update();
 
 	auto nav = m_pSampleMap->GetNavMesh();
@@ -1150,10 +1156,10 @@ void Character_Magic::VskillUpdate()
 			m_nMagicCount = 0;
 		}
 	}
-	m_pMeteorPaticle->World();
+	m_pMeteorPaticle->ApplyWorld();
 	m_pMeteorPaticle->Update();
 
-	m_pMegaCristalPaticle->World();
+	m_pMegaCristalPaticle->ApplyWorld();
 	m_pMegaCristalPaticle->Update();
 
 	
@@ -1165,7 +1171,7 @@ void Character_Magic::MeteorAfter()
 {
 	if (m_bIsFire)
 	{
-		m_pMeteorAfterPaticle->World();
+		m_pMeteorAfterPaticle->ApplyWorld();
 		m_pMeteorAfterPaticle->Update();
 		m_pMeteorAfterPaticle->SetPosition(m_vMeteo);
 	

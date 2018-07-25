@@ -239,7 +239,7 @@ void Character_Sword::Update()
 
 	}
 	CutScene();
-	KeyControl();
+	if (!m_bIsStun)KeyControl();
 
 
 }

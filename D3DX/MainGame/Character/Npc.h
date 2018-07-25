@@ -11,10 +11,11 @@ private:
 	Map *				m_pMap;			//맵정보 받는 맴버 변수
 	Model*				m_pNpc;			//NPC모델 
 	CharacterParant*	m_pPlayer;		//플레이어
-	bool				m_bIsCollision;	//충돌했늬?
+	
 	Dialogue*			m_pContext;		//다이얼로그
 	GET(bool, m_bIsAppear, IsAppear);	//등장했늬?
-
+	GET(bool,m_bIsCollision, Collision);	 //충돌했늬?
+	bool				m_bTalk;		//대화하고 있늬?
 
 public:
 	Npc();
@@ -26,6 +27,10 @@ public:
 	void CheckCollision();
 	void Talk();
 	void Debug();
+	void SkillUnSeal();
+	void PlusAttack();
+
+
 
 	void SetPlayerMemoryAddressLink(CharacterParant* player) { m_pPlayer = player; }
 

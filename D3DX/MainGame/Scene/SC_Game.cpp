@@ -86,6 +86,7 @@ void SC_Game::Init()
 	m_pNpc = new Npc;
 	m_pNpc->Init(m_pMap->GetSpawnPlayer());
 	m_pNpc->SetPlayerMemoryAddressLink(m_pCharacter);
+	m_pCharacter->SetNpcMemoryAddressLink(m_pNpc);
 
 	m_pUI = new UIObject;
 	m_pUI->SetTexture(TEXTUREMANAGER->GetTexture("Game ElapseTime"));
