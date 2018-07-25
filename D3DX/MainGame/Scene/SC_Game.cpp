@@ -97,6 +97,8 @@ void SC_Game::Init()
 	m_fGenTime = (GetTickCount() - m_fGenTime) * 0.001;
 	if (m_fElapseTime > 0)
 		m_fElapseTime -= m_fGenTime;
+
+	m_pCharacter->Getstage(&m_nStage);
 }
 
 void SC_Game::Update()

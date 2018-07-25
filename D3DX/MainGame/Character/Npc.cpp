@@ -117,10 +117,8 @@ void Npc::PlusAttack()
 
 void Npc::CameraViewChange()
 {
-	
 	CAMERA->SetCamOffset(D3DXVECTOR3(0, 3, 13));
 	CAMERA->SetTargetOffset(D3DXVECTOR3(0, 4, 0));
-	
 }
 
 

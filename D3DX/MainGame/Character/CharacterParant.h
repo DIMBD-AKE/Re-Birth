@@ -98,7 +98,9 @@ protected:
 	int						m_nAppear;						//서브캐릭터 나오나 
 	int						m_nIndex;						//몬스터 벡터용 인덱스
 	int						m_nDamageCount;					//데미지 카운트 
-	
+	int*					m_npStage;						//스테이지 카운트
+
+
 	DamageUI*				m_pDamage;						//데미지 클래스 포인터
 	
 	bool					m_bIsFront;						//앞인지 뒤인지
@@ -173,7 +175,7 @@ protected:
 	void SetPlayerStatus();
 	void SkillToolTip(D3DXVECTOR3 pos);
 	void SetCameraNormalView();
-
+	void Getstage(int* stage) { m_npStage = stage; }
 
 
 	int						m_temp;			//애니메이션 확인용 임시변수

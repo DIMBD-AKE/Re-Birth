@@ -724,85 +724,9 @@ void CharacterParant::SetPlayerStatus()
 
 void CharacterParant::SkillToolTip(D3DXVECTOR3 pos)
 {
-	//D3DXVECTOR3 vItemPos = D3DXVECTOR3(30, 30, 0) * m_fSlotResize;
-	//D3DXVECTOR3 vNamePos = D3DXVECTOR3(vItemPos.x + m_fSlotSize + 20 * m_fSlotResize, vItemPos.y, 0);
+	//	TEXT->Add(pItem->GetName(), );
 
-	//POINT wh;
-	//if (pItem->GetEquipType() == EQUIP_POTION)
-	//	wh = MakePoint(500, 300);
-	//else
-	//	wh = MakePoint(500, 550);
-
-	//D3DXMATRIX matS, matT;
-	//float resizeX, resizeY;
-	//resizeX = (wh.x * m_fSlotResize) /
-	//	(float)TEXTUREMANAGER->GetInfo("UI Inventory Background").Width;
-	//resizeY = (wh.y * m_fSlotResize) /
-	//	(float)TEXTUREMANAGER->GetInfo("UI Inventory Background").Height;
-	//D3DXMatrixScaling(&matS, resizeX, resizeY, 0);
-	//D3DXMatrixTranslation(&matT, pos.x, pos.y, pos.z);
-
-	//SPRITE->SetTransform(&(matS * matT));
-	//SPRITE->Draw(m_pInvTex, NULL, NULL, NULL, 0xAAFFFFFF);
-
-	//pos.z = 0.1;
-	//pItem->Render(pos + vItemPos, m_fSlotSize);
-
-	// ½ºÅÝ
-	//if (pItem->GetEquipType() != EQUIP_POTION)
-	//{
-	//	TEXT->Add("°ø°Ý·Â " + to_string(pItem->GetItemStat()->item.nAtk),
-	//		pos.x + vItemPos.x,
-	//		pos.y + vItemPos.y + m_fSlotSize + 20 * m_fSlotResize,
-	//		36 * m_fSlotResize, "³ª´®½ºÄù¾î Regular", 0xFFFFFFFF);
-	//	char temp[32];
-	//	sprintf_s(temp, 32, "%.2f", pItem->GetItemStat()->item.fAtkSpeed);
-	//	TEXT->Add("°ø°Ý¼Óµµ " + string(temp),
-	//		pos.x + vItemPos.x + 200 * m_fSlotResize,
-	//		pos.y + vItemPos.y + m_fSlotSize + 20 * m_fSlotResize,
-	//		36 * m_fSlotResize, "³ª´®½ºÄù¾î Regular", 0xFFFFFFFF);
-
-	//	TEXT->Add("¹æ¾î·Â " + to_string(pItem->GetItemStat()->item.nDef),
-	//		pos.x + vItemPos.x,
-	//		pos.y + vItemPos.y + m_fSlotSize + 65 * m_fSlotResize,
-	//		36 * m_fSlotResize, "³ª´®½ºÄù¾î Regular", 0xFFFFFFFF);
-	//	TEXT->Add("Ã¼·Â " + to_string(pItem->GetItemStat()->item.nHp),
-	//		pos.x + vItemPos.x + 200 * m_fSlotResize,
-	//		pos.y + vItemPos.y + m_fSlotSize + 65 * m_fSlotResize,
-	//		36 * m_fSlotResize, "³ª´®½ºÄù¾î Regular", 0xFFFFFFFF);
-
-	//	sprintf_s(temp, 32, "%.2f", pItem->GetItemStat()->item.fAgi);
-	//	TEXT->Add("È¸ÇÇ·Â " + string(temp),
-	//		pos.x + vItemPos.x,
-	//		pos.y + vItemPos.y + m_fSlotSize + 140 * m_fSlotResize,
-	//		36 * m_fSlotResize, "³ª´®½ºÄù¾î Regular", 0xFFFFFFFF);
-	//	sprintf_s(temp, 32, "%.2f", pItem->GetItemStat()->item.fHit);
-	//	TEXT->Add("¸íÁß·ü " + string(temp),
-	//		pos.x + vItemPos.x,
-	//		pos.y + vItemPos.y + m_fSlotSize + 185 * m_fSlotResize,
-	//		36 * m_fSlotResize, "³ª´®½ºÄù¾î Regular", 0xFFFFFFFF);
-	//	sprintf_s(temp, 32, "%.2f", pItem->GetItemStat()->item.fSpeed);
-	//	TEXT->Add("ÀÌµ¿¼Óµµ " + string(temp),
-	//		pos.x + vItemPos.x,
-	//		pos.y + vItemPos.y + m_fSlotSize + 230 * m_fSlotResize,
-	//		36 * m_fSlotResize, "³ª´®½ºÄù¾î Regular", 0xFFFFFFFF);
-	//}
-
-	// ÀÌ¸§
-	//if (pItem->GetRarity() == RARITY_NORMAL)
-	//	TEXT->Add(pItem->GetName(), pos.x + vNamePos.x, pos.y + vNamePos.y, 40 * m_fSlotResize,
-	//		"³ª´®½ºÄù¾î Regular", 0xFFFFFFFF);
-	//if (pItem->GetRarity() == RARITY_MAGIC)
-	//	TEXT->Add(pItem->GetName(), pos.x + vNamePos.x, pos.y + vNamePos.y, 40 * m_fSlotResize,
-	//		"³ª´®½ºÄù¾î Regular", 0xFFC3FCAB);
-	//if (pItem->GetRarity() == RARITY_RARE)
-	//	TEXT->Add(pItem->GetName(), pos.x + vNamePos.x, pos.y + vNamePos.y, 40 * m_fSlotResize,
-	//		"³ª´®½ºÄù¾î Regular", 0xFF627DE0);
-	//if (pItem->GetRarity() == RARITY_UNIQUE)
-	//	TEXT->Add(pItem->GetName(), pos.x + vNamePos.x, pos.y + vNamePos.y, 40 * m_fSlotResize,
-	//		"³ª´®½ºÄù¾î Regular", 0xFFF2CB68);
-
-	// ¼³¸í
+	//// ¼³¸í
 	//char * desc = _strdup(pItem->GetDesc().c_str());
 	//char * tok;
 	//char * context;
@@ -817,9 +741,13 @@ void CharacterParant::SkillToolTip(D3DXVECTOR3 pos)
 
 void CharacterParant::SetCameraNormalView()
 {
-	CAMERA->SetCamOffset(D3DXVECTOR3(0, 3, 20));
-	CAMERA->SetTargetOffset(D3DXVECTOR3(0, 4, 0));
-	CAMERA->SetTarget(m_pCharacter->GetPosition(), m_pCharacter->GetRotation());
+	if (*m_npStage !=3)
+	{
+		CAMERA->SetCamOffset(D3DXVECTOR3(0, 3, 20));
+		CAMERA->SetTargetOffset(D3DXVECTOR3(0, 4, 0));
+		CAMERA->SetTarget(m_pCharacter->GetPosition(), m_pCharacter->GetRotation());
+	}
+	
 }
 
 

@@ -102,8 +102,12 @@ void Character_Magic::Init(CHRTYPE type, CHARSELECT order)
 		m_pSkillBar->SetTexture(TEXTUREMANAGER->GetTexture("캐릭터_스킬창"));
 		m_pSkillBar->SetPosition(D3DXVECTOR3(588, 695, 0));
 
+
 		m_pInheritateIco->SetTexture(TEXTUREMANAGER->GetTexture("마법_이동"));
 		m_pInheritateIco->SetPosition(D3DXVECTOR3(609, 733, 0));
+		m_pInheritateIco->SetName("마법_이동");
+
+
 
 		m_pInheritateIco2->SetTexture(TEXTUREMANAGER->GetTexture("마법_파이어볼"));
 		m_pInheritateIco2->SetPosition(D3DXVECTOR3(722, 733, 0));
