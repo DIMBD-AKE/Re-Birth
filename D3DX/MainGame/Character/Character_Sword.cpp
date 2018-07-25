@@ -188,7 +188,7 @@ void Character_Sword::Update()
 		m_pInheritateIco3->Update();
 		m_pSkillBar->Update();
 
-
+		SetCameraNormalView();
 
 
 		if (m_bIsSubChr)
@@ -240,7 +240,7 @@ void Character_Sword::Update()
 	}
 	CutScene();
 	if (!m_bIsStun)KeyControl();
-
+	
 
 }
 
@@ -264,14 +264,14 @@ void Character_Sword::Render()
 		CharacterParant::Render();
 		//포트레이트 
 		m_pUIobj->Render();
-		m_pInventory->Render();
+		
 		m_pSkillBar->Render();
 		m_pInheritateIco->Render();
 		m_pInheritateIco2->Render();
 		m_pInheritateIco3->Render();
 		m_pHPBar->Render();
 		m_pStaminaBar->Render();
-
+		m_pInventory->Render();
 	}
 }
 

@@ -107,7 +107,7 @@ void Character_fist::Update()
 		m_pInheritateIco3->Update();
 		m_pSkillBar->Update();
 		Effect();
-
+		SetCameraNormalView();
 		PlayerProgressBar();
 		//CountAppearDamage();
 		//m_pDamage->Update(*m_pCharacter->GetPosition());
@@ -129,7 +129,7 @@ void Character_fist::Render()
 	{
 		m_pCharacter->Render();
 		//CharacterParant::Render();
-		m_pInventory->Render();
+		
 
 		//포트레이트 
 
@@ -147,6 +147,7 @@ void Character_fist::Render()
 		m_pHPBar->Render();
 		m_pStaminaBar->Render();
 		Debug();
+		m_pInventory->Render();
 	}
 }
 
