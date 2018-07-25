@@ -724,7 +724,7 @@ void CharacterParant::SetPlayerStatus()
 
 void CharacterParant::SkillToolTip(D3DXVECTOR3 pos)
 {
-	//	TEXT->Add(pItem->GetName(), );
+	//TEXT->Add(m_pInheritateIco->GetName(),  );
 
 	//// Ό³Έν
 	//char * desc = _strdup(pItem->GetDesc().c_str());

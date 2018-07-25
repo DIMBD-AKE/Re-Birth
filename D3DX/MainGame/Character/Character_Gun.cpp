@@ -127,7 +127,7 @@ void Character_Gun::Update()
 	{
 		Controller();
 	
-		if (!m_bIsStun)KeyControl();
+		if (!m_bIsStun && !m_bIsGunView)KeyControl();
 		Move();
 		
 		//GunClick();
@@ -150,10 +150,16 @@ void Character_Gun::Update()
 		{
 			setCameraView();
 			GunClick();
-			GunShot();
 		}
 	}
 
+	if (m_bIsGunView)
+	{
+		if (INPUT->KeyUp('F'))
+		{
+			m_bIsGunView = false;
+		}
+	}
 	MagicBulletUpdate();
 	WindStormUpdate();
 }
@@ -429,10 +435,7 @@ void Character_Gun::KeyControl()
 	{
 		m_bIsGunView = true;
 	}
-	else if (INPUT->KeyUp('F'))
-	{
-		m_bIsGunView = false;
-	}
+	
 
 	if (INPUT->KeyDown('V'))
 	{
@@ -625,25 +628,24 @@ void Character_Gun::GunClick()
 	if (INPUT->KeyDown(VK_LBUTTON))
 	{
 		m_bshoot = true;
+		GunShot();
+		{
+			auto nav = m_pSampleMap->GetNavMesh();
+			auto r = RayAtWorldSpace(g_ptMouse);
+			float tempdistance;
+			for (int i = 0; i < nav.size(); i += 3)
+			{
+				if (D3DXIntersectTri(&nav[i], &nav[i + 1], &nav[i + 2], &r.orig, &r.dir, NULL, NULL, &tempdistance))
+				{
+					m_vGun = r.orig + (r.dir* tempdistance);
+				}
+			}
+		}
 	}
 	else if (INPUT->KeyUp(VK_LBUTTON))
 	{
 		m_bshoot = false;
-	}
-
-	if (m_bshoot)
-	{
-		auto nav = m_pSampleMap->GetNavMesh();
-		auto r = RayAtWorldSpace(g_ptMouse);
-		float tempdistance;
-		for (int i = 0; i < nav.size(); i += 3)
-		{
-			if (D3DXIntersectTri(&nav[i], &nav[i + 1], &nav[i + 2], &r.orig, &r.dir, NULL, NULL, &tempdistance))
-			{
-				m_vGun = r.orig + (r.dir* tempdistance);
-			}
-		}
-	}
+	}	
 }
 
 void Character_Gun::GunShot()
@@ -652,7 +654,7 @@ void Character_Gun::GunShot()
 	
 	D3DXVECTOR3 pos = m_vGun;
 
-	if (m_bshoot)
+	//if (m_bshoot)
 	{
 
 		for (int i = 0; i < m_pMonsterManager->GetMonsterVector().size(); i++)
@@ -661,7 +663,7 @@ void Character_Gun::GunShot()
 			D3DXVECTOR3 MonPos = *m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetPosition();
 			float length = D3DXVec3Length(&(MonPos - pos));
 
-			if (length <= 5.0f)
+			if (length <= 2.0f)
 			{
 				m_nIndex = i;
 

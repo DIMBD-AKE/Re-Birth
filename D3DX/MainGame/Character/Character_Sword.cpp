@@ -51,7 +51,7 @@ void Character_Sword::Init(CHRTYPE type, CHARSELECT order)
 		m_Status->chr.nDef = 2;
 		m_Status->chr.nMaxHp = 10000;
 		m_Status->chr.nMaxStam = 100;
-		m_Status->chr.fRange = 3.0f;
+		m_Status->chr.fRange = 5.0f;
 		m_Status->chr.fScale = 5.0f;
 
 		CharacterParant::Init(type, order);
