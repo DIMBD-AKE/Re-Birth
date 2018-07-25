@@ -78,8 +78,8 @@ void Elizabeth::Setup(Map* map, D3DXVECTOR3 spawnPos, bool isSummon)
 
 void Elizabeth::SetupStat()
 {
-	m_nMinMoveCount = 800;
-	m_nMaxMoveCount = 300;
+	m_nMinMoveCount = NRand(800,900);
+	m_nMaxMoveCount = NRand(300,400);
 	ZeroMemory(m_pMonsterStat, sizeof(STATUS));
 
 	CURRENTHP(m_pMonsterStat) = MAXHP(m_pMonsterStat)  = 100;

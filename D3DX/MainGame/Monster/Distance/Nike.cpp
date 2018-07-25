@@ -77,8 +77,8 @@ void Nike::SetupSkill()
 
 void Nike::SetupStat()
 {
-	m_nMinMoveCount = 450;
-	m_nMaxMoveCount = 100;
+	m_nMinMoveCount = NRand(333,555);
+	m_nMaxMoveCount = NRand(100,150);
 
 	ZeroMemory(m_pMonsterStat, sizeof(STATUS));
 

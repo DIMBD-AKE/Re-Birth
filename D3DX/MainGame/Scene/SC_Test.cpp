@@ -45,7 +45,7 @@ void SC_Test::Init()
 
 	m_pMM->Setup(m_pSampleMap, &m_pCharacter);
 	m_pMM->SetSpawnSpat(m_pSampleMap->GetSpawnEnemy());
-	m_pMM->MakeMonster(m_pDropManager);
+//	m_pMM->MakeMonster(m_pDropManager);
 
 	//CAMERA->SetMode(CAMERA_FOLLOW_FREE);
 	CAMERA->SetTargetOffset(D3DXVECTOR3(0, 4, 0));

@@ -57,8 +57,8 @@ void Assis::Setup(Map* map, D3DXVECTOR3 spawnPos, bool isSummon)
 
 void Assis::SetupStat()
 {
-	m_nMinMoveCount = 555;
-	m_nMaxMoveCount = 222;
+	m_nMinMoveCount = NRand(500,600);
+	m_nMaxMoveCount = NRand(200,300);
 
 	ZeroMemory(m_pMonsterStat, sizeof(STATUS));
 

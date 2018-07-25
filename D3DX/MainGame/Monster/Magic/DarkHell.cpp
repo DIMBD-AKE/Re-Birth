@@ -45,8 +45,8 @@ void DarkHell::Setup(Map* map, D3DXVECTOR3 spawnPos, bool isSummon)
 
 void DarkHell::SetupStat()
 {
-	m_nMinMoveCount = 555;
-	m_nMaxMoveCount = 222;
+	m_nMinMoveCount =NRand(300,500);
+	m_nMaxMoveCount =NRand(100,200);
 
 	ZeroMemory(m_pMonsterStat, sizeof(STATUS));
 

@@ -23,16 +23,16 @@ private:
 private:
 
 	//근접
-	void MakeElizabeth(DropManager* pDropManager, bool isSummon = false);
-	void MakeAssis(DropManager* pDropManager, bool isSummon = false);
+	void MakeElizabeth(DropManager* pDropManager,int spawnIndex, bool isSummon = false);
+	void MakeAssis(DropManager* pDropManager, int spawnIndex, bool isSummon = false);
 
 	//원거리
-	void MakeNerisa(DropManager* pDropManager, bool isSummon = false);
-	void MakeNike(DropManager* pDropManager, bool isSummon = false);
+	void MakeNerisa(DropManager* pDropManager, int spawnIndex, bool isSummon = false);
+	void MakeNike(DropManager* pDropManager, int spawnIndex, bool isSummon = false);
 
 	//마법
-	void MakeDarkHell(DropManager* pDropManager, bool isSummon = false);
-	void MakeNifilHeim(DropManager* pDropManager, bool isSummon = false);
+	void MakeDarkHell(DropManager* pDropManager, int spawnIndex, bool isSummon = false);
+	void MakeNifilHeim(DropManager* pDropManager, int spawnIndex, bool isSummon = false);
 
 	//중간보스
 	void MakeMiddleBoss(DropManager* pDropManager);
@@ -40,6 +40,11 @@ private:
 	void MakeFinalBoss(DropManager* pDropManager);
 	
 	void Shuffle();
+
+	void Stage1(DropManager* pDropManager);
+	void Stage2(DropManager* pDropManager);
+	void Stage3(DropManager* pDropManager);
+	void Stage4(DropManager* pDropManager);
 public:
 	MonsterManager();
 	~MonsterManager();
@@ -49,7 +54,7 @@ public:
 	void Render();
 
 	//몬스터 만드는 함수
-	void MakeMonster(DropManager* pDropManager);
+	void MakeMonster(DropManager* pDropManager,  int stage);
 	//최종보스의 패시브통해 생성되는 함수
 	void MakeMonster();
 	//최종 보스 사망시 소환 몬스터 제거 함수

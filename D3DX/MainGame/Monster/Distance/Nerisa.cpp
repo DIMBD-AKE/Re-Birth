@@ -47,8 +47,8 @@ void Nerisa::Setup(Map* map, D3DXVECTOR3 spawnPos, bool isSummon)
 
 void Nerisa::SetupStat()
 {
-	m_nMinMoveCount = 444;
-	m_nMaxMoveCount = 333;
+	m_nMinMoveCount = NRand(333,666);
+	m_nMaxMoveCount = NRand(111,333);
 
 	ZeroMemory(m_pMonsterStat, sizeof(STATUS));
 

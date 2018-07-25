@@ -157,7 +157,7 @@ void MagicMonster::SkillUse()
 //근접 몬스터 기본 이동함수
 void MagicMonster::Move()
 {
-	if (m_nCount == m_nPatternChangeCount/*INPUT->KeyDown('O')*/)
+	if (m_nCount >= m_nPatternChangeCount/*INPUT->KeyDown('O')*/)
 	{
 		MoveReset(false, m_nMaxMoveCount, m_nMinMoveCount);
 	}

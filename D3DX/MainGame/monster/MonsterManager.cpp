@@ -123,23 +123,45 @@ void MonsterManager::Render()
 
 
 //몬스터 만드는 함수
-void MonsterManager::MakeMonster(DropManager* pDropManager)
+void MonsterManager::MakeMonster(DropManager* pDropManager, int stage)
 {
+	switch (stage)
+	{
+	case 0:
+		Stage1(pDropManager);
+		break;
 
+	case 1:
+		Stage2(pDropManager);
+		break;
+
+	case 2:
+		Stage3(pDropManager);
+		break;
+
+	case 3:
+		Stage4(pDropManager);
+		break;
+
+	default:
+		break;
+	}
+	/*
 	MakeElizabeth(pDropManager);
-	
+
 	MakeAssis(pDropManager);
 	//
 	MakeDarkHell(pDropManager);
 	//
 	MakeNifilHeim(pDropManager);
-	
+
 	MakeNerisa(pDropManager);
-	
+
 	MakeNike(pDropManager);
 	//
 	//
 	//MakeFinalBoss(pDropManager);
+	*/
 	
 }
 
@@ -159,27 +181,27 @@ void MonsterManager::MakeMonster()
 }
 
 //근접
-void MonsterManager::MakeElizabeth(DropManager* pDropManager, bool isSummon)
+void MonsterManager::MakeElizabeth(DropManager* pDropManager, int spawnIndex, bool isSummon)
 {
 
 	//몬스터 생성
 	MonsterParent* elizabeth;
 	elizabeth = new Elizabeth;
-	elizabeth->Setup(m_pMap, m_vSpawnSpot[m_vSpawnIndex[0]], isSummon);
+	elizabeth->Setup(m_pMap, m_vSpawnSpot[m_vSpawnIndex[spawnIndex]], isSummon);
 	elizabeth->SetCharacter(m_ppCharacter);
 	elizabeth->SetDropManager(pDropManager);
 
 	m_vMM.push_back(elizabeth);
 }
 
-void MonsterManager::MakeAssis(DropManager* pDropManager, bool isSummon)
+void MonsterManager::MakeAssis(DropManager* pDropManager, int spawnIndex, bool isSummon)
 {
 	
 
 	//몬스터 생성
 	MonsterParent* assis;
 	assis = new Assis;
-	assis->Setup(m_pMap, m_vSpawnSpot[m_vSpawnIndex[1]], isSummon);
+	assis->Setup(m_pMap, m_vSpawnSpot[m_vSpawnIndex[spawnIndex]], isSummon);
 	assis->SetCharacter(m_ppCharacter);
 	assis->SetDropManager(pDropManager);
 
@@ -188,28 +210,28 @@ void MonsterManager::MakeAssis(DropManager* pDropManager, bool isSummon)
 
 
 //원거리
-void MonsterManager::MakeNerisa(DropManager* pDropManager, bool isSummon)
+void MonsterManager::MakeNerisa(DropManager* pDropManager, int spawnIndex, bool isSummon)
 {
 	
 
 	//몬스터 생성
 	MonsterParent* nerisa;
 	nerisa = new Nerisa;
-	nerisa->Setup(m_pMap, m_vSpawnSpot[m_vSpawnIndex[2]], isSummon);
+	nerisa->Setup(m_pMap, m_vSpawnSpot[m_vSpawnIndex[spawnIndex]], isSummon);
 	nerisa->SetCharacter(m_ppCharacter);
 	nerisa->SetDropManager(pDropManager);
 
 	m_vMM.push_back(nerisa);
 }
 
-void MonsterManager::MakeNike(DropManager* pDropManager, bool isSummon)
+void MonsterManager::MakeNike(DropManager* pDropManager, int spawnIndex, bool isSummon)
 {
 	
 
 	//몬스터 생성
 	MonsterParent* nike;
 	nike = new Nike;
-	nike->Setup(m_pMap, m_vSpawnSpot[m_vSpawnIndex[3]], isSummon);
+	nike->Setup(m_pMap, m_vSpawnSpot[m_vSpawnIndex[spawnIndex]], isSummon);
 	nike->SetCharacter(m_ppCharacter);
 	nike->SetDropManager(pDropManager);
 
@@ -218,28 +240,28 @@ void MonsterManager::MakeNike(DropManager* pDropManager, bool isSummon)
 
 
 //마법
-void MonsterManager::MakeDarkHell(DropManager* pDropManager, bool isSummon)
+void MonsterManager::MakeDarkHell(DropManager* pDropManager, int spawnIndex, bool isSummon)
 {
 	
 
 	//몬스터 생성
 	MonsterParent* darkHell;
 	darkHell = new DarkHell;
-	darkHell->Setup(m_pMap, m_vSpawnSpot[m_vSpawnIndex[4]], isSummon);
+	darkHell->Setup(m_pMap, m_vSpawnSpot[m_vSpawnIndex[spawnIndex]], isSummon);
 	darkHell->SetCharacter(m_ppCharacter);
 	darkHell->SetDropManager(pDropManager);
 
 	m_vMM.push_back(darkHell);
 }
 
-void MonsterManager::MakeNifilHeim(DropManager* pDropManager, bool isSummon)
+void MonsterManager::MakeNifilHeim(DropManager* pDropManager, int spawnIndex, bool isSummon)
 {
 	
 
 	//몬스터 생성
 	MonsterParent* nifilHeim;
 	nifilHeim = new NifilHeim;
-	nifilHeim->Setup(m_pMap, m_vSpawnSpot[m_vSpawnIndex[5]], isSummon);
+	nifilHeim->Setup(m_pMap, m_vSpawnSpot[m_vSpawnIndex[spawnIndex]], isSummon);
 	nifilHeim->SetCharacter(m_ppCharacter);
 	nifilHeim->SetDropManager(pDropManager);
 
@@ -290,6 +312,44 @@ void MonsterManager::Shuffle()
 		m_vSpawnIndex[rnd2] = m_vSpawnIndex[rnd1];
 		m_vSpawnIndex[rnd1] = temp;
 	}
+}
+
+//근접
+void MonsterManager::Stage1(DropManager* pDropManager)
+{
+	for (int i = 0; i < 20; i+=2)
+	{
+		MakeElizabeth(pDropManager, i % m_vSpawnIndex.size() );
+
+		MakeAssis(pDropManager, (i+1) % m_vSpawnIndex.size());
+	}
+}
+
+//마법
+void MonsterManager::Stage2(DropManager* pDropManager)
+{
+	for (int i = 0; i < 20; i += 2)
+	{
+		MakeDarkHell(pDropManager, i % m_vSpawnIndex.size());
+
+		MakeNifilHeim(pDropManager, (i + 1) % m_vSpawnIndex.size());
+	}
+}
+
+//원거리
+void MonsterManager::Stage3(DropManager* pDropManager)
+{
+	for (int i = 0; i < 20; i += 2)
+	{
+		MakeNerisa(pDropManager, i % m_vSpawnIndex.size());
+
+		MakeNike(pDropManager, (i + 1) % m_vSpawnIndex.size());
+	}
+}
+
+void MonsterManager::Stage4(DropManager* pDropManager)
+{
+	MakeFinalBoss(pDropManager);
 }
 
 void MonsterManager::DeleteSummonMonster()

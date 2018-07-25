@@ -47,8 +47,8 @@ void NifilHeim::Setup(Map* map, D3DXVECTOR3 spawnPos, bool isSummon )
 
 void NifilHeim::SetupStat()
 {
-	m_nMinMoveCount = 555;
-	m_nMaxMoveCount = 222;
+	m_nMinMoveCount = NRand(400,600);
+	m_nMaxMoveCount = NRand(100,300);
 
 	ZeroMemory(m_pMonsterStat, sizeof(STATUS));
 

@@ -44,7 +44,7 @@ void MonsterParent::Setup(Map* map, D3DXVECTOR3 spawnPos, bool isSummon)
 
 	m_vDir = D3DXVECTOR3(0, 0, 1);
 
-	m_nCount = 0;
+	m_nCount = NRand(0, 10);
 	m_nPatternChangeCount = 0;
 	m_bUsingSkill =  false;
 
@@ -54,7 +54,7 @@ void MonsterParent::Setup(Map* map, D3DXVECTOR3 spawnPos, bool isSummon)
 	//D3DXVECTOR3 temp =  m_pAStar->GetNextCell();
 
 	m_nResPawnCount = m_bIsRespawn = 0;
-	m_eState = MS_RUN;
+	m_eState = MS_IDLE;
 	m_pMap = map;
 	m_pModel->SetPosition(D3DXVECTOR3(spawnPos.x, m_pMap->GetHeight(spawnPos.x, spawnPos.z), spawnPos.z));
 	ChangeAni();
@@ -100,6 +100,7 @@ void MonsterParent::Setup(Map* map, D3DXVECTOR3 spawnPos, bool isSummon)
 	//npc 생성 부울값 조절 함수
 	IsAppear();
 
+	MoveReset(false, m_nMaxMoveCount, m_nMinMoveCount);
 	//ST_SIZEBOX box;
 }
 
@@ -468,11 +469,11 @@ void MonsterParent::MoveReset(bool isReverse, int max, int min)
 		m_vDir = D3DXVECTOR3(0, 0, -1);
 		srand(time(NULL));
 
-		m_nPatternChangeCount = rand() % (max - min) + min;
+		m_nPatternChangeCount = NRand(min, max);
 
 		if (m_eState == MS_IDLE)
 		{
-			float temp = D3DXToRadian(rand() % 180 - 90);
+			float temp = D3DXToRadian( NRand(0,179) - 90);
 
 			D3DXMATRIX matRotY;
 			D3DXMatrixRotationY(&matRotY, temp);
@@ -693,7 +694,7 @@ void MonsterParent::IsAppear()
 
 	if (rnd <= 0.05)
 	{
-		if (!m_pNpc->GetIsAppear())
+		if (!m_pNpc || !m_pNpc->GetIsAppear())
 			m_bAppearNPC = true;
 		else
 			m_bAppearNPC = false;
