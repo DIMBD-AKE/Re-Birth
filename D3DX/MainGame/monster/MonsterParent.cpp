@@ -236,14 +236,20 @@ void MonsterParent::Update()
 			D3DXVECTOR3 tempVec = *m_pModel->GetPosition();
 			if (!m_bSpecial)
 			{
-				tempVec.y += 2.0f;
-				m_pHitParticle->SetPosition(tempVec);
+				
 				tempVec.y = GetAngle(m_pModel->GetPosition()->x, m_pModel->GetPosition()->z,
 					CHARACTER->GetPosition()->x, CHARACTER->GetPosition()->z);
 				tempVec.y -= D3DX_PI / 2;
 
 				m_pHitParticle->SetRotation(D3DXVECTOR3(0, tempVec.y, 0));
+
+				tempVec = *m_pModel->GetPosition();
+				tempVec.y += 2.0f;
+				
 			}
+
+			m_pHitParticle->SetPosition(tempVec);
+
 			m_pHitParticle->ApplyWorld();
 			//m_pHitParticle->World();
 			m_pHitParticle->Update();
@@ -605,7 +611,7 @@ void MonsterParent::SetCurrentHP(int hp)
 		if (m_pHitParticle)
 		{
 			D3DXVECTOR3 tempPos = *m_pModel->GetPosition();
-			tempPos.y += 1.5f;
+			//tempPos.y += 1.5f;
 			m_pHitParticle->SetPosition(tempPos);
 			m_pHitParticle->TimeReset();
 			
