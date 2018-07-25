@@ -369,7 +369,7 @@ void Character_Gun::KeyControl()
 		{
 			m_eCondition = CHAR_ATTACK;
 			m_bIsAttack = true;
-			//Attack();
+			SetTarget();
 			ChangeAnimation();
 		}
 	}

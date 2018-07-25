@@ -10,6 +10,7 @@
 #include "Character_Sword.h"
 #include "../DamageUI.h"
 #include "../Item/DropManager.h"
+#include "Npc.h"
 
 
 void CharacterParant::SKill()
@@ -156,14 +157,14 @@ void CharacterParant::Move()
 		m_Status->chr.nCurrentHP = 0;
 	}
 	
-	m_pParticle->World();
+	m_pParticle->ApplyWorld();
 	m_pParticle->Update();
 
-	m_pParticle2->World();
+	m_pParticle2->ApplyWorld();
 	m_pParticle2->Update();
 
 
-	m_pParticle4->World();
+	m_pParticle4->ApplyWorld();
 	m_pParticle4->Update();
 
 }
@@ -582,12 +583,12 @@ void CharacterParant::Reset(Map * map, MonsterManager * pMonsterManager, DropMan
 void CharacterParant::SetTarget()
 {
 	m_nIndex = -1;
-
+	m_vecTarget.clear();
 	D3DXVECTOR3 pos = *m_pCharacter->GetPosition();														//ÇÃ·¹ÀÌ¾î Æ÷Áö¼Ç ¹Þ°í 
 	D3DXVECTOR3 rot = *m_pCharacter->GetRotation();														//ÇÃ·¹ÀÌ¾î °¢µµ ¹Þ°í 
 	
 	
-	m_vecTarget.clear();		
+	
 	
 	if (m_eNumTarget == NUM_SINGLE)
 	{
@@ -676,6 +677,148 @@ void CharacterParant::SetModelAlpha()
 	}
 }
 
+void CharacterParant::SetCameraNpc()
+{
+	if (m_pNpc->GetCollision())
+	{
+		CAMERA->SetCamOffset(D3DXVECTOR3(0, 3, 13));
+		CAMERA->SetTargetOffset(D3DXVECTOR3(0, 4, 0));
+	}
+	else
+	{
+		CAMERA->SetCamOffset(D3DXVECTOR3(0, 3, 20));
+		CAMERA->SetTargetOffset(D3DXVECTOR3(0, 4, 0));
+	}
+}
+
+void CharacterParant::SetPlayerStatus()
+{
+	for (int i = 0; i < STAT_END; i++)
+	{
+		m_bCharStatus[i].ElpTime += TIME->GetElapsedTime();
+	}
+
+
+	if (m_bCharStatus[STAT_FIRE].ElpTime < m_bCharStatus[STAT_FIRE].ApplyTime)
+	{
+		CalculDamage(1);
+	}
+	
+	
+	if (m_bCharStatus[STAT_ICE].ElpTime < m_bCharStatus[STAT_ICE].ApplyTime)
+	{
+		if (!m_bIceStat)
+		{
+			m_bIceStat = true;
+			m_Status->chr.fSpeed -= 0.2f;
+		}
+	}
+	else m_bIceStat = false;
+
+
+	if (m_bCharStatus[STAT_STUN].ElpTime < m_bCharStatus[STAT_STUN].ApplyTime)
+	{
+		if (!m_bIsStun)
+		{
+			m_bIsStun = true;
+		}
+	}
+	else m_bIsStun = false;
+}
+
+void CharacterParant::SkillToolTip(D3DXVECTOR3 pos)
+{
+	//D3DXVECTOR3 vItemPos = D3DXVECTOR3(30, 30, 0) * m_fSlotResize;
+	//D3DXVECTOR3 vNamePos = D3DXVECTOR3(vItemPos.x + m_fSlotSize + 20 * m_fSlotResize, vItemPos.y, 0);
+
+	//POINT wh;
+	//if (pItem->GetEquipType() == EQUIP_POTION)
+	//	wh = MakePoint(500, 300);
+	//else
+	//	wh = MakePoint(500, 550);
+
+	//D3DXMATRIX matS, matT;
+	//float resizeX, resizeY;
+	//resizeX = (wh.x * m_fSlotResize) /
+	//	(float)TEXTUREMANAGER->GetInfo("UI Inventory Background").Width;
+	//resizeY = (wh.y * m_fSlotResize) /
+	//	(float)TEXTUREMANAGER->GetInfo("UI Inventory Background").Height;
+	//D3DXMatrixScaling(&matS, resizeX, resizeY, 0);
+	//D3DXMatrixTranslation(&matT, pos.x, pos.y, pos.z);
+
+	//SPRITE->SetTransform(&(matS * matT));
+	//SPRITE->Draw(m_pInvTex, NULL, NULL, NULL, 0xAAFFFFFF);
+
+	//pos.z = 0.1;
+	//pItem->Render(pos + vItemPos, m_fSlotSize);
+
+	//// ½ºÅÝ
+	//if (pItem->GetEquipType() != EQUIP_POTION)
+	//{
+	//	TEXT->Add("°ø°Ý·Â " + to_string(pItem->GetItemStat()->item.nAtk),
+	//		pos.x + vItemPos.x,
+	//		pos.y + vItemPos.y + m_fSlotSize + 20 * m_fSlotResize,
+	//		36 * m_fSlotResize, "³ª´®½ºÄù¾î Regular", 0xFFFFFFFF);
+	//	char temp[32];
+	//	sprintf_s(temp, 32, "%.2f", pItem->GetItemStat()->item.fAtkSpeed);
+	//	TEXT->Add("°ø°Ý¼Óµµ " + string(temp),
+	//		pos.x + vItemPos.x + 200 * m_fSlotResize,
+	//		pos.y + vItemPos.y + m_fSlotSize + 20 * m_fSlotResize,
+	//		36 * m_fSlotResize, "³ª´®½ºÄù¾î Regular", 0xFFFFFFFF);
+
+	//	TEXT->Add("¹æ¾î·Â " + to_string(pItem->GetItemStat()->item.nDef),
+	//		pos.x + vItemPos.x,
+	//		pos.y + vItemPos.y + m_fSlotSize + 65 * m_fSlotResize,
+	//		36 * m_fSlotResize, "³ª´®½ºÄù¾î Regular", 0xFFFFFFFF);
+	//	TEXT->Add("Ã¼·Â " + to_string(pItem->GetItemStat()->item.nHp),
+	//		pos.x + vItemPos.x + 200 * m_fSlotResize,
+	//		pos.y + vItemPos.y + m_fSlotSize + 65 * m_fSlotResize,
+	//		36 * m_fSlotResize, "³ª´®½ºÄù¾î Regular", 0xFFFFFFFF);
+
+	//	sprintf_s(temp, 32, "%.2f", pItem->GetItemStat()->item.fAgi);
+	//	TEXT->Add("È¸ÇÇ·Â " + string(temp),
+	//		pos.x + vItemPos.x,
+	//		pos.y + vItemPos.y + m_fSlotSize + 140 * m_fSlotResize,
+	//		36 * m_fSlotResize, "³ª´®½ºÄù¾î Regular", 0xFFFFFFFF);
+	//	sprintf_s(temp, 32, "%.2f", pItem->GetItemStat()->item.fHit);
+	//	TEXT->Add("¸íÁß·ü " + string(temp),
+	//		pos.x + vItemPos.x,
+	//		pos.y + vItemPos.y + m_fSlotSize + 185 * m_fSlotResize,
+	//		36 * m_fSlotResize, "³ª´®½ºÄù¾î Regular", 0xFFFFFFFF);
+	//	sprintf_s(temp, 32, "%.2f", pItem->GetItemStat()->item.fSpeed);
+	//	TEXT->Add("ÀÌµ¿¼Óµµ " + string(temp),
+	//		pos.x + vItemPos.x,
+	//		pos.y + vItemPos.y + m_fSlotSize + 230 * m_fSlotResize,
+	//		36 * m_fSlotResize, "³ª´®½ºÄù¾î Regular", 0xFFFFFFFF);
+	//}
+
+	//// ÀÌ¸§
+	//if (pItem->GetRarity() == RARITY_NORMAL)
+	//	TEXT->Add(pItem->GetName(), pos.x + vNamePos.x, pos.y + vNamePos.y, 40 * m_fSlotResize,
+	//		"³ª´®½ºÄù¾î Regular", 0xFFFFFFFF);
+	//if (pItem->GetRarity() == RARITY_MAGIC)
+	//	TEXT->Add(pItem->GetName(), pos.x + vNamePos.x, pos.y + vNamePos.y, 40 * m_fSlotResize,
+	//		"³ª´®½ºÄù¾î Regular", 0xFFC3FCAB);
+	//if (pItem->GetRarity() == RARITY_RARE)
+	//	TEXT->Add(pItem->GetName(), pos.x + vNamePos.x, pos.y + vNamePos.y, 40 * m_fSlotResize,
+	//		"³ª´®½ºÄù¾î Regular", 0xFF627DE0);
+	//if (pItem->GetRarity() == RARITY_UNIQUE)
+	//	TEXT->Add(pItem->GetName(), pos.x + vNamePos.x, pos.y + vNamePos.y, 40 * m_fSlotResize,
+	//		"³ª´®½ºÄù¾î Regular", 0xFFF2CB68);
+
+	//// ¼³¸í
+	//char * desc = _strdup(pItem->GetDesc().c_str());
+	//char * tok;
+	//char * context;
+	//tok = strtok_s(desc, "/", &context);
+	//TEXT->Add(tok, pos.x + vItemPos.x, pos.y + (wh.y - 95) * m_fSlotResize, 30 * m_fSlotResize,
+	//	"³ª´®½ºÄù¾î Regular", 0xFFFFFFFF);
+	//tok = strtok_s(NULL, "/", &context);
+	//if (tok)
+	//	TEXT->Add(tok, pos.x + vItemPos.x, pos.y + (wh.y - 50) * m_fSlotResize, 30 * m_fSlotResize,
+	//		"³ª´®½ºÄù¾î Regular", 0xFFFFFFFF);
+}
+
 
 CharacterParant::CharacterParant()
 {
@@ -719,6 +862,7 @@ CharacterParant::~CharacterParant()
 	SAFE_RELEASE(m_pInheritateIco2);
 	SAFE_RELEASE(m_pInheritateIco3);
 	SAFE_RELEASE(m_pSkillBar);
+	SAFE_RELEASE(m_SkillToolTip);
 
 	for (auto e : m_vecEffect)
 	{
@@ -790,6 +934,9 @@ void CharacterParant::Init(CHRTYPE type, CHARSELECT order)
 	m_bIsGunView = false;
 	m_bIsMegaCristal = false;
 	m_bIsMegaCirstalClick = false;
+	m_bSkillUnSealed = false;
+	m_bIceStat = false;
+	m_bIsStun = false;
 
 	m_fStamina = 10.0f;
 	m_nDamage = 0;
@@ -800,6 +947,7 @@ void CharacterParant::Init(CHRTYPE type, CHARSELECT order)
 	m_nDamageCount = 0;
 	m_fModelAlpha = 0.0f;
 	m_fDot = 0.0f;
+	m_fFireCount = 1.0f;
 
 
 	m_fEffectInterval = 0.1f;
@@ -824,7 +972,13 @@ void CharacterParant::Init(CHRTYPE type, CHARSELECT order)
 	if (m_pSkillBar == NULL) m_pSkillBar = new UIObject;
 
 	if (m_pAimLine == NULL) m_pAimLine = new UIObject;
+
+	//´ëÈ­Ã¢ ÀÌ¹ÌÁö
+	if (m_pTalkBar == NULL) m_pTalkBar = new UIObject;
 	
+	if (m_SkillToolTip == NULL) m_SkillToolTip = new UIObject;
+
+
 	//µ¥¹ÌÁö 
 	m_pDamage = new DamageUI;
 	m_pDamage->Setup(true);
@@ -854,21 +1008,25 @@ void CharacterParant::Init(CHRTYPE type, CHARSELECT order)
 	m_pParticle5 = PARTICLE->GetParticle("Potal"); //¸Þ°¡Å©¸®½ºÅ» ÆÄÆ¼Å¬
 
 	m_pParticle3->SetPosition(D3DXVECTOR3(m_pCharacter->GetPosition()->x, m_pCharacter->GetPosition()->y, m_pCharacter->GetPosition()->z + 5.0f));
-
+	m_pTalkBar->SetTexture(TEXTUREMANAGER->GetTexture("´ëÈ­Ã¢"));
+	m_pTalkBar->SetPosition(D3DXVECTOR3(0, 580, 0));
 
 	m_pShieldChr = NULL;
 }
 
 void CharacterParant::Update()
 {
+	SetCameraNpc();
+	if (m_bIsPotal)
+	{
+		m_pParticle3->Update();
+	}
 }
 
 
 
 void CharacterParant::Render()
 {
-	//Æ÷Æ®·¹ÀÌÆ® 
-	//m_pUIobj->Render();
 	m_pParticle->Render();
 	m_pParticle2->Render();
 	if (m_bIsPotal) m_pParticle3->Render();
