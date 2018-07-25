@@ -13,10 +13,11 @@ class MonsterManager
 	GET(vector<MonsterParent*>, m_vMM, MonsterVector);
 	SET(vector<D3DXVECTOR3>, m_vSpawnSpot, SpawnSpat);
 
-
+private:
 	Map* m_pMap;
 
 	CharacterParant** m_ppCharacter;
+	vector<int> m_vSpawnIndex;
 	//vector<MonsterParent> m_vMM;
 
 private:
@@ -38,7 +39,7 @@ private:
 
 	void MakeFinalBoss(DropManager* pDropManager);
 	
-
+	void Shuffle();
 public:
 	MonsterManager();
 	~MonsterManager();

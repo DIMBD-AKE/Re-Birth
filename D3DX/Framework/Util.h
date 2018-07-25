@@ -45,6 +45,11 @@ namespace UTIL
 		return ret;
 	}
 
+	static int NRand(int low, int high)
+	{
+		return low + rand() % (high-low+1);
+	}
+
 	static float FRand(float low, float high)
 	{
 		return low + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (high - low)));
