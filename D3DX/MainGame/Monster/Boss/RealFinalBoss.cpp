@@ -27,8 +27,8 @@ void RealFinalboss::SetupBoss(Map* map, D3DXVECTOR3 pos)
 
 	BossParent::SetupBoss(map, pos);
 
-	//m_eBossState = BS_ENTER;
-	m_eBossState = BS_ATTACK;
+	m_eBossState = BS_ENTER;
+	//m_eBossState = BS_ATTACK;
 
 	ChangeAni();
 	//판정 박스 
@@ -88,8 +88,8 @@ void RealFinalboss::SetupBoss(Map* map, D3DXVECTOR3 pos)
 	BoolInit();
 
 	CAMERA->SetCamOffset(D3DXVECTOR3(0, 15, 40));
-	//CAMERA->SetTarget(m_pModel->GetPosition(), m_pModel->GetRotation());
-	//CAMERA->Cinematic(D3DXVECTOR2(85.0f, 60.0f), D3DXVECTOR2(-10.0f, 10.0f), 40, 1,10);
+	CAMERA->SetTarget(m_pModel->GetPosition(), m_pModel->GetRotation());
+	CAMERA->Cinematic(D3DXVECTOR2(85.0f, 60.0f), D3DXVECTOR2(-10.0f, 10.0f), 40, 1,10);
 }
 
 void RealFinalboss::Update()
