@@ -430,7 +430,7 @@ void Inventory::Update()
 	if (INPUT->KeyUp(VK_LBUTTON))
 		ChangeItem();
 
-	if (m_pEquip[EQUIP_FIRSTWEAPON].item) m_pEquip[EQUIP_FIRSTWEAPON].item->Update();
+	if (m_pEquip[EQUIP_FIRSTWEAPON].item) m_pEquip[EQUIP_FIRSTWEAPON].item->Update(m_pCharacter->GetSampleMap());
 }
 
 void Inventory::Render()
@@ -585,7 +585,7 @@ void Inventory::Render()
 		if (m_pEquip[i].item)
 			m_pEquip[i].item->EffectRender(*m_pCharacter->GetCharacter()->GetPosition());
 	}
-	if (m_pEquip[EQUIP_FIRSTWEAPON].item) m_pEquip[EQUIP_FIRSTWEAPON].item->Render();
+	if (m_pEquip[EQUIP_FIRSTWEAPON].item) m_pEquip[EQUIP_FIRSTWEAPON].item->Render(m_pCharacter->GetSampleMap());
 }
 
 ItemParent * Inventory::GetWeapon()
@@ -602,7 +602,7 @@ bool Inventory::GetSkill1(CharacterParant* pCharacter, MonsterManager* pMonster)
 {
 	if (GetWeapon())
 	{
-		return GetWeapon()->Skill1(pCharacter, pMonster);
+		return GetWeapon()->Skill1(pCharacter, pMonster, m_pCharacter->GetSampleMap());
 	}
 	return false;
 }
@@ -611,7 +611,7 @@ bool Inventory::GetSkill2(CharacterParant * pCharacter, MonsterManager * pMonste
 {
 	if (GetWeapon())
 	{
-		return GetWeapon()->Skill2(pCharacter, pMonster);
+		return GetWeapon()->Skill2(pCharacter, pMonster, m_pCharacter->GetSampleMap());
 	}
 	return false;
 }

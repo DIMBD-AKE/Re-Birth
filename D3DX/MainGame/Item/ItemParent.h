@@ -11,6 +11,7 @@ class MonsterManager;
 class Model;
 class SkillManager;
 class Skill;
+class Map;
 
 
 class ItemParent
@@ -38,21 +39,25 @@ protected:
 	bool		m_bSkill2Able;											//스킬 사용 가능여부 
 
 
+	bool		m_bSkillTrig;
+
+	D3DXVECTOR3		m_vMouse;
+	
 public:
 	ItemParent();
 	virtual ~ItemParent();
 	virtual ItemParent* Clone();
 
 	virtual void SetUp();
-	virtual void Update();
-	virtual void Render();
+	virtual void Update(Map* map);
+	virtual void Render(Map* map);
 
 	//사용아이템(포션류)
 	virtual void Use(CharacterParant & pCharacter);
 
 	//아이템스킬(무기류)
-	virtual bool Skill1(CharacterParant* pCharacter, MonsterManager* pMonsterManager);
-	virtual bool Skill2(CharacterParant* pCharacter, MonsterManager* pMonsterManager);
+	virtual bool Skill1(CharacterParant* pCharacter, MonsterManager* pMonsterManager, Map* map);
+	virtual bool Skill2(CharacterParant* pCharacter, MonsterManager* pMonsterManager, Map* map);
 	
 	virtual void SetStatusZero();								//아이템 스텟 초기화
 	virtual void SetStatus(STATUS stat);						//아이템 스텟 설정
@@ -63,5 +68,7 @@ public:
 	//virtual void Drop();
 	void Render(D3DXVECTOR3 pos, float size);
 	void EffectRender(D3DXVECTOR3 pos);
+
+	void SkillRange(D3DXVECTOR3 pos, int TriNum, ST_SKILL* skill, Map* map);
 };
 

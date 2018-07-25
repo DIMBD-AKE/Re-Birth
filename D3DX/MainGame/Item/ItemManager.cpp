@@ -17,6 +17,10 @@ void ItemManager::SetUp()
 {
 	TEXTUREMANAGER->AddTexture("Star", "Texture/Particle/Star.png"),
 	TEXTUREMANAGER->AddTexture("Electric", "Texture/Particle/electric.png"),
+	TEXTUREMANAGER->AddTexture("Flame", "Texture/Particle/flame.png"),
+	TEXTUREMANAGER->AddTexture("Sphere", "Texture/Particle/Sphere.png"),
+	TEXTUREMANAGER->AddTexture("Ray", "Texture/Particle/ray.png"),
+	TEXTUREMANAGER->AddTexture("Target", "Texture/Effect/Item/Range.png"),
 	PARTICLE->AddParticle("MAGIC", TEXTUREMANAGER->GetTexture("Star"), "Particle/Particle/Magic effect.ptc");
 	PARTICLE->AddParticle("RARE", TEXTUREMANAGER->GetTexture("Star"), "Particle/Particle/Rare effect.ptc");
 	PARTICLE->AddParticle("UNIQUE", TEXTUREMANAGER->GetTexture("Star"), "Particle/Particle/Unique effect.ptc");
@@ -168,6 +172,7 @@ void ItemManager::Load(IN const char * szFolder, IN const char * szFile)
 					else
 					{
 						Skill* temp = SKILL->GetSkill(rt);
+						int a = 0;
 						Ap->SetSkill1(temp);
 						Ap->SetSkill1Data(m_mSkList[rt]);
 					}
@@ -294,6 +299,11 @@ ItemParent* ItemManager::GetItem(int keyNum)
 		Skill* temp = new Skill;
 		*temp = *miterId->second->GetSkill1();
 		rt->SetSkill1(temp);
+
+		ST_SKILL* sk1 = new ST_SKILL;
+		*sk1 = *miterId->second->GetSkill1Data();
+		sk1->fDamage = sk1->fDamage*miterId->second->GetItemStat()->item.nAtk / 10.0f;
+		rt->SetSkill1Data(sk1);
 	}
 
 	if (miterId->second->GetSkill2())
@@ -301,6 +311,44 @@ ItemParent* ItemManager::GetItem(int keyNum)
 		Skill* dest = new Skill;
 		*dest = *miterId->second->GetSkill2();
 		rt->SetSkill2(dest);
+
+		if (dest == SKILL->GetSkill("Arrow_Buff"))
+		{
+			ST_SKILL* sk2 = new ST_SKILL;
+			*sk2 = *miterId->second->GetSkill2Data();
+			sk2->buffStatus.item.fAgi = 10.0f;
+			rt->SetSkill2Data(sk2);
+		}
+		if (dest == SKILL->GetSkill("Blade_Buff"))
+		{
+			ST_SKILL* sk2 = new ST_SKILL;
+			*sk2 = *miterId->second->GetSkill2Data();
+			sk2->buffStatus.item.nAtk = 10.0f;
+			rt->SetSkill2Data(sk2);
+		}
+		if (dest == SKILL->GetSkill("Sword_Buff"))
+		{
+			ST_SKILL* sk2 = new ST_SKILL;
+			*sk2 = *miterId->second->GetSkill2Data();
+			sk2->buffStatus.item.nDef = 10.0f;
+			rt->SetSkill2Data(sk2);
+		}
+		if (dest == SKILL->GetSkill("Staff_Buff")
+			|| dest == SKILL->GetSkill("Wand_Buff")
+			|| dest == SKILL->GetSkill("Ove_Buff"))
+		{
+			ST_SKILL* sk2 = new ST_SKILL;
+			*sk2 = *miterId->second->GetSkill2Data();
+			sk2->buffStatus.item.fHit = 10.0f;
+			rt->SetSkill2Data(sk2);
+		}
+		if (dest == SKILL->GetSkill("Side_Buff"))
+		{
+			ST_SKILL* sk2 = new ST_SKILL;
+			*sk2 = *miterId->second->GetSkill2Data();
+			sk2->buffStatus.item.fAtkSpeed = 1.0f;
+			rt->SetSkill2Data(sk2);
+		}
 	}
 	return rt;
 }
