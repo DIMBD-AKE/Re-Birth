@@ -106,7 +106,7 @@ void Character_Magic::Init(CHRTYPE type, CHARSELECT order)
 		m_pInheritateIco->SetTexture(TEXTUREMANAGER->GetTexture("마법_이동"));
 		m_pInheritateIco->SetPosition(D3DXVECTOR3(609, 733, 0));
 		m_pInheritateIco->SetName("마법_이동");
-
+		//m_pInheritateIco->SetFunction(this)
 
 
 		m_pInheritateIco2->SetTexture(TEXTUREMANAGER->GetTexture("마법_파이어볼"));
@@ -135,7 +135,7 @@ void Character_Magic::Init(CHRTYPE type, CHARSELECT order)
 
 void Character_Magic::Update()
 {
-	if (m_pCharacter && !m_bIsMeteo &&!m_bIsMegaCristal && !m_pNpc->GetCollision())
+	if (m_pCharacter && !m_bIsMeteo &&!m_bIsMegaCristal)
 	{
 		Controller();
 		SetCameraNormalView();

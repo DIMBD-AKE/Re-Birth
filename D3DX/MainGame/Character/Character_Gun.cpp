@@ -6,6 +6,7 @@
 #include "../monster/MonsterManager.h"
 #include "../monster/MonsterParent.h"
 #include "../DamageUI.h"
+#include "Npc.h"
 
 
 Character_Gun::Character_Gun()
@@ -137,8 +138,9 @@ void Character_Gun::Update()
 		m_pChrStat->Update();
 		m_pInheritateIco->Update();
 		m_pInheritateIco2->Update();
-		m_pInheritateIco3->Update();
+		if (m_bSkillUnSealed) m_pInheritateIco3->Update();
 		m_pSkillBar->Update();
+		m_pTalkBar->Update();
 		Effect();
 		SetCameraNormalView();
 		PlayerProgressBar();
@@ -184,9 +186,10 @@ void Character_Gun::Render()
 		m_pSkillBar->Render();
 		m_pInheritateIco->Render();
 		m_pInheritateIco2->Render();
-		m_pInheritateIco3->Render();
+		if (m_bSkillUnSealed) m_pInheritateIco3->Render();
 		m_pHPBar->Render();
 		m_pStaminaBar->Render();
+		if (m_pNpc->GetCollision()) m_pTalkBar->Render();
 		m_pInventory->Render();
 
 	}
@@ -436,13 +439,15 @@ void Character_Gun::KeyControl()
 		m_bIsGunView = true;
 	}
 	
-
-	if (INPUT->KeyDown('V'))
+	if (m_bSkillUnSealed)
 	{
-		if (m_eCharSelect == CHAR_ONE)
-			MagicBullet();
-		if (m_eCharSelect == CHAR_TWO)
-			WindStorm();
+		if (INPUT->KeyDown('V'))
+		{
+			if (m_eCharSelect == CHAR_ONE)
+				MagicBullet();
+			if (m_eCharSelect == CHAR_TWO)
+				WindStorm();
+		}
 	}
 }
 

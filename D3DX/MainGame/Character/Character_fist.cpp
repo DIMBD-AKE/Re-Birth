@@ -6,6 +6,7 @@
 #include "../monster/MonsterParent.h"
 #include "../DamageUI.h"
 #include "Character_fist.h"
+#include "Npc.h"
 
 
 
@@ -102,9 +103,10 @@ void Character_fist::Update()
 		m_pCharacter->World();
 		m_pUIobj->Update();
 		m_pChrStat->Update();
+		m_pTalkBar->Update();
 		m_pInheritateIco->Update();
 		m_pInheritateIco2->Update();
-		m_pInheritateIco3->Update();
+		if (m_bSkillUnSealed) m_pInheritateIco3->Update();
 		m_pSkillBar->Update();
 		Effect();
 		SetCameraNormalView();
@@ -143,9 +145,10 @@ void Character_fist::Render()
 		m_pSkillBar->Render();
 		m_pInheritateIco->Render();
 		m_pInheritateIco2->Render();
-		m_pInheritateIco3->Render();
+		if (m_bSkillUnSealed) m_pInheritateIco3->Render();
 		m_pHPBar->Render();
 		m_pStaminaBar->Render();
+		if (m_pNpc->GetCollision()) m_pTalkBar->Render();
 		Debug();
 		m_pInventory->Render();
 	}

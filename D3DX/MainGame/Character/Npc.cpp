@@ -7,6 +7,7 @@
 
 Npc::Npc()
 {
+	m_bIsAppear = false;
 }
 
 
@@ -25,7 +26,7 @@ void Npc::Init(D3DXVECTOR3 pos)
 	
 
 	m_bIsCollision = false;
-	m_bIsAppear = false;
+	m_bIsAppear = true;
 	m_bTalk = false;
 
 	ST_SIZEBOX box;
@@ -45,17 +46,17 @@ void Npc::Init(D3DXVECTOR3 pos)
 	m_pContext->Init(D3DXVECTOR2(550, 700), 30, "나눔명조", 0.05, 0xFF000000);
 	//m_pPlayer = new CharacterParant;
 
-	m_pContext->AddText("하이?\n하이??????");
-	m_pContext->AddText("바이\n\n바이??????");
-	m_pContext->AddText("메롱?\n메롱??????");
-	m_pContext->AddText("으악?\n으악??????");
+	m_pContext->AddText("안녕하세요?\nNPC에요!");
+	m_pContext->AddText("저를 만나셨으니\n스킬을 해금해드릴게요!");
+	m_pContext->AddText("V키를 누르면\n 더욱 강력한 스킬을 사용할수 있어요!");
+	m_pContext->AddText("포악한 보스를 잡아주세요!\n화이팅!");
 	
-	m_pContext->SetKey('7', '8', '9');
+	m_pContext->SetKey(VK_RBUTTON, 'X', 'C');
 }
 
 void Npc::Update()
 {
-	if (m_pNpc)
+	if (m_pNpc && m_bIsAppear)
 	{
 		m_pNpc->World();
 		CheckCollision();
@@ -66,11 +67,11 @@ void Npc::Update()
 			m_pContext->Update();
 			CameraViewChange();
 		}
-		//m_pNpc->Update();
+
 
 		if (m_pContext->GetIndex() == 3)
 		{
-			if (INPUT->KeyDown(VK_SPACE))
+			if (INPUT->KeyDown(VK_LBUTTON))
 			{
 				m_bIsCollision = false;
 			}
@@ -80,7 +81,7 @@ void Npc::Update()
 
 void Npc::Render()
 {
-	if (m_pNpc)m_pNpc->Render();
+	if (m_pNpc && m_bIsAppear)m_pNpc->Render();
 }
 
 void Npc::CheckCollision()
@@ -117,8 +118,8 @@ void Npc::PlusAttack()
 
 void Npc::CameraViewChange()
 {
-	CAMERA->SetCamOffset(D3DXVECTOR3(0, 3, 13));
-	CAMERA->SetTargetOffset(D3DXVECTOR3(0, 4, 0));
+	CAMERA->SetCamOffset(D3DXVECTOR3(0, 3.7, 13));
+	CAMERA->SetTargetOffset(D3DXVECTOR3(0, 2, 0));
 }
 
 

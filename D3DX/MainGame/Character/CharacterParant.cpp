@@ -504,7 +504,7 @@ void CharacterParant::PlayerProgressBar()
 	D3DXVECTOR3 UIPos = D3DXVECTOR3(205, 685, 0);
 	m_pHPBar->SetPosition(UIPos);
 	m_pHPBar->Update();
-	TEXT->Add(to_string(m_Status->chr.nCurrentHP), 240, 700, 20);
+	if(!m_pNpc->GetCollision()) TEXT->Add(to_string(m_Status->chr.nCurrentHP), 240, 700, 20);
 	
 
 
@@ -513,7 +513,7 @@ void CharacterParant::PlayerProgressBar()
 	D3DXVECTOR3 StaPos = D3DXVECTOR3(205, 746, 0);
 	m_pStaminaBar->SetPosition(StaPos);
 	m_pStaminaBar->Update();
-	TEXT->Add(to_string((int)m_Status->chr.nCurrentStam), 240, 750, 20);
+	if (!m_pNpc->GetCollision())TEXT->Add(to_string((int)m_Status->chr.nCurrentStam), 240, 750, 20);
 
 }
 
@@ -746,8 +746,7 @@ void CharacterParant::SetCameraNormalView()
 		CAMERA->SetCamOffset(D3DXVECTOR3(0, 3, 20));
 		CAMERA->SetTargetOffset(D3DXVECTOR3(0, 4, 0));
 		CAMERA->SetTarget(m_pCharacter->GetPosition(), m_pCharacter->GetRotation());
-	}
-	
+	}	
 }
 
 
