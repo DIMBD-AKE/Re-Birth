@@ -14,6 +14,8 @@ RealFinalboss::~RealFinalboss()
 		SAFE_DELETE(m_vEffectObject[i]);
 	}
 	SAFE_DELETE(m_pSkill);
+	SAFE_DELETE(m_pSkill2);
+	SAFE_DELETE(m_pPassive);
 	
 }
 
@@ -24,8 +26,8 @@ void RealFinalboss::SetupBoss(Map* map, D3DXVECTOR3 pos)
 
 	BossParent::SetupBoss(map, pos);
 
-	//m_eBossState = BS_ENTER;
-	m_eBossState = BS_SKILL1;
+	m_eBossState = BS_ENTER;
+	//m_eBossState = BS_ATTACK;
 
 	ChangeAni();
 	//판정 박스 
@@ -44,14 +46,17 @@ void RealFinalboss::SetupBoss(Map* map, D3DXVECTOR3 pos)
 	m_pModel->SetBoundSphere(m_pModel->GetOrigBoundSphere().center - D3DXVECTOR3(0,300,0), 300.0f);
 
 	//피흡 바꿔야함
-	m_pSkill = SKILL->GetSkill("RealBossPassive");
+	m_pPassive = SKILL->GetSkill("RealBossPassive");
 	
-	m_pSkill2 = NULL;
+	m_pSkill = SKILL->GetSkill("RealBossSkill");
 
 	//2스킬 셋업
-	SetupSkill2();
+	SetupSkill();
 
-	m_bSkill2Use = m_bUsingSkill = false;
+	SetupPassive();
+
+	m_bUsingSkill = m_bUsingSkill = m_bUsingPassive = false;
+	m_fSkillCoolTimeCount = m_fSkillCoolTimeCount2 = m_fPassiveCooltimeCount = 0;
 	m_bIsTargeting = true;
 
 	m_vMagicCircle.resize(STONENUM);
@@ -88,9 +93,19 @@ void RealFinalboss::SetupBoss(Map* map, D3DXVECTOR3 pos)
 
 void RealFinalboss::Update()
 {
+	if (INPUT->KeyDown('L'))
+	{
+		m_eBossState = BS_CASTING;
+		//ChangeAni();
+		SkillPrepare();
+	}
+
+	m_fPassiveCooltimeCount += TIME->GetElapsedTime();
+
 	if (CAMERA->IsActionEnd())
 		CAMERA->SetTarget(CHARACTER->GetPosition(), CHARACTER->GetRotation());
-	if (m_bSkill2Use)
+
+	if (m_bUsingSkill2)
 	{
 		for (int i = 0; i < STONENUM; ++i)
 		{
@@ -99,7 +114,10 @@ void RealFinalboss::Update()
 			m_vEffectObject[i]->Update();
 		}
 	}
+
+	if (m_pPassive) m_pPassive->Update();
 		
+
 	BossParent::Update();
 
 }
@@ -108,7 +126,7 @@ void RealFinalboss::Render()
 {
 	Debug();
 
-	if (m_bSkill2Use)
+	if (m_bUsingSkill2)
 	{
 		for (int i = 0; i < STONENUM; ++i)
 		{
@@ -130,7 +148,8 @@ void RealFinalboss::Render()
 
 	if (m_pHPBar) m_pHPBar->Render();
 
-	if (m_pSkill) m_pSkill->Render();
+	if (m_pPassive) m_pPassive->Render();
+
 }
 
 void RealFinalboss::SetupStat()
@@ -156,33 +175,52 @@ void RealFinalboss::SetupStat()
 
 void RealFinalboss::SetupSkill()
 {
-	
+	//스킬2
+	ZeroMemory(&m_stSkill, sizeof(ST_SKILL));
+	m_stSkill.fDamage = 100;
+	m_stSkill.fDamageDelay =1.0f;
+	m_stSkill.fDamageInterval = 0.3f;
+	//m_stSkill.fMaxLength = 15;
+	m_stSkill.fMaxLength = 1500;
+	m_stSkill.fAngle = 360;
+	m_stSkill.nMaxTarget = 5;
+	m_stSkill.nDamageCount = 3;
+	m_stSkill.isAutoRot = true;
+	m_stSkill.fYOffset = 1;
+	m_stSkill.fBuffTime = 0;
+	m_stSkill.fParticleTime = 0;
+	m_stSkill.fParticleSpeed = 0;
+	m_stSkill.fEffectTime = 0;
+
+	m_nSkillCooltime = 80;
 }
 
 //패시브 설정
 void RealFinalboss::SetupSkill2()
 {
-	ZeroMemory(&m_stSkill, sizeof(ST_SKILL));
-	m_stSkill.fDamage = 0;
-	m_stSkill.fDamageDelay = 0;
-	m_stSkill.fDamageInterval = 0;
-	m_stSkill.fMaxLength = 0;
-	m_stSkill.fAngle = 0;
-	m_stSkill.nMaxTarget = 5;
-	m_stSkill.nDamageCount = 0;
-	m_stSkill.isAutoRot = true;
-	m_stSkill.fYOffset = 1;
-	m_stSkill.fBuffTime = 60;
-	m_stSkill.fParticleTime = m_pModel->GetAnimationPeriod("PASSIVE");
-	m_stSkill.fParticleSpeed = 0;
-	m_stSkill.fEffectTime = 3;
-
 	
-
-	m_fSkillCoolTimeCount = 0;
-	m_nSkillCooltime = 120;
 }
 
+void RealFinalboss::SetupPassive()
+{
+	ZeroMemory(&m_stPassive, sizeof(ST_SKILL));
+	m_stPassive.fDamage = 0;
+	m_stPassive.fDamageDelay = 0;
+	m_stPassive.fDamageInterval = 0;
+	m_stPassive.fMaxLength = 0;
+	m_stPassive.fAngle = 0;
+	m_stPassive.nMaxTarget = 0;
+	m_stPassive.nDamageCount = 0;
+	m_stPassive.isAutoRot = true;
+	m_stPassive.fYOffset = 1;
+	m_stPassive.fBuffTime = 60;
+	m_stPassive.fParticleTime = m_pModel->GetAnimationPeriod("PASSIVE");
+	m_stPassive.fParticleSpeed = 0;
+	m_stPassive.fEffectTime = 3;
+
+
+	m_nPassiveCooltime = 120;
+}
 //void RealFinalboss::ChangeAni()
 //{
 //	switch (m_eBossState)
@@ -232,22 +270,31 @@ void RealFinalboss::Pattern()
 	HandMatInit();
 
 	//패시브가 발동 가능한 상태면
-	bool plesawf = AblePassive();
-	if (plesawf)
+	//bool plesawf = ;
+	if (AblePassive())
 	{
 
 		BuffDecide();
-		m_bUsingSkill = true;
-		SkillPrepare();
+		m_bUsingPassive = true;
+		PassivePrepare();
 		m_eBossState = BS_PASSIVE;
 		ChangeAni();
+	}
+
+	else if (AbleSkill())
+	{
+		m_bUsingSkill = true;
+		SkillPrepare();
+		m_eBossState = BS_CASTING;
+		m_pModel->SetAnimation("BS_ENTER4");
+		//ChangeAni();
 	}
 	//char temp[222];
 	//sprintf_s(temp, sizeof(temp), "%f",
 	//	GetDistance(*m_pModel->GetPosition(), *CHARACTER->GetPosition()));
 	//TEXT->Add(temp, 100, 100, 20);
 
-	//if (AbleSkill() && !m_bSkill2Use)
+	//if (AbleSkill() && !m_bUsingSkill)
 	//{
 	//	m_eBossState = BS_CASTING;
 	//	ChangeAni();
@@ -278,6 +325,7 @@ void RealFinalboss::Pattern()
 	case BS_SKILL1:
 		SkillUse();
 		break;
+
 	case BS_SKILL2:
 		Skill2();
 		break;
@@ -332,7 +380,7 @@ void RealFinalboss::Attack()
 	
 	}
 
-	m_bSkill2Use = false;
+	m_bUsingSkill = false;
 
 	//사거리 안에 들어왔는데 이제 공격을 시작할려고 한다면
 	if (!m_bIsAttack)
@@ -400,8 +448,24 @@ void RealFinalboss::Move()
 
 void RealFinalboss::Passive()
 {
-	m_pSkill->Trigger();
+	//버프스킬
+	m_pPassive->Trigger();
 
+	if (m_pModel->IsAnimationEnd())
+	{
+		m_bUsingSkill = false;
+		m_fPassiveCooltimeCount = 0;
+		m_eBossState = BS_ATTACK;
+		ChangeAni();
+	}
+	
+}
+
+void RealFinalboss::SkillUse()
+{
+	
+	m_pSkill->Trigger();
+	
 	if (m_pModel->IsAnimationEnd())
 	{
 		m_bUsingSkill = false;
@@ -409,35 +473,6 @@ void RealFinalboss::Passive()
 		m_eBossState = BS_ATTACK;
 		ChangeAni();
 	}
-	
-}
-
-//bool RealFinalboss::AbleSummon()
-//{
-//	//if (summonCount <= 0) return false;
-//	////현재 HP 비율
-//	//float HPRatio = (float)CURRENTHP(m_pMonsterStat) / MAXHP(m_pMonsterStat);
-//	//float summonRatio = (10 * summonCount / 100.0f);
-//	////현재 피 비율이 소환카운트 비율보다 적어졌다면
-//	//if (HPRatio <= summonRatio)
-//	//{
-//	//	summonCount--;
-//	//	return true;
-//	//}
-//	//
-//	//return false;
-//}
-void RealFinalboss::SkillUse()
-{
-	//m_pSkill->Trigger();
-	//
-	//if (m_pModel->IsAnimationEnd())
-	//{
-	//	m_bUsingSkill = false;
-	//	m_fSkillCoolTimeCount = 0;
-	//	m_eBossState = BS_RUN;
-	//	ChangeAni();
-	//}
 }
 
 void RealFinalboss::Skill2()
@@ -470,35 +505,8 @@ void RealFinalboss::Skill2()
 		m_eBossState = BS_ATTACK;
 		ChangeAni();
 	}
-	//vector<MonsterParent*> tt;
-	//
-	//
-	//if (m_pModel->IsAnimationPercent(0.3))
-	//{
-	//
-	//	m_pSkill->Trigger();
-	//}
-	//
-	//if (m_pModel->IsAnimationPercent(0.6))
-	//{
-	//	SkillPrepare2();
-	//	m_pSkill->Trigger();
-	//}
-	//
-	//if (m_pModel->IsAnimationPercent(0.8))
-	//{
-	//	SkillPrepare2();
-	//	m_pSkill->Trigger();
-	//}
-	//
-	//if (m_pModel->IsAnimationEnd())
-	//{
-	//	m_bSkill2Use = false;
-	//
-	//	m_fSkillCoolTimeCount2 = 0;
-	//	m_eBossState = BS_RUN;
-	//	ChangeAni();
-	//}
+	
+
 }
 
 //void RealFinalboss::Casting()
@@ -558,15 +566,15 @@ void RealFinalboss::EnterAni()
 
 void RealFinalboss::HandMatInit()
 {
-	m_stHandMat.LeftHand1 = m_pModel->GetBoneMatrix("Bip001-L-Hand");
-	m_stHandMat.LeftHand2 = m_pModel->GetBoneMatrix("Bip002-L-Hand");
-	m_stHandMat.RightHand1 = m_pModel->GetBoneMatrix("Bip001-R-Hand");
-	m_stHandMat.RightHand2 = m_pModel->GetBoneMatrix("Bip002-R-Hand");
+	m_pHand[HT_LD] = m_pModel->GetBoneMatrix("Bip001-L-Hand");
+	m_pHand[HT_LT]= m_pModel->GetBoneMatrix("Bip002-L-Hand");
+	m_pHand[HT_RD] = m_pModel->GetBoneMatrix("Bip001-R-Hand");
+	m_pHand[HT_RT] = m_pModel->GetBoneMatrix("Bip002-R-Hand");
 }
 
 void RealFinalboss::DropTheStone()
 {
-	m_bSkill2Use = true;
+	m_bUsingSkill2 = true;
 	//for (int i = 0; i < STONENUM; ++i)
 	//{
 	//	SAFE_DELETE(m_vMagicCircle[i]);
@@ -600,26 +608,33 @@ void RealFinalboss::DropTheStone()
 
 void RealFinalboss::MakeSphere()
 {
-	D3DXVECTOR3 temp(0, 0, 0);
-	D3DXVec3TransformCoord(&temp, &temp, m_stHandMat.LeftHand1);
-	m_stHandSphere.LeftHand1.center = temp;
-
-	temp = D3DXVECTOR3(0, 0, 0);
-	D3DXVec3TransformCoord(&temp, &temp, m_stHandMat.LeftHand2);
-	m_stHandSphere.LeftHand2.center = temp;
-
-	temp = D3DXVECTOR3(0, 0, 0);
-	D3DXVec3TransformCoord(&temp, &temp, m_stHandMat.RightHand1);
-	m_stHandSphere.RightHand1.center = temp;
-
-	temp = D3DXVECTOR3(0, 0, 0);
-	D3DXVec3TransformCoord(&temp, &temp, m_stHandMat.RightHand2);
-	m_stHandSphere.RightHand2.center = temp;
-
-	m_stHandSphere.LeftHand1.radius =
-		m_stHandSphere.LeftHand2.radius =
-		m_stHandSphere.RightHand1.radius =
-		m_stHandSphere.RightHand2.radius = 8;
+	D3DXVECTOR3 temp;
+	for (int i = 0; i < 4; ++i)
+	{
+		temp = D3DXVECTOR3(0, 0, 0);
+		D3DXVec3TransformCoord(&temp, &temp, m_pHand[i]);
+		m_stHandSphere[i].Hand.center = temp;
+		m_stHandSphere[i].Hand.radius = 8;
+	}
+	//D3DXVec3TransformCoord(&temp, &temp, m_stHandMat.LeftHand1);
+	//m_stHandSphere.LeftHand1.center = temp;
+	//
+	//temp = D3DXVECTOR3(0, 0, 0);
+	//D3DXVec3TransformCoord(&temp, &temp, m_stHandMat.LeftHand2);
+	//m_stHandSphere.LeftHand2.center = temp;
+	//
+	//temp = D3DXVECTOR3(0, 0, 0);
+	//D3DXVec3TransformCoord(&temp, &temp, m_stHandMat.RightHand1);
+	//m_stHandSphere.RightHand1.center = temp;
+	//
+	//temp = D3DXVECTOR3(0, 0, 0);
+	//D3DXVec3TransformCoord(&temp, &temp, m_stHandMat.RightHand2);
+	//m_stHandSphere.RightHand2.center = temp;
+	//
+	//m_stHandSphere.LeftHand1.radius =
+	//	m_stHandSphere.LeftHand2.radius =
+	//	m_stHandSphere.RightHand1.radius =
+	//	m_stHandSphere.RightHand2.radius = 8;
 }
 
 void RealFinalboss::Debug()
@@ -634,48 +649,59 @@ void RealFinalboss::Debug()
 	LPD3DXMESH mesh;
 	D3DXMATRIX matT;
 
-	float radius = m_stHandSphere.LeftHand1.radius;
-	if (radius < 0) radius = 0;
-	D3DXCreateSphere(DEVICE, radius, 8, 8, &mesh, NULL);
-	D3DXVECTOR3 pos = m_stHandSphere.LeftHand1.center;
-	D3DXMatrixTranslation(&matT, pos.x, pos.y, pos.z);
-	DEVICE->SetTransform(D3DTS_WORLD, &matT);
-	mesh->DrawSubset(0);
-	SAFE_RELEASE(mesh);
-
+	for (int i = 0; i < 4; i++)
+	{
+		float radius = m_stHandSphere[i].Hand.radius;
+		if (radius < 0) radius = 0;
+		D3DXCreateSphere(DEVICE, radius, 8, 8, &mesh, NULL);
+		D3DXVECTOR3 pos = m_stHandSphere[i].Hand.center;
+		D3DXMatrixTranslation(&matT, pos.x, pos.y, pos.z);
+		DEVICE->SetTransform(D3DTS_WORLD, &matT);
+		mesh->DrawSubset(0);
+		SAFE_RELEASE(mesh);
+	}
 
 	DEVICE->SetRenderState(D3DRS_FILLMODE, prevFillMode);
 }
 
 bool RealFinalboss::HandCollision()
 {
-	if (IntersectSphere(m_stHandSphere.LeftHand1, CHARACTER->GetBoundSphere())
-		&& !m_stHandSphere.IsOnceAttack1)
+	for (int i = 0; i < 4; ++i)
 	{
-		m_stHandSphere.IsOnceAttack1 = true;
-		return true;
+		if (IntersectSphere(m_stHandSphere[i].Hand, CHARACTER->GetBoundSphere())
+			&& !m_stHandSphere[i].IsOnceAttack)
+		{
+			m_stHandSphere[i].IsOnceAttack = true;
+			return true;
+		}
 	}
-
-	if (IntersectSphere(m_stHandSphere.LeftHand2, CHARACTER->GetBoundSphere())
-		&& !m_stHandSphere.IsOnceAttack2)
-	{
-		m_stHandSphere.IsOnceAttack2 = true;
-		return true;
-	}
-
-	if (IntersectSphere(m_stHandSphere.RightHand1, CHARACTER->GetBoundSphere())
-		&& !m_stHandSphere.IsOnceAttack3)
-	{
-		m_stHandSphere.IsOnceAttack3 = true;
-		return true;
-	}
-
-	if (IntersectSphere(m_stHandSphere.RightHand2, CHARACTER->GetBoundSphere())
-		&& !m_stHandSphere.IsOnceAttack4)
-	{
-		m_stHandSphere.IsOnceAttack4 = true;
-		return true;
-	}
+	//if (IntersectSphere(m_stHandSphere.LeftHand1, CHARACTER->GetBoundSphere())
+	//	&& !m_stHandSphere.IsOnceAttack1)
+	//{
+	//	m_stHandSphere.IsOnceAttack1 = true;
+	//	return true;
+	//}
+	//
+	//if (IntersectSphere(m_stHandSphere.LeftHand2, CHARACTER->GetBoundSphere())
+	//	&& !m_stHandSphere.IsOnceAttack2)
+	//{
+	//	m_stHandSphere.IsOnceAttack2 = true;
+	//	return true;
+	//}
+	//
+	//if (IntersectSphere(m_stHandSphere.RightHand1, CHARACTER->GetBoundSphere())
+	//	&& !m_stHandSphere.IsOnceAttack3)
+	//{
+	//	m_stHandSphere.IsOnceAttack3 = true;
+	//	return true;
+	//}
+	//
+	//if (IntersectSphere(m_stHandSphere.RightHand2, CHARACTER->GetBoundSphere())
+	//	&& !m_stHandSphere.IsOnceAttack4)
+	//{
+	//	m_stHandSphere.IsOnceAttack4 = true;
+	//	return true;
+	//}
 
 	return false;
 }
@@ -692,9 +718,9 @@ bool RealFinalboss::AblePassive()
 	*/
 	//패시브 발동 조건
 	if (m_pModel->IsAnimationEnd()
-		&& m_fSkillCoolTimeCount >= m_nSkillCooltime
+		&& m_fPassiveCooltimeCount >= m_nPassiveCooltime
 		&& !m_bIsDead
-		&& !m_bUsingSkill)
+		&& !m_bUsingPassive)
 	{
 
 		return true;
@@ -705,22 +731,22 @@ bool RealFinalboss::AblePassive()
 
 void RealFinalboss::BuffDecide()
 {
-	ZeroMemory(&m_stSkill.buffStatus, sizeof(STATUS));
+	ZeroMemory(&m_stPassive.buffStatus, sizeof(STATUS));
 
 	int rndNum = rand() % 3;
 
 	switch (rndNum)
 	{
 	case 0:
-		m_stSkill.buffStatus.chr.nAtk = ATK(m_pMonsterStat);
+		m_stPassive.buffStatus.chr.nAtk = ATK(m_pMonsterStat);
 		break;
 
 	case 1:
-		m_stSkill.buffStatus.chr.nDef = DEF(m_pMonsterStat);
+		m_stPassive.buffStatus.chr.nDef = DEF(m_pMonsterStat);
 		break;
 
 	case 2:
-		m_stSkill.buffStatus.chr.fHit = HIT(m_pMonsterStat);
+		m_stPassive.buffStatus.chr.fHit = HIT(m_pMonsterStat);
 		break;
 	default:
 		break;

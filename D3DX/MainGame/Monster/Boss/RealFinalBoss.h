@@ -5,27 +5,36 @@
 #define RNDMIN -10
 #define RNDMAX 10
 
-struct ST_HANDMAT
-{
-	D3DXMATRIX* LeftHand1;	//왼쪽 아래 손
-	D3DXMATRIX* LeftHand2;	//왼쪽 위 손
-	D3DXMATRIX* RightHand1;	//오른쪽 아래 손
-	D3DXMATRIX* RightHand2;	//오른쪽 위 손
-};
+//struct ST_HANDMAT
+//{
+//	D3DXMATRIX* LeftHand1;	//왼쪽 아래 손
+//	D3DXMATRIX* LeftHand2;	//왼쪽 위 손
+//	D3DXMATRIX* RightHand1;	//오른쪽 아래 손
+//	D3DXMATRIX* RightHand2;	//오른쪽 위 손
+//};
 
 struct ST_HANDSPHERE
 {
-	ST_SPHERE LeftHand1;	//왼쪽 아래 손
-	bool IsOnceAttack1;		//이 손에 맞았냐
+	ST_SPHERE Hand;	//왼쪽 아래 손
+	bool IsOnceAttack;		//이 손에 맞았냐
 
-	ST_SPHERE LeftHand2; 	//왼쪽 위 손
-	bool IsOnceAttack2;		//이 손에 맞았냐
+	//ST_SPHERE LeftHand2; 	//왼쪽 위 손
+	//bool IsOnceAttack2;		//이 손에 맞았냐
+	//
+	//ST_SPHERE RightHand1;	//오른쪽 아래 손
+	//bool IsOnceAttack3;		//이 손에 맞았냐
+	//
+	//ST_SPHERE RightHand2;	//오른쪽 위 손
+	//bool IsOnceAttack4;		//이 손에 맞았냐
+};
 
-	ST_SPHERE RightHand1;	//오른쪽 아래 손
-	bool IsOnceAttack3;		//이 손에 맞았냐
-
-	ST_SPHERE RightHand2;	//오른쪽 위 손
-	bool IsOnceAttack4;		//이 손에 맞았냐
+enum HAND_TIYE
+{
+	HT_LD,
+	HT_LT,
+	HT_RD,
+	HT_RT,
+	HT_END
 };
 
 class RealFinalboss :
@@ -40,12 +49,22 @@ protected:
 	vector<EffectObject*> m_vEffectObject;
 
 	//손들의 매트리스 구조체
-	ST_HANDMAT m_stHandMat;
+	//ST_HANDMAT m_stHandMat;
+	D3DXMATRIX* m_pHand[HT_END];
 	//매트리스를 이용한 손들의 구조체
-	ST_HANDSPHERE m_stHandSphere;
+	ST_HANDSPHERE m_stHandSphere[HT_END];
 
 	ST_EFFECT m_stEffect;
 
+	Skill* m_pPassive;
+
+	ST_SKILL m_stPassive;
+
+	float m_fPassiveCooltimeCount;
+
+	int m_nPassiveCooltime;
+
+	bool m_bUsingPassive;
 	//virtual void ChangeAni() override;
 
 private:
@@ -54,9 +73,8 @@ private:
 
 	virtual void SetupStat() override;
 	virtual void SetupSkill() override;
-
-	//패시브 설정함수임 이 보스한테는
 	virtual void SetupSkill2() override;
+	void SetupPassive();
 
 	virtual void Attack() override;
 	virtual void Move() override;
@@ -92,14 +110,29 @@ private:
 	bool HandCollision();
 	void BoolInit()
 	{
-		m_stHandSphere.IsOnceAttack1 =
-			m_stHandSphere.IsOnceAttack2 =
-			m_stHandSphere.IsOnceAttack3 =
-			m_stHandSphere.IsOnceAttack4 = false;
+		for (int i = 0; i < 4; ++i)
+		{
+			m_stHandSphere[i].IsOnceAttack = false;
+		}
+		//m_stHandSphere.IsOnceAttack1 =
+		//	m_stHandSphere.IsOnceAttack2 =
+		//	m_stHandSphere.IsOnceAttack3 =
+		//	m_stHandSphere.IsOnceAttack4 = false;
 	}
 
 	bool AblePassive();
 	void BuffDecide();
+
+	void PassivePrepare()
+	{
+		vector<MonsterParent*> tt;
+
+		m_pPassive->Prepare(PCHARACTER,
+			this,
+			tt,
+			m_stPassive,
+			SKILLO_MONSTER);
+	}
 
 public:
 	RealFinalboss();
