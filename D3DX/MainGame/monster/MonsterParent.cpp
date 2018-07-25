@@ -8,9 +8,9 @@
 MonsterParent::MonsterParent()
 	: m_pModel(NULL)
 	, m_bSpecial(false)
+	, m_pNpc(NULL)
 {
 }
-
 
 MonsterParent::~MonsterParent()
 {
@@ -21,6 +21,7 @@ MonsterParent::~MonsterParent()
 	m_pMap = NULL;
 	m_ppCharacter = NULL;
 	m_pDropManager = NULL;
+	m_pNpc = NULL;
 	SAFE_DELETE(m_pSkill);
 	SAFE_DELETE(m_pMonsterStat);
 	SAFE_DELETE(m_pDamageUI);
@@ -45,7 +46,7 @@ void MonsterParent::Setup(Map* map, D3DXVECTOR3 spawnPos, bool isSummon)
 
 	m_nCount = 0;
 	m_nPatternChangeCount = 0;
-	m_bUsingSkill = false;
+	m_bUsingSkill =  false;
 
 	m_pAStar = new AStar;
 	m_pAStar->SetCurrentCell(map->GetNavMesh());
@@ -95,6 +96,10 @@ void MonsterParent::Setup(Map* map, D3DXVECTOR3 spawnPos, bool isSummon)
 	m_pDamageUI->Setup(false);
 
 	m_pHitParticle = PARTICLE->GetParticle("몬스터기본피격");
+
+	//npc 생성 부울값 조절 함수
+	IsAppear();
+
 	//ST_SIZEBOX box;
 }
 
@@ -127,6 +132,8 @@ void MonsterParent::SetupBoss(Map* map, D3DXVECTOR3 pos)
 
 	m_pDamageUI = new DamageUI;
 	m_pDamageUI->Setup(false);
+
+	m_bAppearNPC = false;
 }
 
 void MonsterParent::SetupStat()
@@ -372,6 +379,7 @@ void MonsterParent::Respawn(D3DXVECTOR3 spawnPos)
 	CURRENTHP(m_pMonsterStat) = MAXHP(m_pMonsterStat);
 	m_bIsTargeting = false;
 	m_nPrePosIndex = -1;
+	IsAppear();
 
 	m_pModel->SetPosition(D3DXVECTOR3(spawnPos.x, m_pMap->GetHeight(spawnPos.x, spawnPos.z), spawnPos.z));
 }
@@ -627,6 +635,9 @@ void MonsterParent::SetCurrentHP(int hp)
 		m_nTargetingCount = 0;
 		if (CURRENTHP(m_pMonsterStat) <= 0)
 		{
+			if (m_bAppearNPC && !m_pNpc->GetIsAppear())
+				m_pNpc->Init(*m_pModel->GetPosition());
+
 			m_pModel->SetShaderAlpha(1.0f);
 			CURRENTHP(m_pMonsterStat) = 0;
 			m_bIsRespawn = true;
@@ -638,20 +649,6 @@ void MonsterParent::SetCurrentHP(int hp)
 }
 void MonsterParent::SetupSkill()
 {
-	//ZeroMemory(&m_stSkill, sizeof(ST_SKILL));
-	//m_stSkill.fDamage = 200;
-	//m_stSkill.fDamageDelay = 0;
-	//m_stSkill.fDamageInterval = 0.1;
-	//m_stSkill.fMaxLength = 100;
-	//m_stSkill.fAngle = 360;
-	//m_stSkill.nMaxTarget = 5;
-	//m_stSkill.nDamageCount = 100;
-	//m_stSkill.isAutoRot = true;
-	//m_stSkill.fYOffset = 1;
-	//m_stSkill.fBuffTime = -1;
-	//m_stSkill.fParticleTime = 10;
-	//m_stSkill.fParticleSpeed = 0.05;
-	//m_stSkill.fEffectTime = 3;
 }
 
 bool MonsterParent::AbleSkill()
@@ -687,4 +684,20 @@ void MonsterParent::SkillPrepare(){
 		tt,
 		m_stSkill,
 		SKILLO_MONSTER);
+}
+
+void MonsterParent::IsAppear()
+{
+	//m_bAppearNPC = true;
+	float rnd = FRand(0, 1);
+
+	if (rnd <= 0.05)
+	{
+		if (!m_pNpc->GetIsAppear())
+			m_bAppearNPC = true;
+		else
+			m_bAppearNPC = false;
+	}
+	else
+		m_bAppearNPC = false;
 }

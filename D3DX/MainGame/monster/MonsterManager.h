@@ -4,6 +4,8 @@ class MonsterParent;
 class Map;
 class CharacterParant;
 class DropManager;
+class Npc;
+
 //만들어진 몬스터들을 총괄하는 클래스
 class MonsterManager
 {
@@ -54,6 +56,7 @@ public:
 
 	bool IsMiddleBossDie(OUT D3DXVECTOR3* diePos);
 	bool IsBossDie();
+	void SetNpc(Npc* npc);
 
 	//void SetSpawnSpot(vector<D3DXVECTOR3> spawnVec) { m_vSpawnSpot = spawnVec; }
 	//

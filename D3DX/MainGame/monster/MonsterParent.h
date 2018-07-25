@@ -11,6 +11,7 @@ class UIObject;
 class Skill;
 class DamageUI;
 class BossParent;
+class Npc;
 
 enum MON_STATE{
 	MS_IDLE,			//제자리에 있는 상태
@@ -33,6 +34,8 @@ class MonsterParent
 	SET(DropManager*, m_pDropManager, DropManager);
 	SYNTHESIZE(STATUS*, m_pMonsterStat, MosterStat);
 	GET(bool, m_bIsSummon,IsSummon);
+	SET(Npc*, m_pNpc, NPC);
+	//Npc*		m_pNpc;
 	//SET(bool, m_bIsTargeting, IsTargeting);
 
 protected:
@@ -96,6 +99,7 @@ protected:
 	Particle*	m_pHitParticle;
 	bool		m_bSpecial;
 
+	bool		m_bAppearNPC;
 	/*
 	int			nMaxTarget;
 	float		fMinLength;
@@ -145,6 +149,9 @@ protected:
 	//스킬사용가능하냐
 	virtual bool AbleSkill();
 	void SkillPrepare();
+
+	//npc 등장시키는 몬스터냐
+	void IsAppear();
 public:
 	MonsterParent();
 	virtual ~MonsterParent();

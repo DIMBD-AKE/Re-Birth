@@ -392,3 +392,11 @@ bool MonsterManager::IsBossDie()
 
 	return false;
 }
+
+void MonsterManager::SetNpc(Npc * npc)
+{
+	for (int i = 0; i < m_vMM.size(); ++i)
+	{
+		m_vMM[i]->SetNPC(npc);
+	}
+}

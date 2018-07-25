@@ -47,6 +47,7 @@ void SC_Game::Init()
 
 	m_pMap = new Map;
 	CAMERA->SetFog(false, 0, 0, 0, 0);
+	//m_nStage = 3;
 	if (m_nStage == 0)
 		m_pMap->Load("Map/Sample.map");
 	else if (m_nStage == 1)
@@ -84,6 +85,7 @@ void SC_Game::Init()
 	m_pCharacter->Reset(m_pMap, m_pMM, m_pDropManager);
 
 	m_pNpc = new Npc;
+	//npc구현이 끝나면 이닛부분 지워주세요!
 	m_pNpc->Init(m_pMap->GetSpawnPlayer());
 	m_pNpc->SetPlayerMemoryAddressLink(m_pCharacter);
 	m_pCharacter->SetNpcMemoryAddressLink(m_pNpc);
@@ -99,6 +101,8 @@ void SC_Game::Init()
 		m_fElapseTime -= m_fGenTime;
 
 	m_pCharacter->Getstage(&m_nStage);
+
+	m_pMM->SetNpc(m_pNpc);
 }
 
 void SC_Game::Update()
