@@ -35,7 +35,7 @@ void SC_Main::OnClick(UIObject * pSender)
 		}
 	}
 
-	if (pSender->GetName().compare("Start") == 0)
+	if (pSender->GetName().compare("Start") == 0 && m_eState == MS_PORTRAIT)
 	{
 		/*SCENE->ChangeScene("Test");
 		return;*/
@@ -93,7 +93,10 @@ void SC_Main::OnClick(UIObject * pSender)
 	}
 
 	if (pSender->GetName().compare("Character Select") &&
+		pSender->GetName().compare("Background") &&
 		pSender->GetName().compare("Start") &&
+		pSender->GetName().compare("Option") &&
+		pSender->GetName().compare("Ranking") &&
 		m_eState == MS_PORTRAIT)
 	{
 		m_sSelect = pSender->GetName();

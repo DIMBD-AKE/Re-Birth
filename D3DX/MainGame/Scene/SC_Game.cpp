@@ -16,7 +16,6 @@ SC_Game::SC_Game()
 SC_Game::~SC_Game()
 {
 	SAFE_DELETE(m_pCharacter);
-	SAFE_DELETE(m_pNpc);
 }
 
 void SC_Game::Release()
@@ -28,6 +27,7 @@ void SC_Game::Release()
 	for (auto p : m_vecParticle)
 		SAFE_DELETE(p);
 	m_vecParticle.clear();
+	SAFE_DELETE(m_pNpc);
 }
 
 void SC_Game::Init()
