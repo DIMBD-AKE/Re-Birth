@@ -95,7 +95,7 @@ void Character_fist::Update()
 	{
 		Controller();
 
-		KeyControl();
+		if (!m_bIsStun)KeyControl();
 		Move();
 		//Attack();
 		m_pInventory->Update();

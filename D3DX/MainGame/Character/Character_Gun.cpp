@@ -44,7 +44,7 @@ void Character_Gun::Init(CHRTYPE type, CHARSELECT order)
 		m_Status->chr.nDef = 26;
 		m_Status->chr.nMaxHp = 100;
 		m_Status->chr.nMaxStam = 100;
-		m_Status->chr.fRange = 20.0f;
+		m_Status->chr.fRange = 14.0f;
 		m_Status->chr.fScale = 3.2f;
 		CharacterParant::Init(type, order);
 
@@ -90,7 +90,7 @@ void Character_Gun::Init(CHRTYPE type, CHARSELECT order)
 		m_Status->chr.nDef = 26;
 		m_Status->chr.nMaxHp = 100;
 		m_Status->chr.nMaxStam = 100;
-		m_Status->chr.fRange = 25.0f;
+		m_Status->chr.fRange = 14.0f;
 		m_Status->chr.fScale = 3.2f;
 		CharacterParant::Init(type, order);
 
@@ -127,7 +127,7 @@ void Character_Gun::Update()
 	{
 		Controller();
 	
-		KeyControl();
+		if (!m_bIsStun)KeyControl();
 		Move();
 		setCameraView();
 		GunClick();
@@ -144,7 +144,7 @@ void Character_Gun::Update()
 		PlayerProgressBar();
 		//CountAppearDamage();
 //		m_pDamage->Update(*m_pCharacter->GetPosition());
-
+		CharacterParant::Update();
 
 		if (m_bIsGunView)
 		{

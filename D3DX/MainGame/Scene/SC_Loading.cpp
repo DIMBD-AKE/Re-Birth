@@ -191,6 +191,9 @@ void SC_Loading::AddTexture()
 
 	//최종보스 스킬 텍스쳐
 	m_pLoading->LoadTexture("돌", "Texture/Effect/stone.png");
+	
+	//Npc대화창
+	m_pLoading->LoadTexture("대화창", "Texture/Scene/talk.png");
 
 	//몬스터 피격 텍스쳐
 	m_pLoading->LoadTexture("피", "Texture/Particle/Blood.png");

@@ -26,7 +26,7 @@ void Npc::Init(D3DXVECTOR3 pos)
 
 	m_bIsCollision = false;
 	m_bIsAppear = false;
-
+	m_bTalk = false;
 
 	ST_SIZEBOX box;
 	box.highX = 30.0f;
@@ -42,10 +42,15 @@ void Npc::Init(D3DXVECTOR3 pos)
 	m_pContext = new Dialogue;
 
 	//다이얼로그			위치				사이즈  폰트       속도    색깔
-	m_pContext->Init(D3DXVECTOR2(550, 280), 30, "나눔명조", 0.05, 0xFFFFFFFF);
+	m_pContext->Init(D3DXVECTOR2(550, 700), 30, "나눔명조", 0.05, 0xFF000000);
 	//m_pPlayer = new CharacterParant;
 
-
+	m_pContext->AddText("하이?\n하이??????");
+	m_pContext->AddText("바이\n\n바이??????");
+	m_pContext->AddText("메롱?\n메롱??????");
+	m_pContext->AddText("으악?\n으악??????");
+	
+	m_pContext->SetKey('7', '8', '9');
 }
 
 void Npc::Update()
@@ -54,9 +59,18 @@ void Npc::Update()
 	{
 		m_pNpc->World();
 		CheckCollision();
-		Talk();
-		m_pContext->Update();
+		
+		SkillUnSeal();
+		if(m_bIsCollision) m_pContext->Update();
 		//m_pNpc->Update();
+
+		if (m_pContext->GetIndex() == 3)
+		{
+			if (INPUT->KeyDown(VK_SPACE))
+			{
+				m_bIsCollision = false;
+			}
+		}
 	}
 
 }
@@ -70,24 +84,34 @@ void Npc::CheckCollision()
 {
 	if (IntersectSphere(m_pNpc->GetBoundSphere(), m_pPlayer->GetCharacter()->GetBoundSphere()))
 	{
-		m_bIsCollision = true;
+		if (INPUT->KeyDown(VK_LBUTTON))
+		{
+			m_bIsCollision = true;
+			m_bTalk = true;
+			Talk();
+		}
 	}
 	else
 	{
 		m_bIsCollision = false;
 	}
-
 }
 
 void Npc::Talk()
 {
-	if (m_bIsCollision)
-	{
-		m_pContext->AddText("하이?\n\n하이??????");
-	}
-
-
+	if (m_bTalk) m_pContext->SetIndex(m_pContext->GetIndex());
 }
+
+
+void Npc::SkillUnSeal()
+{
+	if (m_bTalk) m_pPlayer->SetSkillUnSealed(true);
+}
+
+void Npc::PlusAttack()
+{
+}
+
 
 void Npc::Debug()
 {
