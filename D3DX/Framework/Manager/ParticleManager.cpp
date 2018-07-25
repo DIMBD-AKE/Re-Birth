@@ -24,7 +24,8 @@ ParticleSystem::~ParticleSystem()
 		SAFE_DELETE(a);
 	SAFE_DELETE(m_pApplyAttribute);
 	SAFE_DELETE(m_pOrigAttribute);
-	SAFE_DELETE(m_pVarAttribute);
+	SAFE_DELETE(m_pApplyVarAttribute);
+	SAFE_DELETE(m_pOrigVarAttribute);
 }
 
 void ParticleSystem::Init(LPDIRECT3DTEXTURE9 texture, float size, int count,
@@ -49,7 +50,10 @@ void ParticleSystem::Init(LPDIRECT3DTEXTURE9 texture, float size, int count,
 	m_pOrigAttribute = orig;
 	m_pApplyAttribute = new ST_PARTICLE_ATTRIBUTE;
 	*m_pApplyAttribute = *orig;
-	m_pVarAttribute = var;
+
+	m_pOrigVarAttribute = var;
+	m_pApplyVarAttribute = new ST_PARTICLE_ATTRIBUTE_VARIABLE;
+	*m_pApplyVarAttribute = *var;
 
 	m_isRegen = true;
 
@@ -65,7 +69,7 @@ void ParticleSystem::Init(LPDIRECT3DTEXTURE9 texture, float size, int count,
 ST_PARTICLE_ATTRIBUTE ParticleSystem::ResetParticle(int loop)
 {
 	ST_PARTICLE_ATTRIBUTE att = *m_pApplyAttribute;
-	ST_PARTICLE_ATTRIBUTE_VARIABLE var = *m_pVarAttribute;
+	ST_PARTICLE_ATTRIBUTE_VARIABLE var = *m_pApplyVarAttribute;
 
 	att.nLoop = loop;
 	att.nLoop++;
@@ -511,7 +515,8 @@ void Particle::World()
 
 	m_pParticleSystem->SetWorld(matS * matR * matT);
 	auto orig = m_pParticleSystem->GetOrig();
-	m_pParticleSystem->SetApply(orig);
+	auto var = m_pParticleSystem->GetVarOrig();
+	m_pParticleSystem->SetApply(orig, var);
 }
 
 void Particle::ApplyWorld()
@@ -528,8 +533,15 @@ void Particle::ApplyWorld()
 	matWorld = matS * matR * matT;
 
 	auto orig = m_pParticleSystem->GetOrig();
+	auto var = m_pParticleSystem->GetVarOrig();
+
 	D3DXVec3TransformCoord(&orig.vPos, &orig.vPos, &matWorld);
 	D3DXVec3TransformCoord(&orig.vVelocity, &orig.vVelocity, &matR);
 	D3DXVec3TransformCoord(&orig.vAcceleration, &orig.vAcceleration, &matR);
-	m_pParticleSystem->SetApply(orig);
+
+	D3DXVec3TransformCoord(&var.vPosVar, &var.vPosVar, &matR);
+	D3DXVec3TransformCoord(&var.vVelocityVar, &var.vVelocityVar, &matR);
+	D3DXVec3TransformCoord(&var.vAccelerationVar, &var.vAccelerationVar, &matR);
+
+	m_pParticleSystem->SetApply(orig, var);
 }

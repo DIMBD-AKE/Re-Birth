@@ -21,7 +21,8 @@ private:
 
 	ST_PARTICLE_ATTRIBUTE*			m_pOrigAttribute;
 	ST_PARTICLE_ATTRIBUTE*			m_pApplyAttribute;
-	ST_PARTICLE_ATTRIBUTE_VARIABLE*	m_pVarAttribute;
+	ST_PARTICLE_ATTRIBUTE_VARIABLE*	m_pOrigVarAttribute;
+	ST_PARTICLE_ATTRIBUTE_VARIABLE*	m_pApplyVarAttribute;
 
 	list<ST_PARTICLE_ATTRIBUTE*>	m_lAttribute;
 
@@ -36,7 +37,9 @@ public:
 	void SetRegen(bool regen) { m_isRegen = regen; }
 
 	ST_PARTICLE_ATTRIBUTE GetOrig() { return *m_pOrigAttribute; }
-	void SetApply(ST_PARTICLE_ATTRIBUTE apply) { *m_pApplyAttribute = apply; }
+	ST_PARTICLE_ATTRIBUTE_VARIABLE GetVarOrig() { return *m_pOrigVarAttribute; }
+	void SetApply(ST_PARTICLE_ATTRIBUTE apply, ST_PARTICLE_ATTRIBUTE_VARIABLE var) { 
+		*m_pApplyAttribute = apply; *m_pApplyVarAttribute = var; }
 
 	void TimeReset();
 	void Update();
