@@ -396,7 +396,7 @@ void RealFinalboss::Attack()
 	
 	}
 
-	m_bUsingSkill2 = false;
+	//m_bUsingSkill2 = false;
 
 	//사거리 안에 들어왔는데 이제 공격을 시작할려고 한다면
 	if (!m_bIsAttack)
@@ -514,7 +514,7 @@ void RealFinalboss::SkillUse()
 
 void RealFinalboss::Skill2()
 {
-	m_bDropStone = false;
+	//m_bDropStone = false;
 	ST_SPHERE target = CHARACTER->GetBoundSphere();
 
 	for (int i = 0; i < m_vEffectObject.size(); ++i)
@@ -613,7 +613,7 @@ void RealFinalboss::HandMatInit()
 void RealFinalboss::DropTheStone()
 {
 	m_bDropStone = true;
-
+	m_bUsingSkill2 = false;
 	D3DXVECTOR3 rndPos = *CHARACTER->GetPosition();
 			
 	m_vMagicCircle[0]->SetParticlePos(rndPos);
@@ -627,6 +627,7 @@ void RealFinalboss::DropTheStone()
 void RealFinalboss::DropTheStones()
 {
 	m_bUsingSkill2 = true;
+	m_bDropStone = false;
 	//for (int i = 0; i < STONENUM; ++i)
 	//{
 	//	SAFE_DELETE(m_vMagicCircle[i]);
