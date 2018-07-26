@@ -468,6 +468,9 @@ void Character_Sword::KeyControl()
 			m_eCondition = CHAR_NONE;
 			m_bIsDead = false;
 			break;
+		case CHAR_GUARD:
+			m_eCondition = CHAR_IDLE;
+			break;
 		}
 		ChangeAnimation();
 	}
@@ -575,6 +578,13 @@ void Character_Sword::KeyControl()
 		{
 			m_fDeltaY = 3.0f;
 		}
+		ChangeAnimation();
+	}
+
+
+	if (INPUT->KeyDown('Z'))
+	{
+		m_eCondition = CHAR_GUARD;
 		ChangeAnimation();
 	}
 
@@ -902,7 +912,7 @@ void Character_Sword::SkillDealing()
 		{
 			for (int i = 0; i < m_pMonsterManager->GetMonsterVector().size(); i++)
 			{
-
+				
 				D3DXVECTOR3 s1 = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().center;
 				D3DXVECTOR3 s2 = m_vecEffect.back()->GetBoundSphere().center;
 				D3DXVECTOR3 v = s1 - s2;
@@ -913,14 +923,16 @@ void Character_Sword::SkillDealing()
 
 				if (r1 + r2 >= distance)
 				{
-					m_pMonsterManager->GetMonsterVector()[i]->CalculDamage(1);
+					
+					
 					m_nIndex = i;
 					D3DXVECTOR3 front;
 					D3DXMATRIX matY;
 					D3DXMatrixRotationY(&matY, m_pCharacter->GetRotation()->y);
 					D3DXVec3TransformNormal(&front, &D3DXVECTOR3(0, 0, -1), &matY);
 					D3DXVECTOR3 pos = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
-
+					if (m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetIsResPawn())return;
+					m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(1);
 					m_pCharacter->SetPosition(pos - front * 4);
 
 					m_nDC++;
@@ -951,9 +963,10 @@ void Character_Sword::SkillDealing()
 				if (r1 + r2 >= distance)
 				{
 					m_fDelta -= 1.0f;
-					m_pMonsterManager->GetMonsterVector()[i]->CalculDamage(999);
 					m_nIndex = i;
 					m_bEnemySkillMoving = true;
+					if (m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetIsResPawn())return;
+					m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(999);
 					m_nDC++;
 				}
 
@@ -980,9 +993,11 @@ void Character_Sword::SkillDealing()
 			if (r1 + r2 >= distance)
 			{
 				m_fDeltaY -= 0.5f;
-				m_pMonsterManager->GetMonsterVector()[i]->CalculDamage(1);
+				
 				m_nIndex = i;
 				m_bEnemySkillMoving = true;
+				if (m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetIsResPawn())return;
+				m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(1);
 			}
 
 		}

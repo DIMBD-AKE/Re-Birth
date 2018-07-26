@@ -405,7 +405,7 @@ void CharacterParant::CalculDamage(float damage)
 		}
 		//SetModelAlpha();
 	//	m_pCharacter->SetShaderAlpha(0.3f);
-		//	m_bIsInvincible = true;
+		
 		m_bIsUnderAttacked = true;
 		float totalRate =
 			m_Status->chr.fPhyRate +
@@ -714,6 +714,19 @@ void CharacterParant::SetCameraNormalView()
 		CAMERA->SetTargetOffset(D3DXVECTOR3(0, 4, 0));
 		CAMERA->SetTarget(m_pCharacter->GetPosition(), m_pCharacter->GetRotation());
 	}	
+}
+
+void CharacterParant::Guard()
+{
+	if (m_eCondition == CHAR_GUARD)
+	{
+		m_bIsInvincible = true;
+
+
+
+
+	}
+
 }
 
 
@@ -1237,6 +1250,9 @@ void CharacterParant::ChangeAnimation()
 	case CHAR_TALK:
 		m_pCharacter->SetBlendAnimation("IDLE");
 	//	m_pCharacter->SetShaderAlpha(0.5f);
+		break;
+	case CHAR_GUARD:
+		m_pCharacter->SetAnimation("GUARD");
 		break;
 	case CHAR_NONE :
 		break;

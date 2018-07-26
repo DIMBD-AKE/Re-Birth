@@ -175,7 +175,7 @@ protected:
 	void SkillToolTip(D3DXVECTOR3 pos);
 	void SetCameraNormalView();
 	void Getstage(int* stage) { m_npStage = stage; }
-
+	void Guard();
 
 	int						m_temp;			//애니메이션 확인용 임시변수
 
