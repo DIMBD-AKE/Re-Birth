@@ -49,14 +49,15 @@ void Npc::Init(D3DXVECTOR3 pos)
 
 
 	//다이얼로그			위치				사이즈  폰트       속도    색깔
-	m_pContext->Init(D3DXVECTOR2(550, 650), 40, "UhBee Yiseul", 0.05, 0xFF000000);
+	m_pContext->Init(D3DXVECTOR2(550, 650), 40, "UhBee Yiseul", 0.05, 0xFFFFFFFF);
 	//m_pPlayer = new CharacterParant;
 
 	m_pContext->AddText("흐..흥!\n딱히 만나고 싶어서 나온건 아니니까!");
 	m_pContext->AddText("따..딱히 너를 위해\n스킬을 해금해주는건 아니니까!");
 	m_pContext->AddText("V키를 누르면\n 아오시발 못치겠다");
 	m_pContext->AddText("오글오글\n화이팅!");
-	m_pContext->SetKey(VK_RBUTTON, 'X', 'C');
+	m_pContext->AddText("");
+	m_pContext->SetKey(VK_LBUTTON, VK_RBUTTON, 'C');
 }
 
 void Npc::Update()
@@ -74,7 +75,7 @@ void Npc::Update()
 		}
 
 		if(m_bIsCollision)TEXT->Add("리무", 150, 595, 30);
-		if (m_pContext->GetIndex() == 3)
+		if (m_pContext->GetIndex() == m_pContext->GetPage() - 1)
 		{
 			if (INPUT->KeyDown(VK_LBUTTON))
 			{
@@ -94,11 +95,16 @@ void Npc::CheckCollision()
 {
 	if (IntersectSphere(m_pNpc->GetBoundSphere(), m_pPlayer->GetCharacter()->GetBoundSphere()))
 	{
-		if (INPUT->KeyDown(VK_LBUTTON))
+		if (!m_bIsCollision)
 		{
-			m_bIsCollision = true;
-			m_bTalk = true;
-			Talk();
+			if (INPUT->KeyDown('E'))
+			{
+
+				m_bIsCollision = true;
+				m_bTalk = true;
+				m_pContext->SetIndex(0);
+				Talk();
+			}
 		}
 	}
 	else
