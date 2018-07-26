@@ -175,8 +175,8 @@ void RealFinalboss::SetupStat()
 
 	ZeroMemory(m_pMonsterStat, sizeof(STATUS));
 
-	CURRENTHP(m_pMonsterStat) = 1400;
-	MAXHP(m_pMonsterStat) = 1500;
+	CURRENTHP(m_pMonsterStat) = 2000;
+	MAXHP(m_pMonsterStat) = 2000;
 	ATK(m_pMonsterStat) = 20;
 	PHYRATE(m_pMonsterStat) = 1.3f;
 	MAGICRATE(m_pMonsterStat) = 0.8f;

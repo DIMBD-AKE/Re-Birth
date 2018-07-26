@@ -61,7 +61,7 @@ void FinalBoss::SetupStat()
 
 	ZeroMemory(m_pMonsterStat, sizeof(STATUS));
 
-	CURRENTHP(m_pMonsterStat) = 1400;
+	CURRENTHP(m_pMonsterStat) = 1500;
 		MAXHP(m_pMonsterStat) = 1500;
 	ATK(m_pMonsterStat) = 20;
 	PHYRATE(m_pMonsterStat) = 1.3f;
