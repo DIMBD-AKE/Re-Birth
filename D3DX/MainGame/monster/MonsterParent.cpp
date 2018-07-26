@@ -667,6 +667,7 @@ void MonsterParent::SetCurrentHP(int hp, int* deathCount)
 		m_nTargetingCount = 0;
 		if (CURRENTHP(m_pMonsterStat) <= 0)
 		{
+			if(deathCount)
 			(*deathCount)++;
 			if (m_bAppearNPC && !m_pNpc->GetIsAppear())
 				m_pNpc->Init(*m_pModel->GetPosition());

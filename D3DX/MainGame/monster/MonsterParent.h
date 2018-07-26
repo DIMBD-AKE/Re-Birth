@@ -161,7 +161,7 @@ public:
 
 	
 
-	void CalculDamage(float damage, int* deathCount);
+	void CalculDamage(float damage, int* deathCount = NULL);
 
 	virtual void Setup(Map* map, D3DXVECTOR3 spawnPos, bool isSummon = false);
 
