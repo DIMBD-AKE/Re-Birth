@@ -441,7 +441,10 @@ void Map::Render()
 	DEVICE->SetTransform(D3DTS_WORLD, &m_matSkybox);
 	DEVICE->SetTexture(0, m_pSkyboxTex);
 	m_pSkyboxMesh->DrawSubset(0);
+}
 
+void Map::ObjectRender()
+{
 	for (int i = 0; i < m_vecModel.size(); i++)
 		m_vecModel[i]->Render();
 }

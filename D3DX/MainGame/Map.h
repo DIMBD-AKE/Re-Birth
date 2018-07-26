@@ -32,6 +32,7 @@ public:
 
 	void Load(string mapPath);
 	void Render();
+	void ObjectRender();
 
 	float GetHeight(float x, float z);
 };
