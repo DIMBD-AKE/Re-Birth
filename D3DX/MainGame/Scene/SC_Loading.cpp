@@ -87,7 +87,7 @@ void SC_Loading::AddModel()
 	m_pLoading->LoadModel("용", "Model/Pet/Nir/", "Nir.x", MODELTYPE_X);
 	m_pLoading->LoadModel("피닉스", "Model/Pet/Nix/", "Nix.x", MODELTYPE_X);
 	m_pLoading->LoadModel("팬더", "Model/Pet/Panda/", "Panda.x", MODELTYPE_X);
-	m_pLoading->LoadModel("", "Model/Pet/Penny/", "Penny.x", MODELTYPE_X);
+	m_pLoading->LoadModel("돼지", "Model/Pet/Penny/", "Penny.x", MODELTYPE_X);
 }
 
 void SC_Loading::AddTexture()
