@@ -3,8 +3,9 @@
 #include "../Map.h"
 
 
-bool Pet::TargetUpdate(vector<D3DXVECTOR3> vecNavMesh)
+bool Pet::TargetUpdate()
 {
+	auto vecNavMesh = m_pMap->GetNavMesh();
 	auto temp = m_stTargetCell;
 	for (int i = 0; i < vecNavMesh.size(); i += 3)
 	{
@@ -24,7 +25,30 @@ bool Pet::TargetUpdate(vector<D3DXVECTOR3> vecNavMesh)
 		return false;
 }
 
-void Pet::AStar(vector<D3DXVECTOR3> vecNavMesh)
+bool Pet::TargetEqualCell()
+{
+	auto vecNavMesh = m_pMap->GetNavMesh();
+	ST_PET_CELL temp;
+	for (int i = 0; i < vecNavMesh.size(); i += 3)
+	{
+		D3DXVECTOR3 pos = *m_pModel->GetPosition();
+		if (D3DXIntersectTri(&vecNavMesh[i], &vecNavMesh[i + 1], &vecNavMesh[i + 2],
+			&D3DXVECTOR3(pos.x, 300, pos.z), &D3DXVECTOR3(0, -1, 0), NULL, NULL, NULL))
+		{
+			temp.v0 = vecNavMesh[i];
+			temp.v1 = vecNavMesh[i + 1];
+			temp.v2 = vecNavMesh[i + 2];
+			temp.center = (temp.v0 + temp.v1 + temp.v2) / 3.0f;
+			break;
+		}
+	}
+	if (D3DXVec3Length(&(temp.center - m_stTargetCell.center)) < 1)
+		return true;
+	else
+		return false;
+}
+
+void Pet::AStar()
 {
 	m_vecFindPath.clear();
 
@@ -34,6 +58,7 @@ void Pet::AStar(vector<D3DXVECTOR3> vecNavMesh)
 
 	// 네브메시를 노드로 변환
 	vector<ST_PET_NODE> vecNode;
+	auto vecNavMesh = m_pMap->GetNavMesh();
 	for (int i = 0; i < vecNavMesh.size(); i += 3)
 	{
 		ST_PET_NODE temp;
@@ -145,6 +170,7 @@ void Pet::AStar(vector<D3DXVECTOR3> vecNavMesh)
 					temp = temp->pParent;
 				}
 				reverse(m_vecFindPath.begin(), m_vecFindPath.end());
+				OptimizePath();
 				break;
 			}
 		}
@@ -153,24 +179,68 @@ void Pet::AStar(vector<D3DXVECTOR3> vecNavMesh)
 	}
 }
 
+void Pet::OptimizePath()
+{
+	if (!m_isOptimize) return;
+	// 패스 사이드 작업
+	auto tempPath = m_vecFindPath;
+	m_vecFindPath.clear();
+	for (int i = 0; i < tempPath.size() - 1; i++)
+	{
+		D3DXVECTOR3 s[3];
+		s[0] = (tempPath[i].c.v0 + tempPath[i].c.v1) / 2;
+		s[1] = (tempPath[i].c.v1 + tempPath[i].c.v2) / 2;
+		s[2] = (tempPath[i].c.v2 + tempPath[i].c.v0) / 2;
+		int sideIndex = 0;
+		for (int j = 0; j < 3; j++)
+		{
+			if (D3DXVec3Length(&(s[j] - tempPath[i + 1].c.center)) <
+				D3DXVec3Length(&(s[sideIndex] - tempPath[i + 1].c.center)))
+				sideIndex = j;
+		}
+		ST_PET_NODE center;
+		center.c.center = s[sideIndex];
+		m_vecFindPath.push_back(center);
+	}
+}
+
 void Pet::Move()
 {
 	D3DXVECTOR3 pos = *m_pModel->GetPosition();
-	float y = m_pMap->GetHeight(pos.x, pos.z);
-	if (y > 0)
-		m_pModel->SetPosition(D3DXVECTOR3(pos.x, y, pos.z));
 
 	if (!m_vecFindPath.empty())
 	{
 		D3DXVECTOR3 next = m_vecFindPath.front().c.center;
-		float nextDir = GetAngle(pos.x, pos.z, next.x, next.z) - D3DX_PI / 2;
-		m_pModel->SetRotation(D3DXVECTOR3(0, nextDir, 0));
+		float targetRotY;
+
+		if (TargetEqualCell())
+			targetRotY = GetAngle(pos.x, pos.z, m_pTarget->x, m_pTarget->z) - D3DX_PI / 2;
+		else
+			targetRotY = GetAngle(pos.x, pos.z, next.x, next.z) - D3DX_PI / 2;
+
+		D3DXVECTOR3 rot = *m_pModel->GetRotation();
+		rot.y += 0.1 * (targetRotY - rot.y);
+		rot.y = targetRotY;
+		m_pModel->SetRotation(rot);
+
 		D3DXVECTOR3 front = GetFront(*m_pModel->GetRotation(), D3DXVECTOR3(0, 0, -1));
-		m_pModel->SetPosition(*m_pModel->GetPosition() + front * 0.1);
+
+		if (D3DXVec3Length(&(*m_pModel->GetPosition() - *m_pTarget)) > 3.0f)
+			m_pModel->SetPosition(*m_pModel->GetPosition() + front * 0);
+		else
+		{
+			m_vecFindPath.clear();
+			return;
+		}
 
 		if (D3DXVec3Length(&(*m_pModel->GetPosition() - next)) < 1)
 			m_vecFindPath.erase(m_vecFindPath.begin());
 	}
+
+	pos = *m_pModel->GetPosition();
+	float y = m_pMap->GetHeight(pos.x, pos.z);
+	if (y > 0)
+		m_pModel->SetPosition(D3DXVECTOR3(pos.x, y, pos.z));
 }
 
 void Pet::Debug()
@@ -186,7 +256,37 @@ void Pet::Debug()
 		DEVICE->SetTransform(D3DTS_WORLD, &mat);
 		DEVICE->SetTexture(0, NULL);
 		DEVICE->SetRenderState(D3DRS_LIGHTING, false);
+		DEVICE->SetFVF(D3DFVF_XYZ);
 		DEVICE->DrawPrimitiveUP(D3DPT_LINESTRIP, vecVertex.size() - 1, &vecVertex[0], sizeof(D3DXVECTOR3));
+	}
+}
+
+void Pet::StateControll()
+{
+	if (m_eState != PET_ATTACK)
+	{
+		if (m_vecFindPath.empty() && m_eState != PET_IDLE)
+		{
+			m_eState = PET_IDLE;
+			m_pModel->SetBlendTime(0.3);
+			m_pModel->SetBlendAnimation("IDLE");
+		}
+
+		else if (!m_vecFindPath.empty() && m_eState != PET_MOVE)
+		{
+			m_eState = PET_MOVE;
+			m_pModel->SetAnimation("RUN");
+		}
+	}
+
+	if (m_eState == PET_MOVE)
+	{
+		Move();
+	}
+
+	if (m_eState == PET_ATTACK)
+	{
+
 	}
 }
 
@@ -202,20 +302,32 @@ Pet::~Pet()
 
 void Pet::Init(D3DXVECTOR3 * target, Map * map)
 {
-	m_pModel = MODELMANAGER->GetModel("아린", MODELTYPE_X);
+	m_pModel = MODELMANAGER->GetModel("리무", MODELTYPE_X);
 	m_pModel->SetPosition(map->GetSpawnPlayer());
 	m_pModel->SetScale(D3DXVECTOR3(0.025, 0.025, 0.025));
-	m_pModel->SetAnimation("RUN");
+	m_eState = PET_IDLE;
+
+	m_isOptimize = true;
+
 	m_pTarget = target;
 	m_pMap = map;
 }
 
 void Pet::Update()
 {
-	if (TargetUpdate(m_pMap->GetNavMesh()))
-		AStar(m_pMap->GetNavMesh());
+	if (INPUT->KeyDown('T'))
+		m_isOptimize = !m_isOptimize;
 
-	Move();
+	if (m_isOptimize)
+		TEXT->Add("최적화", 20, 20, 20, "", 0xFF00FF00);
+	else
+		TEXT->Add("최적화", 20, 20, 20, "", 0xFFFF0000);
+
+	if (TargetUpdate())
+		AStar();
+
+	StateControll();
+
 	m_pModel->World();
 }
 

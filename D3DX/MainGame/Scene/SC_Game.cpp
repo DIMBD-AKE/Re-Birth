@@ -7,6 +7,7 @@
 #include "../Item/DropManager.h"
 #include "../Character/Inventory.h"
 #include "../Item/ItemParent.h"
+#include "../Character/Pet.h"
 
 SC_Game::SC_Game()
 {
@@ -28,6 +29,7 @@ void SC_Game::Release()
 		SAFE_DELETE(p);
 	m_vecParticle.clear();
 	SAFE_DELETE(m_pNpc);
+	SAFE_DELETE(m_pPet);
 }
 
 void SC_Game::Init()
@@ -86,6 +88,9 @@ void SC_Game::Init()
 
 	m_pNpc = new Npc;
 
+	m_pPet = new Pet;
+	m_pPet->Init(m_pCharacter->GetCharacter()->GetPosition(), m_pMap);
+
 	//npc구현이 끝나면 이닛부분 지워주세요!
 	m_pNpc->Init(m_pMap->GetSpawnPlayer());
 	m_pNpc->SetPlayerMemoryAddressLink(m_pCharacter);
@@ -114,6 +119,8 @@ void SC_Game::Update()
 	m_pCharacter->Update();
 	m_pUI->Update();
 	m_pNpc->Update();
+
+	m_pPet->Update();
 
 	TEXT->Add(to_string(TIME->GetFPS()), 0, 0, 20);
 
@@ -147,6 +154,8 @@ void SC_Game::Render()
 	m_pNpc->Render();
 	m_pMM->Render();
 	m_pCharacter->Render();
+
+	m_pPet->Render();
 
 	m_pMap->ObjectRender();
 	

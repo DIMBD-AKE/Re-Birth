@@ -6,6 +6,8 @@ class Npc;
 class MonsterManager;
 class DropManager;
 
+class Pet;
+
 class SC_Game : public Scene
 {
 private:
@@ -16,6 +18,7 @@ private:
 	UIObject *			m_pUI;
 	Npc*				m_pNpc;
 
+	Pet*				m_pPet;
 
 	bool				m_isRank;
 	bool				m_isStart;
