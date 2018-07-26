@@ -52,6 +52,7 @@ enum CHAR_CONDITION			//캐릭터 컨디션
 	CHAR_INHERENT2,			//캐릭터 고유스킬2
 	CHAR_INHERENT3,			//캐릭터 고유스킬3
 	CHAR_TALK,				//NPC랑 대화상태
+	CHAR_GUARD,				//캐릭터 가드상태
 	CHAR_NONE				//죽은뒤의 None상태
 };
 

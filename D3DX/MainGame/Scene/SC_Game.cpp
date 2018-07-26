@@ -147,6 +147,8 @@ void SC_Game::Render()
 	m_pNpc->Render();
 	m_pMM->Render();
 	m_pCharacter->Render();
+
+	m_pMap->ObjectRender();
 	
 	for (auto p : m_vecParticle)
 		p->Render();
