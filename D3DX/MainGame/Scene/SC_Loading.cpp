@@ -76,6 +76,18 @@ void SC_Loading::AddModel()
 
 	//NPC
 	m_pLoading->LoadModel("리무", "Model/NPC/Rimoo/", "Rimoo.x", MODELTYPE_X);
+
+
+	//Pet
+	m_pLoading->LoadModel("강아지", "Model/Pet/Bentley/", "Bentley.x", MODELTYPE_X);
+	m_pLoading->LoadModel("토끼", "Model/Pet/Bunny/", "Bunny.x", MODELTYPE_X);
+	m_pLoading->LoadModel("구미호", "Model/Pet/Miho/", "Miho.x", MODELTYPE_X);
+	m_pLoading->LoadModel("양", "Model/Pet/Miri/", "Miri.x", MODELTYPE_X);
+	m_pLoading->LoadModel("고양이", "Model/Pet/Nero/", "Nero.x", MODELTYPE_X);
+	m_pLoading->LoadModel("용", "Model/Pet/Nir/", "Nir.x", MODELTYPE_X);
+	m_pLoading->LoadModel("피닉스", "Model/Pet/Nix/", "Nix.x", MODELTYPE_X);
+	m_pLoading->LoadModel("팬더", "Model/Pet/Panda/", "Panda.x", MODELTYPE_X);
+	m_pLoading->LoadModel("", "Model/Pet/Penny/", "Penny.x", MODELTYPE_X);
 }
 
 void SC_Loading::AddTexture()
@@ -127,14 +139,6 @@ void SC_Loading::AddTexture()
 	m_pLoading->LoadTexture("숫자9", "Texture/Damage/9.png");
 
 	
-
-	//플레이어 프로그래스바
-	m_pLoading->LoadTexture("플레이어_프론트바", "Texture/PlayerProgressBar/frontBar.jpg");
-	m_pLoading->LoadTexture("플레이어_백바", "Texture/PlayerProgressBar/backBar.jpg");
-
-	m_pLoading->LoadTexture("스테미나_프론트바", "Texture/PlayerProgressBar/staminaFrontBar.jpg");
-	m_pLoading->LoadTexture("스테미나_백바", "Texture/PlayerProgressBar/staminaBackBar.jpg");
-
 	//쉴드 프로그래스바
 	m_pLoading->LoadTexture("실드_프론트바", "Texture/PlayerProgressBar/shieldHp.jpg");
 	m_pLoading->LoadTexture("실드_백바", "Texture/PlayerProgressBar/shieldBack.jpg");
