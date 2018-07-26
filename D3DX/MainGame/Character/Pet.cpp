@@ -221,14 +221,14 @@ void Pet::Move()
 		else
 			targetRotY = GetAngle(pos.x, pos.z, next.x, next.z) - D3DX_PI / 2;
 
-		//targetRotY = D3DXVec3Dot(&pos, m_pTarget) / D3DXVec3Length(&pos) * D3DXVec3Length(m_pTarget);
-
 		D3DXVECTOR3 rot = *m_pModel->GetRotation();
 		rot.y += 0.1 * (targetRotY - rot.y);
-		rot.y = targetRotY;
+		TEXT->Add(to_string(targetRotY), 20, 40, 20, "", 0xFFFFFFFF);
+		TEXT->Add(to_string(0.1 * (targetRotY - rot.y)), 20, 60, 20, "", 0xFFFFFFFF);
+		//rot.y = targetRotY;
 		m_pModel->SetRotation(rot);
 
-		D3DXVECTOR3 front = GetFront(*m_pModel->GetRotation(), D3DXVECTOR3(0, 0, -1));
+		D3DXVECTOR3 front; D3DXVec3Normalize(&front, &(next - pos));
 
 		if (D3DXVec3Length(&(*m_pModel->GetPosition() - *m_pTarget)) > 2.0f)
 			m_pModel->SetPosition(*m_pModel->GetPosition() + front * m_eStatus.speed);
@@ -270,17 +270,31 @@ void Pet::StateControll()
 {
 	if (m_eState != PET_ATTACK)
 	{
-		if (m_vecFindPath.empty() && m_eState != PET_IDLE)
+		if (m_vecFindPath.empty() && m_eState == PET_MOVE)
 		{
 			m_eState = PET_IDLE;
 			m_pModel->SetBlendTime(0.3);
 			m_pModel->SetBlendAnimation("IDLE");
 		}
 
-		else if (!m_vecFindPath.empty() && m_eState != PET_MOVE)
+		if (!m_vecFindPath.empty() && m_eState == PET_IDLE)
 		{
 			m_eState = PET_MOVE;
 			m_pModel->SetAnimation("MOVE");
+		}
+	}
+
+	if (m_eState == PET_SPAWN || m_eState == PET_DISAPPEAR)
+	{
+		m_pSpawnParticle->SetPosition(*m_pModel->GetPosition());
+		m_pSpawnParticle->ApplyWorld();
+		m_pSpawnParticle->Update();
+		if (m_pSpawnParticle->IsDie())
+		{
+			if (m_eState == PET_SPAWN)
+				m_eState = PET_IDLE;
+			else if (m_eState == PET_DISAPPEAR)
+				m_eState = PET_HIDE;
 		}
 	}
 
@@ -293,6 +307,13 @@ void Pet::StateControll()
 	{
 
 	}
+
+	if (m_eState != PET_HIDE)
+	{
+		if (TargetUpdate()) AStar();
+
+		m_pModel->World();
+	}
 }
 
 Pet::Pet()
@@ -303,6 +324,7 @@ Pet::Pet()
 Pet::~Pet()
 {
 	SAFE_DELETE(m_pModel);
+	SAFE_DELETE(m_pSpawnParticle);
 }
 
 void Pet::Init(D3DXVECTOR3 * target, Map * map, PETTYPE type)
@@ -320,7 +342,9 @@ void Pet::Init(D3DXVECTOR3 * target, Map * map, PETTYPE type)
 	m_pModel->SetPosition(map->GetSpawnPlayer());
 	m_pModel->SetScale(D3DXVECTOR3(0.025, 0.025, 0.025));
 	m_pModel->SetAnimation("IDLE");
-	m_eState = PET_IDLE;
+	m_eState = PET_HIDE;
+
+	m_pSpawnParticle = PARTICLE->GetParticle("Pet Spawn");
 
 	m_isOptimize = true;
 
@@ -335,22 +359,51 @@ void Pet::Update()
 	if (INPUT->KeyDown('T'))
 		m_isOptimize = !m_isOptimize;
 
+	if (INPUT->KeyDown('X'))
+		Spawn();
+
 	if (m_isOptimize)
 		TEXT->Add("최적화", 20, 20, 20, "", 0xFF00FF00);
 	else
 		TEXT->Add("최적화", 20, 20, 20, "", 0xFFFF0000);
 
-	if (TargetUpdate())
-		AStar();
-
 	StateControll();
-
-	m_pModel->World();
 }
 
 void Pet::Render()
 {
-	m_pModel->Render();
+	if (m_eState != PET_HIDE)
+		m_pModel->Render();
+
+	if (m_eState == PET_SPAWN || m_eState == PET_DISAPPEAR)
+		m_pSpawnParticle->Render();
 
 	Debug();
+}
+
+void Pet::AttackMode()
+{
+	if (m_eState != PET_HIDE)
+	{
+		if (m_eState == PET_ATTACK)
+			m_eState = PET_IDLE;
+		else
+			m_eState = PET_ATTACK;
+	}
+}
+
+void Pet::Spawn()
+{
+	if (m_eState == PET_HIDE)
+	{
+		m_eState = PET_SPAWN;
+		m_pSpawnParticle->TimeReset();
+		m_pModel->SetPosition(*m_pTarget);
+	}
+	else
+	{
+		m_eState = PET_DISAPPEAR;
+		m_pSpawnParticle->TimeReset();
+		m_pModel->SetAnimation("IDLE");
+	}
 }

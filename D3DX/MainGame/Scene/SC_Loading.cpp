@@ -290,6 +290,7 @@ void SC_Loading::AddParticle()
 	m_pLoading->LoadParticle("MegaCristal", "MegaCristal", "Particle/megaCristal.ptc");
 
 	m_pLoading->LoadParticle("Hell Smoke", "Particle Sphere", "Particle/Hell Smoke.ptc");
+	m_pLoading->LoadParticle("Pet Spawn", "Particle Sphere", "Particle/Pet Spawn.ptc");
 
 	m_pLoading->LoadParticle("몬스터기본피격", "피", "Particle/Blood Hit.ptc");
 }

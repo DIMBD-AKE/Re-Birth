@@ -20,6 +20,9 @@ struct ST_PET_NODE
 
 enum PETSTATE
 {
+	PET_SPAWN,
+	PET_HIDE,
+	PET_DISAPPEAR,
 	PET_IDLE,
 	PET_MOVE,
 	PET_ATTACK,
@@ -55,6 +58,8 @@ private:
 
 	bool			m_isOptimize;
 
+	Particle *		m_pSpawnParticle;
+
 private:
 	vector<ST_PET_NODE>	m_vecFindPath;
 	ST_PET_CELL			m_stTargetCell;
@@ -75,6 +80,7 @@ public:
 	void Update();
 	void Render();
 
-	void Attack() { m_eState = (m_eState == PET_ATTACK ? PET_IDLE : PET_ATTACK); }
+	void AttackMode();
+	void Spawn();
 };
 
