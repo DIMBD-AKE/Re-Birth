@@ -342,11 +342,11 @@ void CharacterParant::ControllStamina()
 	}
 
 
-	if (m_eCondition == CHAR_IDLE)
+	if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_RUN_FRONT)
 	{
 		if (m_Status->chr.nCurrentStam <= m_Status->chr.nMaxStam)
 		{
-			m_Status->chr.nCurrentStam += 0.01;
+			m_Status->chr.nCurrentStam += 0.1;
 			if (m_Status->chr.nCurrentStam >= m_Status->chr.nMaxStam)
 			{
 				m_Status->chr.nCurrentStam = m_Status->chr.nMaxStam;
