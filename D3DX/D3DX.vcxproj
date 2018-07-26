@@ -151,7 +151,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="MainGame\Monster\HitParticle.h" />
-    <ClInclude Include="MainGame\Character\Follower.h" />
+    <ClInclude Include="MainGame\Character\Pet.h" />
     <ClInclude Include="MainGame\Character\Character_fist.h" />
     <ClInclude Include="MainGame\DamageUI.h" />
     <ClInclude Include="Framework\Manager\SoundManager.h" />
@@ -229,7 +229,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainGame\Monster\HitParticle.cpp" />
-    <ClCompile Include="MainGame\Character\Follower.cpp" />
+    <ClCompile Include="MainGame\Character\Pet.cpp" />
     <ClCompile Include="MainGame\Character\Character_fist.cpp" />
     <ClCompile Include="MainGame\DamageUI.cpp" />
     <ClCompile Include="Framework\Manager\SoundManager.cpp" />

@@ -141,13 +141,13 @@ void Character_fist::Render()
 
 		CharacterParant::Render();
 
-		m_pUIobj->Render();
-		m_pSkillBar->Render();
-		m_pInheritateIco->Render();
-		m_pInheritateIco2->Render();
-		if (m_bSkillUnSealed) m_pInheritateIco3->Render();
-		m_pHPBar->Render();
-		m_pStaminaBar->Render();
+		if (!m_pNpc->GetCollision())m_pUIobj->Render();
+		if (!m_pNpc->GetCollision())m_pSkillBar->Render();
+		if (!m_pNpc->GetCollision())m_pInheritateIco->Render();
+		if (!m_pNpc->GetCollision())m_pInheritateIco2->Render();
+		if (m_bSkillUnSealed && !m_pNpc->GetCollision()) m_pInheritateIco3->Render();
+		if (!m_pNpc->GetCollision())m_pHPBar->Render();
+		if (!m_pNpc->GetCollision())m_pStaminaBar->Render();
 		if (m_pNpc->GetCollision()) m_pTalkBar->Render();
 		Debug();
 		m_pInventory->Render();

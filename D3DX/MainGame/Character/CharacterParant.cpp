@@ -404,7 +404,7 @@ void CharacterParant::CalculDamage(float damage)
 			ChangeAnimation();
 		}
 		//SetModelAlpha();
-		m_pCharacter->SetShaderAlpha(0.3f);
+	//	m_pCharacter->SetShaderAlpha(0.3f);
 		//	m_bIsInvincible = true;
 		m_bIsUnderAttacked = true;
 		float totalRate =
@@ -467,36 +467,6 @@ void CharacterParant::SkillIconAlpha()
 
 void CharacterParant::PlayerProgressBar()
 {
-
-	// t = 현재 시간 / 토탈 시간
-	// from = 현재위치, to = 도착위치
-	// (1 - t) * from + t * to;
-
-	/*if (_hpBarFront)
-	{
-		float currentTime = TIMEMANAGER->getElapsedTime();
-		float totalTime = 1.0f;
-		float t = currentTime / totalTime;
-		float from = _width;
-		float to = (currentGauge / maxGauge) * _hpBarFront->getWidth();
-
-		if (t < totalTime)
-			_width = (1 - t) * from + t * to;
-	}
-
-	if (_width <= 0) _width = 0;
-
-*/
-	/*float TotalTime = 1.0f;
-	float CurrentTime;
-	CurrentTime += TIME->GetElapsedTime();*/
-	/*D3DXVECTOR3 tempPos1;
-	tempPos1 = *m_pCharacter->GetPosition();
-	tempPos1.y += 3;
-	D3DXVECTOR2 pos1 = Convert3DTo2D(tempPos1);
-	
-	TEXT->Add(to_string(m_Status->chr.nMaxHp), pos1.x, pos1.y - 25.0f, 30);
-*/
 
 
 	float tempF = (float)m_Status->chr.nCurrentHP / m_Status->chr.nMaxHp;
@@ -668,23 +638,20 @@ void CharacterParant::CutScene()
 
 void CharacterParant::SetModelAlpha()
 {
-	float tempPrevTime = 0.0f;
-	float tempInterval = 0.1f;
-
-	if (m_fElpTime < tempPrevTime + tempInterval) return;
-
-	tempPrevTime = m_fElpTime;
-	
-	m_fModelAlpha += 0.1f;
-	if (m_fModelAlpha <= 0.7f)
+	if (m_pNpc->GetCollision() || m_bIsUnderAttacked)
 	{
-		m_pCharacter->SetShaderAlpha(m_fModelAlpha);
+		m_pCharacter->SetShaderAlpha(0.5f);
 	}
-}
-
-void CharacterParant::SetCameraNpc()
-{
+	else
+	m_pCharacter->SetShaderAlpha(1.0f);
 	
+	/*if (m_bIsUnderAttacked)
+	{
+		m_pCharacter->SetShaderAlpha(0.5f);
+	}
+	else 
+	m_pCharacter->SetShaderAlpha(1.0f);*/
+
 }
 
 void CharacterParant::SetPlayerStatus()
@@ -939,19 +906,19 @@ void CharacterParant::Init(CHRTYPE type, CHARSELECT order)
 
 	m_pParticle3->SetPosition(D3DXVECTOR3(m_pCharacter->GetPosition()->x, m_pCharacter->GetPosition()->y, m_pCharacter->GetPosition()->z + 5.0f));
 	m_pTalkBar->SetTexture(TEXTUREMANAGER->GetTexture("대화창"));
-	m_pTalkBar->SetPosition(D3DXVECTOR3(0, 580, 0));
+	m_pTalkBar->SetPosition(D3DXVECTOR3(0, 545, 0));
 
 	m_pShieldChr = NULL;
 }
 
 void CharacterParant::Update()
 {
-	SetCameraNpc();
 	if (m_bIsPotal)
 	{
 		m_pParticle3->Update();
 	}
-}
+	//SetModelAlpha();
+}	
 
 
 
@@ -969,7 +936,7 @@ void CharacterParant::Render()
 		m_vecEffect[i]->Render();
 	}
 
-	m_pChrStat->Render();
+	if (!m_pNpc->GetCollision())m_pChrStat->Render();
 
 	D3DXVECTOR3 temp = *m_pCharacter->GetPosition();
 	temp.y += 0.4f;
@@ -1225,7 +1192,8 @@ void CharacterParant::ChangeAnimation()
 			m_pCharacter->SetBlendAnimation("IDLE");
 			m_pCharacter->SetBlendTime(0.27f);
 			m_pCharacter->SetAnimationSpeed(1.0f);
-			m_pCharacter->SetShaderAlpha(1.0f);
+			m_bIsUnderAttacked = false;
+		//	m_pCharacter->SetShaderAlpha(1.0f);
 		break;
 	case CHAR_DASH_FRONT:
 		m_pCharacter->SetAnimation("RUN");
@@ -1265,6 +1233,10 @@ void CharacterParant::ChangeAnimation()
 		break;
 	case CHAR_INHERENT3:
 		m_pCharacter->SetAnimation("ATTACK");
+		break;
+	case CHAR_TALK:
+		m_pCharacter->SetBlendAnimation("IDLE");
+	//	m_pCharacter->SetShaderAlpha(0.5f);
 		break;
 	case CHAR_NONE :
 		break;

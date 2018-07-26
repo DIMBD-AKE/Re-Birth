@@ -171,7 +171,6 @@ protected:
 	void SetTarget();
 	void CutScene();
 	void SetModelAlpha();
-	void SetCameraNpc();
 	void SetPlayerStatus();
 	void SkillToolTip(D3DXVECTOR3 pos);
 	void SetCameraNormalView();

@@ -193,7 +193,8 @@ void SC_Loading::AddTexture()
 	m_pLoading->LoadTexture("돌", "Texture/Effect/stone.png");
 	
 	//Npc대화창
-	m_pLoading->LoadTexture("대화창", "Texture/Scene/talk.png");
+	m_pLoading->LoadTexture("대화창", "Texture/UI/NPC Dialogue.png");
+	m_pLoading->LoadTexture("리무_초상화", "Texture/Portrait/Rimoo.png");
 
 	//몬스터 피격 텍스쳐
 	m_pLoading->LoadTexture("피", "Texture/Particle/Blood.png");

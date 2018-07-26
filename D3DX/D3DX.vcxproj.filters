@@ -237,7 +237,7 @@
     <ClInclude Include="MainGame\Character\Npc.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="MainGame\Character\Follower.h">
+    <ClInclude Include="MainGame\Character\Pet.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="MainGame\Monster\HitParticle.h">
@@ -419,7 +419,7 @@
     <ClCompile Include="MainGame\Character\Npc.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="MainGame\Character\Follower.cpp">
+    <ClCompile Include="MainGame\Character\Pet.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="MainGame\Monster\HitParticle.cpp">
