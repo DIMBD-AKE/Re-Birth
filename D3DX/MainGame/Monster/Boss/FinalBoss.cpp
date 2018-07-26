@@ -146,13 +146,13 @@ void FinalBoss::SetupSkill2()
 
 void FinalBoss::Pattern()
 {
-	if (AbleSkill() && !m_bUsingSkill2)
+	if (AbleSkill() && !m_bUsingSkill2 && m_eBossState != BS_NONE && m_eBossState != BS_DIE)
 	{
 		m_eBossState = BS_CASTING;
 		ChangeAni();
 	}
 
-	else if (AbleSkill2())
+	else if (AbleSkill2() && m_eBossState != BS_NONE && m_eBossState != BS_DIE)
 	{
 		m_eBossState = BS_SKILL2;
 		ChangeAni();

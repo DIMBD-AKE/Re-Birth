@@ -82,7 +82,7 @@ void SC_Test::Update()
 	m_pSkill->Update();
 	
 	
-	m_pMM->Update();
+//	m_pMM->Update();
 	m_pDropManager->GetDropItem(m_pCharacter);
 
 	TEXT->Add(to_string(TIME->GetFPS()), 0, 0, 20);

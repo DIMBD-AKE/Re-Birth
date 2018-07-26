@@ -45,10 +45,10 @@ void MonsterManager::Setup(Map* map, CharacterParant** character)
 
 	Shuffle();
 
-	m_nDieMonsterNum = 0;
+	m_nDieMonsterNum = m_bAppearMiddleBoss = 0;
 }
 
-void MonsterManager::Update()
+void MonsterManager::Update(int stage)
 {
 	assert(m_vSpawnSpot.size() > 0 && "만들어진 몬스터가 없습니다.");
 
@@ -89,6 +89,12 @@ void MonsterManager::Update()
 		{
 			m_vMM[i]->Update();
 		}
+	}
+
+	if (stage == 1 && m_nDieMonsterNum >= 10 && !m_bAppearMiddleBoss)
+	{
+		MakeMiddleBoss(NULL);
+		m_bAppearMiddleBoss = true;
 	}
 
 	if (INPUT->KeyDown('1'))

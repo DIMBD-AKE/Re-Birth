@@ -290,6 +290,25 @@ void MonsterParent::RespawnUpdate()
 
 	}
 
+	if (m_pHitParticle)
+	{
+		D3DXVECTOR3 tempVec = *m_pModel->GetPosition();
+		float rotY = 0;
+		if (!m_bSpecial)
+		{
+			rotY = GetAngle(m_pModel->GetPosition()->x, m_pModel->GetPosition()->z,
+				CHARACTER->GetPosition()->x, CHARACTER->GetPosition()->z);
+
+			rotY -= D3DX_PI / 2;
+
+			tempVec.y += 2.0f;
+		}
+
+		m_pHitParticle->Update(tempVec, rotY);
+
+
+	}
+
 	m_nResPawnCount++;
 
 	m_pModel->World();
@@ -342,9 +361,11 @@ void MonsterParent::Render()
 		//UIPos.z = 0;
 		//m_pHPBar->SetPosition(UIPos);
 
-		if (m_bIsTargeting) m_pHPBar->Render();
+		
+			if (m_bIsTargeting) m_pHPBar->Render();
 
-		if (m_pHitParticle) m_pHitParticle->Render();
+			if (m_pHitParticle) m_pHitParticle->Render();
+		
 	}
 
 

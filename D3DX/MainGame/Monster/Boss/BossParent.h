@@ -84,7 +84,17 @@ protected:
 
 	virtual void RespawnUpdate() override
 	{
+		Pattern();
 
+		if (m_pHPBar)
+		{
+			float tempF = (float)CURRENTHP(m_pMonsterStat) / MAXHP(m_pMonsterStat);
+
+
+			m_pHPBar->SetScale(D3DXVECTOR3(tempF, 1, 1));
+
+			m_pHPBar->Update();
+		}
 	}
 
 	//보스 스탯 셋업
@@ -117,7 +127,7 @@ protected:
 
 	virtual void Pattern();
 
-	virtual void SetCurrentHP(int hp);
+	virtual void SetCurrentHP(int hp, int* deathCount) override;
 
 	virtual bool AbleSkill() override;
 	bool AbleSkill2();

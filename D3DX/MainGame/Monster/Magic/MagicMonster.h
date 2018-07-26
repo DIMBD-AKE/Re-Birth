@@ -29,6 +29,7 @@ protected:
 
 	virtual void DropItemSetup() override;
 
+
 public:
 	MagicMonster();
 	virtual ~MagicMonster();
@@ -36,7 +37,10 @@ public:
 	virtual void Setup(Map* map, D3DXVECTOR3 spawnPos, bool isSummon = false) override;
 
 	virtual void Update() override;
+	
 	virtual void Render() override;
+
+	virtual void Respawn(D3DXVECTOR3 spawnPos) override;
 	
 };
 

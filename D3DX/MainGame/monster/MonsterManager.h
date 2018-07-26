@@ -20,6 +20,8 @@ private:
 	vector<int> m_vSpawnIndex;
 
 	int m_nDieMonsterNum;
+
+	bool m_bAppearMiddleBoss;
 	//vector<MonsterParent> m_vMM;
 
 private:
@@ -52,7 +54,7 @@ public:
 	~MonsterManager();
 
 	void Setup(Map* map, CharacterParant** character);
-	void Update();
+	void Update(int stage);
 	void Render();
 
 	//몬스터 만드는 함수
