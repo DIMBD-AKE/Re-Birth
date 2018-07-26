@@ -342,11 +342,11 @@ void CharacterParant::ControllStamina()
 	}
 
 
-	if (m_eCondition == CHAR_IDLE)
+	if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_RUN_FRONT)
 	{
 		if (m_Status->chr.nCurrentStam <= m_Status->chr.nMaxStam)
 		{
-			m_Status->chr.nCurrentStam += 0.01;
+			m_Status->chr.nCurrentStam += 0.1;
 			if (m_Status->chr.nCurrentStam >= m_Status->chr.nMaxStam)
 			{
 				m_Status->chr.nCurrentStam = m_Status->chr.nMaxStam;
@@ -392,23 +392,24 @@ void CharacterParant::SetCurrentHP(int hp)
 
 void CharacterParant::CalculDamage(float damage)
 {
+	
+
 	if (m_eCondition == CHAR_DIE)
 	{
 		return;
 	}
 	if (!m_bIsSubChr)
 	{
+		m_bIsUnderAttacked = true;
+		m_fGuard = 0.0f;
+		if (m_eCondition != CHAR_HIT && m_eCondition != CHAR_ATTACK && m_eCondition != CHAR_SKILL)
+		{
+			m_eCondition = CHAR_HIT;
+			ChangeAnimation();
+		}
+	
 		if (!m_bIsInvincible)
 		{
-			if (m_eCondition != CHAR_HIT && m_eCondition != CHAR_ATTACK && m_eCondition != CHAR_SKILL)
-			{
-				m_eCondition = CHAR_HIT;
-				ChangeAnimation();
-			}
-			//SetModelAlpha();
-		//	m_pCharacter->SetShaderAlpha(0.3f);
-
-			m_bIsUnderAttacked = true;
 			float totalRate =
 				m_Status->chr.fPhyRate +
 				m_Status->chr.fMagicRate +
@@ -421,10 +422,28 @@ void CharacterParant::CalculDamage(float damage)
 			if (totalDamage <= 1) totalDamage = 1;
 			totalDamage = round(totalDamage);
 			SetCurrentHP(totalDamage);
-		}
-		if (m_bIsInvincible)
+		}	
+		if (m_bIsInvincible && m_bIsUnderAttacked)
 		{
+			CAMERA->Shake(0.3, 1);
 			
+			ST_EFFECT tempEffect1;
+			ZeroMemory(&tempEffect1, sizeof(tempEffect1));
+			tempEffect1.time = 1;
+			tempEffect1.rot = *m_pCharacter->GetRotation();
+		
+			tempEffect1.height = 3.0f;
+			tempEffect1.SetAlpha(255, 255, 0);
+			tempEffect1.SetScale(1, 1, 1);
+			tempEffect1.tex = TEXTUREMANAGER->GetTexture("실드_마법");
+
+
+			EffectObject* tempEFOBJ1;
+			tempEFOBJ1 = new EffectObject;
+			D3DXVECTOR3 testSkillpos1 = *m_pCharacter->GetPosition() - m_vfront * 1.0f;
+			tempEFOBJ1->Init(tempEffect1, testSkillpos1);
+			m_vecEffect.push_back(tempEFOBJ1);
+
 		}
 	}
 	else
@@ -445,23 +464,23 @@ void CharacterParant::CalculDamage(float damage)
 void CharacterParant::CountAppearDamage()
 {
 
-	if (m_bIsUnderAttacked)
-	{
-		m_stDamaged.startDamageTime += TIME->GetElapsedTime();
-	}
+	//if (m_bIsUnderAttacked)
+	//{
+	//	m_stDamaged.startDamageTime += TIME->GetElapsedTime();
+	//}
 
-	if (m_stDamaged.startDamageTime < m_stDamaged.endDamageTime && m_bIsUnderAttacked)
-	{
-		m_pParticle->SetPosition(D3DXVECTOR3(m_pCharacter->GetPosition()->x, m_pCharacter->GetPosition()->y + 1.5f, m_pCharacter->GetPosition()->z));
-		m_pParticle->TimeReset();
-	}
+	//if (m_stDamaged.startDamageTime < m_stDamaged.endDamageTime && m_bIsUnderAttacked)
+	//{
+	//	m_pParticle->SetPosition(D3DXVECTOR3(m_pCharacter->GetPosition()->x, m_pCharacter->GetPosition()->y + 1.5f, m_pCharacter->GetPosition()->z));
+	//	m_pParticle->TimeReset();
+	//}
 
-	if (m_stDamaged.startDamageTime >= 0.3f)
-	{
-		m_stDamaged.startDamageTime = 0.0f;
-		m_bIsUnderAttacked = false;
-		//m_bIsInvincible = false;
-	}
+	//if (m_stDamaged.startDamageTime >= 0.3f)
+	//{
+	//	m_stDamaged.startDamageTime = 0.0f;
+	//	m_bIsUnderAttacked = false;
+	//	//m_bIsInvincible = false;
+	//}
 
 }
 
@@ -723,37 +742,7 @@ void CharacterParant::Guard()
 	if (m_eCondition == CHAR_GUARD)
 	{
 		m_bIsInvincible = true;
-		CAMERA->Shake(0.01, 0.05);
-
-		//ST_EFFECT tempEffect1;
-		//ZeroMemory(&tempEffect1, sizeof(tempEffect1));
-		//tempEffect1.time = 0.3;
-		////tempEffect1.rot = D3DXVECTOR3(0, 0, 0);
-		////tempEffect1.mot = D3DXVECTOR3(0, 10, 0);
-		////tempEffect1.ms0 = 9.0f;
-		////tempEffect.isRY = true;
-		////tempEffect.isRX = true;
-		////tempEffect.isRZ = true;
-		////tempEffect.dir = *m_pCharacter->GetRotation();
-		////tempEffect.SetSpeed(0, 0.2, 0);
-		//tempEffect1.height = 3.0f;
-		//tempEffect1.SetAlpha(255, 255, 0);
-		//tempEffect1.SetScale(1, 1, 1);
-		//tempEffect1.tex = TEXTUREMANAGER->GetTexture("실드_마법");
-
-
-		//EffectObject* tempEFOBJ1;
-		//tempEFOBJ1 = new EffectObject;
-		//D3DXVECTOR3 testSkillpos1 = *m_pCharacter->GetPosition() - m_vfront * 1.0f;
-		//testSkillpos1.y += 3.0f;
-		////testSkillpos.x += FRand(-0.5, 0.5);
-		////testSkillpos.z += FRand(-0.3, 0.3);
-		////testSkillpos += TempDir * (Length * 0.3f);
-		//tempEFOBJ1->Init(tempEffect1, testSkillpos1);
-		//m_vecEffect.push_back(tempEFOBJ1);
-
 	}
-
 }
 
 
@@ -885,7 +874,7 @@ void CharacterParant::Init(CHRTYPE type, CHARSELECT order)
 	m_fModelAlpha = 0.0f;
 	m_fDot = 0.0f;
 	m_fFireCount = 1.0f;
-
+	m_fGuard = 0.0f;
 
 	m_fEffectInterval = 0.1f;
 
@@ -957,7 +946,20 @@ void CharacterParant::Update()
 	{
 		m_pParticle3->Update();
 	}
-	//SetModelAlpha();
+
+
+
+
+	if (m_bIsUnderAttacked)
+	{
+		m_fGuard += TIME->GetElapsedTime();
+		if (m_fGuard > 1.0)
+		{
+			m_bIsUnderAttacked = false;
+			m_bIsInvincible = false;
+		}
+	}
+
 	Guard();
 }	
 
@@ -1233,7 +1235,7 @@ void CharacterParant::ChangeAnimation()
 			m_pCharacter->SetBlendAnimation("IDLE");
 			m_pCharacter->SetBlendTime(0.27f);
 			m_pCharacter->SetAnimationSpeed(1.0f);
-			m_bIsUnderAttacked = false;
+		//	m_bIsUnderAttacked = false;
 		//	m_pCharacter->SetShaderAlpha(1.0f);
 		break;
 	case CHAR_DASH_FRONT:

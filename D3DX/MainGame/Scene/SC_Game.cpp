@@ -114,7 +114,7 @@ void SC_Game::Init()
 
 void SC_Game::Update()
 {
-	m_pMM->Update();
+	m_pMM->Update(m_nStage);
 	m_pDropManager->GetDropItem(m_pCharacter);
 	m_pCharacter->Update();
 	m_pUI->Update();

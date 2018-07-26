@@ -232,17 +232,32 @@ void MagicMonster::DropItemSetup()
 	 }
 }
 
+
+
 void MagicMonster::Render()
 {
 	MonsterParent::Render();
 
 	if (m_bIsAttack)
 	{
-		if(m_pMagicCircle)		m_pMagicCircle->Render();
+		if (!m_bIsRespawn)
+		{
+			if (m_pMagicCircle)		m_pMagicCircle->Render();
+		}
+		
 	}
 
 	if (m_eState == MS_SKILL)
 	{
 		m_pParticle->Render();
 	}
+}
+void MagicMonster::Respawn(D3DXVECTOR3 spawnPos)
+{
+	MonsterParent::Respawn(spawnPos);
+	//MagicCircle* m_pMagicCircle;
+	//
+	//Particle* m_pParticle;
+	//마법타입은 공격중 멀어져도 지속적인 공격이 되어야 한다.
+	m_bIsAttack = false;
 }

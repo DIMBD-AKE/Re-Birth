@@ -29,7 +29,7 @@ void BossParent::SetupBoss(Map* map, D3DXVECTOR3 pos)
 void BossParent::Update()
 {
 	if (INPUT->KeyDown('4'))
-		SetCurrentHP(10000);
+		SetCurrentHP(10000,NULL);
 	
 	
 
@@ -91,7 +91,7 @@ void BossParent::Render()
 
 }
 
-void BossParent::SetCurrentHP(int hp)
+void BossParent::SetCurrentHP(int hp, int* deathCount)
 {
 	CURRENTHP(m_pMonsterStat) -= hp;
 
@@ -101,6 +101,8 @@ void BossParent::SetCurrentHP(int hp)
 
 	if (CURRENTHP(m_pMonsterStat) <= 0)
 	{
+		if(deathCount)
+		(*deathCount)++;
 		m_pModel->SetShaderAlpha(1.0f);
 		if (m_pMM)
 		m_pMM->DeleteSummonMonster();
@@ -111,6 +113,7 @@ void BossParent::SetCurrentHP(int hp)
 		m_eBossState = BS_DIE;
 		ChangeAni();
 		ItemDrop();
+		//this->Update();
 	}
 }
 
