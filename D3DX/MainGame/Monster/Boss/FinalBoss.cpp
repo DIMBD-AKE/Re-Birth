@@ -4,7 +4,7 @@
 #include "../Magic/MagicCircle.h"
 
 //90, 80, ... 10퍼가 될때마다 소환
-static int summonCount = 9;
+static int summonCount = 4;
 
 FinalBoss::FinalBoss()
 {
@@ -317,7 +317,7 @@ bool FinalBoss::AbleSummon()
 	if (summonCount <= 0) return false;
 	//현재 HP 비율
 	float HPRatio = (float)CURRENTHP(m_pMonsterStat) / MAXHP(m_pMonsterStat);
-	float summonRatio = (10 * summonCount / 100.0f);
+	float summonRatio = (20 * summonCount / 100.0f);
 	//현재 피 비율이 소환카운트 비율보다 적어졌다면
 	if (HPRatio <= summonRatio)
 	{

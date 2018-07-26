@@ -45,7 +45,8 @@ void MonsterManager::Setup(Map* map, CharacterParant** character)
 
 	Shuffle();
 
-	m_nDieMonsterNum = m_bAppearMiddleBoss = 0;
+	m_nDieMonsterNum = m_bAppearMiddleBoss = m_bAppearKeyMonster = 0;
+
 }
 
 void MonsterManager::Update(int stage)
@@ -174,17 +175,17 @@ void MonsterManager::MakeMonster(DropManager* pDropManager, int stage)
 
 void MonsterManager::MakeMonster()
 {
-	MakeElizabeth(NULL, true);
+	MakeElizabeth(NULL,0, true);
 
-	MakeAssis(NULL, true);
+	MakeAssis(NULL, 0, true);
 
-	MakeDarkHell(NULL, true);
+	MakeDarkHell(NULL, 0, true);
 
-	MakeNifilHeim(NULL, true);
+	MakeNifilHeim(NULL, 0, true);
 
-	MakeNerisa(NULL, true);
+	MakeNerisa(NULL, 0, true);
 
-	MakeNike(NULL, true);
+	MakeNike(NULL, 0, true);
 }
 
 //±Ÿ¡¢

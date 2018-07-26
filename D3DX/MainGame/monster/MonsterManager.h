@@ -22,6 +22,7 @@ private:
 	int m_nDieMonsterNum;
 
 	bool m_bAppearMiddleBoss;
+	bool m_bAppearKeyMonster;
 	//vector<MonsterParent> m_vMM;
 
 private:
