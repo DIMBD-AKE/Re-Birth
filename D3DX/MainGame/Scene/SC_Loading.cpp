@@ -150,6 +150,8 @@ void SC_Loading::AddTexture()
 	m_pLoading->LoadTexture("Character Background", "Texture/Scene/Character BG.png");
 	m_pLoading->LoadTexture("Character Chr Over", "Texture/Scene/Main Character Over.png");
 
+	m_pLoading->LoadTexture("White", "Texture/UI/White.png");
+
 	// 게임 UI
 	m_pLoading->LoadTexture("Game ElapseTime", "Texture/UI/ElapseTime.png");
 	m_pLoading->LoadTexture("캐릭터_스테이터스", "Texture/UI/Character Status.png");

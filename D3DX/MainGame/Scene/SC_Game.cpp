@@ -24,7 +24,8 @@ void SC_Game::Release()
 	SAFE_DELETE(m_pMap);
 	SAFE_DELETE(m_pDropManager);
 	SAFE_DELETE(m_pMM);
-	SAFE_RELEASE(m_pUI);
+	SAFE_RELEASE(m_pGameUI);
+	SAFE_RELEASE(m_pPauseUI);
 	for (auto p : m_vecParticle)
 		SAFE_DELETE(p);
 	m_vecParticle.clear();
@@ -89,16 +90,21 @@ void SC_Game::Init()
 	m_pNpc = new Npc;
 
 	m_pPet = new Pet;
-	m_pPet->Init(m_pCharacter->GetCharacter()->GetPosition(), m_pMap);
+	m_pPet->Init(m_pCharacter->GetCharacter()->GetPosition(), m_pMap, PETTYPE_MIHO);
 
 	//npc구현이 끝나면 이닛부분 지워주세요!
 	m_pNpc->Init(m_pMap->GetSpawnPlayer());
 	m_pNpc->SetPlayerMemoryAddressLink(m_pCharacter);
 	m_pCharacter->SetNpcMemoryAddressLink(m_pNpc);
 
-	m_pUI = new UIObject;
-	m_pUI->SetTexture(TEXTUREMANAGER->GetTexture("Game ElapseTime"));
-	m_pUI->SetPosition(D3DXVECTOR3(1261, 754, 0));
+	m_pGameUI = new UIObject;
+	m_pGameUI->SetTexture(TEXTUREMANAGER->GetTexture("Game ElapseTime"));
+	m_pGameUI->SetPosition(D3DXVECTOR3(1261, 754, 0));
+
+	m_pPauseUI = new UIObject;
+	m_pPauseUI->SetTexture(TEXTUREMANAGER->GetTexture("White"));
+	m_pPauseUI->SetAlpha(150);
+	m_pPauseUI->SetColor(D3DXVECTOR3(0, 0, 0));
 
 	m_isStart = false;
 
@@ -116,10 +122,11 @@ void SC_Game::Update()
 	m_pMM->Update(m_nStage);
 	m_pDropManager->GetDropItem(m_pCharacter);
 	m_pCharacter->Update();
-	m_pUI->Update();
 	m_pNpc->Update();
-
 	m_pPet->Update();
+
+	m_pGameUI->Update();
+	m_pPauseUI->Update();
 
 	TEXT->Add(to_string(TIME->GetFPS()), 0, 0, 20);
 
@@ -127,7 +134,13 @@ void SC_Game::Update()
 		NextStage();
 
 	if (INPUT->KeyDown(VK_ESCAPE))
-		ClearStage();
+		PAUSE = !PAUSE;
+
+	if (INPUT->KeyDown(VK_LBUTTON))
+	{
+		if (PAUSE)
+			ClearStage();
+	}
 
 	if (m_pMM->isKeyMonsterDie())
 	{
@@ -164,8 +177,11 @@ void SC_Game::Render()
 	if (!m_pNpc->GetCollision())
 	{
 		ShowElapseTime();
-		m_pUI->Render();
+		m_pGameUI->Render();
 	}
+
+	if (PAUSE)
+		m_pPauseUI->Render();
 }
 
 void SC_Game::ShowElapseTime()
@@ -185,7 +201,6 @@ void SC_Game::ShowElapseTime()
 
 void SC_Game::ClearStage()
 {
-	WriteRank();
 	CAMERA->SetTarget(NULL, NULL);
 	SAFE_DELETE(m_pCharacter);
 	SCENE->ChangeScene("Main");
