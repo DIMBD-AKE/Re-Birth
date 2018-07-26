@@ -4,6 +4,7 @@
 #include "../Item/DropManager.h"
 #include "../SkillManager.h"
 #include "Boss/BossParent.h"
+#include "HitParticle.h"
 
 MonsterParent::MonsterParent()
 	: m_pModel(NULL)
@@ -95,7 +96,9 @@ void MonsterParent::Setup(Map* map, D3DXVECTOR3 spawnPos, bool isSummon)
 	m_pDamageUI = new DamageUI;
 	m_pDamageUI->Setup(false);
 
-	m_pHitParticle = PARTICLE->GetParticle("몬스터기본피격");
+	m_pHitParticle = new HitParticle;
+	m_pHitParticle->Setup("몬스터기본피격");
+	//m_pHitParticle = PARTICLE->GetParticle("몬스터기본피격");
 
 	//npc 생성 부울값 조절 함수
 	IsAppear();
@@ -242,25 +245,20 @@ void MonsterParent::Update()
 		if (m_pHitParticle)
 		{
 			D3DXVECTOR3 tempVec = *m_pModel->GetPosition();
+			float rotY = 0;
 			if (!m_bSpecial)
-			{
-				
-				tempVec.y = GetAngle(m_pModel->GetPosition()->x, m_pModel->GetPosition()->z,
+			{				
+				rotY = GetAngle(m_pModel->GetPosition()->x, m_pModel->GetPosition()->z,
 					CHARACTER->GetPosition()->x, CHARACTER->GetPosition()->z);
-				tempVec.y -= D3DX_PI / 2;
 
-				m_pHitParticle->SetRotation(D3DXVECTOR3(0, tempVec.y, 0));
+				rotY -= D3DX_PI / 2;
 
-				tempVec = *m_pModel->GetPosition();
-				tempVec.y += 2.0f;
-				
+				tempVec.y += 2.0f;				
 			}
 
-			m_pHitParticle->SetPosition(tempVec);
+			m_pHitParticle->Update(tempVec, rotY);
 
-			m_pHitParticle->ApplyWorld();
-			//m_pHitParticle->World();
-			m_pHitParticle->Update();
+			
 		}
 	}
 	//ChangeAni();
@@ -619,10 +617,27 @@ void MonsterParent::SetCurrentHP(int hp)
 
 		if (m_pHitParticle)
 		{
-			D3DXVECTOR3 tempPos = *m_pModel->GetPosition();
-			//tempPos.y += 1.5f;
-			m_pHitParticle->SetPosition(tempPos);
-			m_pHitParticle->TimeReset();
+			
+			D3DXVECTOR3 tempVec = *m_pModel->GetPosition();
+			float rotY = 0;;
+			if (!m_bSpecial)			{
+				
+				rotY = GetAngle(m_pModel->GetPosition()->x, m_pModel->GetPosition()->z,
+					CHARACTER->GetPosition()->x, CHARACTER->GetPosition()->z);
+
+				rotY -= D3DX_PI / 2;
+
+				tempVec.y += 2.0f;
+
+			//	m_pHitParticle->AddParticle(tempVec, rotY);
+			}
+				m_pHitParticle->AddParticle(tempVec,rotY);
+			
+
+			//D3DXVECTOR3 tempPos = *m_pModel->GetPosition();
+			////tempPos.y += 1.5f;
+			//m_pHitParticle->SetPosition(tempPos);
+			//m_pHitParticle->TimeReset();
 			
 		}
 

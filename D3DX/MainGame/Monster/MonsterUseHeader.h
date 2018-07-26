@@ -8,6 +8,7 @@
 #include "../SkillManager.h"
 #include "../DamageUI.h"
 #include "../Character/Npc.h"
+#include "HitParticle.h"
 
 #define PCHARACTER (*m_ppCharacter)
 #define CHARACTER (*m_ppCharacter)->GetCharacter()

@@ -12,6 +12,7 @@ class Skill;
 class DamageUI;
 class BossParent;
 class Npc;
+class HitParticle;
 
 enum MON_STATE{
 	MS_IDLE,			//제자리에 있는 상태
@@ -96,7 +97,9 @@ protected:
 
 	DamageUI* m_pDamageUI;
 
-	Particle*	m_pHitParticle;
+	//Particle*	m_pHitParticle;
+	HitParticle* m_pHitParticle;
+
 	bool		m_bSpecial;
 
 	bool		m_bAppearNPC;
