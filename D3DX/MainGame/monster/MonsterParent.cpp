@@ -270,6 +270,25 @@ void MonsterParent::RespawnUpdate()
 	//
 	//sprintf_s(test, sizeof(test), "%d", m_nResPawnCount);
 	//TEXT->Add(test, 10, 10, 20);
+	if (m_bIsTargeting)
+	{
+		float tempF = (float)CURRENTHP(m_pMonsterStat) / MAXHP(m_pMonsterStat);
+
+
+		m_pHPBar->SetScale(D3DXVECTOR3(tempF, 1, 1));
+
+		D3DXVECTOR3 UIPos = *m_pModel->GetPosition();
+		UIPos.y += m_fUIMoveY;
+
+		auto temp = Convert3DTo2D(UIPos);
+		UIPos.x = temp.x - m_fUIMoveX;
+		UIPos.y = temp.y;
+		UIPos.z = 0;
+		m_pHPBar->SetPosition(UIPos);
+
+		m_pHPBar->Update();
+
+	}
 
 	m_nResPawnCount++;
 
@@ -669,11 +688,14 @@ void MonsterParent::SetCurrentHP(int hp, int* deathCount)
 		{
 			if(deathCount)
 			(*deathCount)++;
+
 			if (m_bAppearNPC && !m_pNpc->GetIsAppear())
 				m_pNpc->Init(*m_pModel->GetPosition());
 
 			m_pModel->SetShaderAlpha(1.0f);
 			CURRENTHP(m_pMonsterStat) = 0;
+
+
 			m_bIsRespawn = true;
 			m_eState = MS_DIE;
 			ChangeAni();
