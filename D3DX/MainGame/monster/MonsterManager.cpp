@@ -82,6 +82,14 @@ void MonsterManager::Update(int stage)
 
 				m_vMM[i]->Respawn(m_vSpawnSpot[spotIndex]);
 
+				if (FRand(0, 1) <= KEYMONSTERCHANCE && !m_bAppearKeyMonster && (stage == 0 || stage || 2))
+				{
+					m_bAppearKeyMonster = true;
+					m_nKeyMonsterIndex = i;
+					m_vMM[i]->MakeKeyMonster();
+
+				}
+
 				//셋업 호출하여 다시 재생성한다.
 				//m_vMM[i]->Setup(m_pMap, m_vSpawnSpot[spotIndex]);
 
@@ -94,10 +102,11 @@ void MonsterManager::Update(int stage)
 		}
 	}
 
-	if (stage == 1 && m_nDieMonsterNum >= 10 && !m_bAppearMiddleBoss)
+	if (stage == 1 && m_nDieMonsterNum >= 10 && !m_bAppearKeyMonster)
 	{
 		MakeMiddleBoss(NULL);
-		m_bAppearMiddleBoss = true;
+		m_bAppearKeyMonster = true;
+		m_nKeyMonsterIndex = 20;
 	}
 
 	if (INPUT->KeyDown('1'))
@@ -334,7 +343,7 @@ void MonsterManager::Stage1(DropManager* pDropManager)
 		float rnd = FRand(0, 1);
 		
 		MakeElizabeth(pDropManager, i % m_vSpawnIndex.size() );
-		if ( !m_bAppearKeyMonster)
+		if (rnd <= KEYMONSTERCHANCE && !m_bAppearKeyMonster)
 		{
 			m_vMM[i]->MakeKeyMonster();
 			m_nKeyMonsterIndex = i;
@@ -343,7 +352,7 @@ void MonsterManager::Stage1(DropManager* pDropManager)
 
 		 rnd = FRand(0, 1);
 		MakeAssis(pDropManager, (i+1) % m_vSpawnIndex.size());
-		if (rnd <= 0.05f && !m_bAppearKeyMonster)
+		if (rnd <= KEYMONSTERCHANCE && !m_bAppearKeyMonster)
 		{
 			m_vMM[i]->MakeKeyMonster();
 			m_nKeyMonsterIndex = i+1;
@@ -368,14 +377,33 @@ void MonsterManager::Stage3(DropManager* pDropManager)
 {
 	for (int i = 0; i < 20; i += 2)
 	{
+		float rnd = FRand(0, 1);
+
 		MakeNerisa(pDropManager, i % m_vSpawnIndex.size());
 
+		if (rnd <= KEYMONSTERCHANCE && !m_bAppearKeyMonster)
+		{
+			m_vMM[i]->MakeKeyMonster();
+			m_nKeyMonsterIndex = i;
+			m_bAppearKeyMonster = true;
+		}
+
+		rnd = FRand(0, 1);
 		MakeNike(pDropManager, (i + 1) % m_vSpawnIndex.size());
+
+		if (rnd <= KEYMONSTERCHANCE && !m_bAppearKeyMonster)
+		{
+			m_vMM[i]->MakeKeyMonster();
+			m_nKeyMonsterIndex = i + 1;
+			m_bAppearKeyMonster = true;
+		}
 	}
 }
 
 void MonsterManager::Stage4(DropManager* pDropManager)
 {
+	m_bAppearKeyMonster = true;
+	m_nKeyMonsterIndex = 0;
 	MakeFinalBoss(pDropManager);
 }
 
@@ -430,7 +458,10 @@ bool MonsterManager::isKeyMonsterDie()
 {
 	if (m_nKeyMonsterIndex == -1) return false;
 
-	if (m_vMM[m_nKeyMonsterIndex]->GetIsResPawn()) return true;
+
+
+		if (m_vMM[m_nKeyMonsterIndex]->GetIsResPawn()) return true;
+	
 
 	return false;
 }

@@ -429,6 +429,7 @@ void MonsterParent::MakeKeyMonster()
 {
 	m_bKeyMonster = true;
 	m_pModel->SetScale(D3DXVECTOR3(0.035f, 0.035f, 0.035f));
+	(*m_pMonsterStat) *= 3;
 }
 
 bool MonsterParent::IsMiddleBossDie()
