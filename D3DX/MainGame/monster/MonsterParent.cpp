@@ -46,7 +46,7 @@ void MonsterParent::Setup(Map* map, D3DXVECTOR3 spawnPos, bool isSummon)
 	m_vDir = D3DXVECTOR3(0, 0, 1);
 
 	m_nCount = NRand(0, 10);
-	m_nPatternChangeCount = 0;
+	m_nPatternChangeCount = m_bKeyMonster= 0;
 	m_bUsingSkill =  false;
 
 	m_pAStar = new AStar;
@@ -421,6 +421,12 @@ void MonsterParent::Respawn(D3DXVECTOR3 spawnPos)
 	IsAppear();
 
 	m_pModel->SetPosition(D3DXVECTOR3(spawnPos.x, m_pMap->GetHeight(spawnPos.x, spawnPos.z), spawnPos.z));
+}
+
+void MonsterParent::MakeKeyMonster()
+{
+	m_bKeyMonster = true;
+	m_pModel->SetScale(D3DXVECTOR3(0.035f, 0.035f, 0.035f));
 }
 
 bool MonsterParent::IsMiddleBossDie()

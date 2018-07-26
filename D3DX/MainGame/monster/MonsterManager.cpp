@@ -47,6 +47,8 @@ void MonsterManager::Setup(Map* map, CharacterParant** character)
 
 	m_nDieMonsterNum = m_bAppearMiddleBoss = m_bAppearKeyMonster = 0;
 
+	m_nKeyMonsterIndex = -1;
+
 }
 
 void MonsterManager::Update(int stage)
@@ -329,9 +331,24 @@ void MonsterManager::Stage1(DropManager* pDropManager)
 
 	for (int i = 0; i < 20; i+=2)
 	{
+		float rnd = FRand(0, 1);
+		
 		MakeElizabeth(pDropManager, i % m_vSpawnIndex.size() );
+		if ( !m_bAppearKeyMonster)
+		{
+			m_vMM[i]->MakeKeyMonster();
+			m_nKeyMonsterIndex = i;
+			m_bAppearKeyMonster = true;
+		}
 
+		 rnd = FRand(0, 1);
 		MakeAssis(pDropManager, (i+1) % m_vSpawnIndex.size());
+		if (rnd <= 0.05f && !m_bAppearKeyMonster)
+		{
+			m_vMM[i]->MakeKeyMonster();
+			m_nKeyMonsterIndex = i+1;
+			m_bAppearKeyMonster = true;
+		}
 	}
 }
 
@@ -405,6 +422,15 @@ bool MonsterManager::IsBossDie()
 			return true;
 		}
 	}
+
+	return false;
+}
+
+bool MonsterManager::isKeyMonsterDie()
+{
+	if (m_nKeyMonsterIndex == -1) return false;
+
+	if (m_vMM[m_nKeyMonsterIndex]->GetIsResPawn()) return true;
 
 	return false;
 }

@@ -36,6 +36,7 @@ class MonsterParent
 	SYNTHESIZE(STATUS*, m_pMonsterStat, MosterStat);
 	GET(bool, m_bIsSummon,IsSummon);
 	SET(Npc*, m_pNpc, NPC);
+	//SET(bool, m_bKeyMonster, KeyMonster)
 	//Npc*		m_pNpc;
 	//SET(bool, m_bIsTargeting, IsTargeting);
 
@@ -103,6 +104,7 @@ protected:
 	bool		m_bSpecial;
 
 	bool		m_bAppearNPC;
+	bool		m_bKeyMonster;
 	/*
 	int			nMaxTarget;
 	float		fMinLength;
@@ -177,6 +179,8 @@ public:
 	void SetSkill() { m_eState = MS_SKILL;  ChangeAni();  SkillPrepare(); }
 	
 	virtual void Respawn(D3DXVECTOR3 spawnPos);
+
+	void MakeKeyMonster();
 
 	bool IsMiddleBossDie();
 	bool IsBossDie();

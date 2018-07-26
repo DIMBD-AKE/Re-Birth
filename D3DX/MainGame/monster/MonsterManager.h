@@ -22,6 +22,8 @@ private:
 	int m_nDieMonsterNum;
 
 	bool m_bAppearMiddleBoss;
+
+	int m_nKeyMonsterIndex;
 	bool m_bAppearKeyMonster;
 	//vector<MonsterParent> m_vMM;
 
@@ -67,6 +69,8 @@ public:
 
 	bool IsMiddleBossDie(OUT D3DXVECTOR3* diePos);
 	bool IsBossDie();
+	bool isKeyMonsterDie();
+
 	void SetNpc(Npc* npc);
 
 	void DamageMonster(int monsterIndex, float damage);
