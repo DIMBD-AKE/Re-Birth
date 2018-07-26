@@ -27,17 +27,17 @@ void DarkHell::Setup(Map* map, D3DXVECTOR3 spawnPos, bool isSummon)
 	//판정 박스 
 	ST_SIZEBOX box;
 	box.highX = 50.0f;
-	box.highY = 180.0f;
+	box.highY = 240.0f;
 	box.highZ = 50.0f;
 	box.lowX = -50.0f;
-	box.lowY = 10.0f;
+	box.lowY = 20.0f;
 	box.lowZ = -50.0f;
 
 
 	m_pModel->SetScale(D3DXVECTOR3(0.02f, 0.02f, 0.02f));
 
 	m_pModel->CreateBound(box);
-	m_pModel->SetBoundSphere(m_pModel->GetOrigBoundSphere().center, 100.0f);
+	m_pModel->SetBoundSphere(m_pModel->GetOrigBoundSphere().center, 90.0f);
 
 	//스킬
 	m_pSkill = SKILL->GetSkill("DarkHell Skill");

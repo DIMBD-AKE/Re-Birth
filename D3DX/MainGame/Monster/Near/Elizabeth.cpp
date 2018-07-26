@@ -47,7 +47,7 @@ void Elizabeth::Setup(Map* map, D3DXVECTOR3 spawnPos, bool isSummon)
 	m_pModel->SetScale(D3DXVECTOR3(0.02f, 0.02f, 0.02f));	
 
 	m_pModel->CreateBound(box);
-	m_pModel->SetBoundSphere(m_pModel->GetOrigBoundSphere().center, 100.0f);
+	m_pModel->SetBoundSphere(m_pModel->GetOrigBoundSphere().center, 80.0f);
 
 	//½ºÅ³
 	m_pSkill = SKILL->GetSkill("Elizabeth Skill");
