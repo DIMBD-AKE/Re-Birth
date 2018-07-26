@@ -80,7 +80,7 @@ void BossParent::Render()
 
 	if (m_pModel && (m_eState != MS_NONE && m_eBossState != BS_NONE) )
 	{
-		m_pModel->DummyRender();
+		m_pModel->Render();
 		
 		if (m_bIsTargeting) m_pHPBar->Render();
 	}
@@ -285,7 +285,7 @@ bool BossParent::AbleSkill2()
 		&& m_bIsTargeting
 		&& !m_bIsRespawn
 		&& !m_bUsingSkill
-		&& !m_bUsingSkill
+		&& !m_bUsingSkill2
 		&& m_pModel->IsAnimationEnd())
 	{
 		ChangeRot();

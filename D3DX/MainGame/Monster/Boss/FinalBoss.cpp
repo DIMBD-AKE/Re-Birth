@@ -113,7 +113,7 @@ void FinalBoss::SetupSkill2()
 
 	m_stSkill2.nMaxTarget = 1;
 	m_stSkill2.fMinLength = 0;
-	m_stSkill2.fMaxLength = 100;
+	m_stSkill2.fMaxLength = 6;
 	m_stSkill2.fAngle = 360;
 
 	m_stSkill2.fDamage = 100; //v
@@ -124,7 +124,7 @@ void FinalBoss::SetupSkill2()
 	m_stSkill2.fBuffTime = -1;//<0;
 
 	m_fSkillCoolTimeCount2 = 0;
-	m_nSkillCooltime2 = 30;
+	m_nSkillCooltime2 = 70;
 	
 
 
