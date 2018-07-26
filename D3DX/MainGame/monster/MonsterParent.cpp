@@ -104,6 +104,8 @@ void MonsterParent::Setup(Map* map, D3DXVECTOR3 spawnPos, bool isSummon)
 	IsAppear();
 
 	MoveReset(false, m_nMaxMoveCount, m_nMinMoveCount);
+
+	if (isSummon) m_bAppearNPC = false;
 	//ST_SIZEBOX box;
 }
 
