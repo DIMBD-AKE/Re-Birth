@@ -143,6 +143,7 @@ void Character_Magic::Update()
 		MgSkill();
 		if(!m_bIsStun)KeyControl();
 		CharacterParant::Update();
+		SetModelAlpha();
 		m_pInventory->Update();
 		m_pCharacter->World();
 		m_pUIobj->Update();
@@ -175,13 +176,13 @@ void Character_Magic::Render()
 
 		CharacterParant::Render();
 
-		m_pUIobj->Render();
-		m_pSkillBar->Render();
-		m_pInheritateIco->Render();
-		m_pInheritateIco2->Render();
-		if (m_bSkillUnSealed)m_pInheritateIco3->Render();
-		m_pHPBar->Render();
-		m_pStaminaBar->Render();
+		if (!m_pNpc->GetCollision())m_pUIobj->Render();
+		if (!m_pNpc->GetCollision())m_pSkillBar->Render();
+		if (!m_pNpc->GetCollision())m_pInheritateIco->Render();
+		if (!m_pNpc->GetCollision())m_pInheritateIco2->Render();
+		if (m_bSkillUnSealed && !m_pNpc->GetCollision())m_pInheritateIco3->Render();
+		if (!m_pNpc->GetCollision())m_pHPBar->Render();
+		if (!m_pNpc->GetCollision())m_pStaminaBar->Render();
 		if (m_pNpc->GetCollision()) m_pTalkBar->Render();
 		if(m_bIsMeteoClick) m_pMeteorPaticle->Render();
 		if (m_bIsMegaCirstalClick) m_pMegaCristalPaticle->Render();
@@ -311,6 +312,17 @@ void Character_Magic::KeyControl()
 	{
 		m_bIsAttack = false;
 	}
+
+	//if (m_pNpc->GetCollision())
+	//{
+	//	m_eCondition = CHAR_TALK;
+	//	ChangeAnimation();
+	//}
+	//if (!m_pNpc->GetCollision())
+	//{
+	//	m_eCondition = CHAR_IDLE;
+	//	ChangeAnimation();
+	//}
 
 
 	//애니메이션 한바퀴 돌고나서 상태제어

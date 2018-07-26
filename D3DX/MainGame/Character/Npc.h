@@ -3,7 +3,7 @@
 
 class Map;
 class CharacterParant;
-
+class UIObject;
 
 class Npc
 {
@@ -16,6 +16,8 @@ private:
 	GET(bool, m_bIsAppear, IsAppear);	//등장했늬?
 	GET(bool,m_bIsCollision, Collision);	 //충돌했늬?
 	bool				m_bTalk;		//대화하고 있늬?
+
+	UIObject*			m_pPortrait;	//초상화
 
 public:
 	Npc();

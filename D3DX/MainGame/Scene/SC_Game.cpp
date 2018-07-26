@@ -145,9 +145,10 @@ void SC_Game::Render()
 	m_pMap->Render();
 
 	m_pDropManager->Render();
-	m_pCharacter->Render();
 	m_pNpc->Render();
 	m_pMM->Render();
+	m_pCharacter->Render();
+	
 
 	for (auto p : m_vecParticle)
 		p->Render();

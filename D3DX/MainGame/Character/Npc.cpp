@@ -42,15 +42,20 @@ void Npc::Init(D3DXVECTOR3 pos)
 
 	m_pContext = new Dialogue;
 
+	if(m_pPortrait == NULL)m_pPortrait = new UIObject;
+	m_pPortrait->SetTexture(TEXTUREMANAGER->GetTexture("리무_초상화"));
+	m_pPortrait->SetPosition(D3DXVECTOR3(-50, 15, 0.1));
+	m_pPortrait->SetScale(D3DXVECTOR3(1.5, 1.5, 1.5));
+
+
 	//다이얼로그			위치				사이즈  폰트       속도    색깔
-	m_pContext->Init(D3DXVECTOR2(550, 700), 30, "나눔명조", 0.05, 0xFF000000);
+	m_pContext->Init(D3DXVECTOR2(550, 650), 40, "UhBee Yiseul", 0.05, 0xFF000000);
 	//m_pPlayer = new CharacterParant;
 
-	m_pContext->AddText("안녕하세요?\nNPC에요!");
-	m_pContext->AddText("저를 만나셨으니\n스킬을 해금해드릴게요!");
-	m_pContext->AddText("V키를 누르면\n 더욱 강력한 스킬을 사용할수 있어요!");
-	m_pContext->AddText("포악한 보스를 잡아주세요!\n화이팅!");
-	
+	m_pContext->AddText("흐..흥!\n딱히 만나고 싶어서 나온건 아니니까!");
+	m_pContext->AddText("따..딱히 너를 위해\n스킬을 해금해주는건 아니니까!");
+	m_pContext->AddText("V키를 누르면\n 아오시발 못치겠다");
+	m_pContext->AddText("오글오글\n화이팅!");
 	m_pContext->SetKey(VK_RBUTTON, 'X', 'C');
 }
 
@@ -60,7 +65,7 @@ void Npc::Update()
 	{
 		m_pNpc->World();
 		CheckCollision();
-	
+		m_pPortrait->Update();
 		SkillUnSeal();
 		if (m_bIsCollision)
 		{
@@ -68,7 +73,7 @@ void Npc::Update()
 			CameraViewChange();
 		}
 
-
+		if(m_bIsCollision)TEXT->Add("리무", 150, 595, 30);
 		if (m_pContext->GetIndex() == 3)
 		{
 			if (INPUT->KeyDown(VK_LBUTTON))
@@ -82,6 +87,7 @@ void Npc::Update()
 void Npc::Render()
 {
 	if (m_pNpc && m_bIsAppear)m_pNpc->Render();
+	if (m_bIsCollision)m_pPortrait->Render();
 }
 
 void Npc::CheckCollision()
@@ -118,7 +124,7 @@ void Npc::PlusAttack()
 
 void Npc::CameraViewChange()
 {
-	CAMERA->SetCamOffset(D3DXVECTOR3(0, 3.7, 13));
+	CAMERA->SetCamOffset(D3DXVECTOR3(0, 2.2, 15));
 	CAMERA->SetTargetOffset(D3DXVECTOR3(0, 2, 0));
 }
 
