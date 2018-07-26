@@ -114,7 +114,6 @@ void SC_Game::Update()
 	m_pCharacter->Update();
 	m_pUI->Update();
 	m_pNpc->Update();
-	ShowElapseTime();
 
 	TEXT->Add(to_string(TIME->GetFPS()), 0, 0, 20);
 
@@ -149,11 +148,14 @@ void SC_Game::Render()
 	m_pMM->Render();
 	m_pCharacter->Render();
 	
-
 	for (auto p : m_vecParticle)
 		p->Render();
 
-	m_pUI->Render();
+	if (!m_pNpc->GetCollision())
+	{
+		ShowElapseTime();
+		m_pUI->Render();
+	}
 }
 
 void SC_Game::ShowElapseTime()
