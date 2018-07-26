@@ -563,16 +563,32 @@ POINT MonsterParent::MoveForAttack()
 
 		angle -= D3DX_PI / 2;
 
-		m_pModel->SetRotation(D3DXVECTOR3(0, angle, 0));
-		m_pModel->SetPosition(*m_pModel->GetPosition() + dir* SPEED(m_pMonsterStat));
+		
+			D3DXVECTOR3 tempPos = *m_pModel->GetPosition() + dir* SPEED(m_pMonsterStat);
+		tempPos.y = m_pMap->GetHeight(tempPos.x, tempPos.z);
 
-		if (playerIndex !=myIndex && m_vPath[0] != D3DXVECTOR3(-1, -1, -1))
+		//못가는 곳이다.
+		if (tempPos.y < 0)
 		{
-			if (myIndex != m_pAStar->GetCellIndex(*m_pModel->GetPosition()))
+			//여기서 제자리걸음이 되겠지
+			//MoveReset(true);
+		}
+		else
+		{
+			m_pModel->SetRotation(D3DXVECTOR3(0, angle, 0));
+			m_pModel->SetPosition(tempPos);
+			if (playerIndex != myIndex && m_vPath[0] != D3DXVECTOR3(-1, -1, -1))
 			{
-				m_vPath.erase(m_vPath.begin());
+				if (myIndex != m_pAStar->GetCellIndex(*m_pModel->GetPosition()))
+				{
+					m_vPath.erase(m_vPath.begin());
+				}
 			}
 		}
+		
+		//m_pModel->SetPosition(*m_pModel->GetPosition() + dir* SPEED(m_pMonsterStat));
+
+		
 	}
 	return{ -1, -1 };
 }
