@@ -20,7 +20,6 @@ private:
 
 	Pet*				m_pPet;
 
-	bool				m_isRank;
 	bool				m_isStart;
 
 	int					m_nStage;

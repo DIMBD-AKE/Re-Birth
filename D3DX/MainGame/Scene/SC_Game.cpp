@@ -100,7 +100,6 @@ void SC_Game::Init()
 	m_pUI->SetTexture(TEXTUREMANAGER->GetTexture("Game ElapseTime"));
 	m_pUI->SetPosition(D3DXVECTOR3(1261, 754, 0));
 
-	m_isRank = false;
 	m_isStart = false;
 
 	m_fGenTime = (GetTickCount() - m_fGenTime) * 0.001;
@@ -130,7 +129,7 @@ void SC_Game::Update()
 	if (INPUT->KeyDown(VK_ESCAPE))
 		ClearStage();
 
-	if (!m_isRank && m_pMM->IsMiddleBossDie(NULL))
+	if (m_pMM->isKeyMonsterDie())
 	{
 		NextStage();
 	}
