@@ -18,6 +18,8 @@ private:
 
 	CharacterParant** m_ppCharacter;
 	vector<int> m_vSpawnIndex;
+
+	int m_nDieMonsterNum;
 	//vector<MonsterParent> m_vMM;
 
 private:
@@ -63,6 +65,8 @@ public:
 	bool IsMiddleBossDie(OUT D3DXVECTOR3* diePos);
 	bool IsBossDie();
 	void SetNpc(Npc* npc);
+
+	void DamageMonster(int monsterIndex, float damage);
 
 	//void SetSpawnSpot(vector<D3DXVECTOR3> spawnVec) { m_vSpawnSpot = spawnVec; }
 	//

@@ -142,7 +142,7 @@ protected:
 	POINT MoveForAttack();
 	void ItemDrop();
 
-	virtual void SetCurrentHP(int hp);
+	virtual void SetCurrentHP(int hp, int* deathCount);
 	
 
 	virtual void ChangeAni();
@@ -161,7 +161,7 @@ public:
 
 	
 
-	void CalculDamage(float damage);
+	void CalculDamage(float damage, int* deathCount);
 
 	virtual void Setup(Map* map, D3DXVECTOR3 spawnPos, bool isSummon = false);
 

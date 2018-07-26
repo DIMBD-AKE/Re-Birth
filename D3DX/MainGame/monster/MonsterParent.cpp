@@ -412,7 +412,7 @@ bool MonsterParent::IsBossDie()
 	}
 }
 
-void MonsterParent::CalculDamage(float damage)
+void MonsterParent::CalculDamage(float damage, int* deathCount)
 {
 	
 	/*
@@ -435,7 +435,7 @@ void MonsterParent::CalculDamage(float damage)
 
 	totalDamage = round(totalDamage);
 
-	SetCurrentHP(totalDamage);
+	SetCurrentHP(totalDamage, deathCount);
 
 }
 
@@ -622,7 +622,7 @@ void MonsterParent::ItemDrop()
 	}
 
 }
-void MonsterParent::SetCurrentHP(int hp)
+void MonsterParent::SetCurrentHP(int hp, int* deathCount)
 {
 	{
 		if (m_eState != MS_ATTACK && m_eState != MS_DIE && m_eState != MS_SKILL)
@@ -667,6 +667,7 @@ void MonsterParent::SetCurrentHP(int hp)
 		m_nTargetingCount = 0;
 		if (CURRENTHP(m_pMonsterStat) <= 0)
 		{
+			(*deathCount)++;
 			if (m_bAppearNPC && !m_pNpc->GetIsAppear())
 				m_pNpc->Init(*m_pModel->GetPosition());
 

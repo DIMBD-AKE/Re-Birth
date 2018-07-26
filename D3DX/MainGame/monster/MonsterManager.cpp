@@ -45,17 +45,16 @@ void MonsterManager::Setup(Map* map, CharacterParant** character)
 
 	Shuffle();
 
-	int a = 10;
+	m_nDieMonsterNum = 0;
 }
 
 void MonsterManager::Update()
 {
 	assert(m_vSpawnSpot.size() > 0 && "만들어진 몬스터가 없습니다.");
 
-	//char temp[222];
-	//sprintf_s(temp, sizeof(temp), "%f",
-	//	GetDistance(*m_vMM[0]->GetModel()->GetPosition(), *CHARACTER->GetPosition()));
-	//TEXT->Add(temp, 100, 100, 20);
+	char temp[222];
+	sprintf_s(temp, sizeof(temp), "현재 잡은 수 : %d",	m_nDieMonsterNum);
+	TEXT->Add(temp, 100, 100, 20);
 
 	for (int i = 0; i < m_vMM.size(); i++)
 	{
@@ -79,12 +78,15 @@ void MonsterManager::Update()
 				int spotIndex = rand() % spotSize;
 
 				m_vMM[i]->Respawn(m_vSpawnSpot[spotIndex]);
+
+				m_nDieMonsterNum++;
 				//셋업 호출하여 다시 재생성한다.
 				//m_vMM[i]->Setup(m_pMap, m_vSpawnSpot[spotIndex]);
 
 
 			}
 		}
+		else
 		{
 			m_vMM[i]->Update();
 		}
@@ -317,6 +319,8 @@ void MonsterManager::Shuffle()
 //근접
 void MonsterManager::Stage1(DropManager* pDropManager)
 {
+//	MakeMiddleBoss(pDropManager);
+
 	for (int i = 0; i < 20; i+=2)
 	{
 		MakeElizabeth(pDropManager, i % m_vSpawnIndex.size() );
@@ -405,4 +409,9 @@ void MonsterManager::SetNpc(Npc * npc)
 	{
 		m_vMM[i]->SetNPC(npc);
 	}
+}
+
+void MonsterManager::DamageMonster(int monsterIndex, float damage)
+{
+	m_vMM[monsterIndex]->CalculDamage(damage, &m_nDieMonsterNum);
 }
