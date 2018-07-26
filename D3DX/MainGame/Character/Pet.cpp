@@ -221,7 +221,7 @@ void Pet::Move()
 		else
 			targetRotY = GetAngle(pos.x, pos.z, next.x, next.z) - D3DX_PI / 2;
 
-		targetRotY = D3DXVec3Dot(&pos, m_pTarget) / D3DXVec3Length(&pos) * D3DXVec3Length(m_pTarget);
+		//targetRotY = D3DXVec3Dot(&pos, m_pTarget) / D3DXVec3Length(&pos) * D3DXVec3Length(m_pTarget);
 
 		D3DXVECTOR3 rot = *m_pModel->GetRotation();
 		rot.y += 0.1 * (targetRotY - rot.y);
