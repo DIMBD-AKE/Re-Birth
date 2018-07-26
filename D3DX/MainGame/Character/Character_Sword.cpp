@@ -681,7 +681,8 @@ void Character_Sword::Attack()
 			tempEFOBJ->Init(tempEffect, testSkillpos);
 
 			m_vecEffect.push_back(tempEFOBJ);
-			m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
+			//m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
+			m_pMonsterManager->DamageMonster(m_nIndex, m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
 		}
 	}
 	else if (m_eCharSelect == CHAR_THREE)
@@ -717,7 +718,8 @@ void Character_Sword::Attack()
 			tempEFOBJ->Init(tempEffect, testSkillpos);
 
 			m_vecEffect.push_back(tempEFOBJ);
-			m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
+			//m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
+			m_pMonsterManager->DamageMonster(m_nIndex, m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
 		}
 	}
 }
@@ -935,7 +937,8 @@ void Character_Sword::SkillDealing()
 					D3DXVec3TransformNormal(&front, &D3DXVECTOR3(0, 0, -1), &matY);
 					D3DXVECTOR3 pos = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
 					if (m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetIsResPawn())return;
-					m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(1);
+					//m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(1);
+					m_pMonsterManager->DamageMonster(m_nIndex, m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
 					m_pCharacter->SetPosition(pos - front * 4);
 
 					m_nDC++;
@@ -969,7 +972,8 @@ void Character_Sword::SkillDealing()
 					m_nIndex = i;
 					m_bEnemySkillMoving = true;
 					if (m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetIsResPawn())return;
-					m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(999);
+					//m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(999);
+					m_pMonsterManager->DamageMonster(m_nIndex, m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
 					m_nDC++;
 				}
 
@@ -1000,7 +1004,8 @@ void Character_Sword::SkillDealing()
 				m_nIndex = i;
 				m_bEnemySkillMoving = true;
 				if (m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetIsResPawn())return;
-				m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(1);
+				//m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(1);
+				m_pMonsterManager->DamageMonster(m_nIndex, m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
 			}
 
 		}

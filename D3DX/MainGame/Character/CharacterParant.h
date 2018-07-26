@@ -131,7 +131,7 @@ protected:
 	float					m_fModelAlpha;					//모델 알파값
 	float					m_fDot;							//공격시 각도계산용
 	float					m_fFireCount;					//상태이상 불 데미지
-
+	float					m_fGuard;						//가드용 일랩스타임
 
 	GET(bool, m_bIsDead, IsDead);								//죽었늬
 	

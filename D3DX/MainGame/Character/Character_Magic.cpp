@@ -527,8 +527,8 @@ void Character_Magic::Attack()
 				m_vecEffect.push_back(tempEFOBJ);
 				
 				
-				m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
-				
+				//m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
+				m_pMonsterManager->DamageMonster(m_nIndex, m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
 			}
 		}
 		else if (m_eCharSelect == CHAR_TWO)
@@ -567,8 +567,8 @@ void Character_Magic::Attack()
 
 				m_vecEffect.push_back(tempEFOBJ);
 				
-				m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
-
+				//m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
+				m_pMonsterManager->DamageMonster(m_nIndex, m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
 			}
 
 		}
@@ -652,8 +652,8 @@ void Character_Magic::targetAttack()
 	m_vecEffect.push_back(tempEFOBJ);
 
 
-	m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(1);
-		
+	//m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(1);
+	m_pMonsterManager->DamageMonster(m_nIndex, m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
 }
 
 void Character_Magic::CristalField()
@@ -717,7 +717,8 @@ void Character_Magic::CristalField()
 			//testSkillpos += TempDir * (Length * 0.3f);
 			tempEFOBJ->Init(tempEffect, testSkillpos);
 			m_vecEffect.push_back(tempEFOBJ);
-			m_pMonsterManager->GetMonsterVector()[m_vecTarget[j]]->CalculDamage(1);
+			//m_pMonsterManager->GetMonsterVector()[m_vecTarget[j]]->CalculDamage(1);
+			m_pMonsterManager->DamageMonster(m_vecTarget[j], m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
 		}
 	
 }
@@ -799,8 +800,8 @@ void Character_Magic::FireBall()
 	m_vecEffect.push_back(tempEFOBJ);
 
 
-	m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(1);
-
+	//m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(1);
+	m_pMonsterManager->DamageMonster(m_nIndex, m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
 }
 
 void Character_Magic::MgSkill()
@@ -993,7 +994,8 @@ void Character_Magic::MeteorDamage()
 
 	for (int j = 0; j < m_vecTarget.size(); j++)
 	{
-		m_pMonsterManager->GetMonsterVector()[m_vecTarget[j]]->CalculDamage(999);
+		//m_pMonsterManager->GetMonsterVector()[m_vecTarget[j]]->CalculDamage(999);
+		m_pMonsterManager->DamageMonster(m_vecTarget[j], 999);
 	}
 }
 
@@ -1102,7 +1104,8 @@ void Character_Magic::MegaCristalDamage()
 
 	for (int j = 0; j < m_vecTarget.size(); j++)
 	{
-		m_pMonsterManager->GetMonsterVector()[m_vecTarget[j]]->CalculDamage(999);
+		//m_pMonsterManager->GetMonsterVector()[m_vecTarget[j]]->CalculDamage(999);
+		m_pMonsterManager->DamageMonster(m_vecTarget[j], 999);
 	}
 }
 

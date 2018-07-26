@@ -493,7 +493,8 @@ void Character_Gun::Attack()
 				tempEFOBJ->Init(tempEffect, testSkillpos);
 
 				m_vecEffect.push_back(tempEFOBJ);
-				m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
+				//m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
+				m_pMonsterManager->DamageMonster(m_nIndex, m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
 			}
 		}
 		else if (m_eCharSelect == CHAR_TWO)
@@ -529,7 +530,8 @@ void Character_Gun::Attack()
 				tempEFOBJ->Init(tempEffect, testSkillpos);
 
 				m_vecEffect.push_back(tempEFOBJ);
-				m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
+				//m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
+				m_pMonsterManager->DamageMonster(m_nIndex, m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
 			}
 		}
 
@@ -608,7 +610,8 @@ void Character_Gun::MultiAttack()
 		tempEFOBJ->Init(tempEffect, testSkillpos);
 
 		m_vecEffect.push_back(tempEFOBJ);
-		m_pMonsterManager->GetMonsterVector()[m_vecTarget[j]]->CalculDamage(1);
+		//m_pMonsterManager->GetMonsterVector()[m_vecTarget[j]]->CalculDamage(1);
+		m_pMonsterManager->DamageMonster(m_vecTarget[j], m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
 	}
 }
 
@@ -711,7 +714,8 @@ void Character_Gun::GunShot()
 			m_vecEffect.push_back(tempEFOBJ);
 			if (!SOUND->IsPlaySound("Å¾ºä¼¦")) SOUND->Play("Å¾ºä¼¦", g_fVolume);
 			if (!SOUND->IsPlaySound("Å¾ºäÅºÇÇ")) SOUND->Play("Å¾ºäÅºÇÇ", g_fVolume);
-			m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(1);
+			//m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(1);
+			m_pMonsterManager->DamageMonster(m_nIndex, m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
 		}
 	}
 }
@@ -795,7 +799,8 @@ void Character_Gun::MagicBulletUpdate()
 					int randIndex = FindRandomTarget(m_vecTarget[0], bullet.center, D3DX_PI * 2, 20);
 					if (!m_pMonsterManager->GetMonsterVector()[m_vecTarget[0]]->GetIsResPawn())
 					{
-						m_pMonsterManager->GetMonsterVector()[m_vecTarget[0]]->CalculDamage(10);
+						//m_pMonsterManager->GetMonsterVector()[m_vecTarget[0]]->CalculDamage(10);
+						m_pMonsterManager->DamageMonster(m_vecTarget[0], m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
 						ZeroMemory(&effect, sizeof(ST_EFFECT));
 						effect.SetAlpha(100, 50, 0);
 						effect.isSphere = true;
