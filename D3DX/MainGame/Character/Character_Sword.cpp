@@ -242,6 +242,7 @@ void Character_Sword::Update()
 	CutScene();
 	if (!m_bIsStun)KeyControl();
 	
+	CharacterParant::Update();
 
 }
 
@@ -470,6 +471,7 @@ void Character_Sword::KeyControl()
 			break;
 		case CHAR_GUARD:
 			m_eCondition = CHAR_IDLE;
+			m_bIsInvincible = false;
 			break;
 		}
 		ChangeAnimation();
@@ -640,7 +642,8 @@ void Character_Sword::Attack()
 				m_vecEffect.push_back(tempEFOBJ);
 
 				if (m_pMonsterManager->GetMonsterVector()[m_vecTarget[i]]->GetIsResPawn())return;
-				m_pMonsterManager->GetMonsterVector()[m_vecTarget[i]]->CalculDamage(m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
+				//m_pMonsterManager->GetMonsterVector()[m_vecTarget[i]]->CalculDamage(m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
+				m_pMonsterManager->DamageMonster(m_vecTarget[i], m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
 			}
 		}
 	}

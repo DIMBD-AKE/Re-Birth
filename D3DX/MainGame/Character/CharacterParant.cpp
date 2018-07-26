@@ -398,27 +398,34 @@ void CharacterParant::CalculDamage(float damage)
 	}
 	if (!m_bIsSubChr)
 	{
-		if (m_eCondition != CHAR_HIT && m_eCondition != CHAR_ATTACK && m_eCondition != CHAR_SKILL )
+		if (!m_bIsInvincible)
 		{
-			m_eCondition = CHAR_HIT;
-			ChangeAnimation();
+			if (m_eCondition != CHAR_HIT && m_eCondition != CHAR_ATTACK && m_eCondition != CHAR_SKILL)
+			{
+				m_eCondition = CHAR_HIT;
+				ChangeAnimation();
+			}
+			//SetModelAlpha();
+		//	m_pCharacter->SetShaderAlpha(0.3f);
+
+			m_bIsUnderAttacked = true;
+			float totalRate =
+				m_Status->chr.fPhyRate +
+				m_Status->chr.fMagicRate +
+				m_Status->chr.fCheRate;
+
+			float totalDamage = totalRate * (m_pInventory->GetEquipStat().item.nDef + m_Status->chr.nDef);
+
+			totalDamage = damage - totalDamage;
+			totalDamage /= 3;
+			if (totalDamage <= 1) totalDamage = 1;
+			totalDamage = round(totalDamage);
+			SetCurrentHP(totalDamage);
 		}
-		//SetModelAlpha();
-	//	m_pCharacter->SetShaderAlpha(0.3f);
-		
-		m_bIsUnderAttacked = true;
-		float totalRate =
-			m_Status->chr.fPhyRate +
-			m_Status->chr.fMagicRate +
-			m_Status->chr.fCheRate;
-
-		float totalDamage = totalRate * (m_pInventory->GetEquipStat().item.nDef + m_Status->chr.nDef);
-
-		totalDamage = damage - totalDamage;
-		totalDamage /= 3;
-		if (totalDamage <= 1) totalDamage = 1;
-		totalDamage = round(totalDamage);
-		SetCurrentHP(totalDamage);
+		if (m_bIsInvincible)
+		{
+			
+		}
 	}
 	else
 	{
@@ -432,8 +439,6 @@ void CharacterParant::CalculDamage(float damage)
 			m_pShieldChr->SetShieldCurHp(m_pShieldChr->GetShieldMaxHp());
 		}
 	}
-
-	
 }
 
 
@@ -467,8 +472,6 @@ void CharacterParant::SkillIconAlpha()
 
 void CharacterParant::PlayerProgressBar()
 {
-
-
 	float tempF = (float)m_Status->chr.nCurrentHP / m_Status->chr.nMaxHp;
 	m_pHPBar->SetScale(D3DXVECTOR3(tempF, 1, 1));
 	D3DXVECTOR3 UIPos = D3DXVECTOR3(205, 685, 0);
@@ -484,7 +487,6 @@ void CharacterParant::PlayerProgressBar()
 	m_pStaminaBar->SetPosition(StaPos);
 	m_pStaminaBar->Update();
 	if (!m_pNpc->GetCollision())TEXT->Add(to_string((int)m_Status->chr.nCurrentStam), 240, 750, 20);
-
 }
 
 
@@ -721,9 +723,34 @@ void CharacterParant::Guard()
 	if (m_eCondition == CHAR_GUARD)
 	{
 		m_bIsInvincible = true;
+		CAMERA->Shake(0.01, 0.05);
+
+		//ST_EFFECT tempEffect1;
+		//ZeroMemory(&tempEffect1, sizeof(tempEffect1));
+		//tempEffect1.time = 0.3;
+		////tempEffect1.rot = D3DXVECTOR3(0, 0, 0);
+		////tempEffect1.mot = D3DXVECTOR3(0, 10, 0);
+		////tempEffect1.ms0 = 9.0f;
+		////tempEffect.isRY = true;
+		////tempEffect.isRX = true;
+		////tempEffect.isRZ = true;
+		////tempEffect.dir = *m_pCharacter->GetRotation();
+		////tempEffect.SetSpeed(0, 0.2, 0);
+		//tempEffect1.height = 3.0f;
+		//tempEffect1.SetAlpha(255, 255, 0);
+		//tempEffect1.SetScale(1, 1, 1);
+		//tempEffect1.tex = TEXTUREMANAGER->GetTexture("실드_마법");
 
 
-
+		//EffectObject* tempEFOBJ1;
+		//tempEFOBJ1 = new EffectObject;
+		//D3DXVECTOR3 testSkillpos1 = *m_pCharacter->GetPosition() - m_vfront * 1.0f;
+		//testSkillpos1.y += 3.0f;
+		////testSkillpos.x += FRand(-0.5, 0.5);
+		////testSkillpos.z += FRand(-0.3, 0.3);
+		////testSkillpos += TempDir * (Length * 0.3f);
+		//tempEFOBJ1->Init(tempEffect1, testSkillpos1);
+		//m_vecEffect.push_back(tempEFOBJ1);
 
 	}
 
@@ -931,6 +958,7 @@ void CharacterParant::Update()
 		m_pParticle3->Update();
 	}
 	//SetModelAlpha();
+	Guard();
 }	
 
 
