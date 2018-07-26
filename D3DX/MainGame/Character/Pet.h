@@ -4,21 +4,21 @@
 
 class Map;
 
-struct ST_FOLLOWER_CELL
+struct ST_PET_CELL
 {
 	D3DXVECTOR3 v0, v1, v2;
 	D3DXVECTOR3 center;
 };
 
-struct ST_FOLLOWER_NODE
+struct ST_PET_NODE
 {
-	ST_FOLLOWER_CELL c;
+	ST_PET_CELL c;
 	float F, G, H;
 	bool isList;
-	ST_FOLLOWER_NODE * pParent;
+	ST_PET_NODE * pParent;
 };
 
-class Follower
+class Pet
 {
 private:
 	Model*			m_pModel;
@@ -29,12 +29,17 @@ private:
 	STATUS			m_status;
 
 private:
-	vector<ST_FOLLOWER_NODE*>	m_vecFindPath;
+	vector<ST_PET_NODE>	m_vecFindPath;
+	ST_PET_CELL			m_stTargetCell;
+	bool TargetUpdate(vector<D3DXVECTOR3> vecNavMesh);
 	void AStar(vector<D3DXVECTOR3> vecNavMesh);
 
+	void Move();
+	void Debug();
+
 public:
-	Follower();
-	~Follower();
+	Pet();
+	~Pet();
 
 	void Init(D3DXVECTOR3* target, Map * map);
 	void Update();
