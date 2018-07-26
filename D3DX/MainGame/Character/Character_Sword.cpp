@@ -471,7 +471,7 @@ void Character_Sword::KeyControl()
 			break;
 		case CHAR_GUARD:
 			m_eCondition = CHAR_IDLE;
-			m_bIsInvincible = false;
+			//m_bIsInvincible = false;
 			break;
 		}
 		ChangeAnimation();

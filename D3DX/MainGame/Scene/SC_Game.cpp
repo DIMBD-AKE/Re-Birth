@@ -90,7 +90,8 @@ void SC_Game::Init()
 	m_pNpc = new Npc;
 
 	m_pPet = new Pet;
-	m_pPet->Init(m_pCharacter->GetCharacter()->GetPosition(), m_pMap, PETTYPE_MIHO);
+
+	m_pPet->Init(m_pCharacter->GetCharacter()->GetPosition(), m_pMap, PETTYPE_NIR);
 
 	//npc구현이 끝나면 이닛부분 지워주세요!
 	m_pNpc->Init(m_pMap->GetSpawnPlayer());
