@@ -79,7 +79,6 @@ void MonsterManager::Update()
 
 				m_vMM[i]->Respawn(m_vSpawnSpot[spotIndex]);
 
-				m_nDieMonsterNum++;
 				//셋업 호출하여 다시 재생성한다.
 				//m_vMM[i]->Setup(m_pMap, m_vSpawnSpot[spotIndex]);
 
