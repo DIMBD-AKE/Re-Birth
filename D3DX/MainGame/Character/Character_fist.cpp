@@ -308,6 +308,9 @@ void Character_fist::KeyControl()
 		case CHAR_HIT:
 			m_eCondition = CHAR_IDLE;
 			break;
+		case CHAR_GUARD:
+			m_eCondition = CHAR_IDLE;
+			break;
 		case CHAR_INHERENT1:
 			m_eCondition = CHAR_IDLE;
 			break;
@@ -361,6 +364,13 @@ void Character_fist::KeyControl()
 	{
 		if (SOUND->IsPlaySound("FootStep4")) SOUND->Stop("FootStep4");
 		if (SOUND->IsPlaySound("FootStep3")) SOUND->Stop("FootStep3");
+	}
+
+	//가드를 올려야해요!
+	if (INPUT->KeyDown('Z'))
+	{
+		m_eCondition = CHAR_GUARD;
+		ChangeAnimation();
 	}
 
 }
