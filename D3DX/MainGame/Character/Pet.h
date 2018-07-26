@@ -25,6 +25,24 @@ enum PETSTATE
 	PET_ATTACK,
 };
 
+enum PETTYPE
+{
+	PETTYPE_BENTLEY,
+	PETTYPE_BUNNY,
+	PETTYPE_MIHO,
+	PETTYPE_MIRI,
+	PETTYPE_NERO,
+	PETTYPE_NIR,
+	PETTYPE_NIX,
+	PETTYPE_PANDA,
+	PETTYPE_PENNY
+};
+
+struct ST_PET_STATUS
+{
+	float speed;
+};
+
 class Pet
 {
 private:
@@ -32,8 +50,8 @@ private:
 	D3DXVECTOR3*	m_pTarget;
 	Map*			m_pMap;	
 
-	STATUS			m_status;
 	PETSTATE		m_eState;
+	ST_PET_STATUS	m_eStatus;
 
 	bool			m_isOptimize;
 
@@ -53,7 +71,7 @@ public:
 	Pet();
 	~Pet();
 
-	void Init(D3DXVECTOR3* target, Map * map);
+	void Init(D3DXVECTOR3* target, Map * map, PETTYPE type);
 	void Update();
 	void Render();
 

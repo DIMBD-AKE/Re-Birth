@@ -202,6 +202,9 @@ void Pet::OptimizePath()
 		center.c.center = s[sideIndex];
 		m_vecFindPath.push_back(center);
 	}
+	ST_PET_NODE target;
+	target.c = m_stTargetCell;
+	m_vecFindPath.push_back(target);
 }
 
 void Pet::Move()
@@ -218,6 +221,8 @@ void Pet::Move()
 		else
 			targetRotY = GetAngle(pos.x, pos.z, next.x, next.z) - D3DX_PI / 2;
 
+		targetRotY = D3DXVec3Dot(&pos, m_pTarget) / D3DXVec3Length(&pos) * D3DXVec3Length(m_pTarget);
+
 		D3DXVECTOR3 rot = *m_pModel->GetRotation();
 		rot.y += 0.1 * (targetRotY - rot.y);
 		rot.y = targetRotY;
@@ -225,8 +230,8 @@ void Pet::Move()
 
 		D3DXVECTOR3 front = GetFront(*m_pModel->GetRotation(), D3DXVECTOR3(0, 0, -1));
 
-		if (D3DXVec3Length(&(*m_pModel->GetPosition() - *m_pTarget)) > 3.0f)
-			m_pModel->SetPosition(*m_pModel->GetPosition() + front * 0);
+		if (D3DXVec3Length(&(*m_pModel->GetPosition() - *m_pTarget)) > 2.0f)
+			m_pModel->SetPosition(*m_pModel->GetPosition() + front * m_eStatus.speed);
 		else
 		{
 			m_vecFindPath.clear();
@@ -275,7 +280,7 @@ void Pet::StateControll()
 		else if (!m_vecFindPath.empty() && m_eState != PET_MOVE)
 		{
 			m_eState = PET_MOVE;
-			m_pModel->SetAnimation("RUN");
+			m_pModel->SetAnimation("MOVE");
 		}
 	}
 
@@ -300,14 +305,26 @@ Pet::~Pet()
 	SAFE_DELETE(m_pModel);
 }
 
-void Pet::Init(D3DXVECTOR3 * target, Map * map)
+void Pet::Init(D3DXVECTOR3 * target, Map * map, PETTYPE type)
 {
-	m_pModel = MODELMANAGER->GetModel("리무", MODELTYPE_X);
+	if (type == PETTYPE_BENTLEY) m_pModel = MODELMANAGER->GetModel("강아지", MODELTYPE_X);
+	if (type == PETTYPE_BUNNY) m_pModel = MODELMANAGER->GetModel("토끼", MODELTYPE_X);
+	if (type == PETTYPE_MIHO) m_pModel = MODELMANAGER->GetModel("구미호", MODELTYPE_X);
+	if (type == PETTYPE_MIRI) m_pModel = MODELMANAGER->GetModel("양", MODELTYPE_X);
+	if (type == PETTYPE_NERO) m_pModel = MODELMANAGER->GetModel("고양이", MODELTYPE_X);
+	if (type == PETTYPE_NIR) m_pModel = MODELMANAGER->GetModel("용", MODELTYPE_X);
+	if (type == PETTYPE_NIX) m_pModel = MODELMANAGER->GetModel("피닉스", MODELTYPE_X);
+	if (type == PETTYPE_PANDA) m_pModel = MODELMANAGER->GetModel("팬더", MODELTYPE_X);
+	if (type == PETTYPE_PENNY) m_pModel = MODELMANAGER->GetModel("돼지", MODELTYPE_X);
+
 	m_pModel->SetPosition(map->GetSpawnPlayer());
 	m_pModel->SetScale(D3DXVECTOR3(0.025, 0.025, 0.025));
+	m_pModel->SetAnimation("IDLE");
 	m_eState = PET_IDLE;
 
 	m_isOptimize = true;
+
+	m_eStatus.speed = 0.1;
 
 	m_pTarget = target;
 	m_pMap = map;
