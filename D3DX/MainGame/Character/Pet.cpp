@@ -22,7 +22,15 @@ bool Pet::TargetUpdate()
 	if (D3DXVec3Length(&(temp.center - m_stTargetCell.center)) > 1)
 		return true;
 	else
+	{
+		if (D3DXVec3Length(&(*m_pModel->GetPosition() - *m_pTarget)) > m_fStopDist)
+		{
+			ST_PET_NODE node;
+			node.c.center = *m_pTarget;
+			m_vecFindPath.push_back(node);
+		}
 		return false;
+	}
 }
 
 bool Pet::TargetEqualCell()
@@ -236,7 +244,7 @@ void Pet::Move()
 		else
 			D3DXVec3Normalize(&front, &(next - pos));
 
-		if (D3DXVec3Length(&(*m_pModel->GetPosition() - *m_pTarget)) > 3.0f)
+		if (D3DXVec3Length(&(*m_pModel->GetPosition() - *m_pTarget)) > m_fStopDist)
 			m_pModel->SetPosition(*m_pModel->GetPosition() + front * m_eStatus.speed);
 		else
 		{
@@ -256,6 +264,13 @@ void Pet::Move()
 
 void Pet::Debug()
 {
+	if (!DEBUG) return;
+
+	if (m_isOptimize)
+		TEXT->Add("최적화", 20, 20, 20, "", 0xFF00FF00);
+	else
+		TEXT->Add("최적화", 20, 20, 20, "", 0xFFFF0000);
+
 	vector<D3DXVECTOR3> vecVertex;
 	for (int i = 0; i < m_vecFindPath.size(); i++)
 		vecVertex.push_back(m_vecFindPath[i].c.center + D3DXVECTOR3(0, 0.2, 0));
@@ -345,9 +360,19 @@ void Pet::Init(D3DXVECTOR3 * target, Map * map, PETTYPE type)
 	if (type == PETTYPE_PANDA) m_pModel = MODELMANAGER->GetModel("팬더", MODELTYPE_X);
 	if (type == PETTYPE_PENNY) m_pModel = MODELMANAGER->GetModel("돼지", MODELTYPE_X);
 
+	ST_SIZEBOX box;
+	box.highX = 20.0f;
+	box.highY = 40.0;
+	box.highZ = 20.0f;
+	box.lowX = -20.0f;
+	box.lowY = 0.0f;
+	box.lowZ = -20.0f;
+
 	m_pModel->SetPosition(map->GetSpawnPlayer());
 	m_pModel->SetScale(D3DXVECTOR3(0.025, 0.025, 0.025));
 	m_pModel->SetAnimation("IDLE");
+	m_pModel->CreateBound(box);
+
 	m_eState = PET_HIDE;
 
 	m_pSpawnParticle = PARTICLE->GetParticle("Pet Spawn");
@@ -355,6 +380,7 @@ void Pet::Init(D3DXVECTOR3 * target, Map * map, PETTYPE type)
 	m_isOptimize = true;
 
 	m_eStatus.speed = 0.1;
+	m_fStopDist = 3;
 
 	m_pTarget = target;
 	m_pMap = map;
@@ -368,11 +394,6 @@ void Pet::Update()
 	if (INPUT->KeyDown('X'))
 		Spawn();
 
-	if (m_isOptimize)
-		TEXT->Add("최적화", 20, 20, 20, "", 0xFF00FF00);
-	else
-		TEXT->Add("최적화", 20, 20, 20, "", 0xFFFF0000);
-
 	StateControll();
 }
 
@@ -385,6 +406,12 @@ void Pet::Render()
 		m_pSpawnParticle->Render();
 
 	Debug();
+}
+
+void Pet::ChangeTarget(D3DXVECTOR3 * target, float dist)
+{
+	m_pTarget = target;
+	m_fStopDist = dist;
 }
 
 void Pet::AttackMode()

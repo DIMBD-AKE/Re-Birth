@@ -48,10 +48,10 @@ struct ST_PET_STATUS
 
 class Pet
 {
+	GET(Model*, m_pModel, Model);
 private:
-	Model*			m_pModel;
 	D3DXVECTOR3*	m_pTarget;
-	Map*			m_pMap;	
+	Map*			m_pMap;
 
 	PETSTATE		m_eState;
 	ST_PET_STATUS	m_eStatus;
@@ -63,14 +63,16 @@ private:
 private:
 	vector<ST_PET_NODE>	m_vecFindPath;
 	ST_PET_CELL			m_stTargetCell;
+	float				m_fStopDist;
 	bool TargetUpdate();
 	bool TargetEqualCell();
 	void AStar();
 	void OptimizePath();
 
 	void Move();
-	void Debug();
 	void StateControll();
+
+	void Debug();
 
 public:
 	Pet();
@@ -79,6 +81,8 @@ public:
 	void Init(D3DXVECTOR3* target, Map * map, PETTYPE type);
 	void Update();
 	void Render();
+
+	void ChangeTarget(D3DXVECTOR3* target, float dist);
 
 	void AttackMode();
 	void Spawn();

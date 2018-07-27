@@ -22,7 +22,10 @@ SC_Game::~SC_Game()
 void SC_Game::OnClick(UIObject * pSender)
 {
 	if (pSender->GetName().compare("Exit") == 0 && PAUSE)
+	{
 		ClearStage();
+		PAUSE = false;
+	}
 }
 
 void SC_Game::Release()
@@ -137,9 +140,13 @@ void SC_Game::Init()
 void SC_Game::Update()
 {
 	m_pMM->Update(m_nStage);
-	m_pDropManager->GetDropItem(m_pCharacter);
+	m_pDropManager->GetDropItem(m_pCharacter, m_pPet);
 	m_pCharacter->Update();
 	m_pNpc->Update();
+	if (!m_pDropManager->GetDropList().empty())
+		m_pPet->ChangeTarget(&m_pDropManager->GetDropList()[0].pos, 1);
+	else
+		m_pPet->ChangeTarget(m_pCharacter->GetCharacter()->GetPosition(), 3);
 	m_pPet->Update();
 
 	m_pGameUI->Update();

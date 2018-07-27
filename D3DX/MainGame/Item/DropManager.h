@@ -1,6 +1,7 @@
 #pragma once
 
 class CharacterParant;
+class Pet;
 
 struct ST_DROPBOX
 {
@@ -22,7 +23,9 @@ public:
 	void Init();
 
 	void AddDropItem(int itemID, D3DXVECTOR3 pos);
-	bool GetDropItem(CharacterParant * character);
+	bool GetDropItem(CharacterParant * character, Pet * pet);
+
+	vector<ST_DROPBOX>& GetDropList() { return m_vecDrop; }
 
 	void Render();
 };
