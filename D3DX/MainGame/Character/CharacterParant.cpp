@@ -796,8 +796,10 @@ void CharacterParant::Restore()
 
 void CharacterParant::SummonPet()
 {
-	m_pPet = new Pet;
-	m_pPet->Init(m_pCharacter->GetPosition(), m_pSampleMap, PETTYPE_NERO);
+	if (m_bPetUnSealed)
+	{
+		m_pPet->Init(m_pCharacter->GetPosition(), m_pSampleMap, PETTYPE_NERO);
+	}
 }
 
 
@@ -918,6 +920,7 @@ void CharacterParant::Init(CHRTYPE type, CHARSELECT order)
 	m_bSkillUnSealed = false;
 	m_bIceStat = false;
 	m_bIsStun = false;
+	m_bPetUnSealed = false;
 
 	m_fStamina = 10.0f;
 	m_nDamage = 0;
@@ -1018,7 +1021,7 @@ void CharacterParant::Update()
 	Guard();
 
 
-	if (m_pPet != NULL)
+	if (m_bPetUnSealed)
 	{
 		m_pPet->Update();
 	}
@@ -1047,7 +1050,7 @@ void CharacterParant::Render()
 
 	m_pDamage->Render(temp);
 
-	if (m_pPet != NULL)
+	if (m_bPetUnSealed)
 	{
 		m_pPet->Render();
 	}
