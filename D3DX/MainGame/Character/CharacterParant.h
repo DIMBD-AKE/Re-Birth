@@ -123,7 +123,6 @@ protected:
 	bool					m_bIceStat;						//아이스 상태 불값
 	bool					m_bIsStun;						//스턴상태 불값
 	SET(bool, m_bSkillUnSealed, SkillUnSealed);					//스킬 해금용 불값
-	SET(bool, m_bPetUnSealed, PetUnSealed);					//펫 해금용 불값
 
 	float					m_fDamageCount;					//데미지 띄우는 카운트
 	float					m_fDamageAngle;					//데미지 앵글

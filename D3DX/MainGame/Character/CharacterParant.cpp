@@ -918,7 +918,6 @@ void CharacterParant::Init(CHRTYPE type, CHARSELECT order)
 	m_bSkillUnSealed = false;
 	m_bIceStat = false;
 	m_bIsStun = false;
-	m_bPetUnSealed = false;
 
 	m_fStamina = 10.0f;
 	m_nDamage = 0;
