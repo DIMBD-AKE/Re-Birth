@@ -794,6 +794,12 @@ void CharacterParant::Restore()
 
 }
 
+void CharacterParant::SummonPet()
+{
+	m_pPet = new Pet;
+	m_pPet->Init(m_pCharacter->GetPosition(), m_pSampleMap, PETTYPE_NERO);
+}
+
 
 CharacterParant::CharacterParant()
 {
@@ -912,6 +918,7 @@ void CharacterParant::Init(CHRTYPE type, CHARSELECT order)
 	m_bSkillUnSealed = false;
 	m_bIceStat = false;
 	m_bIsStun = false;
+	m_bPetUnSealed = false;
 
 	m_fStamina = 10.0f;
 	m_nDamage = 0;
@@ -988,6 +995,8 @@ void CharacterParant::Init(CHRTYPE type, CHARSELECT order)
 
 	m_pShieldChr = NULL;
 
+	
+
 }
 
 void CharacterParant::Update()
@@ -996,9 +1005,6 @@ void CharacterParant::Update()
 	{
 		m_pParticle3->Update();
 	}
-
-
-
 
 	if (m_bIsUnderAttacked)
 	{
@@ -1011,6 +1017,12 @@ void CharacterParant::Update()
 	}
 	Restore();
 	Guard();
+
+
+	if (m_pPet != NULL)
+	{
+		m_pPet->Update();
+	}
 }	
 
 
@@ -1035,6 +1047,11 @@ void CharacterParant::Render()
 	temp.y += 0.4f;
 
 	m_pDamage->Render(temp);
+
+	if (m_pPet != NULL)
+	{
+		m_pPet->Render();
+	}
 }
 
 void CharacterParant::KeyControl()
