@@ -143,8 +143,8 @@ public:
 	virtual void Update() override;
 	virtual void Render() override;
 
-	bool IsDie() {
-		if (m_eBossState == BS_NONE) return true;
+	virtual bool IsDie() override {
+		if (m_bKeyMonster && m_eBossState == BS_NONE) return true;
 		return false;
 	}
 	//virtual void Update() override;

@@ -110,21 +110,13 @@ union STATUS
 		chr.nCurrentHP	*= scalar;
 		chr.nMaxHp		*= scalar;
 
-		chr.nCurrentStam *= scalar;
-		chr.nMaxStam *= scalar;
 
 		chr.nAtk *= scalar;
-		chr.fPhyRate *=		scalar;
-		chr.fMagicRate *=	scalar;
-		chr.fCheRate *=		scalar;
-		chr.fAtkSpeed *=	scalar;
 
 		chr.nDef *=  scalar;
 		chr.fAgi *=  scalar;
 		chr.fHit *=  scalar;
-		chr.fSpeed *=scalar;
 		chr.fRange *=scalar;
-		chr.fScale *=scalar;
 	}
 };
 

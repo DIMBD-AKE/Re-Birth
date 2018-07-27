@@ -157,6 +157,8 @@ protected:
 
 	//npc 등장시키는 몬스터냐
 	void IsAppear();
+
+
 public:
 	MonsterParent();
 	virtual ~MonsterParent();
@@ -182,7 +184,7 @@ public:
 
 	void MakeKeyMonster();
 
-	bool IsMiddleBossDie();
-	bool IsBossDie();
+	//키몬스터 죽었냐
+	virtual bool IsDie();
 };
 

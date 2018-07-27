@@ -69,16 +69,12 @@ public:
 	//최종 보스 사망시 소환 몬스터 제거 함수
 	void DeleteSummonMonster();
 
-	bool IsMiddleBossDie(OUT D3DXVECTOR3* diePos);
-	bool IsBossDie();
 	bool isKeyMonsterDie();
 
 	void SetNpc(Npc* npc);
 
 	void DamageMonster(int monsterIndex, float damage);
 
-	//void SetSpawnSpot(vector<D3DXVECTOR3> spawnVec) { m_vSpawnSpot = spawnVec; }
-	//
-	//make(spawn[i])
+
 };
 
