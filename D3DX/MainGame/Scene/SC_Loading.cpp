@@ -204,6 +204,9 @@ void SC_Loading::AddTexture()
 
 	//몬스터 피격 텍스쳐
 	m_pLoading->LoadTexture("피", "Texture/Particle/Blood.png");
+
+	//파이란 스킬 텍스쳐
+	m_pLoading->LoadTexture("파이란_스킬2", "Texture/Effect/pyranSkill2.png");
 }
 
 void SC_Loading::AddSound()

@@ -1214,6 +1214,11 @@ void Character_Magic::MeteorAfter()
 		if (IntersectSphere(particle, m_pCharacter->GetBoundSphere()))
 		{
 			SetCurrentHP(10);
+			for (int i = 0; i < m_pMonsterManager->GetMonsterVector().size(); i++)
+			{
+				if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn()) continue;
+				m_pMonsterManager->DamageMonster(i, 10);
+			}
 		}
 	}
 	if (m_pMeteorAfterPaticle->IsDie())

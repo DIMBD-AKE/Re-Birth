@@ -94,16 +94,17 @@ void SC_Game::Init()
 	m_pMM->SetSpawnSpat(m_pMap->GetSpawnEnemy());
 	m_pMM->MakeMonster(m_pDropManager, m_nStage);
 
-	m_pCharacter->Reset(m_pMap, m_pMM, m_pDropManager);
-
+	
 	m_pNpc = new Npc;
 
 	m_pPet = new Pet;
 
 	m_pPet->Init(m_pCharacter->GetCharacter()->GetPosition(), m_pMap, PETTYPE_NERO);
 
+	m_pCharacter->Reset(m_pMap, m_pMM, m_pDropManager, m_pPet);
+
 	//npc구현이 끝나면 이닛부분 지워주세요!
-	m_pNpc->Init(m_pMap->GetSpawnPlayer());
+	//m_pNpc->Init(m_pMap->GetSpawnPlayer());
 	m_pNpc->SetPlayerMemoryAddressLink(m_pCharacter);
 	m_pCharacter->SetNpcMemoryAddressLink(m_pNpc);
 

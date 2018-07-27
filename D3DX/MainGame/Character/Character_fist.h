@@ -16,9 +16,10 @@ private:
 
 	D3DXMATRIX*				m_pFistBody[FISTBODY_END];			//본 매트릭스 받기 위함
 	ST_SPHERE				m_stBound[FISTBODY_END];			//바운드 박스 씌우기 위함
-
+	D3DXMATRIX*				m_pDummyRoot;						//파이란 본 더미루트
+	D3DXVECTOR3				m_vDummyVector;						//더미루트 점벡터
 	float					m_fAttackInterval;					//어택용 인터벌
-
+	int						m_nDC;
 
 public:
 	Character_fist();
@@ -31,6 +32,11 @@ public:
 	virtual void KeyControl();
 	virtual void Attack();
 	void Debug();
+
+	void Skill1();
+	void Skill2();
+	void SkillDealing();
+
 
 };
 

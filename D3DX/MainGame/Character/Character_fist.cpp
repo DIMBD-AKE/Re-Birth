@@ -31,8 +31,8 @@ void Character_fist::Init(CHRTYPE type, CHARSELECT order)
 		m_pFistBody[FISTBODY_RIGHTHAND] = m_pCharacter->GetBoneMatrix("Bip001-R-Hand");
 		m_pFistBody[FISTBODY_LEFTLEG] = m_pCharacter->GetBoneMatrix("Bip001-L-Foot");
 		m_pFistBody[FISTBODY_RIGHTLEG] = m_pCharacter->GetBoneMatrix("Bip001-R-Foot");
-
-
+		m_pDummyRoot = m_pCharacter->GetBoneMatrix("Dummy_root");
+		
 		m_eNumTarget = NUM_SINGLE;
 		m_eCharSelect = CHAR_ONE;
 		m_Status->chr.fAgi = 50.0f;
@@ -77,9 +77,9 @@ void Character_fist::Init(CHRTYPE type, CHARSELECT order)
 
 	}
 
-
+	m_nDC = 0;
 	m_fAttackInterval = 0.7f;
-
+	m_vDummyVector = D3DXVECTOR3(0, 0, 0);
 	//for (int i = 0; i < FISTBODY_END; i++)
 	//{
 	//	D3DXVECTOR3 temp(0, 0, 0);
@@ -114,6 +114,9 @@ void Character_fist::Update()
 		//CountAppearDamage();
 		//m_pDamage->Update(*m_pCharacter->GetPosition());
 		
+		CharacterParant::Update();
+
+		D3DXVec3TransformCoord(&m_vDummyVector, &m_vDummyVector, m_pDummyRoot);
 		
 		for (int i = 0; i < FISTBODY_END; i++)
 		{
@@ -283,7 +286,7 @@ void Character_fist::KeyControl()
 		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_RUN_FRONT || m_eCondition == CHAR_RUN_BACK)
 		{
 			m_eCondition = CHAR_SKILL;
-
+			m_nDC = 0;
 			m_bIsSkill = true;
 			Attack();
 			ChangeAnimation();
@@ -300,6 +303,11 @@ void Character_fist::KeyControl()
 		switch (m_eCondition)
 		{
 		case CHAR_SKILL:
+			m_eCondition = CHAR_IDLE;
+			CAMERA->Shake(0.2, 0.1);
+			m_pCharacter->SetPosition(m_vDummyVector);
+			break;
+		case CHAR_SKILL2:
 			m_eCondition = CHAR_IDLE;
 			break;
 		case CHAR_ATTACK:
@@ -373,6 +381,13 @@ void Character_fist::KeyControl()
 		ChangeAnimation();
 	}
 
+	if (INPUT->KeyDown('F'))
+	{
+		m_eCondition = CHAR_SKILL2;
+		ChangeAnimation();
+		Skill1();
+	}
+
 }
 
 void Character_fist::Attack()
@@ -442,4 +457,47 @@ void Character_fist::Debug()
 		}
 		DEVICE->SetRenderState(D3DRS_FILLMODE, prevFillMode);
 	//}
+}
+
+void Character_fist::Skill1()
+{
+	if (m_eCharSelect == CHAR_ONE)
+	{
+
+		for (int j = 0; j < m_pMonsterManager->GetMonsterVector().size(); j++)
+		{
+			if (m_pMonsterManager->GetMonsterVector()[j]->GetIsResPawn()) continue;
+			if (IntersectSphere(m_stBound[FISTBODY_RIGHTLEG], m_pMonsterManager->GetMonsterVector()[j]->GetModel()->GetBoundSphere()))
+			{
+				m_pMonsterManager->GetMonsterVector()[j]->CalculDamage(10);
+
+				ST_EFFECT tempEffect;
+				ZeroMemory(&tempEffect, sizeof(tempEffect));
+				tempEffect.time = FRand(3, 5);
+				tempEffect.height = 1.0f;
+				tempEffect.SetAlpha(255, 255, 0);
+				tempEffect.SetScale(1, 1, 1);
+				tempEffect.tex = TEXTUREMANAGER->GetTexture("파이란_스킬2");
+
+				EffectObject* tempEFOBJ;
+				tempEFOBJ = new EffectObject;
+				D3DXVECTOR3 testSkillpos = *m_pCharacter->GetPosition();
+				testSkillpos.y += 2.0f;
+				testSkillpos.x += FRand(-0.5, 0.5);
+				testSkillpos.z += FRand(-0.3, 0.3);
+				tempEFOBJ->Init(tempEffect, testSkillpos);
+				m_vecEffect.push_back(tempEFOBJ);
+			}
+		}
+
+	}
+}
+
+void Character_fist::Skill2()
+{
+}
+
+void Character_fist::SkillDealing()
+{
+	
 }
