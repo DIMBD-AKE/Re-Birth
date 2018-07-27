@@ -179,7 +179,8 @@ protected:
 	void Getstage(int* stage) { m_npStage = stage; }
 	void Guard();
 	void Restore();
-	void SummonPet();
+	void SummonPet(PETTYPE pet);
+
 	int						m_temp;			//애니메이션 확인용 임시변수
 
 

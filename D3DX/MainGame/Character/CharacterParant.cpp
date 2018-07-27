@@ -794,11 +794,11 @@ void CharacterParant::Restore()
 
 }
 
-void CharacterParant::SummonPet()
+void CharacterParant::SummonPet(PETTYPE pet)
 {
 	if (m_bPetUnSealed)
 	{
-		m_pPet->Init(m_pCharacter->GetPosition(), m_pSampleMap, PETTYPE_NERO);
+		m_pPet->Init(m_pCharacter->GetPosition(), m_pSampleMap, pet);
 	}
 }
 
