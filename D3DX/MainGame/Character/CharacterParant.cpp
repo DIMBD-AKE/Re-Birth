@@ -512,7 +512,7 @@ void CharacterParant::PlayerProgressBar()
 	m_pHPBar->Update();
 	if (!m_pNpc->GetCollision())
 	{
-		TEXT->Add(to_string(m_Status->chr.nCurrentHP), 310, 700, 20, "나눔명조", 0xFFFFFFFF);
+		TEXT->Add(to_string(m_Status->chr.nCurrentHP), 300, 700, 20, "나눔명조", 0xFFFFFFFF);
 		TEXT->Add("/", 340, 700, 20, "나눔명조", 0xFFFFFFFF);
 		TEXT->Add(to_string(m_Status->chr.nMaxHp), 350, 700, 20, "나눔명조", 0xFFFFFFFF);
 	}

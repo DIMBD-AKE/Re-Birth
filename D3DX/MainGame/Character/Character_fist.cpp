@@ -473,21 +473,24 @@ void Character_fist::Skill1()
 
 				ST_EFFECT tempEffect;
 				ZeroMemory(&tempEffect, sizeof(tempEffect));
-				tempEffect.time = FRand(3, 5);
+				tempEffect.time = FRand(1, 3);
+				tempEffect.isRY = true;
 				tempEffect.height = 1.0f;
 				tempEffect.SetAlpha(255, 255, 0);
-				tempEffect.SetScale(1, 1, 1);
+				tempEffect.SetScale(2, 2, 2);
 				tempEffect.tex = TEXTUREMANAGER->GetTexture("파이란_스킬2");
 
 				EffectObject* tempEFOBJ;
 				tempEFOBJ = new EffectObject;
-				D3DXVECTOR3 testSkillpos = *m_pCharacter->GetPosition();
-				testSkillpos.y += 2.0f;
+				D3DXVECTOR3 testSkillpos = m_stBound[FISTBODY_RIGHTLEG].center;
+				//testSkillpos.y += 2.0f;
 				testSkillpos.x += FRand(-0.5, 0.5);
 				testSkillpos.z += FRand(-0.3, 0.3);
 				tempEFOBJ->Init(tempEffect, testSkillpos);
 				m_vecEffect.push_back(tempEFOBJ);
+				CAMERA->Shake(0.1, 0.4);
 			}
+			
 		}
 
 	}
