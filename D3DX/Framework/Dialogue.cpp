@@ -18,6 +18,7 @@ void Dialogue::Init(D3DXVECTOR2 pos, int size, string fontName, float interval, 
 	m_sFont = string(fontName);
 	m_fInterval = interval;
 	m_nColor = color;
+	m_isKeyLock = false;
 }
 
 void Dialogue::SetKey(DWORD next, DWORD prev, DWORD rewrite)
@@ -39,27 +40,30 @@ void Dialogue::Update()
 {
 	m_fElapse += TIME->GetElapsedTime();
 
-	if (INPUT->KeyDown(m_nPrev) && m_nIndex > 0 && m_nPrev > 0)
+	if (!m_isKeyLock)
 	{
-		m_nIndex--;
-		m_nChar = 0;
-		m_nLine = 0;
-		m_vecCurrentText.clear();
-	}
+		if (INPUT->KeyDown(m_nPrev) && m_nIndex > 0 && m_nPrev > 0)
+		{
+			m_nIndex--;
+			m_nChar = 0;
+			m_nLine = 0;
+			m_vecCurrentText.clear();
+		}
 
-	if (INPUT->KeyDown(m_nNext) && m_nIndex < m_vecAllText.size() - 1 && m_nNext > 0)
-	{
-		m_nIndex++;
-		m_nChar = 0;
-		m_nLine = 0;
-		m_vecCurrentText.clear();
-	}
+		if (INPUT->KeyDown(m_nNext) && m_nIndex < m_vecAllText.size() - 1 && m_nNext > 0)
+		{
+			m_nIndex++;
+			m_nChar = 0;
+			m_nLine = 0;
+			m_vecCurrentText.clear();
+		}
 
-	if (INPUT->KeyDown(m_nReWrite) && m_nReWrite > 0)
-	{
-		m_nChar = 0;
-		m_nLine = 0;
-		m_vecCurrentText.clear();
+		if (INPUT->KeyDown(m_nReWrite) && m_nReWrite > 0)
+		{
+			m_nChar = 0;
+			m_nLine = 0;
+			m_vecCurrentText.clear();
+		}
 	}
 
 	if (m_vecCurrentText.empty())

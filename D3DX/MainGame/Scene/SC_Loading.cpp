@@ -202,6 +202,7 @@ void SC_Loading::AddTexture()
 	//Npc대화창
 	m_pLoading->LoadTexture("대화창", "Texture/UI/NPC Dialogue.png");
 	m_pLoading->LoadTexture("리무_초상화", "Texture/Portrait/Rimoo.png");
+	m_pLoading->LoadTexture("선택지", "Texture/UI/NPC Button.png");
 
 	//몬스터 피격 텍스쳐
 	m_pLoading->LoadTexture("피", "Texture/Particle/Blood.png");

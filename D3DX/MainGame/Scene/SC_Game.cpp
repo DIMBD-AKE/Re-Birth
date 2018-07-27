@@ -10,6 +10,7 @@
 #include "../Character/Pet.h"
 
 SC_Game::SC_Game()
+	: m_pNpc(NULL)
 {
 }
 
@@ -17,6 +18,8 @@ SC_Game::SC_Game()
 SC_Game::~SC_Game()
 {
 	SAFE_DELETE(m_pCharacter);
+	SAFE_DELETE(m_pNpc);
+	SAFE_DELETE(m_pPet);
 }
 
 void SC_Game::OnClick(UIObject * pSender)
@@ -38,8 +41,7 @@ void SC_Game::Release()
 	for (auto p : m_vecParticle)
 		SAFE_DELETE(p);
 	m_vecParticle.clear();
-	SAFE_DELETE(m_pNpc);
-	SAFE_DELETE(m_pPet);
+	if (m_pNpc) m_pNpc->Once();
 }
 
 void SC_Game::Init()
@@ -59,7 +61,7 @@ void SC_Game::Init()
 
 	m_pMap = new Map;
 	CAMERA->SetFog(false, 0, 0, 0, 0);
-	//m_nStage = 3;
+
 	if (m_nStage == 0)
 		m_pMap->Load("Map/Sample.map");
 	else if (m_nStage == 1)
@@ -94,17 +96,16 @@ void SC_Game::Init()
 	m_pMM->SetSpawnSpat(m_pMap->GetSpawnEnemy());
 	m_pMM->MakeMonster(m_pDropManager, m_nStage);
 
-	
-	m_pNpc = new Npc;
+	if (!m_pNpc)
+		m_pNpc = new Npc;
 
-	m_pPet = new Pet;
-
-	m_pPet->Init(m_pCharacter->GetCharacter()->GetPosition(), m_pMap, PETTYPE_NERO);
+	if (!m_pPet)
+		m_pPet = new Pet;
 
 	m_pCharacter->Reset(m_pMap, m_pMM, m_pDropManager, m_pPet);
 
 	//npc구현이 끝나면 이닛부분 지워주세요!
-	//m_pNpc->Init(m_pMap->GetSpawnPlayer());
+	m_pNpc->Init(m_pMap->GetSpawnPlayer());
 	m_pNpc->SetPlayerMemoryAddressLink(m_pCharacter);
 	m_pCharacter->SetNpcMemoryAddressLink(m_pNpc);
 
@@ -148,7 +149,6 @@ void SC_Game::Update()
 		m_pPet->ChangeTarget(&m_pDropManager->GetDropList()[0].pos, 1);
 	else
 		m_pPet->ChangeTarget(m_pCharacter->GetCharacter()->GetPosition(), 3);
-	m_pPet->Update();
 
 	m_pGameUI->Update();
 	m_pPauseUI->Update();
@@ -185,8 +185,6 @@ void SC_Game::Render()
 	m_pNpc->Render();
 	m_pMM->Render();
 	m_pCharacter->Render();
-
-	m_pPet->Render();
 
 	m_pMap->ObjectRender();
 	
@@ -225,6 +223,8 @@ void SC_Game::ClearStage()
 {
 	CAMERA->SetTarget(NULL, NULL);
 	SAFE_DELETE(m_pCharacter);
+	SAFE_DELETE(m_pNpc);
+	SAFE_DELETE(m_pPet);
 	SCENE->ChangeScene("Main");
 }
 

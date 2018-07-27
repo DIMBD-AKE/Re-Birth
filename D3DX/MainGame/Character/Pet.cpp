@@ -339,6 +339,7 @@ void Pet::StateControll()
 
 Pet::Pet()
 {
+	m_eState = PET_HIDE;
 }
 
 

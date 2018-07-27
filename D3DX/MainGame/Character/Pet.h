@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Status.h"
+#include "../GameEnum.h"
 
 class Map;
 
@@ -26,19 +26,6 @@ enum PETSTATE
 	PET_IDLE,
 	PET_MOVE,
 	PET_ATTACK,
-};
-
-enum PETTYPE
-{
-	PETTYPE_BENTLEY,
-	PETTYPE_BUNNY,
-	PETTYPE_MIHO,
-	PETTYPE_MIRI,
-	PETTYPE_NERO,
-	PETTYPE_NIR,
-	PETTYPE_NIX,
-	PETTYPE_PANDA,
-	PETTYPE_PENNY
 };
 
 struct ST_PET_STATUS
