@@ -228,8 +228,6 @@ void Pet::Move()
 		if (targetRotY - rot.y < -D3DX_PI / 2)
 			rot.y -= D3DX_PI * 2;
 		rot.y += 0.1 * (targetRotY - rot.y);
-		TEXT->Add(to_string(targetRotY), 20, 40, 20, "", 0xFFFFFFFF);
-		TEXT->Add(to_string((targetRotY - rot.y)), 20, 60, 20, "", 0xFFFFFFFF);
 		m_pModel->SetRotation(rot);
 
 		D3DXVECTOR3 front;

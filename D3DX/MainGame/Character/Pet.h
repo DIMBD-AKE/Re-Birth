@@ -82,5 +82,7 @@ public:
 
 	void AttackMode();
 	void Spawn();
+
+	bool IsSpawn() { return m_eState != PET_HIDE; }
 };
 
