@@ -2,7 +2,6 @@
 #include "MainGame.h"
 
 #include "Item\ItemManager.h"
-#include "Scene\SC_Test.h"
 #include "Scene\SC_Loading.h"
 #include "Scene\SC_Main.h"
 #include "Scene\SC_Game.h"
@@ -32,7 +31,6 @@ void MainGame::Setup()
 	SCENE->AddScene("Loading", new SC_Loading);
 	SCENE->AddScene("Main", new SC_Main);
 	SCENE->AddScene("Game", new SC_Game);
-	SCENE->AddScene("Test", new SC_Test);
 
 	SCENE->ChangeScene("Loading", true);
 

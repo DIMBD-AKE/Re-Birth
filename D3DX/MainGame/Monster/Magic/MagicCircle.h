@@ -28,6 +28,7 @@ public:
 		m_vPos = pos;
 		m_pParticle->SetPosition(m_vPos); }
 
+	void ChangeParticle(string name, D3DXVECTOR3 pos);
 	
 };
 

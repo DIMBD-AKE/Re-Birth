@@ -217,7 +217,6 @@
     <ClInclude Include="MainGame\Character\Npc.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Framework\Manager\SceneManager.h" />
-    <ClInclude Include="MainGame\Scene\SC_Test.h" />
     <ClInclude Include="MainGame\Scene\SC_Game.h" />
     <ClInclude Include="MainGame\Scene\SC_Main.h" />
     <ClInclude Include="Framework\Shader.h" />
@@ -275,7 +274,6 @@
     <ClCompile Include="MainGame\monster\Near\Elizabeth.cpp" />
     <ClCompile Include="MainGame\monster\Near\NearMonster.cpp" />
     <ClCompile Include="MainGame\Scene\SC_Loading.cpp" />
-    <ClCompile Include="MainGame\Scene\SC_Test.cpp" />
     <ClCompile Include="MainGame\Monster\MonsterParent.cpp" />
     <ClCompile Include="MainGame\Monster\MonsterManager.cpp" />
     <ClCompile Include="MainGame\AStar\PathFind.cpp" />

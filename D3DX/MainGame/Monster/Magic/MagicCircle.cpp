@@ -49,3 +49,11 @@ bool MagicCircle::PlayerCollision(D3DXVECTOR3 targetPos, float targetR)
 
 	return false;
 }
+
+void MagicCircle::ChangeParticle(string name, D3DXVECTOR3 pos)
+{
+	SAFE_DELETE(m_pParticle);
+	m_pParticle = PARTICLE->GetParticle(name);	
+	m_pParticle->TimeReset();
+	m_pParticle->SetPosition(pos);
+}

@@ -442,6 +442,13 @@ void RealFinalboss::Attack()
 
 		if (IntersectSphere(target, stone))
 		{
+			D3DXVECTOR3 temp = *CHARACTER->GetPosition();
+			temp.y += 1.0f;
+			//m_vMagicCircle[i]->SetParticlePos(temp);
+			m_vMagicCircle[0]->ChangeParticle("흙먼지", temp);
+
+			//m_vMagicCircle[0]->ChangeParticle("흙먼지");
+			//m_vMagicCircle[0]->SetParticlePos(*m_pModel->GetPosition());
 			CAMERA->Shake(0.5f, 0.5f);
 			PCHARACTER->CalculDamage(100);
 			SAFE_DELETE(m_vEffectObject[0]);
@@ -526,6 +533,11 @@ void RealFinalboss::Skill2()
 
 				if (IntersectSphere(target, stone))
 				{
+					
+					D3DXVECTOR3 temp = *CHARACTER->GetPosition();
+					temp.y += 1.0f;
+					//m_vMagicCircle[i]->SetParticlePos(temp);
+					m_vMagicCircle[i]->ChangeParticle("흙먼지", temp);
 					CAMERA->Shake(0.5f, 0.5f);
 					PCHARACTER->CalculDamage(100);
 					SAFE_DELETE(m_vEffectObject[i]);
@@ -616,8 +628,9 @@ void RealFinalboss::DropTheStone()
 	m_bUsingSkill2 = false;
 	D3DXVECTOR3 rndPos = *CHARACTER->GetPosition();
 			
-	m_vMagicCircle[0]->SetParticlePos(rndPos);
-	m_vMagicCircle[0]->GetParticle()->TimeReset();
+	m_vMagicCircle[0]->ChangeParticle("마법기본공격", rndPos);
+	//m_vMagicCircle[0]->SetParticlePos(rndPos);
+	//m_vMagicCircle[0]->GetParticle()->TimeReset();
 
 	SAFE_DELETE(m_vEffectObject[0]);
 	m_vEffectObject[0] = new EffectObject;
@@ -650,8 +663,9 @@ void RealFinalboss::DropTheStones()
 
 		/* 	void Init(ST_EFFECT info, D3DXVECTOR3 pos);*/
 		
-		m_vMagicCircle[i]->SetParticlePos(rndPos);
-		m_vMagicCircle[i]->GetParticle()->TimeReset();
+		m_vMagicCircle[i]->ChangeParticle("마법기본공격", rndPos);
+		//m_vMagicCircle[i]->SetParticlePos(rndPos);
+		//m_vMagicCircle[i]->GetParticle()->TimeReset();
 
 		SAFE_DELETE(m_vEffectObject[i]);
 		m_vEffectObject[i] = new EffectObject;

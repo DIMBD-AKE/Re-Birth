@@ -197,6 +197,7 @@ void SC_Loading::AddTexture()
 
 	//최종보스 스킬 텍스쳐
 	m_pLoading->LoadTexture("돌", "Texture/Effect/stone.png");
+	m_pLoading->LoadTexture("흙먼지", "Texture/Particle/Dust.png");
 	
 	//Npc대화창
 	m_pLoading->LoadTexture("대화창", "Texture/UI/NPC Dialogue.png");
@@ -296,6 +297,7 @@ void SC_Loading::AddParticle()
 	m_pLoading->LoadParticle("Pet Spawn", "Particle Sphere", "Particle/Pet Spawn.ptc");
 
 	m_pLoading->LoadParticle("몬스터기본피격", "피", "Particle/Blood Hit.ptc");
+	m_pLoading->LoadParticle("흙먼지", "흙먼지", "Particle/Dust.ptc");
 }
 
 void SC_Loading::InitUI()

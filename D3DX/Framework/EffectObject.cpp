@@ -140,7 +140,7 @@ void EffectObject::Render()
 {
 	if (DEBUG)
 		Debug();
-
+	DEVICE->SetRenderState(D3DRS_ALPHABLENDENABLE, true);
 	DEVICE->SetTransform(D3DTS_WORLD, &m_matWorld);
 	DEVICE->SetTexture(0, m_stInfo.tex);
 	DEVICE->SetRenderState(D3DRS_LIGHTING, false);
