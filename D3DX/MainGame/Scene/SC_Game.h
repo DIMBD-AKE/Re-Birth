@@ -8,7 +8,7 @@ class DropManager;
 
 class Pet;
 
-class SC_Game : public Scene
+class SC_Game : public Scene, public IUIFunction
 {
 private:
 	Map *				m_pMap;
@@ -34,6 +34,8 @@ private:
 public:
 	SC_Game();
 	virtual ~SC_Game();
+
+	virtual void OnClick(UIObject * pSender);
 
 	virtual void Release();
 	virtual void Init();

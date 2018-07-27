@@ -214,23 +214,31 @@ void Pet::Move()
 	if (!m_vecFindPath.empty())
 	{
 		D3DXVECTOR3 next = m_vecFindPath.front().c.center;
-		float targetRotY;
+		bool equalCell = TargetEqualCell();
 
-		if (TargetEqualCell())
+		float targetRotY;
+		if (equalCell)
 			targetRotY = GetAngle(pos.x, pos.z, m_pTarget->x, m_pTarget->z) - D3DX_PI / 2;
 		else
 			targetRotY = GetAngle(pos.x, pos.z, next.x, next.z) - D3DX_PI / 2;
 
 		D3DXVECTOR3 rot = *m_pModel->GetRotation();
+		if (targetRotY - rot.y > D3DX_PI / 2)
+			rot.y += D3DX_PI * 2;
+		if (targetRotY - rot.y < -D3DX_PI / 2)
+			rot.y -= D3DX_PI * 2;
 		rot.y += 0.1 * (targetRotY - rot.y);
 		TEXT->Add(to_string(targetRotY), 20, 40, 20, "", 0xFFFFFFFF);
-		TEXT->Add(to_string(0.1 * (targetRotY - rot.y)), 20, 60, 20, "", 0xFFFFFFFF);
-		//rot.y = targetRotY;
+		TEXT->Add(to_string((targetRotY - rot.y)), 20, 60, 20, "", 0xFFFFFFFF);
 		m_pModel->SetRotation(rot);
 
-		D3DXVECTOR3 front; D3DXVec3Normalize(&front, &(next - pos));
+		D3DXVECTOR3 front;
+		if (equalCell)
+			D3DXVec3Normalize(&front, &(*m_pTarget - pos));
+		else
+			D3DXVec3Normalize(&front, &(next - pos));
 
-		if (D3DXVec3Length(&(*m_pModel->GetPosition() - *m_pTarget)) > 2.0f)
+		if (D3DXVec3Length(&(*m_pModel->GetPosition() - *m_pTarget)) > 3.0f)
 			m_pModel->SetPosition(*m_pModel->GetPosition() + front * m_eStatus.speed);
 		else
 		{

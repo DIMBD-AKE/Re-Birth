@@ -19,6 +19,12 @@ SC_Game::~SC_Game()
 	SAFE_DELETE(m_pCharacter);
 }
 
+void SC_Game::OnClick(UIObject * pSender)
+{
+	if (pSender->GetName().compare("Exit") == 0 && PAUSE)
+		ClearStage();
+}
+
 void SC_Game::Release()
 {
 	SAFE_DELETE(m_pMap);
@@ -91,7 +97,7 @@ void SC_Game::Init()
 
 	m_pPet = new Pet;
 
-	m_pPet->Init(m_pCharacter->GetCharacter()->GetPosition(), m_pMap, PETTYPE_NIR);
+	m_pPet->Init(m_pCharacter->GetCharacter()->GetPosition(), m_pMap, PETTYPE_NERO);
 
 	//npc구현이 끝나면 이닛부분 지워주세요!
 	m_pNpc->Init(m_pMap->GetSpawnPlayer());
@@ -106,6 +112,16 @@ void SC_Game::Init()
 	m_pPauseUI->SetTexture(TEXTUREMANAGER->GetTexture("White"));
 	m_pPauseUI->SetAlpha(150);
 	m_pPauseUI->SetColor(D3DXVECTOR3(0, 0, 0));
+	
+	UIObject * exitButton = new UIObject;
+	exitButton->SetTexture(TEXTUREMANAGER->GetTexture("Main Button"));
+	exitButton->SetAnchor(UIAC_C);
+	exitButton->SetPosition(D3DXVECTOR3(1520 / 2, 805 / 2, 0));
+	exitButton->SetScale(D3DXVECTOR3(0.7, 0.7, 1));
+	exitButton->SetFunction(this);
+	exitButton->SetAlpha(200);
+	exitButton->SetName("Exit");
+	m_pPauseUI->AddChild(exitButton);
 
 	m_isStart = false;
 
@@ -136,12 +152,6 @@ void SC_Game::Update()
 
 	if (INPUT->KeyDown(VK_ESCAPE))
 		PAUSE = !PAUSE;
-
-	if (INPUT->KeyDown(VK_LBUTTON))
-	{
-		if (PAUSE)
-			ClearStage();
-	}
 
 	if (m_pMM->isKeyMonsterDie())
 	{
@@ -182,7 +192,10 @@ void SC_Game::Render()
 	}
 
 	if (PAUSE)
+	{
 		m_pPauseUI->Render();
+		TEXT->Add("종료", 734, 388, 30, "나눔명조", 0xFFFFFFFF);
+	}
 }
 
 void SC_Game::ShowElapseTime()
