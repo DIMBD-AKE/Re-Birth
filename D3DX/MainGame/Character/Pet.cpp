@@ -22,7 +22,15 @@ bool Pet::TargetUpdate()
 	if (D3DXVec3Length(&(temp.center - m_stTargetCell.center)) > 1)
 		return true;
 	else
+	{
+		if (D3DXVec3Length(&(*m_pModel->GetPosition() - *m_pTarget)) > m_fStopDist)
+		{
+			ST_PET_NODE node;
+			node.c.center = *m_pTarget;
+			m_vecFindPath.push_back(node);
+		}
 		return false;
+	}
 }
 
 bool Pet::TargetEqualCell()
@@ -202,6 +210,9 @@ void Pet::OptimizePath()
 		center.c.center = s[sideIndex];
 		m_vecFindPath.push_back(center);
 	}
+	ST_PET_NODE target;
+	target.c = m_stTargetCell;
+	m_vecFindPath.push_back(target);
 }
 
 void Pet::Move()
@@ -211,22 +222,30 @@ void Pet::Move()
 	if (!m_vecFindPath.empty())
 	{
 		D3DXVECTOR3 next = m_vecFindPath.front().c.center;
-		float targetRotY;
+		bool equalCell = TargetEqualCell();
 
-		if (TargetEqualCell())
+		float targetRotY;
+		if (equalCell)
 			targetRotY = GetAngle(pos.x, pos.z, m_pTarget->x, m_pTarget->z) - D3DX_PI / 2;
 		else
 			targetRotY = GetAngle(pos.x, pos.z, next.x, next.z) - D3DX_PI / 2;
 
 		D3DXVECTOR3 rot = *m_pModel->GetRotation();
+		if (targetRotY - rot.y > D3DX_PI / 2)
+			rot.y += D3DX_PI * 2;
+		if (targetRotY - rot.y < -D3DX_PI / 2)
+			rot.y -= D3DX_PI * 2;
 		rot.y += 0.1 * (targetRotY - rot.y);
-		rot.y = targetRotY;
 		m_pModel->SetRotation(rot);
 
-		D3DXVECTOR3 front = GetFront(*m_pModel->GetRotation(), D3DXVECTOR3(0, 0, -1));
+		D3DXVECTOR3 front;
+		if (equalCell)
+			D3DXVec3Normalize(&front, &(*m_pTarget - pos));
+		else
+			D3DXVec3Normalize(&front, &(next - pos));
 
-		if (D3DXVec3Length(&(*m_pModel->GetPosition() - *m_pTarget)) > 3.0f)
-			m_pModel->SetPosition(*m_pModel->GetPosition() + front * 0);
+		if (D3DXVec3Length(&(*m_pModel->GetPosition() - *m_pTarget)) > m_fStopDist)
+			m_pModel->SetPosition(*m_pModel->GetPosition() + front * m_eStatus.speed);
 		else
 		{
 			m_vecFindPath.clear();
@@ -245,6 +264,13 @@ void Pet::Move()
 
 void Pet::Debug()
 {
+	if (!DEBUG) return;
+
+	if (m_isOptimize)
+		TEXT->Add("최적화", 20, 20, 20, "", 0xFF00FF00);
+	else
+		TEXT->Add("최적화", 20, 20, 20, "", 0xFFFF0000);
+
 	vector<D3DXVECTOR3> vecVertex;
 	for (int i = 0; i < m_vecFindPath.size(); i++)
 		vecVertex.push_back(m_vecFindPath[i].c.center + D3DXVECTOR3(0, 0.2, 0));
@@ -265,17 +291,31 @@ void Pet::StateControll()
 {
 	if (m_eState != PET_ATTACK)
 	{
-		if (m_vecFindPath.empty() && m_eState != PET_IDLE)
+		if (m_vecFindPath.empty() && m_eState == PET_MOVE)
 		{
 			m_eState = PET_IDLE;
 			m_pModel->SetBlendTime(0.3);
 			m_pModel->SetBlendAnimation("IDLE");
 		}
 
-		else if (!m_vecFindPath.empty() && m_eState != PET_MOVE)
+		if (!m_vecFindPath.empty() && m_eState == PET_IDLE)
 		{
 			m_eState = PET_MOVE;
-			m_pModel->SetAnimation("RUN");
+			m_pModel->SetAnimation("MOVE");
+		}
+	}
+
+	if (m_eState == PET_SPAWN || m_eState == PET_DISAPPEAR)
+	{
+		m_pSpawnParticle->SetPosition(*m_pModel->GetPosition());
+		m_pSpawnParticle->ApplyWorld();
+		m_pSpawnParticle->Update();
+		if (m_pSpawnParticle->IsDie())
+		{
+			if (m_eState == PET_SPAWN)
+				m_eState = PET_IDLE;
+			else if (m_eState == PET_DISAPPEAR)
+				m_eState = PET_HIDE;
 		}
 	}
 
@@ -288,6 +328,13 @@ void Pet::StateControll()
 	{
 
 	}
+
+	if (m_eState != PET_HIDE)
+	{
+		if (TargetUpdate()) AStar();
+
+		m_pModel->World();
+	}
 }
 
 Pet::Pet()
@@ -298,16 +345,42 @@ Pet::Pet()
 Pet::~Pet()
 {
 	SAFE_DELETE(m_pModel);
+	SAFE_DELETE(m_pSpawnParticle);
 }
 
-void Pet::Init(D3DXVECTOR3 * target, Map * map)
+void Pet::Init(D3DXVECTOR3 * target, Map * map, PETTYPE type)
 {
-	m_pModel = MODELMANAGER->GetModel("리무", MODELTYPE_X);
+	if (type == PETTYPE_BENTLEY) m_pModel = MODELMANAGER->GetModel("강아지", MODELTYPE_X);
+	if (type == PETTYPE_BUNNY) m_pModel = MODELMANAGER->GetModel("토끼", MODELTYPE_X);
+	if (type == PETTYPE_MIHO) m_pModel = MODELMANAGER->GetModel("구미호", MODELTYPE_X);
+	if (type == PETTYPE_MIRI) m_pModel = MODELMANAGER->GetModel("양", MODELTYPE_X);
+	if (type == PETTYPE_NERO) m_pModel = MODELMANAGER->GetModel("고양이", MODELTYPE_X);
+	if (type == PETTYPE_NIR) m_pModel = MODELMANAGER->GetModel("용", MODELTYPE_X);
+	if (type == PETTYPE_NIX) m_pModel = MODELMANAGER->GetModel("피닉스", MODELTYPE_X);
+	if (type == PETTYPE_PANDA) m_pModel = MODELMANAGER->GetModel("팬더", MODELTYPE_X);
+	if (type == PETTYPE_PENNY) m_pModel = MODELMANAGER->GetModel("돼지", MODELTYPE_X);
+
+	ST_SIZEBOX box;
+	box.highX = 20.0f;
+	box.highY = 40.0;
+	box.highZ = 20.0f;
+	box.lowX = -20.0f;
+	box.lowY = 0.0f;
+	box.lowZ = -20.0f;
+
 	m_pModel->SetPosition(map->GetSpawnPlayer());
 	m_pModel->SetScale(D3DXVECTOR3(0.025, 0.025, 0.025));
-	m_eState = PET_IDLE;
+	m_pModel->SetAnimation("IDLE");
+	m_pModel->CreateBound(box);
+
+	m_eState = PET_HIDE;
+
+	m_pSpawnParticle = PARTICLE->GetParticle("Pet Spawn");
 
 	m_isOptimize = true;
+
+	m_eStatus.speed = 0.1;
+	m_fStopDist = 3;
 
 	m_pTarget = target;
 	m_pMap = map;
@@ -318,22 +391,52 @@ void Pet::Update()
 	if (INPUT->KeyDown('T'))
 		m_isOptimize = !m_isOptimize;
 
-	if (m_isOptimize)
-		TEXT->Add("최적화", 20, 20, 20, "", 0xFF00FF00);
-	else
-		TEXT->Add("최적화", 20, 20, 20, "", 0xFFFF0000);
-
-	if (TargetUpdate())
-		AStar();
+	if (INPUT->KeyDown('X'))
+		Spawn();
 
 	StateControll();
-
-	m_pModel->World();
 }
 
 void Pet::Render()
 {
-	m_pModel->Render();
+	if (m_eState != PET_HIDE)
+		m_pModel->Render();
+
+	if (m_eState == PET_SPAWN || m_eState == PET_DISAPPEAR)
+		m_pSpawnParticle->Render();
 
 	Debug();
+}
+
+void Pet::ChangeTarget(D3DXVECTOR3 * target, float dist)
+{
+	m_pTarget = target;
+	m_fStopDist = dist;
+}
+
+void Pet::AttackMode()
+{
+	if (m_eState != PET_HIDE)
+	{
+		if (m_eState == PET_ATTACK)
+			m_eState = PET_IDLE;
+		else
+			m_eState = PET_ATTACK;
+	}
+}
+
+void Pet::Spawn()
+{
+	if (m_eState == PET_HIDE)
+	{
+		m_eState = PET_SPAWN;
+		m_pSpawnParticle->TimeReset();
+		m_pModel->SetPosition(*m_pTarget);
+	}
+	else
+	{
+		m_eState = PET_DISAPPEAR;
+		m_pSpawnParticle->TimeReset();
+		m_pModel->SetAnimation("IDLE");
+	}
 }

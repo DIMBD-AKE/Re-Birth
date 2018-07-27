@@ -44,6 +44,7 @@ enum CHAR_CONDITION			//캐릭터 컨디션
 	CHAR_RUN_FRONT,			//캐릭터 달리기
 	CHAR_RUN_BACK,			//캐릭터 뒤로 달리기
 	CHAR_SKILL,				//캐릭터 스킬쓰기
+	CHAR_SKILL2,			//캐릭터 스킬모션2
 	CHAR_ATTACK,			//캐릭터 일반공격
 	CHAR_DIE,				//캐릭터 죽음
 	CHAR_HIT,				//캐릭터 피격

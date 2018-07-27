@@ -339,6 +339,9 @@ void Character_Magic::KeyControl()
 		case CHAR_HIT:
 			m_eCondition = CHAR_IDLE;
 			break;
+		case CHAR_GUARD:
+			m_eCondition = CHAR_IDLE;
+			break;
 		case CHAR_DIE:
 			m_eCondition = CHAR_NONE;
 			m_bIsDead = false;
@@ -470,6 +473,13 @@ void Character_Magic::KeyControl()
 		}
 	}
 	
+	//가드를 올려야해요!
+	if (INPUT->KeyDown('Z'))
+	{
+		m_eCondition = CHAR_GUARD;
+		ChangeAnimation();
+	}
+
 }
 
 
@@ -1204,6 +1214,11 @@ void Character_Magic::MeteorAfter()
 		if (IntersectSphere(particle, m_pCharacter->GetBoundSphere()))
 		{
 			SetCurrentHP(10);
+			for (int i = 0; i < m_pMonsterManager->GetMonsterVector().size(); i++)
+			{
+				if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn()) continue;
+				m_pMonsterManager->DamageMonster(i, 10);
+			}
 		}
 	}
 	if (m_pMeteorAfterPaticle->IsDie())

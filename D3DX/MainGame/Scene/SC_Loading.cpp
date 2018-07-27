@@ -87,7 +87,7 @@ void SC_Loading::AddModel()
 	m_pLoading->LoadModel("용", "Model/Pet/Nir/", "Nir.x", MODELTYPE_X);
 	m_pLoading->LoadModel("피닉스", "Model/Pet/Nix/", "Nix.x", MODELTYPE_X);
 	m_pLoading->LoadModel("팬더", "Model/Pet/Panda/", "Panda.x", MODELTYPE_X);
-	m_pLoading->LoadModel("", "Model/Pet/Penny/", "Penny.x", MODELTYPE_X);
+	m_pLoading->LoadModel("돼지", "Model/Pet/Penny/", "Penny.x", MODELTYPE_X);
 }
 
 void SC_Loading::AddTexture()
@@ -150,6 +150,8 @@ void SC_Loading::AddTexture()
 	m_pLoading->LoadTexture("Character Background", "Texture/Scene/Character BG.png");
 	m_pLoading->LoadTexture("Character Chr Over", "Texture/Scene/Main Character Over.png");
 
+	m_pLoading->LoadTexture("White", "Texture/UI/White.png");
+
 	// 게임 UI
 	m_pLoading->LoadTexture("Game ElapseTime", "Texture/UI/ElapseTime.png");
 	m_pLoading->LoadTexture("캐릭터_스테이터스", "Texture/UI/Character Status.png");
@@ -202,6 +204,9 @@ void SC_Loading::AddTexture()
 
 	//몬스터 피격 텍스쳐
 	m_pLoading->LoadTexture("피", "Texture/Particle/Blood.png");
+
+	//파이란 스킬 텍스쳐
+	m_pLoading->LoadTexture("파이란_스킬2", "Texture/Effect/pyranSkill2.png");
 }
 
 void SC_Loading::AddSound()
@@ -288,6 +293,7 @@ void SC_Loading::AddParticle()
 	m_pLoading->LoadParticle("MegaCristal", "MegaCristal", "Particle/megaCristal.ptc");
 
 	m_pLoading->LoadParticle("Hell Smoke", "Particle Sphere", "Particle/Hell Smoke.ptc");
+	m_pLoading->LoadParticle("Pet Spawn", "Particle Sphere", "Particle/Pet Spawn.ptc");
 
 	m_pLoading->LoadParticle("몬스터기본피격", "피", "Particle/Blood Hit.ptc");
 }

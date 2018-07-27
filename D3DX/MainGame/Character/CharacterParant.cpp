@@ -11,6 +11,7 @@
 #include "../DamageUI.h"
 #include "../Item/DropManager.h"
 #include "Npc.h"
+#include "Pet.h"
 
 
 void CharacterParant::SKill()
@@ -346,7 +347,17 @@ void CharacterParant::ControllStamina()
 	{
 		if (m_Status->chr.nCurrentStam <= m_Status->chr.nMaxStam)
 		{
-			m_Status->chr.nCurrentStam += 0.1;
+			
+			if (m_pPet->IsSpawn())
+			{
+				m_Status->chr.nCurrentStam += 1;
+			}
+			else
+			{
+				m_Status->chr.nCurrentStam += 0.1;
+			}
+
+
 			if (m_Status->chr.nCurrentStam >= m_Status->chr.nMaxStam)
 			{
 				m_Status->chr.nCurrentStam = m_Status->chr.nMaxStam;
@@ -354,6 +365,9 @@ void CharacterParant::ControllStamina()
 		}
 	}
 
+
+
+	
 
 }
 
@@ -496,8 +510,12 @@ void CharacterParant::PlayerProgressBar()
 	D3DXVECTOR3 UIPos = D3DXVECTOR3(205, 685, 0);
 	m_pHPBar->SetPosition(UIPos);
 	m_pHPBar->Update();
-	if(!m_pNpc->GetCollision()) TEXT->Add(to_string(m_Status->chr.nCurrentHP), 240, 700, 20);
-	
+	if (!m_pNpc->GetCollision())
+	{
+		TEXT->Add(to_string(m_Status->chr.nCurrentHP), 300, 700, 20, "³ª´®¸íÁ¶", 0xFFFFFFFF);
+		TEXT->Add("/", 340, 700, 20, "³ª´®¸íÁ¶", 0xFFFFFFFF);
+		TEXT->Add(to_string(m_Status->chr.nMaxHp), 350, 700, 20, "³ª´®¸íÁ¶", 0xFFFFFFFF);
+	}
 
 
 	float tempS = (float)m_Status->chr.nCurrentStam / m_Status->chr.nMaxStam;
@@ -505,7 +523,12 @@ void CharacterParant::PlayerProgressBar()
 	D3DXVECTOR3 StaPos = D3DXVECTOR3(205, 746, 0);
 	m_pStaminaBar->SetPosition(StaPos);
 	m_pStaminaBar->Update();
-	if (!m_pNpc->GetCollision())TEXT->Add(to_string((int)m_Status->chr.nCurrentStam), 240, 750, 20);
+	if (!m_pNpc->GetCollision())
+	{
+		TEXT->Add(to_string((int)m_Status->chr.nCurrentStam), 310, 760, 20, "³ª´®¸íÁ¶", 0xFFFFFFFF);
+		TEXT->Add("/", 340, 760, 20, "³ª´®¸íÁ¶", 0xFFFFFFFF);
+		TEXT->Add(to_string((int)m_Status->chr.nMaxStam), 350, 760, 20, "³ª´®¸íÁ¶", 0xFFFFFFFF);
+	}
 }
 
 
@@ -561,11 +584,12 @@ void CharacterParant::StoreAttack(int index)
 
 
 
-void CharacterParant::Reset(Map * map, MonsterManager * pMonsterManager, DropManager* Drop)
+void CharacterParant::Reset(Map * map, MonsterManager * pMonsterManager, DropManager* Drop, Pet* p)
 {	
 	m_pSampleMap = map;
 	m_pMonsterManager = pMonsterManager;
 	m_pDropManager = Drop;
+	m_pPet = p;
 
 	D3DXVECTOR3 startPos = map->GetSpawnPlayer();
 	m_pCharacter->SetPosition(D3DXVECTOR3(startPos.x, m_pSampleMap->GetHeight(startPos.x, startPos.z), startPos.z));
@@ -743,6 +767,31 @@ void CharacterParant::Guard()
 	{
 		m_bIsInvincible = true;
 	}
+}
+
+void CharacterParant::Restore()
+{
+
+	if (m_pPet->IsSpawn())
+	{
+
+		if (INPUT->KeyPress('C'))
+		{
+			if (m_Status->chr.nCurrentHP < m_Status->chr.nMaxHp)
+			{
+				m_Status->chr.nCurrentHP += 1;
+			}
+
+			if (m_Status->chr.nCurrentHP >= m_Status->chr.nMaxHp)
+			{
+				m_Status->chr.nCurrentHP = m_Status->chr.nMaxHp;
+			}
+		}
+
+	}
+
+
+
 }
 
 
@@ -938,6 +987,7 @@ void CharacterParant::Init(CHRTYPE type, CHARSELECT order)
 	m_pTalkBar->SetPosition(D3DXVECTOR3(0, 545, 0));
 
 	m_pShieldChr = NULL;
+
 }
 
 void CharacterParant::Update()
@@ -959,7 +1009,7 @@ void CharacterParant::Update()
 			m_bIsInvincible = false;
 		}
 	}
-
+	Restore();
 	Guard();
 }	
 
@@ -1255,6 +1305,9 @@ void CharacterParant::ChangeAnimation()
 		break;
 	case CHAR_SKILL:
 			m_pCharacter->SetAnimation("SKILL");
+		break;
+	case CHAR_SKILL2:
+			m_pCharacter->SetAnimation("SKILL2");
 		break;
 	case CHAR_ATTACK:
 			m_pCharacter->SetAnimation("ATTACK");

@@ -101,6 +101,7 @@ ST_PARTICLE_ATTRIBUTE ParticleSystem::ResetParticle(int loop)
 
 void ParticleSystem::TimeReset()
 {
+	m_isDie = false;
 	auto iter = m_lAttribute.begin();
 	for (; iter != m_lAttribute.end(); iter++)
 	{
@@ -123,6 +124,7 @@ void ParticleSystem::Update()
 {
 	auto iter = m_lAttribute.begin();
 	int count = 0;
+	if (m_isDie) return;
 	for (; iter != m_lAttribute.end(); iter++)
 	{
 		if (!(*iter)->isAlive) continue;
@@ -219,6 +221,7 @@ void ParticleSystem::PreRender()
 
 void ParticleSystem::Render()
 {
+	if (m_isDie) return;
 	PreRender();
 
 	DEVICE->SetTransform(D3DTS_WORLD, &m_matWorld);

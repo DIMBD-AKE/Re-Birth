@@ -8,15 +8,17 @@ class DropManager;
 
 class Pet;
 
-class SC_Game : public Scene
+class SC_Game : public Scene, public IUIFunction
 {
 private:
 	Map *				m_pMap;
 	CharacterParant *	m_pCharacter;
 	MonsterManager *	m_pMM;
 	DropManager *		m_pDropManager;
-	UIObject *			m_pUI;
 	Npc*				m_pNpc;
+
+	UIObject *			m_pGameUI;
+	UIObject *			m_pPauseUI;
 
 	Pet*				m_pPet;
 
@@ -32,6 +34,8 @@ private:
 public:
 	SC_Game();
 	virtual ~SC_Game();
+
+	virtual void OnClick(UIObject * pSender);
 
 	virtual void Release();
 	virtual void Init();

@@ -13,7 +13,7 @@ class DamageUI;
 class DropManager;
 union STATUS;
 struct ST_DAMAGE;
-
+class Pet;
 
 
 
@@ -57,6 +57,7 @@ protected:
 
 	TestItem*				m_pFirstItem;				//첫번쨰 스킬 장비
 	Npc*					m_pNpc;						//NPC클래스 연결
+	Pet*					m_pPet;						//펫클래스 연결
 
 	ST_STATUS				m_bCharStatus[STAT_END];				//캐릭터 상태이상 변수 
 	
@@ -167,7 +168,7 @@ protected:
 	void Effect();
 	void StoreEffect(int index);
 	void StoreAttack(int index);
-	void Reset(Map* map, MonsterManager* pMonsterManager,DropManager* Drop);
+	void Reset(Map* map, MonsterManager* pMonsterManager,DropManager* Drop, Pet* p);
 	void SetTarget();
 	void CutScene();
 	void SetModelAlpha();
@@ -176,7 +177,7 @@ protected:
 	void SetCameraNormalView();
 	void Getstage(int* stage) { m_npStage = stage; }
 	void Guard();
-
+	void Restore();
 	int						m_temp;			//애니메이션 확인용 임시변수
 
 

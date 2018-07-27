@@ -356,6 +356,9 @@ void Character_Gun::KeyControl()
 		case CHAR_INHERENT1:
 			m_eCondition = CHAR_IDLE;
 			break;
+		case CHAR_GUARD:
+			m_eCondition = CHAR_IDLE;
+			break;
 		case CHAR_DIE:
 			m_eCondition = CHAR_NONE;
 			m_bIsDead = false;
@@ -449,6 +452,15 @@ void Character_Gun::KeyControl()
 				WindStorm();
 		}
 	}
+
+	//가드를 올려야해요!
+	if (INPUT->KeyDown('Z'))
+	{
+		m_eCondition = CHAR_GUARD;
+		ChangeAnimation();
+	}
+
+
 }
 
 void Character_Gun::Attack()

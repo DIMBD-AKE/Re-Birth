@@ -2,11 +2,11 @@
 #include "DropManager.h"
 #include "../Character/Inventory.h"
 #include "../Character/CharacterParant.h"
+#include "../Character/Pet.h"
 #include "ItemManager.h"
 #include <time.h>
 
 DropManager::DropManager()
-//: m_pModel(NULL)
 {
 
 }
@@ -50,14 +50,26 @@ void DropManager::AddDropItem(int itemID, D3DXVECTOR3 pos)
 	m_vecDrop.push_back(box);
 }
 
-bool DropManager::GetDropItem(CharacterParant * character)
+bool DropManager::GetDropItem(CharacterParant * character, Pet * pet)
 {
 	for (int i = 0; i < m_vecDrop.size(); i++)
 	{
 		m_pModel->SetPosition(m_vecDrop[i].pos);
 		m_pModel->SetRotation(m_vecDrop[i].rot);
+
 		if (character->GetCharacter()->IsCollisionSphere(m_pModel))
 			if (character->GetCharacter()->IsCollisionOBB(m_pModel))
+			{
+				ItemParent* item = ITEMMANAGER->GetItem(m_vecDrop[i].itemID);
+				if (character->Getm_Inventory()->AddItem(item))
+				{
+					m_vecDrop.erase(m_vecDrop.begin() + i);
+					return true;
+				}
+			}
+
+		if (pet->GetModel()->IsCollisionSphere(m_pModel))
+			if (pet->GetModel()->IsCollisionOBB(m_pModel))
 			{
 				ItemParent* item = ITEMMANAGER->GetItem(m_vecDrop[i].itemID);
 				if (character->Getm_Inventory()->AddItem(item))
