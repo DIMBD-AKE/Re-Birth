@@ -210,6 +210,9 @@ void SC_Loading::AddTexture()
 
 	//파이란 스킬 텍스쳐
 	m_pLoading->LoadTexture("파이란_스킬2", "Texture/Effect/pyranSkill2.png");
+
+	//중간보스 피흡 텍스쳐
+	m_pLoading->LoadTexture("피흡원", "Texture/Effect/BloodCircle.png");
 }
 
 void SC_Loading::AddSound()

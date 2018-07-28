@@ -164,14 +164,14 @@ void FinalBoss::Pattern()
 		tempEffect1.time = 5;
 		tempEffect1.rot = D3DXVECTOR3(90, 0, 0);
 		tempEffect1.mot = D3DXVECTOR3(0, 10, 0);
-		tempEffect1.SetMotorSpeed(0.4f, 0.4f, 0.4f);
-		//tempEffect1.dir = D3DXVECTOR3(0, -1.0f, 0);
-		//tempEffect1.SetSpeed(0.01f, 0.01f, 0.01f);
+		tempEffect1.SetMotorSpeed(0.05f, 0.05f, 0.05f);
+		tempEffect1.dir = D3DXVECTOR3(0, -1.0f, 0);
+		tempEffect1.SetSpeed(0.02f, 0.02f, 0.02f);
 		//tempEffect1.ms0 = 9.0f;
 		tempEffect1.height = 2.0f;
 		tempEffect1.SetAlpha(255, 255,150);
 		tempEffect1.SetScale(10, 10, 10);
-		tempEffect1.tex = TEXTUREMANAGER->GetTexture("실드_마법");
+		tempEffect1.tex = TEXTUREMANAGER->GetTexture("피흡원");
 
 
 		SAFE_DELETE(m_pCasting);
