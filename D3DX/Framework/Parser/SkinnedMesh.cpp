@@ -415,7 +415,7 @@ void SkinnedMesh::Render(LPD3DXFRAME pFrame, D3DXMATRIX * matWorld)
 
 				m_pShaderEffect->SetFloat("gAlpha", m_fAlpha);
 				m_pShaderEffect->SetFloat("gOffset", m_fOffset);
-				m_pShaderEffect->SetFloat("gRimPower", m_fRimPower + 1);
+				m_pShaderEffect->SetFloat("gRimPower", m_fRimPower);
 				m_pShaderEffect->SetVector("gLimColor", &D3DXVECTOR4(m_vRimColor.x / 255.0f, m_vRimColor.y / 255.0f, m_vRimColor.z / 255.0f, 1));
 				m_pShaderEffect->SetVector("gCamPos", &D3DXVECTOR4(vCamPos.x, vCamPos.y, vCamPos.z, 1));
 
