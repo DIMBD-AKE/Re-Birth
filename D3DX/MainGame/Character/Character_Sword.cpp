@@ -150,6 +150,13 @@ void Character_Sword::Init(CHRTYPE type, CHARSELECT order)
 		CharacterParant::Init(type, order);
 
 
+		m_bIsVelvetFinal = false;
+		m_nVelvetCount = 0;
+		velvetFinal = m_pCharacter->GetBoneMatrix("Bone_sawtooth01");
+		m_vVelvetFinal = D3DXVECTOR3(0, 0, 0);
+		m_fVelvetInterval = 15.0f;
+		m_fOriginSpeed = 0.0f;
+		m_nVelvetEnd = 0;
 
 		m_pSkillBar->SetTexture(TEXTUREMANAGER->GetTexture("캐릭터_스킬창"));
 		m_pSkillBar->SetPosition(D3DXVECTOR3(588, 695, 0));
@@ -237,13 +244,25 @@ void Character_Sword::Update()
 		PlayerProgressBar();
 
 
-	//	m_pDamage->Update(*m_pCharacter->GetPosition());
-
-
+		//m_pDamage->Update(*m_pCharacter->GetPosition());
+		if (m_eCharSelect == CHAR_THREE)
+		{
+			D3DXVec3TransformCoord(&m_vVelvetFinal, &D3DXVECTOR3(0, 0, 0), velvetFinal);
+		}
+		if (m_bIsVelvetFinal)
+		{
+			m_pVelvetFinal->SetPosition(m_vVelvetFinal);
+			m_pVelvetFinal->SetRotation(*m_pCharacter->GetRotation());
+			m_pVelvetFinal->ApplyWorld();
+			m_pVelvetFinal->Update();
+		}
+		VelvetCount();
 	}
 	CutScene();
 	if (!m_bIsStun)KeyControl();
 	if (m_bIsTarget)TargetSword();
+
+	
 	CharacterParant::Update();
 
 }
@@ -276,7 +295,10 @@ void Character_Sword::Render()
 		if (m_bSkillUnSealed && !m_pNpc->GetCollision())m_pInheritateIco3->Render();
 		if (!m_pNpc->GetCollision())m_pHPBar->Render();
 		if (!m_pNpc->GetCollision())m_pStaminaBar->Render();
-	
+		if (m_bIsVelvetFinal)
+		{
+			m_pVelvetFinal->Render();
+		}
 		m_pInventory->Render();
 	}
 }
@@ -596,9 +618,18 @@ void Character_Sword::KeyControl()
 
 	if (INPUT->KeyDown('V'))
 	{
-		//TargetSword();
-		m_bIsTarget = true;
 		m_nDamageCount = 0;
+		//TargetSword();
+		if (m_eCharSelect == CHAR_ONE)
+		{
+			m_bIsTarget = true;
+		}
+
+		if (m_eCharSelect == CHAR_THREE)
+		{
+			SetTarget();
+			velvetFinalSKILL();
+		}
 	}
 
 
@@ -663,6 +694,8 @@ void Character_Sword::Attack()
 				if (m_pMonsterManager->GetMonsterVector()[m_vecTarget[i]]->GetIsResPawn())return;
 				//m_pMonsterManager->GetMonsterVector()[m_vecTarget[i]]->CalculDamage(m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
 				m_pMonsterManager->DamageMonster(m_vecTarget[i], m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
+				//m_pMonsterManager->GetMonsterVector()[m_vecTarget[i]]->GetModel()->SetShaderRimColor(D3DXVECTOR3(255, 0, 0));
+				//m_pMonsterManager->GetMonsterVector()[m_vecTarget[i]]->GetModel()->SetShaderRimPower(1.0f);
 			}
 		}
 	}
@@ -830,6 +863,7 @@ void Character_Sword::Bash()
 			//tempEffect.isRY = true;
 			tempEffect.isRX = true;
 			tempEffect.dir = front;
+			tempEffect.autoY = true;
 			tempEffect.height = 3.0f;
 			//tempEffect.SetSpeed(1.0, 1.0, 1.0);
 			//TODO : 알파값도 랜덤으로, 스케일도 랜덤으로 RND써서 수정
@@ -890,6 +924,7 @@ void Character_Sword::GrabSlash()
 			//tempEffect.isRZ = true;
 			//tempEffect.isRX = true;
 			tempEffect.dir = front;
+			tempEffect.autoY = true;
 			tempEffect.height = 3.0f;
 			tempEffect.SetSpeed(1.0, 1.0, 1.0);
 			//TODO : 알파값도 랜덤으로, 스케일도 랜덤으로 RND써서 수정
@@ -1133,9 +1168,97 @@ void Character_Sword::TargetSword()
 		}
 	}
 
-	
 }
 
+void Character_Sword::velvetFinalSKILL()
+{
+	m_pCharacter->SetAnimation("SKILL");
+	D3DXVECTOR3 pos = *m_pCharacter->GetPosition();
+
+
+	if (m_nIndex < 0) return;
+
+	D3DXVECTOR3 MonPos = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
+	ST_EFFECT tempEffect;
+	ZeroMemory(&tempEffect, sizeof(tempEffect));
+
+	tempEffect.time = FRand(0.1, 0.4);
+	tempEffect.isRY = true;
+	tempEffect.isRX = true;
+	tempEffect.height = 3.0f;
+	tempEffect.SetAlpha(FRand(100, 255), FRand(100, 255), 0);
+	tempEffect.SetScale(FRand(1.4, 3.0), FRand(1.4, 3.0), FRand(1.4, 3.0));
+	tempEffect.tex = TEXTUREMANAGER->AddTexture("Blood", "Texture/Effect/velvet.png");
+	EffectObject* tempEFOBJ;
+	tempEFOBJ = new EffectObject;
+
+	D3DXVECTOR3 TempDir;
+	TempDir = *m_pCharacter->GetPosition() - *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
+	D3DXVec3Normalize(&TempDir, &TempDir);
+
+	float Length = D3DXVec3Length(&(MonPos - pos));
+
+	D3DXVECTOR3 testSkillpos = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
+	testSkillpos.y += 1.0f;
+	testSkillpos.x += FRand(-0.5, 0.5);
+	testSkillpos.z += FRand(-0.5, 0.5);
+	testSkillpos += TempDir * (Length * 0.3f);
+	tempEFOBJ->Init(tempEffect, testSkillpos);
+
+	m_vecEffect.push_back(tempEFOBJ);
+	//m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
+	
+	m_nVelvetCount++;
+	if (m_nVelvetCount < 2)
+	{
+		m_pMonsterManager->DamageMonster(m_nIndex, m_Status->chr.nAtk+10 + m_pInventory->GetEquipStat().item.nAtk);
+		m_pCharacter->SetShaderRimColor(D3DXVECTOR3(255, 0, 0));
+		m_pCharacter->SetShaderRimPower(0.2f);
+	}
+	if (m_nVelvetCount > 2 && m_nVelvetCount <= 4)
+	{
+		m_pMonsterManager->DamageMonster(m_nIndex, m_Status->chr.nAtk+20 + m_pInventory->GetEquipStat().item.nAtk);
+		m_pCharacter->SetShaderRimColor(D3DXVECTOR3(255, 0, 0));
+		m_pCharacter->SetShaderRimPower(0.5f);
+	}
+	if (m_nVelvetCount > 4 && m_nVelvetCount <= 6)
+	{
+		m_pMonsterManager->DamageMonster(m_nIndex, m_Status->chr.nAtk+80 + m_pInventory->GetEquipStat().item.nAtk);
+		m_pCharacter->SetShaderRimColor(D3DXVECTOR3(255, 0, 0));
+		m_pCharacter->SetShaderRimPower(1.0f);
+	}
+	if (m_nVelvetCount > 6)
+	{
+		m_bIsVelvetFinal = true;
+		m_pMonsterManager->DamageMonster(m_nIndex, m_Status->chr.nAtk +300 + m_pInventory->GetEquipStat().item.nAtk);
+		m_pCharacter->SetShaderRimColor(D3DXVECTOR3(255, 0, 0));
+		m_pCharacter->SetShaderRimPower(1.0f);
+		m_fOriginSpeed = m_Status->chr.fSpeed;
+		m_Status->chr.fSpeed = m_Status->chr.fSpeed + 0.3f;
+	}
+
+}
+
+void Character_Sword::VelvetCount()
+{
+	if (m_bIsVelvetFinal)
+	{
+		if (m_fElpTime < m_fPrevTime + m_fVelvetInterval) return;
+
+		m_fPrevTime = m_fElpTime;
+
+		m_nVelvetEnd++;
+
+		if (m_nVelvetEnd <= 3)
+		{
+			m_pCharacter->SetShaderRimColor(D3DXVECTOR3(0, 0, 0));
+			m_pCharacter->SetShaderRimPower(0.0f);
+			m_bIsVelvetFinal = false;
+			m_Status->chr.fSpeed = m_fOriginSpeed;
+		}
+
+	}
+}
 
 
 

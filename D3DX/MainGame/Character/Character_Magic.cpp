@@ -787,6 +787,7 @@ void Character_Magic::FireBall()
 	//tempEffect.isRX = true;
 	//tempEffect.isRZ = true;
 	tempEffect.dir = TempDir;
+	tempEffect.autoY = true;
 	tempEffect.SetSpeed(0.2, 0.2, 0.2);
 	tempEffect.height = 3.0f;
 	tempEffect.SetAlpha(255, 255, 0);
