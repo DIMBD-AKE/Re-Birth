@@ -7,6 +7,9 @@ SkinnedMesh::SkinnedMesh()
 	, m_fBlendTime(1.0f)
 	, m_fPassedTime(0.0f)
 	, m_fAlpha(1.0f)
+	, m_fRimPower(0.0f)
+	, m_fOffset(0.0f)
+	, m_vRimColor(D3DXVECTOR4(255, 255, 255, 1))
 {
 }
 
@@ -26,7 +29,7 @@ void SkinnedMesh::CloneAnimation(SkinnedMesh * orig)
 		orig->m_pAnimController->GetMaxNumEvents(),
 		&m_pAnimController);
 
-	m_pShaderEffect = Shader::LoadShader("Shader/Normal UV.fx");
+	m_pShaderEffect = Shader::LoadShader("Shader/Rim UV.fx");
 }
 
 AllocatedHierachy::AllocatedHierachy()
@@ -395,7 +398,9 @@ void SkinnedMesh::Render(LPD3DXFRAME pFrame, D3DXMATRIX * matWorld)
 			DEVICE->GetTransform(D3DTS_PROJECTION, &matProj);
 			matViewProj = matView * matProj;
 
-			// À½¿µ
+			D3DXVECTOR3 vCamPos = CAMERA->GetEye();
+
+			// ½¦ÀÌ´õ
 			m_pShaderEffect->Begin(&pass, 0);
 
 			for (UINT i = 0; i < pass; i++)
@@ -407,7 +412,13 @@ void SkinnedMesh::Render(LPD3DXFRAME pFrame, D3DXMATRIX * matWorld)
 				m_pShaderEffect->SetMatrix("gWorldViewProjectionMatrix", &matWVP);
 				m_pShaderEffect->SetMatrix("gWorldMatrix", &pBone->CombinedTransformationMatrix);
 				m_pShaderEffect->SetVector("gWorldLightDirection", &vLightDir);
-				
+
+				m_pShaderEffect->SetFloat("gAlpha", m_fAlpha);
+				m_pShaderEffect->SetFloat("gOffset", m_fOffset);
+				m_pShaderEffect->SetFloat("gRimPower", m_fRimPower + 1);
+				m_pShaderEffect->SetVector("gLimColor", &D3DXVECTOR4(m_vRimColor.x / 255.0f, m_vRimColor.y / 255.0f, m_vRimColor.z / 255.0f, 1));
+				m_pShaderEffect->SetVector("gCamPos", &D3DXVECTOR4(vCamPos.x, vCamPos.y, vCamPos.z, 1));
+
 				for (DWORD i = 0; i < pBoneMesh->vecMtl.size(); i++)
 				{
 					pBoneMesh->vecMtl[i].Diffuse;
@@ -418,7 +429,6 @@ void SkinnedMesh::Render(LPD3DXFRAME pFrame, D3DXMATRIX * matWorld)
 					diffuse.w = 1;
 					m_pShaderEffect->SetVector("gLightColor", &diffuse);
 					m_pShaderEffect->SetTexture("DiffuseMap_Tex", pBoneMesh->vecTex[i]);
-					m_pShaderEffect->SetFloat("gAlpha", m_fAlpha);
 					if (pBoneMesh->vecNor.size() > i)
 						m_pShaderEffect->SetTexture("NormalMap_Tex", pBoneMesh->vecNor[i]);
 					m_pShaderEffect->CommitChanges();

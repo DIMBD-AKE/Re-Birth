@@ -49,6 +49,12 @@ public:
 	virtual float GetAnimationPeriod(int index) { return 0; }
 	virtual void SetShaderAlpha(float alpha) {}
 	virtual float GetShaderAlpha() { return 0; }
+	virtual void SetShaderColorOffset(float offset) {}
+	virtual float GetShaderColorOffset() { return 0; }
+	virtual void SetShaderRimPower(float power) {}
+	virtual float GetShaderRimPower() { return 0; }
+	virtual void SetShaderRimColor(D3DXVECTOR3 color) {}
+	virtual D3DXVECTOR3 GetShaderRimColor() { return D3DXVECTOR3(); }
 	virtual D3DXMATRIX* GetBoneMatrix(string name) { return NULL; }
 
 protected:
@@ -133,9 +139,16 @@ public:
 	virtual bool IsAnimationPercent(float rate);
 	virtual float GetAnimationPeriod(string name);
 	virtual float GetAnimationPeriod(int index);
+	virtual D3DXMATRIX* GetBoneMatrix(string name);
+
 	virtual void SetShaderAlpha(float alpha);
 	virtual float GetShaderAlpha();
-	virtual D3DXMATRIX* GetBoneMatrix(string name);
+	virtual void SetShaderColorOffset(float offset);
+	virtual float GetShaderColorOffset();
+	virtual void SetShaderRimPower(float power);
+	virtual float GetShaderRimPower();
+	virtual void SetShaderRimColor(D3DXVECTOR3 color);
+	virtual D3DXVECTOR3 GetShaderRimColor();
 };
 
 class ModelStaticX : public Model

@@ -89,7 +89,7 @@ void CameraManager::Setup()
 void CameraManager::Update()
 {
 	D3DXMATRIX matView, matR;
-	D3DXVECTOR3 vEye = m_vEye;
+	m_vCalcEye = m_vEye;
 	D3DXVECTOR3 vLookAt = m_vLookAt;
 	D3DXVECTOR3 vCamOffset = m_vCamOffset;
 	D3DXMatrixRotationYawPitchRoll(&matR, m_vRotation.y, m_vRotation.x, m_vRotation.z);
@@ -117,7 +117,7 @@ void CameraManager::Update()
 		if (INPUT->KeyPress('D')) m_vPosition += right * m_fSpeed;
 		if (INPUT->KeyPress('E')) m_vPosition.y += m_fSpeed;
 		if (INPUT->KeyPress('Q')) m_vPosition.y -= m_fSpeed;
-		vEye = m_vPosition;
+		m_vCalcEye = m_vPosition;
 		vLookAt = m_vPosition + front;
 	}
 
@@ -129,9 +129,9 @@ void CameraManager::Update()
 			m_vPosition += m_fSmooth * (*m_pTargetPos - m_vPosition);
 
 			vLookAt = *m_pTargetPos + m_vTargetOffset;
-			D3DXVec3TransformCoord(&vEye, &vEye, &matR);
+			D3DXVec3TransformCoord(&m_vCalcEye, &m_vCalcEye, &matR);
 			D3DXVec3TransformCoord(&vCamOffset, &vCamOffset, &matR);
-			vEye = m_vPosition + vCamOffset + m_vTargetOffset + vEye;
+			m_vCalcEye = m_vPosition + vCamOffset + m_vTargetOffset + m_vCalcEye;
 		}
 	}
 
@@ -150,8 +150,8 @@ void CameraManager::Update()
 			vLookAt = *m_pTargetPos + m_vTargetOffset;
 			vCamOffset.z += m_fDistance;
 			vCamOffset.y = 0;
-			D3DXVec3TransformCoord(&vEye, &(vEye + vCamOffset), &matR);
-			vEye = *m_pTargetPos + m_vTargetOffset + vEye;
+			D3DXVec3TransformCoord(&m_vCalcEye, &(m_vCalcEye + vCamOffset), &matR);
+			m_vCalcEye = *m_pTargetPos + m_vTargetOffset + m_vCalcEye;
 		}
 	}
 
@@ -159,24 +159,24 @@ void CameraManager::Update()
 	{
 		if (m_eAction == CAMERAA_CINEMATIC && m_pTargetPos || m_eAction == CAMERAA_SHAKECINEMATIC)
 		{
-			vEye = *m_pTargetPos;
+			m_vCalcEye = *m_pTargetPos;
 			m_vCinRot += m_vCinDir * TIME->GetElapsedTime();
 			m_fCinZoom += m_fCinZoomSpeed * TIME->GetElapsedTime();
 			D3DXVECTOR3 front = GetFront(D3DXVECTOR3(m_vCinRot.x, m_vCinRot.y, 0), D3DXVECTOR3(0, 0, m_fCinZoom));
-			vEye += front;
-			vEye.y += m_vTargetOffset.y;
+			m_vCalcEye += front;
+			m_vCalcEye.y += m_vTargetOffset.y;
 		}
 		if (m_eAction == CAMERAA_SHAKE || m_eAction == CAMERAA_SHAKECINEMATIC)
 		{
 			float x = FRand(-m_fShakePower, m_fShakePower);
 			float y = FRand(-m_fShakePower, m_fShakePower);
 			float z = FRand(-m_fShakePower, m_fShakePower);
-			vEye += D3DXVECTOR3(x, y, z);
+			m_vCalcEye += D3DXVECTOR3(x, y, z);
 			vLookAt += D3DXVECTOR3(x, y, z);
 		}
 	}
 
-	D3DXMatrixLookAtLH(&matView, &vEye, &vLookAt, &m_vUp);
+	D3DXMatrixLookAtLH(&matView, &m_vCalcEye, &vLookAt, &m_vUp);
 	DEVICE->SetTransform(D3DTS_VIEW, &matView);
 
 	m_fElapse += TIME->GetElapsedTime();

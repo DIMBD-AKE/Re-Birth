@@ -49,9 +49,13 @@ private:
 	bool						m_isBlend;
 	float						m_fBlendTime;
 	float						m_fPassedTime;
-	float						m_fAlpha;
 
 	LPD3DXEFFECT				m_pShaderEffect;
+
+	SYNTHESIZE(float, m_fAlpha, Alpha);
+	SYNTHESIZE(float, m_fOffset, ColorOffset);
+	SYNTHESIZE(float, m_fRimPower, RimPower);
+	SYNTHESIZE(D3DXVECTOR3, m_vRimColor, RimColor);
 
 private:
 	map<string, int>			m_animMap;
@@ -73,9 +77,6 @@ public:
 	void SetAnimationPosition(float pos);
 	bool IsAnimationPercent(float rate);
 	bool IsAnimationEnd();
-
-	void SetAlpha(float alpha) { m_fAlpha = alpha; }
-	float GetAlpha() { return m_fAlpha; }
 
 	float GetAnimationPeriod(int index);
 

@@ -30,7 +30,7 @@ private:
 	vector<D3DXPLANE>		m_vecPlane;
 
 private:
-	D3DXVECTOR3		m_vEye;
+	D3DXVECTOR3		m_vEye, m_vCalcEye;
 	D3DXVECTOR3		m_vUp;
 	D3DXVECTOR3		m_vLookAt;
 
@@ -67,6 +67,7 @@ public:
 	void Shake(float power, float time);
 	void Cinematic(D3DXVECTOR2 startDir, D3DXVECTOR2 rotDir, float zoomStart, float zoomSpeed, float time);
 	bool IsActionEnd() { return m_fActionTime <= m_fElapse; }
+	D3DXVECTOR3 GetEye() { return m_vCalcEye; }
 };
 
 #define CAMERA CameraManager::GetInstance()

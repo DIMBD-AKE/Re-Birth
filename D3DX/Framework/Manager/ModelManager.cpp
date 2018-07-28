@@ -639,6 +639,36 @@ float ModelX::GetShaderAlpha()
 	return m_pSMesh->GetAlpha();
 }
 
+void ModelX::SetShaderColorOffset(float offset)
+{
+	m_pSMesh->SetColorOffset(offset);
+}
+
+float ModelX::GetShaderColorOffset()
+{
+	return m_pSMesh->GetColorOffset();
+}
+
+void ModelX::SetShaderRimPower(float power)
+{
+	m_pSMesh->SetRimPower(power);
+}
+
+float ModelX::GetShaderRimPower()
+{
+	return m_pSMesh->GetRimPower();
+}
+
+void ModelX::SetShaderRimColor(D3DXVECTOR3 color)
+{
+	m_pSMesh->SetRimColor(color);
+}
+
+D3DXVECTOR3 ModelX::GetShaderRimColor()
+{
+	return m_pSMesh->GetRimColor();
+}
+
 D3DXMATRIX * ModelX::GetBoneMatrix(string name)
 {
 	return m_pSMesh->GetBoneMatrix(name);
