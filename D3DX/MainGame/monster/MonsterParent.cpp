@@ -160,7 +160,8 @@ void MonsterParent::Update()
 	//}
 	m_fAlphaCount += TIME->GetElapsedTime();
 
-	if (m_fAlphaCount >= 0.5) m_pModel->SetShaderAlpha(1.0f);
+	if (m_fAlphaCount >= 0.2) //m_pModel->SetShaderAlpha(1.0f);
+		m_pModel->SetShaderColorOffset(0);
 
 	if (m_bIsTargeting)
 	{
@@ -686,7 +687,13 @@ void MonsterParent::SetCurrentHP(int hp, int* deathCount)
 			
 		}
 
-		m_pModel->SetShaderAlpha(0.5f);
+		m_pModel->SetShaderRimColor(D3DXVECTOR3(255, 0, 0));
+		m_pModel->SetShaderRimPower(1.0f);
+
+		//m_pModel->SetShaderAlpha(0.5f);
+
+		m_pModel->SetShaderColorOffset(1);
+
 		m_fAlphaCount = 0;
 
 		m_pDamageUI->AddDamage(hp);
@@ -702,7 +709,11 @@ void MonsterParent::SetCurrentHP(int hp, int* deathCount)
 			if (m_bAppearNPC && !m_pNpc->GetIsAppear())
 				m_pNpc->Init(*m_pModel->GetPosition());
 
-			m_pModel->SetShaderAlpha(1.0f);
+			m_pModel->SetShaderRimPower(0.0f);
+
+			//m_pModel->SetShaderAlpha(1.0f);
+			m_pModel->SetShaderColorOffset(0);
+
 			CURRENTHP(m_pMonsterStat) = 0;
 
 

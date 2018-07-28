@@ -56,7 +56,8 @@ void MonsterManager::Update(int stage)
 	assert(m_vSpawnSpot.size() > 0 && "만들어진 몬스터가 없습니다.");
 
 	char temp[222];
-	sprintf_s(temp, sizeof(temp), "현재 잡은 수 : %d",	m_nDieMonsterNum);
+	sprintf_s(temp, sizeof(temp), "현재 잡은 수 : %f",
+		GetDistance(m_pMap->GetSpawnBoss(), *CHARACTER->GetPosition()));
 	TEXT->Add(temp, 100, 100, 20);
 
 	for (int i = 0; i < m_vMM.size(); i++)

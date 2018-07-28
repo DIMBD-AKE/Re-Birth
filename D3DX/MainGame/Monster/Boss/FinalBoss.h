@@ -32,6 +32,7 @@ protected:
 	//스킬 2 캐스팅함수
 	virtual void Casting() override;
 
+	void MoveSpawn();
 public:
 	FinalBoss();
 	virtual ~FinalBoss();

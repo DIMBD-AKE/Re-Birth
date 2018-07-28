@@ -138,6 +138,7 @@ void MagicMonster::Attack()
 
 		if (m_nTargetingCount >= 200 && m_pModel->IsAnimationEnd())
 		{
+			m_pModel->SetShaderRimPower(0.0f);
 			m_eState = MS_IDLE;
 			ChangeAni();
 			m_nTargetingCount = 0;

@@ -154,6 +154,29 @@ void FinalBoss::SetupSkill2()
 
 void FinalBoss::Pattern()
 {
+	//보스의 이동범위 안에 들어왔는데 내가 idle상태면 움직여야 하니까 상태와 애니메이션 바꾸고
+	if (GetDistance(m_pMap->GetSpawnBoss()
+		, *CHARACTER->GetPosition()) <= 18.0f && m_eBossState == BS_IDLE)
+	{
+		m_eBossState = BS_RUN;
+		ChangeAni();
+	}
+	//보스의 이동범위 밖에 나가버렸는데 보스의 상태
+	else if(GetDistance(m_pMap->GetSpawnBoss()
+		, *CHARACTER->GetPosition()) > 18.0f 
+		&&  m_eBossState!= BS_ENTER
+		&& !m_bIsAttack
+		&& !m_bUsingSkill
+		&& !m_bUsingSkill2)
+	{
+		
+		if (m_eBossState != BS_IDLE)
+		{
+			MoveSpawn();
+		}
+		return;
+	}
+
 	if (m_pCasting)
 		m_pCasting->Update();
 	
@@ -196,14 +219,14 @@ void FinalBoss::Pattern()
 	{
 		if (m_pModel->IsAnimationEnd())
 		{
-			m_eBossState = BS_RUN;
+			m_eBossState = BS_IDLE;
 			ChangeAni();
 		}
 	}
 	break;
 	case BS_RUN:
 	{
-		//Move();
+		Move();
 	}
 	break;
 	case BS_PASSIVE:
@@ -214,7 +237,7 @@ void FinalBoss::Pattern()
 		}
 		break;
 	case BS_ATTACK:
-		//Attack();
+		Attack();
 		break;
 	case BS_SKILL1:
 		SkillUse();
@@ -365,6 +388,8 @@ void FinalBoss::SkillUse()
 
 	if (m_pModel->IsAnimationEnd())
 	{
+		m_bIsAttack = false;
+		m_bUsingSkill2 = false;
 		m_bUsingSkill = false;
 		m_fSkillCoolTimeCount = 0;
 		m_eBossState = BS_RUN;
@@ -375,6 +400,7 @@ void FinalBoss::SkillUse()
 
 void FinalBoss::Skill2()
 {
+	
 	vector<MonsterParent*> tt;
 
 
@@ -398,8 +424,10 @@ void FinalBoss::Skill2()
 
 	if (m_pModel->IsAnimationEnd())
 	{
+	
+		m_bIsAttack = false;
 		m_bUsingSkill2 = false;
-		
+		m_bUsingSkill = false;
 		m_fSkillCoolTimeCount2 = 0;
 		m_eBossState = BS_RUN;
 		ChangeAni();
@@ -416,4 +444,32 @@ void FinalBoss::Casting()
 		ChangeAni();
 	//	m_pModel->SetAnimationPosition(0.5f);
 	}
+}
+
+void FinalBoss::MoveSpawn()
+{
+	if (GetDistance(*m_pModel->GetPosition(), m_pMap->GetSpawnBoss()) <= 1.0f)
+	{
+		m_pModel->SetPosition(m_pMap->GetSpawnBoss());
+		m_eBossState = BS_IDLE;
+		ChangeAni();
+
+		return;
+	}
+
+	if (m_eBossState != BS_RUN)
+	{
+		m_eBossState = BS_RUN;
+		ChangeAni();
+	}
+
+	m_vDir = m_pMap->GetSpawnBoss() - *m_pModel->GetPosition();
+	D3DXVec3Normalize(&m_vDir, &m_vDir);
+
+	float angle = GetAngle(0, 0, m_vDir.x, m_vDir.z);
+	angle -= D3DX_PI / 2;
+	
+	m_pModel->SetRotation(D3DXVECTOR3(0,angle,0));
+
+	m_pModel->SetPosition(*m_pModel->GetPosition() + m_vDir * SPEED(m_pMonsterStat));
 }
