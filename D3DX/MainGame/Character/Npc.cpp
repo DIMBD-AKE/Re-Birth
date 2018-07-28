@@ -124,7 +124,7 @@ void Npc::Init(D3DXVECTOR3 pos)
 	m_pContext->AddText("빨리 원하는거나 고르고 사라져!");
 	m_pContext->AddText("선택");
 	m_pContext->AddText("어쨋든! 자..잘해봐!\n응원하는게 아니라...       몰라 그냥 빨리가!\n(부끄러우니까..)");
-	m_pContext->AddText("");
+	m_pContext->AddText("====츤데레 by 드림센세===");
 
 	m_pEndContext = new Dialogue;
 	m_pEndContext->Init(D3DXVECTOR2(550, 630), 40, "UhBee Yiseul", 0.05, 0xFFFFFFFF);

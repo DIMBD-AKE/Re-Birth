@@ -10,6 +10,8 @@ private:
 	float m_fDeltaY;
 	float m_fDelta;
 	bool m_bEnemySkillMoving;
+	bool m_bIsTarget;
+	float VskillInterval;
 	//
 
 public:
@@ -30,5 +32,6 @@ public:
 
 	void SkillDealing();
 	void SkillEnemyMoving();
+	void TargetSword();
 	//
 };
