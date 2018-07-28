@@ -847,6 +847,7 @@ CharacterParant::~CharacterParant()
 	SAFE_RELEASE(m_pInheritateIco3);
 	SAFE_RELEASE(m_pSkillBar);
 	SAFE_RELEASE(m_SkillToolTip);
+	SAFE_RELEASE(m_pCombo);
 
 	for (auto e : m_vecEffect)
 	{
@@ -965,6 +966,8 @@ void CharacterParant::Init(CHRTYPE type, CHARSELECT order)
 	if (m_pTalkBar == NULL) m_pTalkBar = new UIObject;
 	
 	if (m_SkillToolTip == NULL) m_SkillToolTip = new UIObject;
+
+	if (m_pCombo == NULL) m_pCombo = new UIObject;
 
 
 	//µ¥¹ÌÁö 
