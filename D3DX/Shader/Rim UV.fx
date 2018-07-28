@@ -162,7 +162,7 @@ float4 Rim_UV_Pass_0_Pixel_Shader_ps_main(PS_INPUT Input) : COLOR
    float3 offset = float3(gOffset, gOffset, gOffset);
    
    float3 viewDir = normalize(gCamPos - Input.WorldPosition);
-   float3 rim = smoothstep(0.0f, 1.0f, 1 - dot(worldNormal, viewDir)) * gRimPower * gLimColor;
+   float3 rim = smoothstep(0.5f, 1.0f, 1 - dot(worldNormal, viewDir)) * gRimPower * gLimColor;
 
    return( float4( ambient + diffuse + offset + rim, gAlpha ) );
    
