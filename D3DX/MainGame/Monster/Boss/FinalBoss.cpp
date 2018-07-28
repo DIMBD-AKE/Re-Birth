@@ -169,7 +169,8 @@ void FinalBoss::Pattern()
 		&& !m_bUsingSkill
 		&& !m_bUsingSkill2)
 	{
-		
+		CURRENTHP(m_pMonsterStat) = MAXHP(m_pMonsterStat);
+
 		if (m_eBossState != BS_IDLE)
 		{
 			MoveSpawn();
@@ -468,6 +469,9 @@ void FinalBoss::CastingCancel()
 
 void FinalBoss::MoveSpawn()
 {
+
+	
+
 	if (GetDistance(*m_pModel->GetPosition(), m_pMap->GetSpawnBoss()) <= 1.0f)
 	{
 		m_pModel->SetPosition(m_pMap->GetSpawnBoss());
