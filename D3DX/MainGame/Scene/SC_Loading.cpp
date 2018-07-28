@@ -115,13 +115,13 @@ void SC_Loading::AddTexture()
 
 
 	//플레이어 사진
-	m_pLoading->LoadTexture("아카날_사진", "Texture/Portrait/Portrait_PC_Aknal_S_Icon.png");
-	m_pLoading->LoadTexture("아린_사진", "Texture/Portrait/Portrait_PC_Arin_S_Icon.png");
-	m_pLoading->LoadTexture("베카_사진", "Texture/Portrait/Portrait_PC_BeakAh_S_Icon.png");
-	m_pLoading->LoadTexture("헤스티아_사진", "Texture/Portrait/Portrait_PC_Hestia_S_Icon.png");
-	m_pLoading->LoadTexture("메그너스_사진", "Texture/Portrait/Portrait_Pc_Magnus_Icon.png");
-	m_pLoading->LoadTexture("리아_사진", "Texture/Portrait/Portrait_PC_Riah_S_Icon.png");
-	m_pLoading->LoadTexture("스카디_사진", "Texture/Portrait/Portrait_PC_Skadi_S_Icon.png");
+	m_pLoading->LoadTexture("아카날_사진", "Texture/Portrait/Portrait_PC_Aknal_S_Icon.tga");
+	m_pLoading->LoadTexture("아린_사진", "Texture/Portrait/Portrait_PC_Arin_S_Icon.tga");
+	m_pLoading->LoadTexture("베카_사진", "Texture/Portrait/Portrait_PC_BeakAh_S_Icon.tga");
+	m_pLoading->LoadTexture("헤스티아_사진", "Texture/Portrait/Portrait_PC_Hestia_S_Icon.tga");
+	m_pLoading->LoadTexture("메그너스_사진", "Texture/Portrait/Portrait_Pc_Magnus_Icon.tga");
+	m_pLoading->LoadTexture("리아_사진", "Texture/Portrait/Portrait_PC_Riah_S_Icon.tga");
+	m_pLoading->LoadTexture("스카디_사진", "Texture/Portrait/Portrait_PC_Skadi_S_Icon.tga");
 	m_pLoading->LoadTexture("벨벳_사진", "Texture/Portrait/velvet.png");
 	m_pLoading->LoadTexture("파이란_사진", "Texture/Portrait/Portrait_PC_Pyran_S_Icon.png");
 
