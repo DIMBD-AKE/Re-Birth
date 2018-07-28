@@ -218,6 +218,8 @@ void SC_Loading::AddTexture()
 	m_pLoading->LoadTexture("º°", "Texture/Particle/Star.png");
 	//º§ºª ±Ã±Ø±â¿ë ÆÄÆ¼Å¬ ÀÌ¹ÌÁö 
 	m_pLoading->LoadTexture("ÆÄÀÌ¾î", "Texture/Effect/fire2.png");
+
+	m_pLoading->LoadTexture("Stage Name", "Texture/UI/Stage Name.png");
 }
 
 void SC_Loading::AddSound()

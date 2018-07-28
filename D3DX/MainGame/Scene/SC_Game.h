@@ -19,6 +19,7 @@ private:
 
 	UIObject *			m_pGameUI;
 	UIObject *			m_pPauseUI;
+	UIObject *			m_pStageUI;
 
 	Pet*				m_pPet;
 
@@ -28,6 +29,8 @@ private:
 	float				m_fGenTime;
 	float				m_fElapseTime;
 	string				m_sChrName;
+
+	float				m_fStageElapse;
 
 	vector<Particle*>	m_vecParticle;
 

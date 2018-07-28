@@ -38,6 +38,8 @@ void SC_Game::Release()
 	SAFE_DELETE(m_pMM);
 	SAFE_RELEASE(m_pGameUI);
 	SAFE_RELEASE(m_pPauseUI);
+	SAFE_RELEASE(m_pStageUI);
+
 	for (auto p : m_vecParticle)
 		SAFE_DELETE(p);
 	m_vecParticle.clear();
@@ -113,6 +115,11 @@ void SC_Game::Init()
 	m_pGameUI->SetTexture(TEXTUREMANAGER->GetTexture("Game ElapseTime"));
 	m_pGameUI->SetPosition(D3DXVECTOR3(1261, 754, 0));
 
+	m_pStageUI = new UIObject;
+	m_pStageUI->SetTexture(TEXTUREMANAGER->GetTexture("Stage Name"));
+	m_pStageUI->SetPosition(D3DXVECTOR3(1520 / 2, 147, 0));
+	m_pStageUI->SetAnchor(UIAC_C);
+
 	m_pPauseUI = new UIObject;
 	m_pPauseUI->SetTexture(TEXTUREMANAGER->GetTexture("White"));
 	m_pPauseUI->SetAlpha(150);
@@ -129,6 +136,7 @@ void SC_Game::Init()
 	m_pPauseUI->AddChild(exitButton);
 
 	m_isStart = false;
+	m_fStageElapse = 0;
 
 	m_fGenTime = (GetTickCount() - m_fGenTime) * 0.001;
 
@@ -148,8 +156,28 @@ void SC_Game::Update()
 	else
 		m_pPet->ChangeTarget(m_pCharacter->GetCharacter()->GetPosition(), 3);
 
+	// 스테이지 이름
+	if (m_fStageElapse < 1)
+		m_pStageUI->SetAlpha(m_fStageElapse / 1.0f * 255);
+	if (m_fStageElapse > 3)
+		m_pStageUI->SetAlpha(Clamp(0, 255, (1.0 - (m_fStageElapse - 3) / 1.0f) * 255));
+	if (m_fStageElapse < 4)
+	{
+		if (m_nStage == 0)
+			TEXT->Add("테스트", 740, 130, 32, "나눔명조", D3DCOLOR_ARGB(m_pStageUI->GetAlpha(), 255, 255, 255));
+		if (m_nStage == 1)
+			TEXT->Add("사막 - 중간보스", 670, 130, 32, "나눔명조", D3DCOLOR_ARGB(m_pStageUI->GetAlpha(), 255, 255, 255));
+		if (m_nStage == 2)
+			TEXT->Add("마을", 750, 130, 32, "나눔명조", D3DCOLOR_ARGB(m_pStageUI->GetAlpha(), 255, 255, 255));
+		if (m_nStage == 3)
+			TEXT->Add("최종보스", 730, 130, 32, "나눔명조", D3DCOLOR_ARGB(m_pStageUI->GetAlpha(), 255, 255, 255));
+	}
+
+	TEXT->Add(to_string(m_fStageElapse), 20, 20, 20, "", 0xFFFFFFFF);
+
 	m_pGameUI->Update();
 	m_pPauseUI->Update();
+	m_pStageUI->Update();
 
 	TEXT->Add(to_string(TIME->GetFPS()), 0, 0, 20);
 
@@ -171,8 +199,11 @@ void SC_Game::Update()
 	{
 		m_isStart = true;
 		m_fElapseTime -= m_fGenTime;
+		m_fStageElapse -= m_fGenTime;
 	}
 	m_fElapseTime += TIME->GetElapsedTime();
+	if (m_fStageElapse < 4)
+		m_fStageElapse += TIME->GetElapsedTime();
 }
 
 void SC_Game::Render()
@@ -183,6 +214,9 @@ void SC_Game::Render()
 	m_pNpc->Render();
 	m_pMM->Render();
 	m_pCharacter->Render();
+
+	if (m_fStageElapse < 4)
+		m_pStageUI->Render();
 
 	m_pMap->ObjectRender();
 	
