@@ -313,16 +313,7 @@ void Character_Magic::KeyControl()
 		m_bIsAttack = false;
 	}
 
-	//if (m_pNpc->GetCollision())
-	//{
-	//	m_eCondition = CHAR_TALK;
-	//	ChangeAnimation();
-	//}
-	//if (!m_pNpc->GetCollision())
-	//{
-	//	m_eCondition = CHAR_IDLE;
-	//	ChangeAnimation();
-	//}
+	
 
 
 	//애니메이션 한바퀴 돌고나서 상태제어
@@ -412,26 +403,36 @@ void Character_Magic::KeyControl()
 
 	//===========고유스킬 제어==========================//
 	//아이스헤지오그 or 파이어볼
-	if (INPUT->KeyDown('F'))
-	{
-		if (m_eCharSelect == CHAR_ONE)
-		{
-			CristalField();
-			m_nDamageCount = 0;
-			if (!m_vecTarget.size() <= 0) CAMERA->Shake(0.04f, 0.2f);
-		}
-		if (m_eCharSelect == CHAR_TWO)
-		{
-			FireBall();
-			m_nDamageCount = 0;
-			if (m_nIndex > -1) CAMERA->Shake(0.1f, 0.2f);
-		}
-	}
 
+	
+		if (INPUT->KeyDown('F'))
+		{
+			if (m_Status->chr.nCurrentStam >= 5.0f)
+			{
+				m_Status->chr.nCurrentStam -= 5.0f;
+				if (m_eCharSelect == CHAR_ONE)
+				{
+					CristalField();
+					m_nDamageCount = 0;
+					if (!m_vecTarget.size() <= 0) CAMERA->Shake(0.04f, 0.2f);
+				}
+				if (m_eCharSelect == CHAR_TWO)
+				{
+					FireBall();
+					m_nDamageCount = 0;
+					if (m_nIndex > -1) CAMERA->Shake(0.1f, 0.2f);
+				}
+			}
+		}
+	
 	//순간이동 제어
 	if (INPUT->KeyDown('R'))
 	{
-		m_bIsPotal = true;
+		if (m_Status->chr.nCurrentStam >= 5.0f)
+		{
+			m_Status->chr.nCurrentStam -= 5.0f;
+			m_bIsPotal = true;
+		}
 	}
 	else if (INPUT->KeyUp('R'))
 	{
@@ -882,18 +883,13 @@ void Character_Magic::MgSkill()
 		{
 			if (D3DXIntersectTri(&nav[i], &nav[i + 1], &nav[i + 2], &r.orig, &r.dir, NULL, NULL, &tempdistance))
 			{
-				if (D3DXVec3Length(&(playerTempPos - Potalpos)) < 14.0f)//최대 이동거리 안으로 
+				if (D3DXVec3Length(&(playerTempPos - (r.orig + r.dir* tempdistance))) < 14.0f)//최대 이동거리 안으로 
 				{
 					m_pParticle3->SetPosition(r.orig + r.dir* tempdistance);
 				}
 			}
 		}
 	}
-}
-
-void Character_Magic::MgShield()
-{
-	
 }
 
 void Character_Magic::Meteor()

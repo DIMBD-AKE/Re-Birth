@@ -30,6 +30,8 @@ void Character_Sword::Init(CHRTYPE type, CHARSELECT order)
 	m_fDeltaY = 3.0f;
 	m_fDelta = 10.0f;
 	m_bEnemySkillMoving = false;
+	m_bIsTarget = false;
+	VskillInterval = 1.0;
 	//
 
 	if (order == CHAR_ONE)
@@ -241,7 +243,7 @@ void Character_Sword::Update()
 	}
 	CutScene();
 	if (!m_bIsStun)KeyControl();
-	
+	if (m_bIsTarget)TargetSword();
 	CharacterParant::Update();
 
 }
@@ -543,47 +545,64 @@ void Character_Sword::KeyControl()
 	//서브캐릭터 제어
 	if (INPUT->KeyDown('R'))
 	{
-		if (!m_bIsSubChr)
+		if (m_Status->chr.nCurrentStam >= 50.0f)
 		{
-			m_bIsSubChr = true;
-			CAMERA->Shake(0.2f, 0.5f);
+			m_Status->chr.nCurrentStam -= 50.0f;
+			if (!m_bIsSubChr)
+			{
+				m_bIsSubChr = true;
+				CAMERA->Shake(0.2f, 0.5f);
+			}
 		}
 	}
 
 	if (INPUT->KeyDown('F'))
 	{
-		m_eCondition = CHAR_SKILL;
-		m_bIsFskill = true;
-		m_nDamageCount = 0;
-		m_nDC = 0;
-		if (m_eCharSelect == CHAR_ONE)
+		if (m_Status->chr.nCurrentStam >= 30.0f)
 		{
-			SOUND->Play("SwordAttack");
-			SOUND->Play("베카_공격");
-		}
-		if (m_eCharSelect == CHAR_TWO)
-		{
-			SOUND->Play("SwordAttack_TWO");
-			SOUND->Play("리아_공격");
-		}
-		if (m_eCharSelect == CHAR_THREE)
-		{
-			SOUND->Play("SwordAttack_THREE");
-			SOUND->Play("벨벳_공격");
-		}
+			m_Status->chr.nCurrentStam -= 30.0f;
+			m_eCondition = CHAR_SKILL;
+			m_bIsFskill = true;
+			m_nDamageCount = 0;
+			m_nDC = 0;
+			if (m_eCharSelect == CHAR_ONE)
+			{
+				SOUND->Play("SwordAttack");
+				SOUND->Play("베카_공격");
+			}
+			if (m_eCharSelect == CHAR_TWO)
+			{
+				SOUND->Play("SwordAttack_TWO");
+				SOUND->Play("리아_공격");
+			}
+			if (m_eCharSelect == CHAR_THREE)
+			{
+				SOUND->Play("SwordAttack_THREE");
+				SOUND->Play("벨벳_공격");
+			}
 
-		if (m_eCharSelect == CHAR_TWO)
-		{
-			m_fDelta = 10.0f;
+			if (m_eCharSelect == CHAR_TWO)
+			{
+				m_fDelta = 10.0f;
+			}
+			if (m_eCharSelect == CHAR_THREE)
+			{
+				m_fDeltaY = 3.0f;
+			}
+			ChangeAnimation();
 		}
-		if (m_eCharSelect == CHAR_THREE)
-		{
-			m_fDeltaY = 3.0f;
-		}
-		ChangeAnimation();
 	}
 
 
+	if (INPUT->KeyDown('V'))
+	{
+		//TargetSword();
+		m_bIsTarget = true;
+		m_nDamageCount = 0;
+	}
+
+
+	//가드를 올려야해요!
 	if (INPUT->KeyDown('Z'))
 	{
 		m_eCondition = CHAR_GUARD;
@@ -1059,6 +1078,62 @@ void Character_Sword::SkillEnemyMoving()
 			m_bEnemySkillMoving = false;
 		}
 	}
+}
+
+void Character_Sword::TargetSword()
+{
+	if (m_fElpTime < m_fPrevTime + VskillInterval) return;
+
+	m_fPrevTime = m_fElpTime;
+
+	m_nDamageCount++;
+
+	m_nIndex = -1;
+
+	D3DXVECTOR3 pos = *m_pCharacter->GetPosition();
+	
+	if (m_nDamageCount <= 3)
+	{
+		for (int i = 0; i < m_pMonsterManager->GetMonsterVector().size(); i++)
+		{
+			if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn()) continue;
+			D3DXVECTOR3 MonPos = *m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetPosition();
+			float length = D3DXVec3Length(&(MonPos - pos));
+
+			if (length <= m_Status->chr.fRange + 15.0f)
+			{
+				m_nIndex = i;
+				D3DXVECTOR3 indexMonsterPos = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
+				D3DXVECTOR3 SkillPos = D3DXVECTOR3(indexMonsterPos.x + FRand(-3, 3), indexMonsterPos.y, indexMonsterPos.z + FRand(-3, 3));
+				//맵 밖으로 안나가게 처리
+				while (true)
+				{
+					float y = m_pSampleMap->GetHeight(SkillPos.x, SkillPos.z);
+					if (y > 0)
+					{
+						SkillPos.y = y;
+						break;
+					}
+					else
+					{
+						SkillPos = D3DXVECTOR3(indexMonsterPos.x + FRand(-3, 3), indexMonsterPos.y, indexMonsterPos.z + FRand(-3, 3));
+					}
+
+				}
+				m_pCharacter->SetPosition(SkillPos);
+				
+				m_pCharacter->SetRotation(D3DXVECTOR3(0, GetAngle(*m_pCharacter->GetPosition(), *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition()), 0));
+				m_pCharacter->SetAnimation("SKILL");
+				m_pParticle4->SetPosition(*m_pCharacter->GetPosition());
+				m_pParticle4->TimeReset();
+				CAMERA->Shake(0.25, 0.2);
+				m_pMonsterManager->DamageMonster(m_nIndex, 999);
+				break;
+			}
+		}
+	}
+
+	
 }
 
 

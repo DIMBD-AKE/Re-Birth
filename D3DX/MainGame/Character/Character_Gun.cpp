@@ -415,21 +415,25 @@ void Character_Gun::KeyControl()
 	//고유스킬======================================
 	if (INPUT->KeyDown('R'))
 	{
-		if (m_eCharSelect == CHAR_ONE)
+		if (m_Status->chr.nCurrentStam >= 5.0f)
 		{
-			SOUND->Play("메그너스_고유_총", g_fVolume);
-			SOUND->Play("메그너스_고유", g_fVolume);
-		}
-		if (m_eCharSelect == CHAR_TWO)
-		{
-			SOUND->Play("스카디_고유", g_fVolume);
-			SOUND->Play("BowAttack", g_fVolume);
-		}
-		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_RUN_FRONT || m_eCondition == CHAR_RUN_BACK)
-		{
-			m_eCondition = CHAR_INHERENT1;
-			MultiAttack();
-			ChangeAnimation();
+			m_Status->chr.nCurrentStam -= 5.0f;
+			if (m_eCharSelect == CHAR_ONE)
+			{
+				SOUND->Play("메그너스_고유_총", g_fVolume);
+				SOUND->Play("메그너스_고유", g_fVolume);
+			}
+			if (m_eCharSelect == CHAR_TWO)
+			{
+				SOUND->Play("스카디_고유", g_fVolume);
+				SOUND->Play("BowAttack", g_fVolume);
+			}
+			if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_RUN_FRONT || m_eCondition == CHAR_RUN_BACK)
+			{
+				m_eCondition = CHAR_INHERENT1;
+				MultiAttack();
+				ChangeAnimation();
+			}
 		}
 	}
 	else if (INPUT->KeyUp('R'))
@@ -439,17 +443,25 @@ void Character_Gun::KeyControl()
 
 	if (INPUT->KeyDown('F'))
 	{
-		m_bIsGunView = true;
+		if (m_Status->chr.nCurrentStam >= 40.0f)
+		{
+			m_Status->chr.nCurrentStam -= 40.0f;
+			m_bIsGunView = true;
+		}
 	}
 	
 	if (m_bSkillUnSealed)
 	{
 		if (INPUT->KeyDown('V'))
 		{
-			if (m_eCharSelect == CHAR_ONE)
-				MagicBullet();
-			if (m_eCharSelect == CHAR_TWO)
-				WindStorm();
+			if (m_Status->chr.nCurrentStam >= 70.0f)
+			{
+				m_Status->chr.nCurrentStam -= 70.0f;
+				if (m_eCharSelect == CHAR_ONE)
+					MagicBullet();
+				if (m_eCharSelect == CHAR_TWO)
+					WindStorm();
+			}
 		}
 	}
 
@@ -709,8 +721,14 @@ void Character_Gun::GunShot()
 			tempEffect.SetAlpha(255, 255, 0);
 			tempEffect.SetScale(0.5, 0.5, 0);
 			tempEffect.isSphere = true;
-			tempEffect.tex = TEXTUREMANAGER->GetTexture("총알");
-
+			if (m_eCharSelect == CHAR_ONE)
+			{
+				tempEffect.tex = TEXTUREMANAGER->GetTexture("총알");
+			}
+			if (m_eCharSelect == CHAR_TWO)
+			{
+				tempEffect.tex = TEXTUREMANAGER->GetTexture("수정");
+			}
 
 
 			EffectObject* tempEFOBJ;

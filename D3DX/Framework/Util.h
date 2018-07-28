@@ -221,6 +221,24 @@ namespace UTIL
 		return angle;
 	}
 
+	static float GetAngle(D3DXVECTOR3 pos, D3DXVECTOR3 TargetPos)
+	{
+		float x = TargetPos.x - pos.x;
+		float y = TargetPos.z - pos.z;
+
+		float distance = sqrtf(x * x + y * y);
+
+		float angle = acosf(x / distance);
+
+		if (TargetPos.z > pos.z)
+		{
+			angle = D3DX_PI * 2 - angle;
+			if (angle >= D3DX_PI * 2) angle -= D3DX_PI * 2;
+		}
+
+		return angle;
+	}
+
 	static bool CollisionOBB(ST_OBB thisBox, ST_OBB targetBox)
 	{
 		double c[3][3];

@@ -181,7 +181,8 @@ void SC_Loading::AddTexture()
 	m_pLoading->LoadTexture("석유", "Texture/Particle/Robotblood.png");
 
 	//플레이어 고유스킬용
-	m_pLoading->LoadTexture("수정", "Texture/Effect/cristal.png");
+	m_pLoading->LoadTexture("수정", "Texture/Effect/cristal.png"); 
+	m_pLoading->LoadTexture("화살", "Texture/Effect/arrow4.png");
 	m_pLoading->LoadTexture("파이어볼_마법", "Texture/Effect/Fireball.png");
 	m_pLoading->LoadTexture("실드_마법", "Texture/Particle/MagicShield.png");
 	m_pLoading->LoadTexture("메테오", "Texture/Particle/Meteor.png");
