@@ -12,6 +12,13 @@ private:
 	bool m_bEnemySkillMoving;
 	bool m_bIsTarget;
 	float VskillInterval;
+	D3DXMATRIX*	 velvetFinal;
+	float		m_fVelvetInterval;
+	D3DXVECTOR3		m_vVelvetFinal;
+	bool			m_bIsVelvetFinal;
+	int				m_nVelvetCount;
+	int				m_nVelvetEnd;
+	float			m_fOriginSpeed;
 	//
 
 public:
@@ -33,5 +40,7 @@ public:
 	void SkillDealing();
 	void SkillEnemyMoving();
 	void TargetSword();
+	void velvetFinalSKILL();
+	void VelvetCount();
 	//
 };

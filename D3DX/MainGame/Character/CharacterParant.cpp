@@ -835,6 +835,7 @@ CharacterParant::~CharacterParant()
 	SAFE_DELETE(m_pParticle3);
 	SAFE_DELETE(m_pParticle4);
 	SAFE_DELETE(m_pParticle5);
+	SAFE_DELETE(m_pVelvetFinal);
 
 	SAFE_RELEASE(m_pUIobj);
 	SAFE_RELEASE(m_pHPBar);
@@ -869,6 +870,9 @@ void CharacterParant::Init(CHRTYPE type, CHARSELECT order)
 
 	m_pCharacter->SetScale(D3DXVECTOR3(0.02, 0.02, 0.02));
 	m_pCharacter->SetRotation(D3DXVECTOR3(0,3.2,0));
+	//m_pCharacter->SetShaderRimColor(D3DXVECTOR3(255, 0, 0));
+	//m_pCharacter->SetShaderColorOffset(0.5f);
+	//m_pCharacter->SetShaderRimPower(1.0f);
 	ST_SIZEBOX box;
 	box.highX = 30.0f;
 	box.highY = 180.0f;
@@ -990,6 +994,7 @@ void CharacterParant::Init(CHRTYPE type, CHARSELECT order)
 	m_pParticle3 = PARTICLE->GetParticle("Potal"); //텔레포트 위치 나타내는 파티클
 	m_pParticle4 = PARTICLE->GetParticle("teleport"); //텔레포트 끝나고 아래에서 피어오르는 파티클
 	m_pParticle5 = PARTICLE->GetParticle("Potal"); //메가크리스탈 파티클
+	m_pVelvetFinal = PARTICLE->GetParticle("벨벳_궁극기");
 
 	m_pParticle3->SetPosition(D3DXVECTOR3(m_pCharacter->GetPosition()->x, m_pCharacter->GetPosition()->y, m_pCharacter->GetPosition()->z + 5.0f));
 	m_pTalkBar->SetTexture(TEXTUREMANAGER->GetTexture("대화창"));

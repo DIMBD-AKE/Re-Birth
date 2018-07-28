@@ -149,6 +149,7 @@ protected:
 	Particle*		m_pParticle3;
 	Particle*		m_pParticle4;
 	Particle*		m_pParticle5;
+	Particle*		m_pVelvetFinal;
 
 	void SKill();
 	void Move();
