@@ -62,7 +62,7 @@ void SC_Game::Init()
 	m_pMap = new Map;
 	CAMERA->SetFog(false, 0, 0, 0, 0);
 
-	m_nStage = 3;
+	//m_nStage = 3;
 
 	if (m_nStage == 0)
 		m_pMap->Load("Map/Sample.map");
