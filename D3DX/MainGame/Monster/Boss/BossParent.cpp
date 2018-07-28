@@ -301,11 +301,9 @@ bool BossParent::AbleSkill2()
 }
 
 void BossParent::SkillPrepare2(){
-	vector<MonsterParent*> tt;
-
 	m_pSkill->Prepare(PCHARACTER,
 		this,
-		tt,
+		NULL,
 		m_stSkill2,
 		SKILLO_MONSTER);
 }

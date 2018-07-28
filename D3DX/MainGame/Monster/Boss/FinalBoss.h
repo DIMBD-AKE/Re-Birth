@@ -4,6 +4,9 @@
 class FinalBoss :
 	public BossParent
 {
+private:
+
+	EffectObject * m_pCasting;
 
 protected:
 
@@ -27,7 +30,7 @@ protected:
 	//스킬 2 함수
 	virtual void Skill2() override;
 	//스킬 2 캐스팅함수
-	//virtual void Casting() override;
+	virtual void Casting() override;
 
 public:
 	FinalBoss();
@@ -35,6 +38,7 @@ public:
 
 	virtual void SetupBoss(Map* map, D3DXVECTOR3 pos) override;
 
+	virtual void Render() override;
 	
 };
 

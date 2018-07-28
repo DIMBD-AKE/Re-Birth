@@ -447,5 +447,10 @@ void MonsterManager::SetNpc(Npc * npc)
 
 void MonsterManager::DamageMonster(int monsterIndex, float damage)
 {
+	//해당 몬스터가 리스폰 상태라면 데미지 주지 마라
+	if (m_vMM[monsterIndex]->GetIsResPawn())
+	{
+		return;
+	}
 	m_vMM[monsterIndex]->CalculDamage(damage, &m_nDieMonsterNum);
 }

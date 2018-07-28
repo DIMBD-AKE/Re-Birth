@@ -5,6 +5,7 @@
 #include "../SkillManager.h"
 #include "Boss/BossParent.h"
 #include "HitParticle.h"
+#include "MonsterManager.h"
 
 MonsterParent::MonsterParent()
 	: m_pModel(NULL)
@@ -742,13 +743,13 @@ bool MonsterParent::AbleSkill()
 }
 
 void MonsterParent::SkillPrepare(){
-	vector<MonsterParent*> tt;
 
 	m_pSkill->Prepare(PCHARACTER,
 		this,
-		tt,
+		NULL,
 		m_stSkill,
 		SKILLO_MONSTER);
+
 }
 
 void MonsterParent::IsAppear()

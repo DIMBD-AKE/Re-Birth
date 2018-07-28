@@ -14,6 +14,7 @@ FinalBoss::FinalBoss()
 
 FinalBoss::~FinalBoss()
 {
+	SAFE_DELETE(m_pCasting);
 
 }
 
@@ -26,6 +27,7 @@ void FinalBoss::SetupBoss(Map* map, D3DXVECTOR3 pos)
 	BossParent::SetupBoss(map, pos);
 
 	m_eBossState = BS_ENTER;
+	//m_eBossState = BS_CASTING;
 	ChangeAni();
 	//판정 박스 
 	ST_SIZEBOX box;
@@ -52,6 +54,12 @@ void FinalBoss::SetupBoss(Map* map, D3DXVECTOR3 pos)
 	m_bUsingSkill = m_bUsingSkill2 = false;
 	m_bIsTargeting = true;
 
+}
+
+void FinalBoss::Render()
+{
+	BossParent::Render();
+	if (m_pCasting) m_pCasting->Render();
 }
 
 void FinalBoss::SetupStat()
@@ -104,7 +112,7 @@ void FinalBoss::SetupSkill()
 	m_stSkill.buffStatus.chr.nCurrentHP = 100; //증가 될 스탯량 피뺴고 제로메모리;
 
 	m_fSkillCoolTimeCount = 0;
-	m_nSkillCooltime = 200;
+	m_nSkillCooltime = 10;
 }
 
 void FinalBoss::SetupSkill2()
@@ -146,8 +154,32 @@ void FinalBoss::SetupSkill2()
 
 void FinalBoss::Pattern()
 {
+	if (m_pCasting)
+		m_pCasting->Update();
+	
 	if (AbleSkill() && !m_bUsingSkill2 && m_eBossState != BS_NONE && m_eBossState != BS_DIE)
 	{
+		ST_EFFECT tempEffect1;
+		ZeroMemory(&tempEffect1, sizeof(tempEffect1));
+		tempEffect1.time = 5;
+		tempEffect1.rot = D3DXVECTOR3(90, 0, 0);
+		tempEffect1.mot = D3DXVECTOR3(0, 10, 0);
+		tempEffect1.SetMotorSpeed(0.4f, 0.4f, 0.4f);
+		//tempEffect1.dir = D3DXVECTOR3(0, -1.0f, 0);
+		//tempEffect1.SetSpeed(0.01f, 0.01f, 0.01f);
+		//tempEffect1.ms0 = 9.0f;
+		tempEffect1.height = 2.0f;
+		tempEffect1.SetAlpha(255, 255,150);
+		tempEffect1.SetScale(10, 10, 10);
+		tempEffect1.tex = TEXTUREMANAGER->GetTexture("실드_마법");
+
+
+		SAFE_DELETE(m_pCasting);
+		m_pCasting = new EffectObject;
+		D3DXVECTOR3 testSkillpos1 = *m_pModel->GetPosition() ;
+		testSkillpos1.y += 2.0f;
+		m_pCasting->Init(tempEffect1, testSkillpos1);
+
 		m_eBossState = BS_CASTING;
 		ChangeAni();
 	}
@@ -171,7 +203,7 @@ void FinalBoss::Pattern()
 	break;
 	case BS_RUN:
 	{
-		Move();
+		//Move();
 	}
 	break;
 	case BS_PASSIVE:
@@ -182,7 +214,7 @@ void FinalBoss::Pattern()
 		}
 		break;
 	case BS_ATTACK:
-		Attack();
+		//Attack();
 		break;
 	case BS_SKILL1:
 		SkillUse();
@@ -336,6 +368,7 @@ void FinalBoss::SkillUse()
 		m_bUsingSkill = false;
 		m_fSkillCoolTimeCount = 0;
 		m_eBossState = BS_RUN;
+		SAFE_DELETE(m_pCasting);
 		ChangeAni();
 	}
 }
@@ -373,13 +406,14 @@ void FinalBoss::Skill2()
 	}
 }
 
-//void FinalBoss::Casting()
-//{
-//	if (m_pModel->IsAnimationEnd())
-//	//if (m_pModel->IsAnimationPercent(0.5f))
-//	{
-//		m_eBossState = BS_SKILL1;
-//		ChangeAni();
-//	//	m_pModel->SetAnimationPosition(0.5f);
-//	}
-//}
+void FinalBoss::Casting()
+{
+
+	if (m_pModel->IsAnimationEnd())
+	//if (m_pModel->IsAnimationPercent(0.5f))
+	{
+		m_eBossState = BS_SKILL1;
+		ChangeAni();
+	//	m_pModel->SetAnimationPosition(0.5f);
+	}
+}

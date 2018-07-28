@@ -127,13 +127,14 @@ private:
 
 	void PassivePrepare()
 	{
-		vector<MonsterParent*> tt;
 
 		m_pPassive->Prepare(PCHARACTER,
 			this,
-			tt,
+			NULL,
 			m_stPassive,
 			SKILLO_MONSTER);
+
+
 	}
 
 public:
