@@ -68,16 +68,19 @@ bool DropManager::GetDropItem(CharacterParant * character, Pet * pet)
 				}
 			}
 
-		if (pet->GetModel()->IsCollisionSphere(m_pModel))
-			if (pet->GetModel()->IsCollisionOBB(m_pModel))
-			{
-				ItemParent* item = ITEMMANAGER->GetItem(m_vecDrop[i].itemID);
-				if (character->Getm_Inventory()->AddItem(item))
+		if (pet->GetModel())
+		{
+			if (pet->GetModel()->IsCollisionSphere(m_pModel))
+				if (pet->GetModel()->IsCollisionOBB(m_pModel))
 				{
-					m_vecDrop.erase(m_vecDrop.begin() + i);
-					return true;
+					ItemParent* item = ITEMMANAGER->GetItem(m_vecDrop[i].itemID);
+					if (character->Getm_Inventory()->AddItem(item))
+					{
+						m_vecDrop.erase(m_vecDrop.begin() + i);
+						return true;
+					}
 				}
-			}
+		}
 	}
 
 	return false;
