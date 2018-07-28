@@ -615,20 +615,22 @@ void Character_Sword::KeyControl()
 		}
 	}
 
-
-	if (INPUT->KeyDown('V'))
+	if (m_bSkillUnSealed)
 	{
-		m_nDamageCount = 0;
-		//TargetSword();
-		if (m_eCharSelect == CHAR_ONE)
+		if (INPUT->KeyDown('V'))
 		{
-			m_bIsTarget = true;
-		}
+			m_nDamageCount = 0;
+			//TargetSword();
+			if (m_eCharSelect == CHAR_ONE)
+			{
+				m_bIsTarget = true;
+			}
 
-		if (m_eCharSelect == CHAR_THREE)
-		{
-			SetTarget();
-			velvetFinalSKILL();
+			if (m_eCharSelect == CHAR_THREE)
+			{
+				SetTarget();
+				velvetFinalSKILL();
+			}
 		}
 	}
 
@@ -1209,34 +1211,33 @@ void Character_Sword::velvetFinalSKILL()
 	//m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
 	
 	m_nVelvetCount++;
-	if (m_nVelvetCount < 2)
+
+	if (m_nVelvetCount <= 2)
 	{
-		m_pMonsterManager->DamageMonster(m_nIndex, m_Status->chr.nAtk+10 + m_pInventory->GetEquipStat().item.nAtk);
+		m_pMonsterManager->DamageMonster(m_nIndex, m_Status->chr.nAtk + 10 + m_pInventory->GetEquipStat().item.nAtk);
 		m_pCharacter->SetShaderRimColor(D3DXVECTOR3(255, 0, 0));
 		m_pCharacter->SetShaderRimPower(0.2f);
 	}
 	if (m_nVelvetCount > 2 && m_nVelvetCount <= 4)
 	{
-		m_pMonsterManager->DamageMonster(m_nIndex, m_Status->chr.nAtk+20 + m_pInventory->GetEquipStat().item.nAtk);
+		m_pMonsterManager->DamageMonster(m_nIndex, m_Status->chr.nAtk + 20 + m_pInventory->GetEquipStat().item.nAtk);
 		m_pCharacter->SetShaderRimColor(D3DXVECTOR3(255, 0, 0));
 		m_pCharacter->SetShaderRimPower(0.5f);
 	}
 	if (m_nVelvetCount > 4 && m_nVelvetCount <= 6)
 	{
-		m_pMonsterManager->DamageMonster(m_nIndex, m_Status->chr.nAtk+80 + m_pInventory->GetEquipStat().item.nAtk);
+		m_pMonsterManager->DamageMonster(m_nIndex, m_Status->chr.nAtk + 80 + m_pInventory->GetEquipStat().item.nAtk);
 		m_pCharacter->SetShaderRimColor(D3DXVECTOR3(255, 0, 0));
-		m_pCharacter->SetShaderRimPower(1.0f);
+		m_pCharacter->SetShaderRimPower(0.8f);
 	}
-	if (m_nVelvetCount > 6)
+	if (m_nVelvetCount >= 7)
 	{
 		m_bIsVelvetFinal = true;
-		m_pMonsterManager->DamageMonster(m_nIndex, m_Status->chr.nAtk +300 + m_pInventory->GetEquipStat().item.nAtk);
+		m_pMonsterManager->DamageMonster(m_nIndex, m_Status->chr.nAtk + 300 + m_pInventory->GetEquipStat().item.nAtk);
 		m_pCharacter->SetShaderRimColor(D3DXVECTOR3(255, 0, 0));
 		m_pCharacter->SetShaderRimPower(1.0f);
-		m_fOriginSpeed = m_Status->chr.fSpeed;
 		m_Status->chr.fSpeed = m_Status->chr.fSpeed + 0.3f;
 	}
-
 }
 
 void Character_Sword::VelvetCount()
@@ -1249,22 +1250,14 @@ void Character_Sword::VelvetCount()
 
 		m_nVelvetEnd++;
 
-		if (m_nVelvetEnd <= 3)
+		if (m_nVelvetEnd == 1)
 		{
+			m_bIsVelvetFinal = false;
 			m_pCharacter->SetShaderRimColor(D3DXVECTOR3(0, 0, 0));
 			m_pCharacter->SetShaderRimPower(0.0f);
-			m_bIsVelvetFinal = false;
-			m_Status->chr.fSpeed = m_fOriginSpeed;
+			m_Status->chr.fSpeed = 0.32f;
+			m_nVelvetCount = 0;
+			m_nVelvetEnd = 0;
 		}
-
 	}
 }
-
-
-
-
-
-
-
-
-
