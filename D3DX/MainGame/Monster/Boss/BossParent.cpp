@@ -165,6 +165,7 @@ void BossParent::Casting()
 	{
 		m_eBossState = BS_SKILL1;
 		ChangeAni();
+		m_pModel->SetAnimationSpeed(1.0f);
 		//	m_pModel->SetAnimationPosition(0.5f);
 	}
 }

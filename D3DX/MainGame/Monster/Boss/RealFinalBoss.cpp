@@ -136,6 +136,15 @@ void RealFinalboss::Update()
 
 	m_fPassiveCooltimeCount += TIME->GetElapsedTime();
 
+	if (m_fPassiveCooltimeCount >= m_stPassive.fBuffTime && m_bUsingPassive)
+	{
+		m_bUsingPassive = false;
+
+		for (int i = 0; i < HT_END; i++)
+		{
+			SAFE_DELETE(m_pBuffPrticle[i]);
+		}
+	}
 	if (CAMERA->IsActionEnd())
 		CAMERA->SetTarget(CHARACTER->GetPosition(), CHARACTER->GetRotation());
 
@@ -275,7 +284,7 @@ void RealFinalboss::SetupPassive()
 	m_stPassive.fEffectTime = 3;
 
 
-	m_nPassiveCooltime = 50;
+	m_nPassiveCooltime = 120;
 }
 //void RealFinalboss::ChangeAni()
 //{
@@ -329,6 +338,7 @@ void RealFinalboss::Pattern()
 	//bool plesawf = ;
 	if (AblePassive())
 	{
+		m_fPassiveCooltimeCount = 0;
 		BoolInit();
 		BuffDecide();
 		m_bUsingPassive = true;
@@ -343,6 +353,7 @@ void RealFinalboss::Pattern()
 		SkillPrepare();
 		m_eBossState = BS_CASTING;
 		m_pModel->SetAnimation("BS_ENTER4");
+		m_pModel->SetAnimationSpeed(0.5f);
 		//ChangeAni();
 	}
 	//char temp[222];
@@ -537,8 +548,7 @@ void RealFinalboss::Passive()
 
 	if (m_pModel->IsAnimationEnd())
 	{
-		m_bUsingPassive = false;
-		m_fPassiveCooltimeCount = 0;
+		//m_fPassiveCooltimeCount = 0;
 		m_eBossState = BS_ATTACK;
 		ChangeAni();
 	}
