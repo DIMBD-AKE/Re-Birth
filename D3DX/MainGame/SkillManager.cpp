@@ -1,6 +1,7 @@
 #include "../stdafx.h"
 #include "SkillManager.h"
 #include "monster\MonsterParent.h"
+#include "monster\MonsterManager.h"
 #include "Character\CharacterParant.h"
 #include "../Framework/dirent.h"
 #include "../Framework/EffectObject.h"
@@ -16,7 +17,7 @@ void Skill::DamageSingle()
 		if (m_eOwner == SKILLO_CHARACTER)
 		{
 			if (!((MonsterParent*)m_vecTarget[i])->GetIsResPawn())
-				((MonsterParent*)m_vecTarget[i])->CalculDamage(m_stSkill.fDamage);
+				m_pMM->DamageMonster(i, m_stSkill.fDamage);
 		}
 		else
 			((CharacterParant*)m_vecTarget[i])->CalculDamage(m_stSkill.fDamage);
@@ -36,7 +37,7 @@ void Skill::DamageMultiple()
 		if (m_eOwner == SKILLO_CHARACTER)
 		{
 			if (!((MonsterParent*)m_vecTarget[i])->GetIsResPawn())
-				((MonsterParent*)m_vecTarget[i])->CalculDamage(m_stSkill.fDamage);
+				m_pMM->DamageMonster(i, m_stSkill.fDamage);
 		}
 		else
 			((CharacterParant*)m_vecTarget[i])->CalculDamage(m_stSkill.fDamage);
@@ -318,7 +319,7 @@ void Skill::ParticleDamage()
 						((MonsterParent*)m_vecTarget[i])->GetIsResPawn()) continue;
 					m_fPrevTime = m_fElapseTime;
 					m_nDamageCount++;
-					((MonsterParent*)m_vecTarget[i])->CalculDamage(m_stSkill.fDamage);
+					m_pMM->DamageMonster(i, m_stSkill.fDamage);
 				}
 			}
 			else
@@ -352,7 +353,7 @@ void Skill::EffectDamage()
 							((MonsterParent*)m_vecTarget[i])->GetIsResPawn()) continue;
 						m_fPrevTime = m_fElapseTime;
 						m_nDamageCount++;
-						((MonsterParent*)m_vecTarget[i])->CalculDamage(m_stSkill.fDamage);
+						m_pMM->DamageMonster(i, m_stSkill.fDamage);
 					}
 				}
 			}
@@ -412,11 +413,12 @@ Skill::~Skill()
 	}
 }
 
-void Skill::Prepare(CharacterParant * pCharacter, MonsterParent* pMonster, vector<MonsterParent*> vecMonster, ST_SKILL skill, SKILL_OWNER owner)
+void Skill::Prepare(CharacterParant * pCharacter, MonsterParent* pMonster, MonsterManager * pMM, ST_SKILL skill, SKILL_OWNER owner)
 {
 	m_pCharacter = pCharacter;
 	m_pMonster = pMonster;
-	m_vecMonster = vecMonster;
+	m_vecMonster = pMM->GetMonsterVector();
+	m_pMM = pMM;
 	m_stSkill = skill;
 	m_eOwner = owner;
 

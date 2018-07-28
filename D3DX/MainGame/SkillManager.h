@@ -4,6 +4,7 @@
 
 class CharacterParant;
 class MonsterParent;
+class MonsterManager;
 class EffectObject;
 
 enum SKILL_PROCESS
@@ -76,6 +77,7 @@ private:
 	CharacterParant *		m_pCharacter;
 	MonsterParent *			m_pMonster;
 	vector<MonsterParent*>	m_vecMonster;
+	MonsterManager *		m_pMM;
 	vector<void*>			m_vecTarget;
 	vector<D3DXVECTOR3>		m_vecTargetDir;
 	ST_SKILL				m_stSkill;
@@ -122,7 +124,7 @@ public:
 		LPDIRECT3DTEXTURE9 iconTex, string name, LPDIRECT3DTEXTURE9 particleTex);
 	~Skill();
 
-	void Prepare(CharacterParant * pCharacter, MonsterParent* pMonster, vector<MonsterParent*> vecMonster, ST_SKILL skill, SKILL_OWNER owner);
+	void Prepare(CharacterParant * pCharacter, MonsterParent* pMonster, MonsterManager * pMM, ST_SKILL skill, SKILL_OWNER owner);
 	void Trigger();
 	void Update();
 	void Render();
