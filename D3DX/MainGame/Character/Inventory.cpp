@@ -675,3 +675,13 @@ bool Inventory::AddItem(ItemParent* item)
 
 	return false;
 }
+
+bool Inventory::IsFull()
+{
+	for (int i = 0; i < m_ptInvSize.y; i++)
+		for (int j = 0; j < m_ptInvSize.x; j++)
+			if (!m_vecInventory[i][j].item)
+				return false;
+
+	return true;
+}

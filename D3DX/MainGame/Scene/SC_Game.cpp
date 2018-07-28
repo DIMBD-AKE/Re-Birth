@@ -145,7 +145,7 @@ void SC_Game::Update()
 	m_pDropManager->GetDropItem(m_pCharacter, m_pPet);
 	m_pCharacter->Update();
 	m_pNpc->Update();
-	if (!m_pDropManager->GetDropList().empty())
+	if (!m_pDropManager->GetDropList().empty() && !m_pCharacter->Getm_Inventory()->IsFull())
 		m_pPet->ChangeTarget(&m_pDropManager->GetDropList()[0].pos, 1);
 	else
 		m_pPet->ChangeTarget(m_pCharacter->GetCharacter()->GetPosition(), 3);

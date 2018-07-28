@@ -92,5 +92,6 @@ public:
 	bool GetSkill2(CharacterParant* pCharacter, MonsterManager* pMonster);
 	STATUS GetEquipStat();
 	bool AddItem(ItemParent* item);
+	bool IsFull();
 };
 
