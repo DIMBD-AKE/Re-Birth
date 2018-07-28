@@ -48,7 +48,7 @@ protected:
 	//돌 떨궈주는 이펙트오브젝트 클래스
 	vector<EffectObject*> m_vEffectObject;
 
-	Particle* m_pBuffPrticle;
+	Particle* m_pBuffPrticle[HT_END];
 
 	//손들의 매트리스 구조체
 	//ST_HANDMAT m_stHandMat;
@@ -88,6 +88,8 @@ private:
 	//bool AbleSummon();
 	//스킬 2 함수
 	virtual void Skill2() override;
+
+	virtual void CastingCancel() override;
 	//스킬 2 캐스팅함수
 	//virtual void Casting() override;
 

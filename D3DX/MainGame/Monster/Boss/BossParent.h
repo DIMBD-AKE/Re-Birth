@@ -13,6 +13,7 @@ enum BOSS_STATE{
 	BS_SKILL1,			//스킬1 상태
 	BS_SKILL2,			//스킬2 상태
 	BS_CASTING,			//스킬2 캐스팅중
+	BS_STUN,			//보스 스턴상태
 	BS_DIE,				//보스 사망상태
 	BS_NONE,			//사망 애니메이션 끝나고 멈추기 위한 상태
 	//레알최종보스를 위한 상태값
@@ -133,7 +134,7 @@ protected:
 	bool AbleSkill2();
 	void SkillPrepare2();
 
-	
+	virtual void CastingCancel();
 	
 public:
 	BossParent();

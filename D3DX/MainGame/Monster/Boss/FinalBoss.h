@@ -31,8 +31,11 @@ protected:
 	virtual void Skill2() override;
 	//스킬 2 캐스팅함수
 	virtual void Casting() override;
+	//캐스팅시 실행되는 함수
+	virtual void CastingCancel() override;
 
 	void MoveSpawn();
+
 public:
 	FinalBoss();
 	virtual ~FinalBoss();

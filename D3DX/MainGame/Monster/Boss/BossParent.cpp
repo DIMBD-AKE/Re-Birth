@@ -93,6 +93,16 @@ void BossParent::Render()
 
 void BossParent::SetCurrentHP(int hp, int* deathCount)
 {
+	if (m_eBossState == BS_CASTING)
+	{
+		CastingCancel();
+	}
+
+	if (m_eBossState == BS_STUN)
+	{
+		hp *= 2;
+	}
+
 	CURRENTHP(m_pMonsterStat) -= hp;
 
 	m_pModel->SetShaderAlpha(0.5f);
@@ -165,6 +175,7 @@ void BossParent::Casting()
 	{
 		m_eBossState = BS_SKILL1;
 		ChangeAni();
+		m_pModel->SetAnimationSpeed(1.0f);
 		//	m_pModel->SetAnimationPosition(0.5f);
 	}
 }
@@ -209,6 +220,10 @@ void BossParent::ChangeAni()
 		break;
 	case BS_CASTING:
 		m_pModel->SetAnimation("SKILL2_CASTING");
+		break;
+	case BS_STUN:
+		m_pModel->SetAnimation("STUN");
+		m_pModel->SetAnimation(0.4f);
 		break;
 	case BS_DIE:
 		m_pModel->SetAnimation("DIE");
@@ -306,4 +321,8 @@ void BossParent::SkillPrepare2(){
 		NULL,
 		m_stSkill2,
 		SKILLO_MONSTER);
+}
+
+void BossParent::CastingCancel()
+{
 }

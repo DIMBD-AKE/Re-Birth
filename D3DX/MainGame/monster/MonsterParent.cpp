@@ -692,7 +692,7 @@ void MonsterParent::SetCurrentHP(int hp, int* deathCount)
 
 		//m_pModel->SetShaderAlpha(0.5f);
 
-		m_pModel->SetShaderColorOffset(1);
+		m_pModel->SetShaderColorOffset(0.5);
 
 		m_fAlphaCount = 0;
 

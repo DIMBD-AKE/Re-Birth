@@ -18,6 +18,10 @@ RealFinalboss::~RealFinalboss()
 	SAFE_DELETE(m_pSkill2);
 	SAFE_DELETE(m_pPassive);
 	
+	for (int i = 0; i < HT_END; ++i)
+	{
+		SAFE_DELETE(m_pBuffPrticle[i]);
+	}
 }
 
 void RealFinalboss::SetupBoss(Map* map, D3DXVECTOR3 pos)
@@ -28,7 +32,8 @@ void RealFinalboss::SetupBoss(Map* map, D3DXVECTOR3 pos)
 	BossParent::SetupBoss(map, pos);
 
 	m_eBossState = BS_ENTER;
-	//m_eBossState = BS_ATTACK;
+
+	//m_eBossState = BS_PASSIVE;
 
 	ChangeAni();
 	//판정 박스 
@@ -90,10 +95,38 @@ void RealFinalboss::SetupBoss(Map* map, D3DXVECTOR3 pos)
 	CAMERA->SetCamOffset(D3DXVECTOR3(0, 15, 40));
 	CAMERA->SetTarget(m_pModel->GetPosition(), m_pModel->GetRotation());
 	CAMERA->Cinematic(D3DXVECTOR2(85.0f, 60.0f), D3DXVECTOR2(-10.0f, 10.0f), 40, 1,10);
+
+	for (int i = 0; i < HT_END; ++i)
+	{
+		m_pBuffPrticle[i] = NULL;
+	}
 }
 
 void RealFinalboss::Update()
 {
+	if (m_pBuffPrticle[0])
+	{
+		/*m_pHand*/
+		/*
+		HT_LD,
+		HT_LT,
+		HT_RD,
+		HT_RT,
+		HT_END		
+		*/
+		for (int i = 0; i < HT_END; ++i)
+		{
+			D3DXVECTOR3 pos(0, 0, 0);
+			D3DXVec3TransformCoord(&pos, &pos, m_pHand[i]);
+			m_pBuffPrticle[i]->SetPosition(pos);
+			//m_pBuffPrticle[i]->ApplyWorld();
+			m_pBuffPrticle[i]->World();
+			m_pBuffPrticle[i]->Update();
+		}
+
+		
+	}
+
 	if (INPUT->KeyDown('L'))
 	{
 		m_eBossState = BS_CASTING;
@@ -103,6 +136,15 @@ void RealFinalboss::Update()
 
 	m_fPassiveCooltimeCount += TIME->GetElapsedTime();
 
+	if (m_fPassiveCooltimeCount >= m_stPassive.fBuffTime && m_bUsingPassive)
+	{
+		m_bUsingPassive = false;
+
+		for (int i = 0; i < HT_END; i++)
+		{
+			SAFE_DELETE(m_pBuffPrticle[i]);
+		}
+	}
 	if (CAMERA->IsActionEnd())
 		CAMERA->SetTarget(CHARACTER->GetPosition(), CHARACTER->GetRotation());
 
@@ -166,6 +208,13 @@ void RealFinalboss::Render()
 
 	if (m_pPassive) m_pPassive->Render();
 
+	if (m_pBuffPrticle[0])
+	{
+		for (int i = 0; i < HT_END; ++i)
+		{
+			m_pBuffPrticle[i]->Render();
+		}
+	}
 }
 
 void RealFinalboss::SetupStat()
@@ -289,7 +338,8 @@ void RealFinalboss::Pattern()
 	//bool plesawf = ;
 	if (AblePassive())
 	{
-
+		m_fPassiveCooltimeCount = 0;
+		BoolInit();
 		BuffDecide();
 		m_bUsingPassive = true;
 		PassivePrepare();
@@ -303,6 +353,7 @@ void RealFinalboss::Pattern()
 		SkillPrepare();
 		m_eBossState = BS_CASTING;
 		m_pModel->SetAnimation("BS_ENTER4");
+		m_pModel->SetAnimationSpeed(0.5f);
 		//ChangeAni();
 	}
 	//char temp[222];
@@ -348,6 +399,14 @@ void RealFinalboss::Pattern()
 
 	case BS_CASTING:
 		Casting();
+		break;
+
+	case BS_STUN:
+		if (m_pModel->IsAnimationEnd())
+		{
+			m_eBossState = BS_ATTACK;
+			ChangeAni();
+		}
 		break;
 
 	case BS_DIE:
@@ -497,8 +556,7 @@ void RealFinalboss::Passive()
 
 	if (m_pModel->IsAnimationEnd())
 	{
-		m_bUsingSkill = false;
-		m_fPassiveCooltimeCount = 0;
+		//m_fPassiveCooltimeCount = 0;
 		m_eBossState = BS_ATTACK;
 		ChangeAni();
 	}
@@ -512,6 +570,7 @@ void RealFinalboss::SkillUse()
 	
 	if (m_pModel->IsAnimationEnd())
 	{
+
 		m_bUsingSkill = false;
 		m_fSkillCoolTimeCount = 0;
 		m_eBossState = BS_ATTACK;
@@ -557,6 +616,15 @@ void RealFinalboss::Skill2()
 	}
 	
 
+}
+
+void RealFinalboss::CastingCancel()
+{
+	m_bUsingSkill = false;
+	m_fSkillCoolTimeCount = 0;
+
+	m_eBossState = BS_STUN;
+	ChangeAni();
 }
 
 //void RealFinalboss::Casting()
@@ -676,7 +744,7 @@ void RealFinalboss::DropTheStones()
 void RealFinalboss::MakeSphere()
 {
 	D3DXVECTOR3 temp;
-	for (int i = 0; i < 4; ++i)
+	for (int i = 0; i < HT_END; ++i)
 	{
 		temp = D3DXVECTOR3(0, 0, 0);
 		D3DXVec3TransformCoord(&temp, &temp, m_pHand[i]);
@@ -716,7 +784,7 @@ void RealFinalboss::Debug()
 	LPD3DXMESH mesh;
 	D3DXMATRIX matT;
 
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < HT_END; i++)
 	{
 		float radius = m_stHandSphere[i].Hand.radius;
 		if (radius < 0) radius = 0;
@@ -733,7 +801,7 @@ void RealFinalboss::Debug()
 
 bool RealFinalboss::HandCollision()
 {
-	for (int i = 0; i < 4; ++i)
+	for (int i = 0; i < HT_END; ++i)
 	{
 		if (IntersectSphere(m_stHandSphere[i].Hand, CHARACTER->GetBoundSphere())
 			&& !m_stHandSphere[i].IsOnceAttack)
@@ -787,7 +855,8 @@ bool RealFinalboss::AblePassive()
 	if (m_pModel->IsAnimationEnd()
 		&& m_fPassiveCooltimeCount >= m_nPassiveCooltime
 		&& !m_bIsDead
-		&& !m_bUsingPassive)
+		&& !m_bUsingPassive
+		)
 	{
 
 		return true;
@@ -802,21 +871,34 @@ void RealFinalboss::BuffDecide()
 
 	int rndNum = rand() % 3;
 
+	
+	string particleName;
 	switch (rndNum)
 	{
 	case 0:
 		m_stPassive.buffStatus.chr.nAtk = ATK(m_pMonsterStat);
+		particleName = "공격력 강화";
+		//m_pBuffPrticle = PARTICLE->GetParticle("공격력 강화");
 		break;
 
 	case 1:
 		m_stPassive.buffStatus.chr.nDef = DEF(m_pMonsterStat);
+		particleName = "방어력 강화";
+		//m_pBuffPrticle = PARTICLE->GetParticle("방어력 강화");
 		break;
 
 	case 2:
 		m_stPassive.buffStatus.chr.fHit = HIT(m_pMonsterStat);
+		particleName = "명중률 강화";
+		//m_pBuffPrticle = PARTICLE->GetParticle("명중률 강화");
 		break;
 	default:
 		break;
 	}
-	
+
+	for (int i = 0; i < HT_END; ++i)
+	{
+		SAFE_DELETE(m_pBuffPrticle[i]);
+		m_pBuffPrticle[i] = PARTICLE->GetParticle(particleName);
+	}
 }
