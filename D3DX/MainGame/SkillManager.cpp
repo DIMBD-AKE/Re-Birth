@@ -70,7 +70,9 @@ void Skill::Buff()
 void * Skill::GetSingleTarget()
 {
 	D3DXVECTOR3 posChr = *m_pCharacter->GetCharacter()->GetPosition();
-	D3DXVECTOR3 posMon = *m_pMonster->GetModel()->GetPosition();
+	D3DXVECTOR3 posMon;
+	if (m_pMonster)
+		posMon = *m_pMonster->GetModel()->GetPosition();
 
 	if (m_eOwner == SKILLO_MONSTER)
 	{
@@ -136,8 +138,10 @@ void * Skill::GetSingleTarget()
 vector<void*> Skill::GetMultipleTarget()
 {
 	D3DXVECTOR3 posChr = *m_pCharacter->GetCharacter()->GetPosition();
-	D3DXVECTOR3 posMon = *m_pMonster->GetModel()->GetPosition();
-	
+	D3DXVECTOR3 posMon;
+	if (m_pMonster)
+		posMon = *m_pMonster->GetModel()->GetPosition();
+
 	vector<void*> vecTarget;
 
 	if (m_eOwner == SKILLO_MONSTER)
@@ -417,7 +421,8 @@ void Skill::Prepare(CharacterParant * pCharacter, MonsterParent* pMonster, Monst
 {
 	m_pCharacter = pCharacter;
 	m_pMonster = pMonster;
-	m_vecMonster = pMM->GetMonsterVector();
+	if (m_pMM)
+		m_vecMonster = pMM->GetMonsterVector();
 	m_pMM = pMM;
 	m_stSkill = skill;
 	m_eOwner = owner;
