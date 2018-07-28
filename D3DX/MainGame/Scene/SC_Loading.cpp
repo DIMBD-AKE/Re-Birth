@@ -213,6 +213,9 @@ void SC_Loading::AddTexture()
 
 	//중간보스 피흡 텍스쳐
 	m_pLoading->LoadTexture("피흡원", "Texture/Effect/BloodCircle.png");
+
+	//별모양 파티클 텍스쳐
+	m_pLoading->LoadTexture("별", "Texture/Particle/Star.png");
 }
 
 void SC_Loading::AddSound()
@@ -303,6 +306,11 @@ void SC_Loading::AddParticle()
 
 	m_pLoading->LoadParticle("몬스터기본피격", "피", "Particle/Blood Hit.ptc");
 	m_pLoading->LoadParticle("흙먼지", "흙먼지", "Particle/Dust.ptc");
+
+	//최종보스 버프용 파티클
+	m_pLoading->LoadParticle("공격력 강화", "별", "Particle/BossAttackBuff.ptc");
+	m_pLoading->LoadParticle("방어력 강화", "별", "Particle/BossDefBuff.ptc");
+	m_pLoading->LoadParticle("명중률 강화", "별", "Particle/BossHitBuff.ptc");
 }
 
 void SC_Loading::InitUI()
