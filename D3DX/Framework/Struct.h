@@ -103,6 +103,7 @@ struct ST_EFFECT
 	bool isRX;
 	bool isRY;
 	bool isRZ;
+	bool autoY;
 	bool isSphere;
 	float height;
 	float time;
