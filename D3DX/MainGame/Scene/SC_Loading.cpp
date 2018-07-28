@@ -214,13 +214,10 @@ void SC_Loading::AddTexture()
 	//중간보스 피흡 텍스쳐
 	m_pLoading->LoadTexture("피흡원", "Texture/Effect/BloodCircle.png");
 
-<<<<<<< HEAD
 	//별모양 파티클 텍스쳐
 	m_pLoading->LoadTexture("별", "Texture/Particle/Star.png");
-=======
 	//벨벳 궁극기용 파티클 이미지 
 	m_pLoading->LoadTexture("파이어", "Texture/Effect/fire2.png");
->>>>>>> 438ce3db533db1f4127811186770b90331e571da
 }
 
 void SC_Loading::AddSound()
