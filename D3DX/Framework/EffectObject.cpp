@@ -38,7 +38,7 @@ void EffectObject::Init(ST_EFFECT info, D3DXVECTOR3 pos)
 	if (m_stInfo.isRZ)
 		m_stInfo.rot.z = FRand(-D3DX_PI / 2, D3DX_PI);
 
-	if (!m_isFlash && !m_stInfo.isRY && abs(info.rot.y) < 1)
+	if (m_stInfo.autoY)
 	{
 		D3DXVECTOR3 zero = D3DXVECTOR3(0, 0, 0);
 		float angle = GetAngle(zero.x, zero.z, m_stInfo.dir.x, m_stInfo.dir.z);
