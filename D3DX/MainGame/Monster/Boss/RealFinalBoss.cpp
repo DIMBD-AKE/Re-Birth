@@ -401,6 +401,14 @@ void RealFinalboss::Pattern()
 		Casting();
 		break;
 
+	case BS_STUN:
+		if (m_pModel->IsAnimationEnd())
+		{
+			m_eBossState = BS_ATTACK;
+			ChangeAni();
+		}
+		break;
+
 	case BS_DIE:
 	{
 		if (m_pModel->IsAnimationEnd()) m_eBossState = BS_NONE;
@@ -562,6 +570,7 @@ void RealFinalboss::SkillUse()
 	
 	if (m_pModel->IsAnimationEnd())
 	{
+
 		m_bUsingSkill = false;
 		m_fSkillCoolTimeCount = 0;
 		m_eBossState = BS_ATTACK;
@@ -607,6 +616,15 @@ void RealFinalboss::Skill2()
 	}
 	
 
+}
+
+void RealFinalboss::CastingCancel()
+{
+	m_bUsingSkill = false;
+	m_fSkillCoolTimeCount = 0;
+
+	m_eBossState = BS_STUN;
+	ChangeAni();
 }
 
 //void RealFinalboss::Casting()

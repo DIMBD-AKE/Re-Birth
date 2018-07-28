@@ -182,26 +182,6 @@ void FinalBoss::Pattern()
 	
 	if (AbleSkill() && !m_bUsingSkill2 && m_eBossState != BS_NONE && m_eBossState != BS_DIE)
 	{
-		ST_EFFECT tempEffect1;
-		ZeroMemory(&tempEffect1, sizeof(tempEffect1));
-		tempEffect1.time = 5;
-		tempEffect1.rot = D3DXVECTOR3(90, 0, 0);
-		tempEffect1.mot = D3DXVECTOR3(0, 10, 0);
-		tempEffect1.SetMotorSpeed(0.05f, 0.05f, 0.05f);
-		tempEffect1.dir = D3DXVECTOR3(0, -1.0f, 0);
-		tempEffect1.SetSpeed(0.02f, 0.02f, 0.02f);
-		//tempEffect1.ms0 = 9.0f;
-		tempEffect1.height = 2.0f;
-		tempEffect1.SetAlpha(255, 255,150);
-		tempEffect1.SetScale(10, 10, 10);
-		tempEffect1.tex = TEXTUREMANAGER->GetTexture("ÇÇÈí¿ø");
-
-
-		SAFE_DELETE(m_pCasting);
-		m_pCasting = new EffectObject;
-		D3DXVECTOR3 testSkillpos1 = *m_pModel->GetPosition() ;
-		testSkillpos1.y += 2.0f;
-		m_pCasting->Init(tempEffect1, testSkillpos1);
 
 		m_eBossState = BS_CASTING;
 		ChangeAni();
@@ -247,6 +227,13 @@ void FinalBoss::Pattern()
 		break;
 	case BS_CASTING:
 		Casting();
+		break;
+	case BS_STUN:
+		if (m_pModel->IsAnimationEnd())
+		{
+			m_eBossState = BS_ATTACK;
+			ChangeAni();
+		}
 		break;
 	case BS_DIE:
 	{
@@ -436,6 +423,26 @@ void FinalBoss::Skill2()
 
 void FinalBoss::Casting()
 {
+	ST_EFFECT tempEffect1;
+	ZeroMemory(&tempEffect1, sizeof(tempEffect1));
+	tempEffect1.time = 5;
+	tempEffect1.rot = D3DXVECTOR3(90, 0, 0);
+	tempEffect1.mot = D3DXVECTOR3(0, 10, 0);
+	tempEffect1.SetMotorSpeed(0.05f, 0.05f, 0.05f);
+	tempEffect1.dir = D3DXVECTOR3(0, -1.0f, 0);
+	tempEffect1.SetSpeed(0.02f, 0.02f, 0.02f);
+	//tempEffect1.ms0 = 9.0f;
+	tempEffect1.height = 2.0f;
+	tempEffect1.SetAlpha(255, 255, 150);
+	tempEffect1.SetScale(10, 10, 10);
+	tempEffect1.tex = TEXTUREMANAGER->GetTexture("ÇÇÈí¿ø");
+
+
+	SAFE_DELETE(m_pCasting);
+	m_pCasting = new EffectObject;
+	D3DXVECTOR3 testSkillpos1 = *m_pModel->GetPosition();
+	testSkillpos1.y += 2.0f;
+	m_pCasting->Init(tempEffect1, testSkillpos1);
 
 	if (m_pModel->IsAnimationEnd())
 	//if (m_pModel->IsAnimationPercent(0.5f))
@@ -444,6 +451,19 @@ void FinalBoss::Casting()
 		ChangeAni();
 	//	m_pModel->SetAnimationPosition(0.5f);
 	}
+}
+
+void FinalBoss::CastingCancel()
+{
+	m_bIsAttack = false;
+	m_bUsingSkill2 = false;
+	m_bUsingSkill = false;
+	m_fSkillCoolTimeCount = 0;
+
+	m_eBossState = BS_STUN;
+	ChangeAni();
+
+	SAFE_DELETE(m_pCasting);
 }
 
 void FinalBoss::MoveSpawn()

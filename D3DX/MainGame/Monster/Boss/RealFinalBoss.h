@@ -88,6 +88,8 @@ private:
 	//bool AbleSummon();
 	//스킬 2 함수
 	virtual void Skill2() override;
+
+	virtual void CastingCancel() override;
 	//스킬 2 캐스팅함수
 	//virtual void Casting() override;
 
