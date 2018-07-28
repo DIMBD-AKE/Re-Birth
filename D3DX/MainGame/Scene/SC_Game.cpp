@@ -131,8 +131,6 @@ void SC_Game::Init()
 	m_isStart = false;
 
 	m_fGenTime = (GetTickCount() - m_fGenTime) * 0.001;
-	if (m_fElapseTime > 0)
-		m_fElapseTime -= m_fGenTime;
 
 	m_pCharacter->Getstage(&m_nStage);
 
@@ -234,6 +232,7 @@ void SC_Game::NextStage()
 	m_nStage++;
 	if (m_nStage > 3)
 	{
+		WriteRank();
 		ClearStage();
 		return;
 	}
