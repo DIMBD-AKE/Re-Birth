@@ -175,8 +175,6 @@ void SC_Game::Update()
 			TEXT->Add("최종보스", 730, 130, 32, "나눔명조", D3DCOLOR_ARGB(m_pStageUI->GetAlpha(), 255, 255, 255));
 	}
 
-	TEXT->Add(to_string(m_fStageElapse), 20, 20, 20, "", 0xFFFFFFFF);
-
 	m_pGameUI->Update();
 	m_pPauseUI->Update();
 	m_pStageUI->Update();
