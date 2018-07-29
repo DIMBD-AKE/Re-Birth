@@ -47,7 +47,6 @@ private:
 	LPD3DXFRAME					m_pRoot;
 	LPD3DXANIMATIONCONTROLLER	m_pAnimController;
 	bool						m_isBlend;
-	bool						m_isHolo;
 	float						m_fBlendTime;
 	float						m_fPassedTime;
 
@@ -57,6 +56,8 @@ private:
 	SYNTHESIZE(float, m_fOffset, ColorOffset);
 	SYNTHESIZE(float, m_fRimPower, RimPower);
 	SYNTHESIZE(D3DXVECTOR3, m_vRimColor, RimColor);
+	SYNTHESIZE(bool, m_isHolo, Hologram);
+	SYNTHESIZE(float, m_fFadeCut, FadeCut);
 
 private:
 	map<string, int>			m_animMap;
@@ -76,8 +77,6 @@ public:
 	void SetBlendTime(float time) { m_fBlendTime = time; }
 	void SetAnimationSpeed(float speed);
 	void SetAnimationPosition(float pos);
-	void SetHologram(bool holo) { m_isHolo = holo; }
-	bool GetHologram() { return m_isHolo; }
 	bool IsAnimationPercent(float rate);
 	bool IsAnimationEnd();
 

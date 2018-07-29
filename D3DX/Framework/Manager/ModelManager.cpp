@@ -679,6 +679,16 @@ bool ModelX::GetShaderHologram()
 	return m_pSMesh->GetHologram();
 }
 
+void ModelX::SetShaderFadeCut(float fade)
+{
+	m_pSMesh->SetFadeCut(fade);
+}
+
+float ModelX::GetShaderFadeCut()
+{
+	return m_pSMesh->GetFadeCut();;
+}
+
 D3DXMATRIX * ModelX::GetBoneMatrix(string name)
 {
 	return m_pSMesh->GetBoneMatrix(name);

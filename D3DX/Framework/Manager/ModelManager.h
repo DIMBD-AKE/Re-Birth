@@ -56,6 +56,8 @@ public:
 	virtual void SetShaderRimColor(D3DXVECTOR3 color) {}
 	virtual void SetShaderHologram(bool holo) {}
 	virtual bool GetShaderHologram() { return false; }
+	virtual void SetShaderFadeCut(float fade) {}
+	virtual float GetShaderFadeCut() { return 0; }
 	virtual D3DXVECTOR3 GetShaderRimColor() { return D3DXVECTOR3(); }
 	virtual D3DXMATRIX* GetBoneMatrix(string name) { return NULL; }
 
@@ -153,6 +155,8 @@ public:
 	virtual D3DXVECTOR3 GetShaderRimColor();
 	virtual void SetShaderHologram(bool holo);
 	virtual bool GetShaderHologram();
+	virtual void SetShaderFadeCut(float fade);
+	virtual float GetShaderFadeCut();
 };
 
 class ModelStaticX : public Model
