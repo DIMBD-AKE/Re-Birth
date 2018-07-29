@@ -669,6 +669,16 @@ D3DXVECTOR3 ModelX::GetShaderRimColor()
 	return m_pSMesh->GetRimColor();
 }
 
+void ModelX::SetShaderHologram(bool holo)
+{
+	m_pSMesh->SetHologram(holo);
+}
+
+bool ModelX::GetShaderHologram()
+{
+	return m_pSMesh->GetHologram();
+}
+
 D3DXMATRIX * ModelX::GetBoneMatrix(string name)
 {
 	return m_pSMesh->GetBoneMatrix(name);

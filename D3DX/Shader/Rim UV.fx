@@ -20,7 +20,7 @@
 //--------------------------------------------------------------//
 // Pass 0
 //--------------------------------------------------------------//
-string Rim_UV_Pass_0_Model : ModelData = "..\\..\\..\\Program Files (x86)\\AMD\\RenderMonkey 1.82\\Examples\\Media\\Models\\Teapot.3ds";
+string Rim_UV_Pass_0_Model : ModelData = "..\\..\\..\\..\\..\\..\\..\\Program Files (x86)\\AMD\\RenderMonkey 1.82\\Examples\\Media\\Models\\Teapot.3ds";
 
 float4x4 gWorldViewProjectionMatrix : WorldViewProjection;
 float4x4 gWorldMatrix : World;
@@ -77,7 +77,7 @@ VS_OUTPUT Rim_UV_Pass_0_Vertex_Shader_vs_main( VS_INPUT Input )
 
 texture DiffuseMap_Tex
 <
-   string ResourceName = "..\\..\\..\\Program Files (x86)\\AMD\\RenderMonkey 1.82\\Examples\\Media\\Textures\\Fieldstone.tga";
+   string ResourceName = "..\\..\\..\\..\\..\\..\\..\\Program Files (x86)\\AMD\\RenderMonkey 1.82\\Examples\\Media\\Textures\\Fieldstone.tga";
 >;
 sampler2D DiffuseSampler = sampler_state
 {
@@ -85,7 +85,7 @@ sampler2D DiffuseSampler = sampler_state
 };
 texture NormalMap_Tex
 <
-   string ResourceName = "..\\..\\..\\Program Files (x86)\\AMD\\RenderMonkey 1.82\\Examples\\Media\\Textures\\FieldstoneBumpDOT3.tga";
+   string ResourceName = "..\\..\\..\\..\\..\\..\\..\\Program Files (x86)\\AMD\\RenderMonkey 1.82\\Examples\\Media\\Textures\\FieldstoneBumpDOT3.tga";
 >;
 sampler2D NormalSampler = sampler_state
 {
@@ -101,9 +101,9 @@ float3 gLightColor
    float UIMin = -1.00;
    float UIMax = 1.00;
 > = float3( 1.00, 1.00, 1.00 );
-float3 gLimColor
+float3 gRimColor
 <
-   string UIName = "gLimColor";
+   string UIName = "gRimColor";
    string UIWidget = "Numeric";
    bool UIVisible =  false;
    float UIMin = -1.00;
@@ -132,7 +132,7 @@ float gRimPower
    bool UIVisible =  false;
    float UIMin = -1.00;
    float UIMax = 1.00;
-> = float( 0.50 );
+> = float( 1.00 );
 
 struct PS_INPUT
 {
@@ -162,11 +162,88 @@ float4 Rim_UV_Pass_0_Pixel_Shader_ps_main(PS_INPUT Input) : COLOR
    float3 offset = float3(gOffset, gOffset, gOffset);
    
    float3 viewDir = normalize(gCamPos - Input.WorldPosition);
-   float3 rim = smoothstep(0.5f, 1.0f, 1 - dot(worldNormal, viewDir)) * gRimPower * gLimColor;
+   float3 rim = smoothstep(0.5f, 1.0f, 1 - dot(worldNormal, viewDir)) * gRimPower * gRimColor;
 
    return( float4( ambient + diffuse + offset + rim, gAlpha ) );
    
 }
+//--------------------------------------------------------------//
+// Pass 1
+//--------------------------------------------------------------//
+string Rim_UV_Pass_1_Model : ModelData = "..\\..\\..\\..\\..\\..\\..\\Program Files (x86)\\AMD\\RenderMonkey 1.82\\Examples\\Media\\Models\\Teapot.3ds";
+
+float4x4 Rim_UV_Pass_1_Vertex_Shader_gWorldMatrix : World;
+float4x4 Rim_UV_Pass_1_Vertex_Shader_gWorldViewProjectionMatrix : WorldViewProjection;
+
+struct Rim_UV_Pass_1_Vertex_Shader_VS_INPUT 
+{
+   float4 Position : POSITION0;
+   float3 Normal : NORMAL;
+};
+
+struct Rim_UV_Pass_1_Vertex_Shader_VS_OUTPUT 
+{
+   float4 Position : POSITION0;
+   float3 Normal : TEXCOORD0;
+   float3 WorldPosition : TEXCOORD1;
+};
+
+Rim_UV_Pass_1_Vertex_Shader_VS_OUTPUT Rim_UV_Pass_1_Vertex_Shader_vs_main( Rim_UV_Pass_1_Vertex_Shader_VS_INPUT Input )
+{
+   Rim_UV_Pass_1_Vertex_Shader_VS_OUTPUT Output;
+
+   Output.Position = mul (Input.Position, Rim_UV_Pass_1_Vertex_Shader_gWorldViewProjectionMatrix);
+   Output.Normal = mul (Input.Normal, Rim_UV_Pass_1_Vertex_Shader_gWorldMatrix);
+   Output.WorldPosition = mul( Input.Position, Rim_UV_Pass_1_Vertex_Shader_gWorldMatrix );
+   
+   return( Output );
+   
+}
+
+
+
+
+float4 Rim_UV_Pass_1_Pixel_Shader_gCamPos : ViewPosition;
+float Rim_UV_Pass_1_Pixel_Shader_gRimPower
+<
+   string UIName = "Rim_UV_Pass_1_Pixel_Shader_gRimPower";
+   string UIWidget = "Numeric";
+   bool UIVisible =  false;
+   float UIMin = -1.00;
+   float UIMax = 1.00;
+> = float( 1.00 );
+float3 Rim_UV_Pass_1_Pixel_Shader_gRimColor
+<
+   string UIName = "Rim_UV_Pass_1_Pixel_Shader_gRimColor";
+   string UIWidget = "Numeric";
+   bool UIVisible =  false;
+   float UIMin = -1.00;
+   float UIMax = 1.00;
+> = float3( 1.00, 0.00, 0.00 );
+
+struct Rim_UV_Pass_1_Pixel_Shader_PS_INPUT
+{
+   float3 Normal : TEXCOORD0;
+   float3 WorldPosition : TEXCOORD1;
+};
+
+float4 Rim_UV_Pass_1_Pixel_Shader_ps_main(Rim_UV_Pass_1_Pixel_Shader_PS_INPUT Input) : COLOR0
+{   
+   float3 viewDir = normalize(Rim_UV_Pass_1_Pixel_Shader_gCamPos - Input.WorldPosition);
+   float3 N = normalize(Input.Normal);
+   float smooth = smoothstep(0.5f, 1.0f, 1 - dot(N, viewDir));
+   float3 rim = smooth * Rim_UV_Pass_1_Pixel_Shader_gRimPower * Rim_UV_Pass_1_Pixel_Shader_gRimColor;
+
+   float alpha = 1.0f;
+   if (smooth < 0.5f || smooth > 1.0f)
+      alpha = 0.0f;
+
+   return( float4( rim, alpha ) );
+}
+
+
+
+
 //--------------------------------------------------------------//
 // Technique Section for Rim UV
 //--------------------------------------------------------------//
@@ -176,6 +253,12 @@ technique Rim_UV
    {
       VertexShader = compile vs_2_0 Rim_UV_Pass_0_Vertex_Shader_vs_main();
       PixelShader = compile ps_2_0 Rim_UV_Pass_0_Pixel_Shader_ps_main();
+   }
+
+   pass Pass_1
+   {
+      VertexShader = compile vs_2_0 Rim_UV_Pass_1_Vertex_Shader_vs_main();
+      PixelShader = compile ps_2_0 Rim_UV_Pass_1_Pixel_Shader_ps_main();
    }
 
 }

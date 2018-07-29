@@ -47,6 +47,7 @@ private:
 	LPD3DXFRAME					m_pRoot;
 	LPD3DXANIMATIONCONTROLLER	m_pAnimController;
 	bool						m_isBlend;
+	bool						m_isHolo;
 	float						m_fBlendTime;
 	float						m_fPassedTime;
 
@@ -75,6 +76,8 @@ public:
 	void SetBlendTime(float time) { m_fBlendTime = time; }
 	void SetAnimationSpeed(float speed);
 	void SetAnimationPosition(float pos);
+	void SetHologram(bool holo) { m_isHolo = holo; }
+	bool GetHologram() { return m_isHolo; }
 	bool IsAnimationPercent(float rate);
 	bool IsAnimationEnd();
 

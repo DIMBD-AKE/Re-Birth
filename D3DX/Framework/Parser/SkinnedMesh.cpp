@@ -10,6 +10,7 @@ SkinnedMesh::SkinnedMesh()
 	, m_fRimPower(0.0f)
 	, m_fOffset(0.0f)
 	, m_vRimColor(D3DXVECTOR4(255, 255, 255, 1))
+	, m_isHolo(false)
 {
 }
 
@@ -405,6 +406,9 @@ void SkinnedMesh::Render(LPD3DXFRAME pFrame, D3DXMATRIX * matWorld)
 
 			for (UINT i = 0; i < pass; i++)
 			{
+				if (i == 0 && m_isHolo) continue;
+				if (i == 1 && !m_isHolo) continue;
+
 				m_pShaderEffect->BeginPass(i);
 
 				matWVP = pBone->CombinedTransformationMatrix * matView * matProj;
@@ -416,8 +420,14 @@ void SkinnedMesh::Render(LPD3DXFRAME pFrame, D3DXMATRIX * matWorld)
 				m_pShaderEffect->SetFloat("gAlpha", m_fAlpha);
 				m_pShaderEffect->SetFloat("gOffset", m_fOffset);
 				m_pShaderEffect->SetFloat("gRimPower", m_fRimPower);
-				m_pShaderEffect->SetVector("gLimColor", &D3DXVECTOR4(m_vRimColor.x / 255.0f, m_vRimColor.y / 255.0f, m_vRimColor.z / 255.0f, 1));
+				m_pShaderEffect->SetVector("gRimColor", &D3DXVECTOR4(m_vRimColor.x / 255.0f, m_vRimColor.y / 255.0f, m_vRimColor.z / 255.0f, 1));
 				m_pShaderEffect->SetVector("gCamPos", &D3DXVECTOR4(vCamPos.x, vCamPos.y, vCamPos.z, 1));
+
+				m_pShaderEffect->SetMatrix("Rim_UV_Pass_1_Vertex_Shader_gWorldViewProjectionMatrix", &matWVP);
+				m_pShaderEffect->SetMatrix("Rim_UV_Pass_1_Vertex_Shader_gWorldMatrix", &pBone->CombinedTransformationMatrix);
+				m_pShaderEffect->SetFloat("Rim_UV_Pass_1_Pixel_Shader_gRimPower", 1);
+				m_pShaderEffect->SetVector("Rim_UV_Pass_1_Pixel_Shader_gRimColor", &D3DXVECTOR4(m_vRimColor.x / 255.0f, m_vRimColor.y / 255.0f, m_vRimColor.z / 255.0f, 1));
+				m_pShaderEffect->SetVector("Rim_UV_Pass_1_Pixel_Shader_gCamPos", &D3DXVECTOR4(vCamPos.x, vCamPos.y, vCamPos.z, 1));
 
 				for (DWORD i = 0; i < pBoneMesh->vecMtl.size(); i++)
 				{
