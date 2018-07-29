@@ -69,11 +69,10 @@ public:
 	void LoadSound(string keyName, string path, bool loop);
 	void LoadParticle(string keyName, string TextureKeyName, string Path);
 
-	
 	void LoadSingletone(string keyName, const char* fileName);
 
 	float GaugePercent() { return m_nCurrentGauge / (float)m_vLoadItem.size(); }
-
+	LOAD_KIND CurrentType() { return m_nCurrentGauge < m_vLoadItem.size() ? m_vLoadItem[m_nCurrentGauge]->GetLoadKind() : LK_END; }
 
 	Loading();
 	~Loading();

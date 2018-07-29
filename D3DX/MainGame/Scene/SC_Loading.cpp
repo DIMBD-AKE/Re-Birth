@@ -115,13 +115,13 @@ void SC_Loading::AddTexture()
 
 
 	//플레이어 사진
-	m_pLoading->LoadTexture("아카날_사진", "Texture/Portrait/Portrait_PC_Aknal_S_Icon.png");
-	m_pLoading->LoadTexture("아린_사진", "Texture/Portrait/Portrait_PC_Arin_S_Icon.png");
-	m_pLoading->LoadTexture("베카_사진", "Texture/Portrait/Portrait_PC_BeakAh_S_Icon.png");
-	m_pLoading->LoadTexture("헤스티아_사진", "Texture/Portrait/Portrait_PC_Hestia_S_Icon.png");
-	m_pLoading->LoadTexture("메그너스_사진", "Texture/Portrait/Portrait_Pc_Magnus_Icon.png");
-	m_pLoading->LoadTexture("리아_사진", "Texture/Portrait/Portrait_PC_Riah_S_Icon.png");
-	m_pLoading->LoadTexture("스카디_사진", "Texture/Portrait/Portrait_PC_Skadi_S_Icon.png");
+	m_pLoading->LoadTexture("아카날_사진", "Texture/Portrait/Portrait_PC_Aknal_S_Icon.tga");
+	m_pLoading->LoadTexture("아린_사진", "Texture/Portrait/Portrait_PC_Arin_S_Icon.tga");
+	m_pLoading->LoadTexture("베카_사진", "Texture/Portrait/Portrait_PC_BeakAh_S_Icon.tga");
+	m_pLoading->LoadTexture("헤스티아_사진", "Texture/Portrait/Portrait_PC_Hestia_S_Icon.tga");
+	m_pLoading->LoadTexture("메그너스_사진", "Texture/Portrait/Portrait_Pc_Magnus_Icon.tga");
+	m_pLoading->LoadTexture("리아_사진", "Texture/Portrait/Portrait_PC_Riah_S_Icon.tga");
+	m_pLoading->LoadTexture("스카디_사진", "Texture/Portrait/Portrait_PC_Skadi_S_Icon.tga");
 	m_pLoading->LoadTexture("벨벳_사진", "Texture/Portrait/velvet.png");
 	m_pLoading->LoadTexture("파이란_사진", "Texture/Portrait/Portrait_PC_Pyran_S_Icon.png");
 
@@ -146,7 +146,6 @@ void SC_Loading::AddTexture()
 	// 메인 UI
 	m_pLoading->LoadTexture("Main Background", "Texture/Scene/Main BG.png");
 	m_pLoading->LoadTexture("Main Button", "Texture/Scene/Main Button.png");
-	m_pLoading->LoadTexture("Main Chr Select", "Texture/Scene/Main Character Select.png");
 	m_pLoading->LoadTexture("Character Background", "Texture/Scene/Character BG.png");
 	m_pLoading->LoadTexture("Character Chr Over", "Texture/Scene/Main Character Over.png");
 
@@ -325,6 +324,7 @@ void SC_Loading::InitUI()
 {
 	TEXTUREMANAGER->AddTexture("Loading Background", "Texture/Scene/Loading BG.png");
 	TEXTUREMANAGER->AddTexture("Loading Bar", "Texture/Scene/Loading Bar.png");
+	TEXTUREMANAGER->AddTexture("Main Chr Select", "Texture/Scene/Main Character Select.png");
 
 	SOUND->Play("Main Theme", 0.5);
 
@@ -343,6 +343,17 @@ void SC_Loading::InitUI()
 void SC_Loading::Update()
 {
 	m_pUI->Update();
+
+	if (m_pLoading->CurrentType() == LK_MODEL)
+		TEXT->Add("모델 로딩중", 720, 600, 30, "나눔명조", 0xFFFFFFFF);
+	if (m_pLoading->CurrentType() == LK_TEXTURE)
+		TEXT->Add("텍스쳐 로딩중", 710, 600, 30, "나눔명조", 0xFFFFFFFF);
+	if (m_pLoading->CurrentType() == LK_PARTICLE)
+		TEXT->Add("파티클 로딩중", 710, 600, 30, "나눔명조", 0xFFFFFFFF);
+	if (m_pLoading->CurrentType() == LK_SOUND)
+		TEXT->Add("사운드 로딩중", 710, 600, 30, "나눔명조", 0xFFFFFFFF);
+	if (m_pLoading->CurrentType() == LK_END)
+		TEXT->Add("로딩 완료", 760, 600, 30, "나눔명조", 0xFFFFFFFF);
 
 	if (m_pLoading->LoadingDone())
 	{
