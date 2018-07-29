@@ -19,6 +19,7 @@ private:
 	int				m_nVelvetCount;
 	int				m_nVelvetEnd;
 	float			m_fOriginSpeed;
+	vector<EffectObject*>	m_vecSkillEffect;
 	//
 
 public:
@@ -42,5 +43,7 @@ public:
 	void TargetSword();
 	void velvetFinalSKILL();
 	void VelvetCount();
+
+	void SkillEffect();
 	//
 };

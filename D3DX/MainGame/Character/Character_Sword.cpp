@@ -180,7 +180,7 @@ void Character_Sword::Init(CHRTYPE type, CHARSELECT order)
 
 		m_pCombo->SetTexture(TEXTUREMANAGER->GetTexture("콤보"));
 		m_pCombo->SetScale(D3DXVECTOR3(1, 1, 1));
-		m_pCombo->SetPosition(D3DXVECTOR3(1200,0, 0));
+		m_pCombo->SetPosition(D3DXVECTOR3(1200, 0, 0));
 
 	}
 
@@ -199,7 +199,7 @@ void Character_Sword::Update()
 		m_pChrStat->Update();
 		m_pInheritateIco->Update();
 		m_pInheritateIco2->Update();
-		if(m_bIsVelvetFinal)m_pCombo->Update();
+		if (m_bIsVelvetFinal)m_pCombo->Update();
 		m_pSkillBar->Update();
 
 		SetCameraNormalView();
@@ -221,20 +221,7 @@ void Character_Sword::Update()
 
 		if (m_bIsFskill)
 		{
-			if (m_eCharSelect == CHAR_ONE) //베카
-			{
-				this->Shunpo();
-			}
-			else if (m_eCharSelect == CHAR_TWO) //리아
-			{
-				this->Bash();
-			}
-			else if (m_eCharSelect == CHAR_THREE) //벨벳
-			{
-				this->GrabSlash();
-			}
-			else return;
-
+			SkillDealing();
 		}
 
 		if (m_bEnemySkillMoving)
@@ -243,7 +230,7 @@ void Character_Sword::Update()
 		}
 
 		Effect();
-
+		SkillEffect();
 
 
 		PlayerProgressBar();
@@ -267,7 +254,7 @@ void Character_Sword::Update()
 	if (!m_bIsStun)KeyControl();
 	if (m_bIsTarget)TargetSword();
 
-	
+
 	CharacterParant::Update();
 
 }
@@ -288,17 +275,24 @@ void Character_Sword::Render()
 
 
 
-	//	m_pDamage->Render();
+		//	m_pDamage->Render();
 		CharacterParant::Render();
+
+		for (int i = 0; i < m_vecSkillEffect.size(); i++)
+		{
+			m_vecSkillEffect[i]->Render();
+		}
+
+
 		if (m_pNpc->GetCollision()) m_pTalkBar->Render();
 		//포트레이트 
 		if (!m_pNpc->GetCollision())m_pUIobj->Render();
-		
+
 		if (!m_pNpc->GetCollision())m_pSkillBar->Render();
 		if (!m_pNpc->GetCollision())m_pInheritateIco->Render();
 		if (!m_pNpc->GetCollision())m_pInheritateIco2->Render();
 		if (m_bSkillUnSealed && !m_pNpc->GetCollision())m_pInheritateIco3->Render();
-		if(m_bIsVelvetFinal)m_pCombo->Render();
+		if (m_bIsVelvetFinal)m_pCombo->Render();
 		if (!m_pNpc->GetCollision())m_pHPBar->Render();
 		if (!m_pNpc->GetCollision())m_pStaminaBar->Render();
 		if (m_bIsVelvetFinal)
@@ -453,7 +447,7 @@ void Character_Sword::KeyControl()
 			SOUND->Play("벨벳_공격", g_fVolume);
 		}
 
-		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_RUN_FRONT || m_eCondition == CHAR_RUN_BACK)
+		if (m_eCondition == CHAR_IDLE || m_eCondition == CHAR_RUN_FRONT || m_eCondition == CHAR_RUN_BACK || m_eCondition == CHAR_SKILL)
 		{
 			m_eCondition = CHAR_ATTACK;
 			if (m_bIsSubChr)
@@ -619,6 +613,23 @@ void Character_Sword::KeyControl()
 			}
 			ChangeAnimation();
 		}
+	}
+
+	if (m_eCondition == CHAR_SKILL)
+	{
+		if (m_eCharSelect == CHAR_ONE) //베카
+		{
+			this->Shunpo();
+		}
+		else if (m_eCharSelect == CHAR_TWO) //리아
+		{
+			this->Bash();
+		}
+		else if (m_eCharSelect == CHAR_THREE) //벨벳
+		{
+			this->GrabSlash();
+		}
+		else return;
 	}
 
 	if (m_bSkillUnSealed)
@@ -835,11 +846,11 @@ void Character_Sword::Shunpo()
 			////testSkillpos += TempDir * (10.0f * 0.3f);
 			tempEFOBJ->Init(tempEffect, testSkillpos);
 
-			m_vecEffect.push_back(tempEFOBJ);
+			m_vecSkillEffect.push_back(tempEFOBJ);
 
 		}
 
-		this->SkillDealing();
+		//this->SkillDealing();
 
 		if (m_pCharacter->IsAnimationEnd())
 		{
@@ -895,14 +906,14 @@ void Character_Sword::Bash()
 			testSkillpos.y += 1.0f;
 			tempEFOBJ->Init(tempEffect, testSkillpos);
 
-			m_vecEffect.push_back(tempEFOBJ);
+			m_vecSkillEffect.push_back(tempEFOBJ);
 
 		}
 
-		this->SkillDealing();
+		//this->SkillDealing();
 
 		if (m_pCharacter->IsAnimationEnd())
-		{//m_vecEffect.size() <= 0
+		{
 
 			m_bIsFskill = false;
 		}
@@ -956,11 +967,11 @@ void Character_Sword::GrabSlash()
 			testSkillpos.y += 1.0f;
 			tempEFOBJ->Init(tempEffect, testSkillpos);
 
-			m_vecEffect.push_back(tempEFOBJ);
+			m_vecSkillEffect.push_back(tempEFOBJ);
 
 		}
 
-		this->SkillDealing();
+		//this->SkillDealing();
 
 		if (m_pCharacter->IsAnimationEnd())
 		{
@@ -976,47 +987,67 @@ void Character_Sword::SkillDealing()
 
 	if (m_eCharSelect == CHAR_ONE)
 	{
-		if (m_vecEffect.size() <= 0) return;
+		if (m_vecSkillEffect.size() <= 0) return;
 		m_nIndex = -1;
 
 		if (m_nDC < 1)
 		{
 			for (int i = 0; i < m_pMonsterManager->GetMonsterVector().size(); i++)
 			{
-				
+
 				D3DXVECTOR3 s1 = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().center;
-				D3DXVECTOR3 s2 = m_vecEffect.back()->GetBoundSphere().center;
+				D3DXVECTOR3 s2 = m_vecSkillEffect.back()->GetBoundSphere().center;
 				D3DXVECTOR3 v = s1 - s2;
 				float distance = D3DXVec3Length(&v);
 
 				float r1 = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().radius;
-				float r2 = m_vecEffect.back()->GetBoundSphere().radius;
+				float r2 = m_vecSkillEffect.back()->GetBoundSphere().radius;
 
 				if (r1 + r2 >= distance)
 				{
-					
-					
+
+
 					m_nIndex = i;
 					D3DXVECTOR3 front;
 					D3DXMATRIX matY;
 					D3DXMatrixRotationY(&matY, m_pCharacter->GetRotation()->y);
 					D3DXVec3TransformNormal(&front, &D3DXVECTOR3(0, 0, -1), &matY);
-					D3DXVECTOR3 pos = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
+					//D3DXVECTOR3 pos = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
 					if (m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetIsResPawn())return;
 					//m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(1);
 					m_pMonsterManager->DamageMonster(m_nIndex, m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
-					m_pCharacter->SetPosition(pos - front * 4);
+					D3DXVECTOR3 indexMonsterPos = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
+					D3DXVECTOR3 SkillPos = D3DXVECTOR3(indexMonsterPos.x + FRand(-3, 3), indexMonsterPos.y, indexMonsterPos.z + FRand(-3, 3));
+					//맵 밖으로 안나가게 처리
+					while (true)
+					{
+						float y = m_pSampleMap->GetHeight(SkillPos.x, SkillPos.z);
+						if (y > 0)
+						{
+							SkillPos.y = y;
+							break;
+						}
+						else
+						{
+							SkillPos = D3DXVECTOR3(indexMonsterPos.x + FRand(-3, 3), indexMonsterPos.y, indexMonsterPos.z + FRand(-3, 3));
+						}
+
+					}
+					m_pCharacter->SetPosition(SkillPos);
 
 					m_nDC++;
 				}
 
 			}
 		}
-		else return;
+		else
+		{
+			m_bIsFskill = false;
+		}
 	}
 	else if (m_eCharSelect == CHAR_TWO)
 	{
-		if (m_vecEffect.size() <= 0) return;
+		if (m_vecSkillEffect.size() <= 0) return;
 		m_nIndex = -1;
 
 		if (m_nDC < 10)
@@ -1025,12 +1056,12 @@ void Character_Sword::SkillDealing()
 			{
 
 				D3DXVECTOR3 s1 = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().center;
-				D3DXVECTOR3 s2 = m_vecEffect.back()->GetBoundSphere().center;
+				D3DXVECTOR3 s2 = m_vecSkillEffect.back()->GetBoundSphere().center;
 				D3DXVECTOR3 v = s1 - s2;
 				float distance = D3DXVec3Length(&v);
 
 				float r1 = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().radius;
-				float r2 = m_vecEffect.back()->GetBoundSphere().radius;
+				float r2 = m_vecSkillEffect.back()->GetBoundSphere().radius;
 
 				if (r1 + r2 >= distance)
 				{
@@ -1045,35 +1076,45 @@ void Character_Sword::SkillDealing()
 
 			}
 		}
-		else return;
+		else
+		{
+			m_bIsFskill = false;
+		}
 	}
 	else if (m_eCharSelect == CHAR_THREE)
 	{
-		if (m_vecEffect.size() <= 0) return;
+		if (m_vecSkillEffect.size() <= 0) return;
 		m_nIndex = -1;
 
-		for (int i = 0; i < m_pMonsterManager->GetMonsterVector().size(); i++)
+		if (m_nDC < 10)
 		{
-
-			D3DXVECTOR3 s1 = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().center;
-			D3DXVECTOR3 s2 = m_vecEffect.back()->GetBoundSphere().center;
-			D3DXVECTOR3 v = s1 - s2;
-			float distance = D3DXVec3Length(&v);
-
-			float r1 = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().radius;
-			float r2 = m_vecEffect.back()->GetBoundSphere().radius;
-
-			if (r1 + r2 >= distance)
+			for (int i = 0; i < m_pMonsterManager->GetMonsterVector().size(); i++)
 			{
-				m_fDeltaY -= 0.5f;
-				
-				m_nIndex = i;
-				m_bEnemySkillMoving = true;
-				if (m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetIsResPawn())return;
-				//m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(1);
-				m_pMonsterManager->DamageMonster(m_nIndex, m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
-			}
 
+				D3DXVECTOR3 s1 = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().center;
+				D3DXVECTOR3 s2 = m_vecSkillEffect.back()->GetBoundSphere().center;
+				D3DXVECTOR3 v = s1 - s2;
+				float distance = D3DXVec3Length(&v);
+
+				float r1 = m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetBoundSphere().radius;
+				float r2 = m_vecSkillEffect.back()->GetBoundSphere().radius;
+
+				if (r1 + r2 >= distance)
+				{
+					m_fDeltaY -= 0.5f;
+
+					m_nIndex = i;
+					m_bEnemySkillMoving = true;
+					if (m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetIsResPawn())return;
+					//m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(1);
+					m_pMonsterManager->DamageMonster(m_nIndex, m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
+				}
+
+			}
+		}
+		else
+		{
+			m_bIsFskill = false;
 		}
 	}
 
@@ -1138,7 +1179,7 @@ void Character_Sword::TargetSword()
 	m_nIndex = -1;
 
 	D3DXVECTOR3 pos = *m_pCharacter->GetPosition();
-	
+
 	if (m_nDamageCount <= 3)
 	{
 		for (int i = 0; i < m_pMonsterManager->GetMonsterVector().size(); i++)
@@ -1168,7 +1209,7 @@ void Character_Sword::TargetSword()
 
 				}
 				m_pCharacter->SetPosition(SkillPos);
-				
+
 				m_pCharacter->SetRotation(D3DXVECTOR3(0, GetAngle(*m_pCharacter->GetPosition(), *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition()), 0));
 				m_pCharacter->SetAnimation("SKILL");
 				m_pParticle4->SetPosition(*m_pCharacter->GetPosition());
@@ -1219,7 +1260,7 @@ void Character_Sword::velvetFinalSKILL()
 
 	m_vecEffect.push_back(tempEFOBJ);
 	//m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
-	
+
 	m_nVelvetCount++;
 
 	if (m_nVelvetCount <= 2)
@@ -1269,7 +1310,7 @@ void Character_Sword::VelvetCount()
 		m_fPrevTime = m_fElpTime;
 
 		m_nVelvetEnd++;
-	
+
 
 		if (m_nVelvetEnd == 2)
 		{
@@ -1280,4 +1321,22 @@ void Character_Sword::VelvetCount()
 			m_nVelvetEnd = 0;
 		}
 	}
+}
+
+void Character_Sword::SkillEffect()
+{
+	for (int i = 0; i < m_vecSkillEffect.size();)
+	{
+		if (!m_vecSkillEffect[i]->IsFinish())
+		{
+			m_vecSkillEffect[i]->Update();
+			i++;
+		}
+		else
+		{
+			SAFE_DELETE(m_vecSkillEffect[i]);
+			m_vecSkillEffect.erase(m_vecSkillEffect.begin() + i);
+		}
+	}
+
 }
