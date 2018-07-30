@@ -774,29 +774,29 @@ void RealFinalboss::MakeSphere()
 
 void RealFinalboss::Debug()
 {
-	DWORD prevFillMode;
-	DEVICE->GetRenderState(D3DRS_FILLMODE, &prevFillMode);
-	DEVICE->SetTexture(0, NULL);
-	DEVICE->SetRenderState(D3DRS_LIGHTING, false);
-	DEVICE->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
-
-	// BoundSphere
-	LPD3DXMESH mesh;
-	D3DXMATRIX matT;
-
-	for (int i = 0; i < HT_END; i++)
-	{
-		float radius = m_stHandSphere[i].Hand.radius;
-		if (radius < 0) radius = 0;
-		D3DXCreateSphere(DEVICE, radius, 8, 8, &mesh, NULL);
-		D3DXVECTOR3 pos = m_stHandSphere[i].Hand.center;
-		D3DXMatrixTranslation(&matT, pos.x, pos.y, pos.z);
-		DEVICE->SetTransform(D3DTS_WORLD, &matT);
-		mesh->DrawSubset(0);
-		SAFE_RELEASE(mesh);
-	}
-
-	DEVICE->SetRenderState(D3DRS_FILLMODE, prevFillMode);
+	//DWORD prevFillMode;
+	//DEVICE->GetRenderState(D3DRS_FILLMODE, &prevFillMode);
+	//DEVICE->SetTexture(0, NULL);
+	//DEVICE->SetRenderState(D3DRS_LIGHTING, false);
+	//DEVICE->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+	//
+	//// BoundSphere
+	//LPD3DXMESH mesh;
+	//D3DXMATRIX matT;
+	//
+	//for (int i = 0; i < HT_END; i++)
+	//{
+	//	float radius = m_stHandSphere[i].Hand.radius;
+	//	if (radius < 0) radius = 0;
+	//	D3DXCreateSphere(DEVICE, radius, 8, 8, &mesh, NULL);
+	//	D3DXVECTOR3 pos = m_stHandSphere[i].Hand.center;
+	//	D3DXMatrixTranslation(&matT, pos.x, pos.y, pos.z);
+	//	DEVICE->SetTransform(D3DTS_WORLD, &matT);
+	//	mesh->DrawSubset(0);
+	//	SAFE_RELEASE(mesh);
+	//}
+	//
+	//DEVICE->SetRenderState(D3DRS_FILLMODE, prevFillMode);
 }
 
 bool RealFinalboss::HandCollision()
