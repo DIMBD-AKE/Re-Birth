@@ -451,6 +451,48 @@ bool MonsterParent::IsDie()
 	return false;
 }
 
+void MonsterParent::ShowStat()
+{
+	/*
+		int		nCurrentHP;		//캐릭터(적, 플레
+		int		nMaxHp;			//캐릭터(적, 플레
+	
+		float	nCurrentStam;	//캐릭터 현재 스
+		int		nMaxStam;		//캐릭터 전체 스
+	
+		int		nAtk;			//기본공격력
+		float	fPhyRate;		//물리계수
+		float	fMagicRate;		//마법계수
+		float	fCheRate;		//화학계수
+		float	fAtkSpeed;		//공격속도 (장비
+	
+		int		nDef;			//방어력
+		float	fAgi;			//회피력
+		float	fHit;			//명중률
+		float	fSpeed;			//이동속도
+		float	fRange;			//공격 거리
+		float	fScale;			//공격 범위
+	*/
+	char temp[1111];
+	sprintf_s(
+		temp,
+		sizeof(temp),
+		"HP			: %d / %d \n \
+		공격력		: %d \n \
+		방어력		: %d \n \
+		공격거리	: %f \n \
+		키몬스터	: %d "
+		, CURRENTHP(m_pMonsterStat)
+		, MAXHP(m_pMonsterStat)
+		, ATK(m_pMonsterStat)
+		, DEF(m_pMonsterStat)
+		, RANGE(m_pMonsterStat)
+		, m_bKeyMonster
+	);
+
+	TEXT->Add(temp, 10, 140, 30);
+}
+
 
 
 void MonsterParent::CalculDamage(float damage, int* deathCount)

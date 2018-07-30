@@ -27,6 +27,10 @@ private:
 
 	int m_nKeyMonsterIndex;
 	bool m_bAppearKeyMonster;
+
+	//설명을 위해 눌렀냐 
+	bool m_bIsSpeedwagon;
+
 	//vector<MonsterParent> m_vMM;
 
 private:
@@ -54,6 +58,10 @@ private:
 	void Stage2(DropManager* pDropManager);
 	void Stage3(DropManager* pDropManager);
 	void Stage4(DropManager* pDropManager);
+
+	//발표용 함수
+	void MakeMonSet1(int stage);
+	void MakeMonSet2(int stage);
 public:
 	MonsterManager();
 	~MonsterManager();

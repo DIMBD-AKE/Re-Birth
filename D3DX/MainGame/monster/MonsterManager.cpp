@@ -45,7 +45,7 @@ void MonsterManager::Setup(Map* map, CharacterParant** character)
 
 	Shuffle();
 
-	m_nDieMonsterNum = m_bAppearMiddleBoss = m_bAppearKeyMonster = 0;
+	m_nDieMonsterNum = m_bAppearMiddleBoss = m_bAppearKeyMonster = m_bIsSpeedwagon = 0;
 
 	m_nKeyMonsterIndex = -1;
 
@@ -56,8 +56,7 @@ void MonsterManager::Update(int stage)
 	assert(m_vSpawnSpot.size() > 0 && "만들어진 몬스터가 없습니다.");
 
 	char temp[222];
-	sprintf_s(temp, sizeof(temp), "현재 잡은 수 : %f",
-		GetDistance(m_pMap->GetSpawnBoss(), *CHARACTER->GetPosition()));
+	sprintf_s(temp, sizeof(temp), "현재 잡은 수 : %d", m_nDieMonsterNum);
 	TEXT->Add(temp, 100, 100, 20);
 
 	for (int i = 0; i < m_vMM.size(); i++)
@@ -110,14 +109,16 @@ void MonsterManager::Update(int stage)
 		m_nKeyMonsterIndex = 20;
 	}
 
+	//1키 누르면 몬스터 생성(1스테이지 엘리자베스, 2스테이지 니플하임, 3스테이지 너리사
 	if (INPUT->KeyDown('1'))
 	{
-		m_vMM[0]->SetAttak();
+		MakeMonSet1(stage);
 	}
+
+	//2키 누르면 몬스터 생성(1스테이지 아시스, 2스테이지 다크헬, 3스테이지 니케
 	if (INPUT->KeyDown('2'))
 	{
-		m_vMM[0]->SetSkill();
-		//m_vMM[2]->SetSkill();
+		MakeMonSet2(stage);
 	}
 	if (INPUT->KeyDown('3'))
 	{
@@ -127,6 +128,12 @@ void MonsterManager::Update(int stage)
 	if (INPUT->KeyDown('5'))
 	{
 		MakeFinalBoss(NULL);
+	}
+
+	//설명중이라면
+	if (m_bIsSpeedwagon)
+	{
+		m_vMM[0]->ShowStat();
 	}
 }
 
@@ -138,6 +145,11 @@ void MonsterManager::Render()
 	for (int i = 0; i < m_vMM.size(); i++)
 	{
 		m_vMM[i]->Render();
+	}
+
+	if (m_bIsSpeedwagon)
+	{
+		TEXT->Render();
 	}
 }
 
@@ -406,6 +418,75 @@ void MonsterManager::Stage4(DropManager* pDropManager)
 	m_bAppearKeyMonster = true;
 	m_nKeyMonsterIndex = 0;
 	MakeFinalBoss(pDropManager);
+}
+
+void MonsterManager::MakeMonSet1(int stage)
+{
+	
+
+
+	if (stage != 3)
+	{
+		m_nKeyMonsterIndex = -1;
+		m_bAppearKeyMonster = false;
+		//일단 몬스터매니저 벡터 싹 밀고
+		for (int i = 0; i < m_vMM.size(); i++)
+		{
+			SAFE_DELETE(m_vMM[i]);
+		}
+		m_vMM.clear();
+
+		m_bIsSpeedwagon = true;
+
+		switch (stage)
+		{
+		case 0:
+			MakeElizabeth(NULL, 0, false);
+			break;
+		case 1:
+			MakeNifilHeim(NULL, 0, false);
+			break;
+		case 2:
+			MakeNerisa(NULL, 0, false);
+			break;
+		default:
+			break;
+		}
+	}
+}
+
+void MonsterManager::MakeMonSet2(int stage)
+{
+
+	if (stage != 3)
+	{
+		m_nKeyMonsterIndex = -1;
+		m_bAppearKeyMonster = false;
+
+		//일단 몬스터매니저 벡터 싹 밀고
+		for (int i = 0; i < m_vMM.size(); i++)
+		{
+			SAFE_DELETE(m_vMM[i]);
+		}
+		m_vMM.clear();
+
+		m_bIsSpeedwagon = true;
+
+		switch (stage)
+		{
+		case 0:
+			MakeAssis(NULL, 0, false);
+			break;
+		case 1:
+			MakeDarkHell(NULL, 0, false);
+			break;
+		case 2:
+			MakeNike(NULL, 0, false);
+			break;
+		default:
+			break;
+		}
+	}
 }
 
 void MonsterManager::DeleteSummonMonster()

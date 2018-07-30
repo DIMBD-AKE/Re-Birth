@@ -186,5 +186,7 @@ public:
 
 	//키몬스터 죽었냐
 	virtual bool IsDie();
+
+	void ShowStat();
 };
 
