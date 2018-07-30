@@ -429,8 +429,8 @@ void Character_fist::Attack()
 
 void Character_fist::Debug()
 {
-	//if (DEBUG)
-	//{
+	if (DEBUG)
+	{
 		DWORD prevFillMode;
 		DEVICE->GetRenderState(D3DRS_FILLMODE, &prevFillMode);
 		DEVICE->SetTexture(0, NULL);
@@ -453,7 +453,7 @@ void Character_fist::Debug()
 			SAFE_RELEASE(mesh);
 		}
 		DEVICE->SetRenderState(D3DRS_FILLMODE, prevFillMode);
-	//}
+	}
 }
 
 void Character_fist::Skill1()

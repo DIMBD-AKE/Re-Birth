@@ -1039,6 +1039,8 @@ void CharacterParant::Update()
 	{
 		m_pPet->Update();
 	}
+
+	SetModelAlpha();
 }	
 
 

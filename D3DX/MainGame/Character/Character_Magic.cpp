@@ -973,7 +973,7 @@ void Character_Magic::MeteorClick()
 	{
 		if (D3DXIntersectTri(&nav[i], &nav[i + 1], &nav[i + 2], &r.orig, &r.dir, NULL, NULL, &tempdistance))
 		{
-			if (D3DXVec3Length(&(playerTempPos - Potalpos)) < 14.0f)//최대 이동거리 안으로 
+			if (D3DXVec3Length(&(playerTempPos - (r.orig + r.dir* tempdistance))) < 14.0f)//최대 이동거리 안으로 
 			{
 				m_pParticle3->SetPosition(r.orig + r.dir* tempdistance);
 			}
@@ -1023,7 +1023,7 @@ void Character_Magic::MegaCristalReady()
 	{
 		if (D3DXIntersectTri(&nav[i], &nav[i + 1], &nav[i + 2], &r.orig, &r.dir, NULL, NULL, &tempdistance))
 		{
-			if (D3DXVec3Length(&(playerTempPos - Potalpos)) < 14.0f)//최대 이동거리 안으로 
+			if (D3DXVec3Length(&(playerTempPos - (r.orig + r.dir* tempdistance))) < 14.0f)//최대 이동거리 안으로 
 			{
 				m_pParticle3->SetPosition(r.orig + r.dir* tempdistance);
 			}
