@@ -141,6 +141,7 @@ void MonsterParent::SetupBoss(Map* map, D3DXVECTOR3 pos)
 	m_pDamageUI->Setup(false);
 
 	m_bAppearNPC = false;
+	m_bKeyMonster = true;
 }
 
 void MonsterParent::SetupStat()

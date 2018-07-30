@@ -175,7 +175,7 @@ void RealFinalboss::Update()
 
 void RealFinalboss::Render()
 {
-	Debug();
+	//Debug();
 
 	if (m_bUsingSkill2)
 	{
@@ -189,7 +189,7 @@ void RealFinalboss::Render()
 
 	if (m_pModel && (m_eState != MS_NONE && m_eBossState != BS_NONE))
 	{
-		if (IsEnter() || m_eBossState == BS_SKILL1)
+		if (IsEnter() || m_eBossState == BS_SKILL1 || m_eBossState == BS_DIE)
 			m_pModel->Render();
 		else
 			m_pModel->DummyRender();
@@ -411,7 +411,11 @@ void RealFinalboss::Pattern()
 
 	case BS_DIE:
 	{
-		if (m_pModel->IsAnimationEnd()) m_eBossState = BS_NONE;
+		if (m_pModel->IsAnimationEnd())
+		{
+			m_eBossState = BS_NONE;
+			//	m_eState = MS_NONE;
+		}
 	}
 	default:
 		break;
