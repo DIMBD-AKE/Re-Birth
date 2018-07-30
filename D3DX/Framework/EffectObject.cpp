@@ -134,34 +134,48 @@ void EffectObject::Update()
 	D3DXMatrixScaling(&matS, scale, scale, scale);
 
 	m_matWorld = matS * matR * matT;
+
+	if (m_stInfo.pModel)
+	{
+		m_stInfo.pModel->SetPosition(m_vPos);
+		m_stInfo.pModel->SetRotation(m_stInfo.rot + m_vMot);
+		m_stInfo.pModel->SetScale(D3DXVECTOR3(scale, scale, scale));
+		m_stInfo.pModel->World();
+	}
 }
 
 void EffectObject::Render()
 {
-	if (DEBUG)
-		Debug();
-	DEVICE->SetRenderState(D3DRS_ALPHABLENDENABLE, true);
-	DEVICE->SetTransform(D3DTS_WORLD, &m_matWorld);
-	DEVICE->SetTexture(0, m_stInfo.tex);
-	DEVICE->SetRenderState(D3DRS_LIGHTING, false);
-	DEVICE->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+	if (DEBUG) Debug();
+
+	if (m_stInfo.tex)
+	{
+		DEVICE->SetRenderState(D3DRS_ALPHABLENDENABLE, true);
+		DEVICE->SetTransform(D3DTS_WORLD, &m_matWorld);
+		DEVICE->SetTexture(0, m_stInfo.tex);
+		DEVICE->SetRenderState(D3DRS_LIGHTING, false);
+		DEVICE->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 	
-	DEVICE->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
-	DEVICE->SetTextureStageState(0, D3DTSS_ALPHAARG0, D3DTA_DIFFUSE);
-	DEVICE->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
-	DEVICE->SetRenderState(D3DRS_ZWRITEENABLE, false);
+		DEVICE->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
+		DEVICE->SetTextureStageState(0, D3DTSS_ALPHAARG0, D3DTA_DIFFUSE);
+		DEVICE->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+		DEVICE->SetRenderState(D3DRS_ZWRITEENABLE, false);
 
-	DEVICE->SetFVF(ST_PCT_VERTEX::FVF);
-	DEVICE->SetStreamSource(0, m_pVB, 0, sizeof(ST_PCT_VERTEX));
-	DEVICE->DrawPrimitive(D3DPT_TRIANGLELIST, 0, 2);
+		DEVICE->SetFVF(ST_PCT_VERTEX::FVF);
+		DEVICE->SetStreamSource(0, m_pVB, 0, sizeof(ST_PCT_VERTEX));
+		DEVICE->DrawPrimitive(D3DPT_TRIANGLELIST, 0, 2);
 
-	DEVICE->SetRenderState(D3DRS_LIGHTING, true);
-	DEVICE->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+		DEVICE->SetRenderState(D3DRS_LIGHTING, true);
+		DEVICE->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 
-	DEVICE->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG1);
-	DEVICE->SetTextureStageState(0, D3DTSS_ALPHAARG0, D3DTA_CURRENT);
-	DEVICE->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
-	DEVICE->SetRenderState(D3DRS_ZWRITEENABLE, true);
+		DEVICE->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG1);
+		DEVICE->SetTextureStageState(0, D3DTSS_ALPHAARG0, D3DTA_CURRENT);
+		DEVICE->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+		DEVICE->SetRenderState(D3DRS_ZWRITEENABLE, true);
+	}
+
+	if (m_stInfo.pModel)
+		m_stInfo.pModel->Render();
 }
 
 bool EffectObject::IsFinish()

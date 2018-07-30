@@ -3,6 +3,7 @@
 class EffectObject
 {
 private:
+	Model *						m_pModel;
 	LPDIRECT3DVERTEXBUFFER9		m_pVB;
 	vector<ST_PCT_VERTEX>		m_vecVertex;
 	ST_PCT_VERTEX *				m_pV;

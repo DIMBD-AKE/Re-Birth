@@ -94,9 +94,12 @@ struct ST_PARTICLE_INFO
 	int			nParticleCount;
 };
 
+class Model;
+
 struct ST_EFFECT
 {
 	LPDIRECT3DTEXTURE9 tex;
+	Model* pModel;
 	D3DXVECTOR3 dir;
 	D3DXVECTOR3 rot;
 	D3DXVECTOR3 mot;
