@@ -824,13 +824,15 @@ void MonsterParent::IsAppear()
 	//m_bAppearNPC = true;
 	float rnd = FRand(0, 1);
 
-	if (rnd <= 0.05)
-	{
-		if (!m_pNpc || !m_pNpc->GetIsAppear())
-			m_bAppearNPC = true;
-		else
-			m_bAppearNPC = false;
-	}
-	else
-		m_bAppearNPC = false;
+	m_bAppearNPC = true;
+
+	//if (rnd <= 0.05)
+	//{
+	//	if (!m_pNpc || !m_pNpc->GetIsAppear())
+	//		m_bAppearNPC = true;
+	//	else
+	//		m_bAppearNPC = false;
+	//}
+	//else
+	//	m_bAppearNPC = false;
 }
