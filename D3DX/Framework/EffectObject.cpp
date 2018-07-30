@@ -45,51 +45,54 @@ void EffectObject::Init(ST_EFFECT info, D3DXVECTOR3 pos)
 		m_stInfo.rot.y = angle;
 	}
 
-	D3DSURFACE_DESC desc;
-	info.tex->GetLevelDesc(0, &desc);
+	if (info.tex)
+	{
+		D3DSURFACE_DESC desc;
+		info.tex->GetLevelDesc(0, &desc);
 
-	float rate = info.height / desc.Height;
-	float widthH = desc.Width * rate / 2;
-	float heightH = desc.Height * rate / 2;
+		float rate = info.height / desc.Height;
+		float widthH = desc.Width * rate / 2;
+		float heightH = desc.Height * rate / 2;
 
-	m_stSphere.radius = heightH;
-	m_stSphere.center = D3DXVECTOR3(0, heightH, 0);
+		m_stSphere.radius = heightH;
+		m_stSphere.center = D3DXVECTOR3(0, heightH, 0);
 
-	m_stOBB.fAxisLen[0] = widthH;
-	m_stOBB.fAxisLen[1] = heightH;
-	m_stOBB.fAxisLen[2] = 0.5;
-	m_stOBB.vAxisDir[0] = D3DXVECTOR3(1, 0, 0);
-	m_stOBB.vAxisDir[1] = D3DXVECTOR3(0, 1, 0);
-	m_stOBB.vAxisDir[2] = D3DXVECTOR3(0, 0, 1);
-	m_stOBB.vCenterPos = D3DXVECTOR3(0, heightH, 0);
+		m_stOBB.fAxisLen[0] = widthH;
+		m_stOBB.fAxisLen[1] = heightH;
+		m_stOBB.fAxisLen[2] = 0.5;
+		m_stOBB.vAxisDir[0] = D3DXVECTOR3(1, 0, 0);
+		m_stOBB.vAxisDir[1] = D3DXVECTOR3(0, 1, 0);
+		m_stOBB.vAxisDir[2] = D3DXVECTOR3(0, 0, 1);
+		m_stOBB.vCenterPos = D3DXVECTOR3(0, heightH, 0);
 
-	ST_PCT_VERTEX v;
-	v.c = 0xFFFFFFFF;
-	v.t = D3DXVECTOR2(0, 1);
-	v.p = D3DXVECTOR3(-widthH, -heightH, 0);
-	m_vecVertex.push_back(v);
-	v.t = D3DXVECTOR2(0, 0);
-	v.p = D3DXVECTOR3(-widthH, heightH, 0);
-	m_vecVertex.push_back(v);
-	v.t = D3DXVECTOR2(1, 0);
-	v.p = D3DXVECTOR3(widthH, heightH, 0);
-	m_vecVertex.push_back(v);
-	v.t = D3DXVECTOR2(0, 1);
-	v.p = D3DXVECTOR3(-widthH, -heightH, 0);
-	m_vecVertex.push_back(v);
-	v.t = D3DXVECTOR2(1, 0);
-	v.p = D3DXVECTOR3(widthH, heightH, 0);
-	m_vecVertex.push_back(v);
-	v.t = D3DXVECTOR2(1, 1);
-	v.p = D3DXVECTOR3(widthH, -heightH, 0);
-	m_vecVertex.push_back(v);
+		ST_PCT_VERTEX v;
+		v.c = 0xFFFFFFFF;
+		v.t = D3DXVECTOR2(0, 1);
+		v.p = D3DXVECTOR3(-widthH, -heightH, 0);
+		m_vecVertex.push_back(v);
+		v.t = D3DXVECTOR2(0, 0);
+		v.p = D3DXVECTOR3(-widthH, heightH, 0);
+		m_vecVertex.push_back(v);
+		v.t = D3DXVECTOR2(1, 0);
+		v.p = D3DXVECTOR3(widthH, heightH, 0);
+		m_vecVertex.push_back(v);
+		v.t = D3DXVECTOR2(0, 1);
+		v.p = D3DXVECTOR3(-widthH, -heightH, 0);
+		m_vecVertex.push_back(v);
+		v.t = D3DXVECTOR2(1, 0);
+		v.p = D3DXVECTOR3(widthH, heightH, 0);
+		m_vecVertex.push_back(v);
+		v.t = D3DXVECTOR2(1, 1);
+		v.p = D3DXVECTOR3(widthH, -heightH, 0);
+		m_vecVertex.push_back(v);
 
-	DEVICE->CreateVertexBuffer(m_vecVertex.size() * sizeof(ST_PCT_VERTEX),
-		D3DUSAGE_DYNAMIC, ST_PCT_VERTEX::FVF, D3DPOOL_DEFAULT, &m_pVB, NULL);
+		DEVICE->CreateVertexBuffer(m_vecVertex.size() * sizeof(ST_PCT_VERTEX),
+			D3DUSAGE_DYNAMIC, ST_PCT_VERTEX::FVF, D3DPOOL_DEFAULT, &m_pVB, NULL);
 
-	m_pVB->Lock(0, 0, (void**)&m_pV, 0);
-	memcpy(m_pV, &m_vecVertex[0], sizeof(ST_PCT_VERTEX) * m_vecVertex.size());
-	m_pVB->Unlock();
+		m_pVB->Lock(0, 0, (void**)&m_pV, 0);
+		memcpy(m_pV, &m_vecVertex[0], sizeof(ST_PCT_VERTEX) * m_vecVertex.size());
+		m_pVB->Unlock();
+	}
 }
 
 void EffectObject::Update()
@@ -115,12 +118,15 @@ void EffectObject::Update()
 
 	m_vMot += m_stInfo.mot * mot;
 
-	for (int i = 0; i < m_vecVertex.size(); i++)
-		m_vecVertex[i].c = D3DCOLOR_ARGB(alpha, 255, 255, 255);
+	if (m_stInfo.tex)
+	{
+		for (int i = 0; i < m_vecVertex.size(); i++)
+			m_vecVertex[i].c = D3DCOLOR_ARGB(alpha, 255, 255, 255);
 
-	m_pVB->Lock(0, 0, (void**)&m_pV, 0);
-	memcpy(m_pV, &m_vecVertex[0], sizeof(ST_PCT_VERTEX) * m_vecVertex.size());
-	m_pVB->Unlock();
+		m_pVB->Lock(0, 0, (void**)&m_pV, 0);
+		memcpy(m_pV, &m_vecVertex[0], sizeof(ST_PCT_VERTEX) * m_vecVertex.size());
+		m_pVB->Unlock();
+	}
 
 	if (m_stInfo.isSphere)
 	{
