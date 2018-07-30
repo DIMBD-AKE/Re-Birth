@@ -581,7 +581,6 @@ void Character_Sword::KeyControl()
 		Attack();
 	}
 
-
 	
 
 	if (m_eCondition == CHAR_IDLE)
@@ -697,11 +696,16 @@ void Character_Sword::KeyControl()
 				if (m_eCharSelect == CHAR_THREE)
 				{
 					SetTarget();
-					velvetFinalSKILL();
-					
+					m_nDamageCount = 0;
+					m_eCondition = CHAR_INHERENT3;
+					ChangeAnimation();
 				}
 			}
 		}
+	}
+	if (m_eCondition == CHAR_INHERENT3)
+	{
+		velvetFinalSKILL();
 	}
 
 	
@@ -1275,12 +1279,21 @@ void Character_Sword::TargetSword()
 
 void Character_Sword::velvetFinalSKILL()
 {
-	m_pCharacter->SetAnimation("SKILL");
+	//m_pCharacter->SetAnimation("SKILL");
 	D3DXVECTOR3 pos = *m_pCharacter->GetPosition();
 	
+	if (m_fElpTime < m_fPrevTime + m_fEffectInterval) return;
+
+	m_fPrevTime = m_fElpTime;
+	
+
+	m_nVelvetCount++;
+	m_nDamageCount++;
 
 	if (m_nIndex < 0) return;
 	
+	if (m_nDamageCount <= 20)
+	{
 		D3DXVECTOR3 MonPos = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
 		ST_EFFECT tempEffect;
 		ZeroMemory(&tempEffect, sizeof(tempEffect));
@@ -1311,8 +1324,7 @@ void Character_Sword::velvetFinalSKILL()
 		m_vecEffect.push_back(tempEFOBJ);
 		//m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
 
-		m_nVelvetCount++;
-	
+
 		if (m_nVelvetCount <= 2)
 		{
 			m_pMonsterManager->DamageMonster(m_nIndex, m_Status->chr.nAtk + 10 + m_pInventory->GetEquipStat().item.nAtk);
@@ -1349,7 +1361,7 @@ void Character_Sword::velvetFinalSKILL()
 			m_pCharacter->SetShaderRimPower(1.0f);
 			CAMERA->Shake(0.16, 0.12);
 		}
-	
+	}
 }
 
 void Character_Sword::VelvetCount()
@@ -1479,29 +1491,32 @@ void Character_Sword::RiahFinalTarget()
 
 void Character_Sword::CheckBound()
 {
-	if (m_bRiahFinalparticle)
+	if (DEBUG)
 	{
-		DWORD prevFillMode;
-		DEVICE->GetRenderState(D3DRS_FILLMODE, &prevFillMode);
-		DEVICE->SetTexture(0, NULL);
-		DEVICE->SetRenderState(D3DRS_LIGHTING, false);
-		DEVICE->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
-
-		// BoundSphere
-		LPD3DXMESH mesh;
-		D3DXMATRIX matT;
-
-		for (int i = 0; i < 15; i++)
+		if (m_bRiahFinalparticle)
 		{
-			float radius = m_stBound[i].radius;
-			if (radius < 0) radius = 0;
-			D3DXCreateSphere(DEVICE, radius, 8, 8, &mesh, NULL);
-			D3DXVECTOR3 pos = m_stBound[i].center;
-			D3DXMatrixTranslation(&matT, pos.x, pos.y, pos.z);
-			DEVICE->SetTransform(D3DTS_WORLD, &matT);
-			mesh->DrawSubset(0);
-			SAFE_RELEASE(mesh);
+			DWORD prevFillMode;
+			DEVICE->GetRenderState(D3DRS_FILLMODE, &prevFillMode);
+			DEVICE->SetTexture(0, NULL);
+			DEVICE->SetRenderState(D3DRS_LIGHTING, false);
+			DEVICE->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+
+			// BoundSphere
+			LPD3DXMESH mesh;
+			D3DXMATRIX matT;
+
+			for (int i = 0; i < 15; i++)
+			{
+				float radius = m_stBound[i].radius;
+				if (radius < 0) radius = 0;
+				D3DXCreateSphere(DEVICE, radius, 8, 8, &mesh, NULL);
+				D3DXVECTOR3 pos = m_stBound[i].center;
+				D3DXMatrixTranslation(&matT, pos.x, pos.y, pos.z);
+				DEVICE->SetTransform(D3DTS_WORLD, &matT);
+				mesh->DrawSubset(0);
+				SAFE_RELEASE(mesh);
+			}
+			DEVICE->SetRenderState(D3DRS_FILLMODE, prevFillMode);
 		}
-		DEVICE->SetRenderState(D3DRS_FILLMODE, prevFillMode);
 	}
 }

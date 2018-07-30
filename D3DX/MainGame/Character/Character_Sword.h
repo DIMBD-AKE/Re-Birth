@@ -19,6 +19,7 @@ private:
 	int				m_nVelvetCount;
 	int				m_nVelvetEnd;
 	float			m_fOriginSpeed;
+
 	vector<EffectObject*>	m_vecSkillEffect;
 	//
 
