@@ -935,9 +935,11 @@ void Character_Magic::Meteor()
 		tempEffect.SetSpeed(0.05, 1, 0.05);
 		tempEffect.height = 3.0f;
 		tempEffect.SetAlpha(255, 255, 0);
-		tempEffect.SetScale(10, 10, 0);
-		tempEffect.tex = TEXTUREMANAGER->GetTexture("메테오");
-
+		tempEffect.SetScale(0.01, 0.01, 0.01);
+	//	tempEffect.tex = TEXTUREMANAGER->GetTexture("메테오");
+		MODELMANAGER->AddModel("돌덩이", "Model/Map/Rock/", "Rock Ceiling.obj", MODELTYPE_OBJ);
+		tempEffect.pModel = MODELMANAGER->GetModel("돌덩이", MODELTYPE_OBJ);
+		
 
 		
 
