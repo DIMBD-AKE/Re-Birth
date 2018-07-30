@@ -328,6 +328,7 @@ void MonsterParent::RespawnUpdate()
 		if (m_pModel->IsAnimationEnd())
 		{
 			m_eState = MS_NONE;
+			ItemDrop();
 		}
 	}
 	//if (m_pModel->IsAnimationEnd() && m_eState == MS_DIE)
@@ -775,8 +776,7 @@ void MonsterParent::SetCurrentHP(int hp, int* deathCount)
 
 			m_bIsRespawn = true;
 			m_eState = MS_DIE;
-			ChangeAni();
-			ItemDrop();
+			ChangeAni();			
 		}
 	}
 }
