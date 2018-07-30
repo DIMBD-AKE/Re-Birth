@@ -47,7 +47,7 @@ void MonsterParent::Setup(Map* map, D3DXVECTOR3 spawnPos, bool isSummon)
 	m_vDir = D3DXVECTOR3(0, 0, 1);
 
 	m_nCount = NRand(0, 10);
-	m_nPatternChangeCount = m_bKeyMonster= 0;
+	m_nPatternChangeCount = m_bKeyMonster= m_bIsSpeedwagon = 0;
 	m_bUsingSkill =  false;
 
 	m_pAStar = new AStar;
@@ -55,7 +55,7 @@ void MonsterParent::Setup(Map* map, D3DXVECTOR3 spawnPos, bool isSummon)
 	//m_pAStar->SetCell(0, 0);
 	//D3DXVECTOR3 temp =  m_pAStar->GetNextCell();
 
-	m_nResPawnCount = m_bIsRespawn = 0;
+	m_nResPawnCount = m_bIsRespawn = m_bAbleSkill = 0;
 	m_eState = MS_IDLE;
 	m_pMap = map;
 	m_pModel->SetPosition(D3DXVECTOR3(spawnPos.x, m_pMap->GetHeight(spawnPos.x, spawnPos.z), spawnPos.z));
@@ -133,7 +133,7 @@ void MonsterParent::SetupBoss(Map* map, D3DXVECTOR3 pos)
 
 	backBar->SetPosition(D3DXVECTOR3(0, 0, 0.1));
 	backBar->SetTexture(TEXTUREMANAGER->GetTexture("BossBackBar"));
-	m_fAlphaCount = 0;
+	m_fAlphaCount = m_bAbleSkill = m_bIsSpeedwagon = 0;
 
 	m_pHPBar->AddChild(backBar);
 
@@ -187,7 +187,9 @@ void MonsterParent::Update()
 	{
 		m_fSkillCoolTimeCount += TIME->GetElapsedTime();
 
-		if (AbleSkill())
+		if(!m_bIsSpeedwagon)	m_bAbleSkill = AbleSkill();
+
+		if (m_bAbleSkill)
 		{
 			if (m_eState != MS_SKILL)
 			{
@@ -195,6 +197,7 @@ void MonsterParent::Update()
 				ChangeAni();
 			}
 			m_eState = MS_SKILL;
+			m_bAbleSkill = false;
 			return;
 		}
 

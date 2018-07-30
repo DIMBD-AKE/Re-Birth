@@ -120,9 +120,12 @@ void MonsterManager::Update(int stage)
 	{
 		MakeMonSet2(stage);
 	}
-	if (INPUT->KeyDown('3'))
+	//설명중일때 키를 눌렀다면 스킬을 보여주기 위한키
+	if (m_bIsSpeedwagon && INPUT->KeyDown('3'))
 	{
-		MakeMiddleBoss(NULL);
+		m_vMM[0]->SetIsSpeedwagon(true);
+		m_vMM[0]->SetAbleSkill(true);
+		m_vMM[0]->SkillPrepare();
 	}
 
 	if (INPUT->KeyDown('5'))

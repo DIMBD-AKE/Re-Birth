@@ -36,6 +36,8 @@ class MonsterParent
 	SYNTHESIZE(STATUS*, m_pMonsterStat, MosterStat);
 	GET(bool, m_bIsSummon,IsSummon);
 	SET(Npc*, m_pNpc, NPC);
+	SET(bool, m_bAbleSkill, AbleSkill);
+	SET(bool, m_bIsSpeedwagon, IsSpeedwagon);
 	//SET(bool, m_bKeyMonster, KeyMonster)
 	//Npc*		m_pNpc;
 	//SET(bool, m_bIsTargeting, IsTargeting);
@@ -105,6 +107,9 @@ protected:
 
 	bool		m_bAppearNPC;
 	bool		m_bKeyMonster;
+
+	//bool		m_bAbleSkill;
+
 	/*
 	int			nMaxTarget;
 	float		fMinLength;
@@ -153,7 +158,7 @@ protected:
 	
 	//스킬사용가능하냐
 	virtual bool AbleSkill();
-	void SkillPrepare();
+	
 
 	//npc 등장시키는 몬스터냐
 	void IsAppear();
@@ -177,6 +182,8 @@ public:
 
 	virtual void Render();
 
+	void SkillPrepare();
+
 	void SetAttak() { m_eState = MS_ATTACK; ChangeAni(); }
 	void SetSkill() { m_eState = MS_SKILL;  ChangeAni();  SkillPrepare(); }
 	
@@ -188,5 +195,7 @@ public:
 	virtual bool IsDie();
 
 	void ShowStat();
+
+
 };
 
