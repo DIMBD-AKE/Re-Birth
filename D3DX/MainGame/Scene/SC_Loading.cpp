@@ -318,6 +318,7 @@ void SC_Loading::AddParticle()
 	m_pLoading->LoadParticle("¸íÁß·ü °­È­", "º°", "Particle/BossHitBuff.ptc");
 
 	m_pLoading->LoadParticle("º§ºª_±Ã±Ø±â", "ÆÄÀÌ¾î", "Particle/velvet.ptc");
+	m_pLoading->LoadParticle("¸®¾Æ_±Ã±Ø±â", "Particle Sphere", "Particle/riah_final.ptc");
 }
 
 void SC_Loading::InitUI()

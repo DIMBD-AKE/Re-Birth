@@ -84,6 +84,7 @@ protected:
 	UIObject*				m_pTalkBar;						//대화창
 	UIObject*				m_SkillToolTip;					//스킬 툴팁창
 	UIObject*				m_pCombo;						//콤보이미지
+	
 
 	MonsterManager*			m_pMonsterManager;				//몬스터 매니저용 변수
 	Character_Shield*		m_pShieldChr;					//쉴드캐릭터용 변수 
@@ -151,6 +152,7 @@ protected:
 	Particle*		m_pParticle4;
 	Particle*		m_pParticle5;
 	Particle*		m_pVelvetFinal;
+	Particle*		m_pRiahFinal[15];
 
 	void SKill();
 	void Move();

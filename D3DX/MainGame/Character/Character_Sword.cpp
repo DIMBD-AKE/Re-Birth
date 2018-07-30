@@ -125,6 +125,16 @@ void Character_Sword::Init(CHRTYPE type, CHARSELECT order)
 		m_pUIobj->SetTexture(TEXTUREMANAGER->GetTexture("리아_사진"));
 		m_pUIobj->SetScale(D3DXVECTOR3(0.45, 0.45, 0.45));
 		m_pUIobj->SetPosition(D3DXVECTOR3(12, 679, 0));
+
+
+
+		m_bRiahFinalparticle = false;
+		for (int i = 0; i < 15; i++)
+		{
+			m_bIsRiahCollision[i] = false;
+		}
+
+
 	}
 	else if (order == CHAR_THREE)
 	{
@@ -154,7 +164,7 @@ void Character_Sword::Init(CHRTYPE type, CHARSELECT order)
 		m_nVelvetCount = 0;
 		velvetFinal = m_pCharacter->GetBoneMatrix("Bone_sawtooth01");
 		m_vVelvetFinal = D3DXVECTOR3(0, 0, 0);
-		m_fVelvetInterval = 15.0f;
+		m_fVelvetInterval = 10.0f;
 		m_fOriginSpeed = 0.0f;
 		m_nVelvetEnd = 0;
 
@@ -249,6 +259,18 @@ void Character_Sword::Update()
 			m_pVelvetFinal->Update();
 		}
 		VelvetCount();
+
+		
+		for (int i = 0; i < 15; i++)
+		{
+			if (!m_bIsRiahCollision[i])
+			{
+				m_pRiahFinal[i]->World();
+				m_pRiahFinal[i]->Update();
+			}
+		}
+		CheckBound();
+		RiahFinalTarget();
 	}
 	CutScene();
 	if (!m_bIsStun)KeyControl();
@@ -298,6 +320,16 @@ void Character_Sword::Render()
 		if (m_bIsVelvetFinal)
 		{
 			m_pVelvetFinal->Render();
+		}
+		if (m_bRiahFinalparticle)
+		{
+			for (int i = 0; i < 15; i++)
+			{
+				if (!m_bIsRiahCollision[i])
+				{
+					m_pRiahFinal[i]->Render();
+				}
+			}
 		}
 		m_pInventory->Render();
 	}
@@ -486,6 +518,9 @@ void Character_Sword::KeyControl()
 		case CHAR_ATTACK:
 			m_eCondition = CHAR_IDLE;
 			break;
+		case CHAR_INHERENT3:
+			m_eCondition = CHAR_IDLE;
+			break;
 		case CHAR_HIT:
 			m_eCondition = CHAR_IDLE;
 			break;
@@ -545,6 +580,9 @@ void Character_Sword::KeyControl()
 	{
 		Attack();
 	}
+
+
+	
 
 	if (m_eCondition == CHAR_IDLE)
 	{
@@ -645,16 +683,28 @@ void Character_Sword::KeyControl()
 				{
 					m_bIsTarget = true;
 				}
+				if (m_eCharSelect == CHAR_TWO)
+				{
+					m_bRiahFinalparticle = true;
+					m_nRiahCount = 0;
+					for (int i = 0; i < 15; i++)
+					{
+						m_bIsRiahCollision[i] = false;
+					}
+					RiahFinalSKILL();
+				}
 
 				if (m_eCharSelect == CHAR_THREE)
 				{
 					SetTarget();
 					velvetFinalSKILL();
+					
 				}
 			}
 		}
 	}
 
+	
 
 	//가드를 올려야해요!
 	if (INPUT->KeyDown('Z'))
@@ -892,6 +942,7 @@ void Character_Sword::Bash()
 			//TODO : 알파값도 랜덤으로, 스케일도 랜덤으로 RND써서 수정
 			tempEffect.SetAlpha(FRand(100, 255), FRand(100, 255), 0);
 			tempEffect.SetScale(FRand(1.4, 3.0), FRand(1.4, 3.0), FRand(1.4, 3.0));
+			tempEffect.SetSpeed(0.05, 0.05, 0.05);
 			tempEffect.tex = TEXTUREMANAGER->AddTexture("testSkill", "Texture/Effect/TestSkill.png");
 			EffectObject* tempEFOBJ;
 			tempEFOBJ = new EffectObject;
@@ -907,7 +958,6 @@ void Character_Sword::Bash()
 			tempEFOBJ->Init(tempEffect, testSkillpos);
 
 			m_vecSkillEffect.push_back(tempEFOBJ);
-
 		}
 
 		//this->SkillDealing();
@@ -1227,78 +1277,79 @@ void Character_Sword::velvetFinalSKILL()
 {
 	m_pCharacter->SetAnimation("SKILL");
 	D3DXVECTOR3 pos = *m_pCharacter->GetPosition();
-
+	
 
 	if (m_nIndex < 0) return;
+	
+		D3DXVECTOR3 MonPos = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
+		ST_EFFECT tempEffect;
+		ZeroMemory(&tempEffect, sizeof(tempEffect));
 
-	D3DXVECTOR3 MonPos = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
-	ST_EFFECT tempEffect;
-	ZeroMemory(&tempEffect, sizeof(tempEffect));
+		tempEffect.time = FRand(0.1, 0.4);
+		tempEffect.isRY = true;
+		tempEffect.isRX = true;
+		tempEffect.height = 3.0f;
+		tempEffect.SetAlpha(FRand(100, 255), FRand(100, 255), 0);
+		tempEffect.SetScale(FRand(1.4, 3.0), FRand(1.4, 3.0), FRand(1.4, 3.0));
+		tempEffect.tex = TEXTUREMANAGER->AddTexture("Blood", "Texture/Effect/velvet.png");
+		EffectObject* tempEFOBJ;
+		tempEFOBJ = new EffectObject;
 
-	tempEffect.time = FRand(0.1, 0.4);
-	tempEffect.isRY = true;
-	tempEffect.isRX = true;
-	tempEffect.height = 3.0f;
-	tempEffect.SetAlpha(FRand(100, 255), FRand(100, 255), 0);
-	tempEffect.SetScale(FRand(1.4, 3.0), FRand(1.4, 3.0), FRand(1.4, 3.0));
-	tempEffect.tex = TEXTUREMANAGER->AddTexture("Blood", "Texture/Effect/velvet.png");
-	EffectObject* tempEFOBJ;
-	tempEFOBJ = new EffectObject;
+		D3DXVECTOR3 TempDir;
+		TempDir = *m_pCharacter->GetPosition() - *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
+		D3DXVec3Normalize(&TempDir, &TempDir);
 
-	D3DXVECTOR3 TempDir;
-	TempDir = *m_pCharacter->GetPosition() - *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
-	D3DXVec3Normalize(&TempDir, &TempDir);
+		float Length = D3DXVec3Length(&(MonPos - pos));
 
-	float Length = D3DXVec3Length(&(MonPos - pos));
+		D3DXVECTOR3 testSkillpos = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
+		testSkillpos.y += 1.0f;
+		testSkillpos.x += FRand(-0.5, 0.5);
+		testSkillpos.z += FRand(-0.5, 0.5);
+		testSkillpos += TempDir * (Length * 0.3f);
+		tempEFOBJ->Init(tempEffect, testSkillpos);
 
-	D3DXVECTOR3 testSkillpos = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
-	testSkillpos.y += 1.0f;
-	testSkillpos.x += FRand(-0.5, 0.5);
-	testSkillpos.z += FRand(-0.5, 0.5);
-	testSkillpos += TempDir * (Length * 0.3f);
-	tempEFOBJ->Init(tempEffect, testSkillpos);
+		m_vecEffect.push_back(tempEFOBJ);
+		//m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
 
-	m_vecEffect.push_back(tempEFOBJ);
-	//m_pMonsterManager->GetMonsterVector()[m_nIndex]->CalculDamage(m_Status->chr.nAtk + m_pInventory->GetEquipStat().item.nAtk);
-
-	m_nVelvetCount++;
-
-	if (m_nVelvetCount <= 2)
-	{
-		m_pMonsterManager->DamageMonster(m_nIndex, m_Status->chr.nAtk + 10 + m_pInventory->GetEquipStat().item.nAtk);
-		m_pCharacter->SetShaderRimColor(D3DXVECTOR3(255, 0, 0));
-		m_pCharacter->SetShaderRimPower(0.2f);
-		CAMERA->Shake(0.02, 0.12);
-	}
-	if (m_nVelvetCount > 2 && m_nVelvetCount <= 4)
-	{
-		m_pMonsterManager->DamageMonster(m_nIndex, m_Status->chr.nAtk + 20 + m_pInventory->GetEquipStat().item.nAtk);
-		m_pCharacter->SetShaderRimColor(D3DXVECTOR3(255, 0, 0));
-		m_pCharacter->SetShaderRimPower(0.5f);
-		CAMERA->Shake(0.08, 0.12);
-	}
-	if (m_nVelvetCount > 4 && m_nVelvetCount <= 6)
-	{
-		m_pMonsterManager->DamageMonster(m_nIndex, m_Status->chr.nAtk + 80 + m_pInventory->GetEquipStat().item.nAtk);
-		m_pCharacter->SetShaderRimColor(D3DXVECTOR3(255, 0, 0));
-		m_pCharacter->SetShaderRimPower(0.8f);
-		CAMERA->Shake(0.1, 0.12);
-	}
-	if (m_nVelvetCount == 7)
-	{
-		m_bIsVelvetFinal = true;
-		m_pMonsterManager->DamageMonster(m_nIndex, m_Status->chr.nAtk + 100 + m_pInventory->GetEquipStat().item.nAtk);
-		m_pCharacter->SetShaderRimColor(D3DXVECTOR3(255, 0, 0));
-		m_pCharacter->SetShaderRimPower(1.0f);
-		CAMERA->Shake(0.13, 0.12);
-	}
-	if (m_nVelvetCount >= 8)
-	{
-		m_pMonsterManager->DamageMonster(m_nIndex, m_Status->chr.nAtk + 300 + m_pInventory->GetEquipStat().item.nAtk);
-		m_pCharacter->SetShaderRimColor(D3DXVECTOR3(255, 0, 0));
-		m_pCharacter->SetShaderRimPower(1.0f);
-		CAMERA->Shake(0.16, 0.12);
-	}
+		m_nVelvetCount++;
+	
+		if (m_nVelvetCount <= 2)
+		{
+			m_pMonsterManager->DamageMonster(m_nIndex, m_Status->chr.nAtk + 10 + m_pInventory->GetEquipStat().item.nAtk);
+			m_pCharacter->SetShaderRimColor(D3DXVECTOR3(255, 0, 0));
+			m_pCharacter->SetShaderRimPower(0.2f);
+			CAMERA->Shake(0.02, 0.12);
+		}
+		if (m_nVelvetCount > 2 && m_nVelvetCount <= 4)
+		{
+			m_pMonsterManager->DamageMonster(m_nIndex, m_Status->chr.nAtk + 20 + m_pInventory->GetEquipStat().item.nAtk);
+			m_pCharacter->SetShaderRimColor(D3DXVECTOR3(255, 0, 0));
+			m_pCharacter->SetShaderRimPower(0.5f);
+			CAMERA->Shake(0.08, 0.12);
+		}
+		if (m_nVelvetCount > 4 && m_nVelvetCount <= 6)
+		{
+			m_pMonsterManager->DamageMonster(m_nIndex, m_Status->chr.nAtk + 80 + m_pInventory->GetEquipStat().item.nAtk);
+			m_pCharacter->SetShaderRimColor(D3DXVECTOR3(255, 0, 0));
+			m_pCharacter->SetShaderRimPower(0.8f);
+			CAMERA->Shake(0.1, 0.12);
+		}
+		if (m_nVelvetCount == 7)
+		{
+			m_bIsVelvetFinal = true;
+			m_pMonsterManager->DamageMonster(m_nIndex, m_Status->chr.nAtk + 100 + m_pInventory->GetEquipStat().item.nAtk);
+			m_pCharacter->SetShaderRimColor(D3DXVECTOR3(255, 0, 0));
+			m_pCharacter->SetShaderRimPower(1.0f);
+			CAMERA->Shake(0.13, 0.12);
+		}
+		if (m_nVelvetCount >= 8)
+		{
+			m_pMonsterManager->DamageMonster(m_nIndex, m_Status->chr.nAtk + 300 + m_pInventory->GetEquipStat().item.nAtk);
+			m_pCharacter->SetShaderRimColor(D3DXVECTOR3(255, 0, 0));
+			m_pCharacter->SetShaderRimPower(1.0f);
+			CAMERA->Shake(0.16, 0.12);
+		}
+	
 }
 
 void Character_Sword::VelvetCount()
@@ -1312,14 +1363,14 @@ void Character_Sword::VelvetCount()
 		m_nVelvetEnd++;
 
 
-		if (m_nVelvetEnd == 2)
-		{
-			m_bIsVelvetFinal = false;
-			m_pCharacter->SetShaderRimColor(D3DXVECTOR3(0, 0, 0));
-			m_pCharacter->SetShaderRimPower(0.0f);
-			m_nVelvetCount = 0;
-			m_nVelvetEnd = 0;
-		}
+if (m_nVelvetEnd == 2)
+{
+	m_bIsVelvetFinal = false;
+	m_pCharacter->SetShaderRimColor(D3DXVECTOR3(0, 0, 0));
+	m_pCharacter->SetShaderRimPower(0.0f);
+	m_nVelvetCount = 0;
+	m_nVelvetEnd = 0;
+}
 	}
 }
 
@@ -1339,4 +1390,118 @@ void Character_Sword::SkillEffect()
 		}
 	}
 
+}
+
+void Character_Sword::RiahFinalSKILL()
+{
+	D3DXVECTOR3 pos = *m_pCharacter->GetPosition();
+
+
+	for (int i = 0; i < 15; i++)
+	{
+		m_pRiahFinal[i]->SetPosition(D3DXVECTOR3(pos.x + FRand(-8, 8), pos.y + FRand(3, 6), pos.z + FRand(-8, 8)));
+
+		m_stBound[i].center = *m_pRiahFinal[i]->GetPosition();
+		m_stBound[i].radius = 1.0f;
+	}
+	this->RiahFinalTarget();
+}
+
+void Character_Sword::RiahFinalTarget()
+{
+	if (m_bRiahFinalparticle)
+	{
+		D3DXVECTOR3 pos = *m_pCharacter->GetPosition();
+		float minLength = 100;
+		m_nIndex = -1;
+		for (int i = 0; i < m_pMonsterManager->GetMonsterVector().size(); i++)
+		{
+			if (m_pMonsterManager->GetMonsterVector()[i]->GetIsResPawn()) continue;
+			D3DXVECTOR3 MonPos = *m_pMonsterManager->GetMonsterVector()[i]->GetModel()->GetPosition();
+			float length = D3DXVec3Length(&(MonPos - pos));
+
+			if (length <= m_Status->chr.fRange + 10.0f)
+			{
+				// 시선
+				D3DXVECTOR3 front;
+				D3DXMATRIX matY;
+				D3DXMatrixRotationY(&matY, m_pCharacter->GetRotation()->y);
+				D3DXVec3TransformNormal(&front, &D3DXVECTOR3(0, 0, -1), &matY);
+				D3DXVECTOR3 v0 = front;
+				// 대상방향
+				D3DXVECTOR3 v1 = MonPos - pos;
+				D3DXVec3Normalize(&v1, &v1);
+				float dot = D3DXVec3Dot(&v0, &v1) / D3DXVec3Length(&v0) * D3DXVec3Length(&v1);
+				if (dot >= cos(m_Status->chr.fScale / 2))
+				{
+					if (minLength > length)
+					{
+						m_nIndex = i;
+						minLength = length;
+					}
+				}
+			}
+		}
+		if (m_nIndex < 0) return;
+		D3DXVECTOR3 ParticlePos[15];
+		D3DXVECTOR3 TempDir[15];
+		D3DXVECTOR3 MonTarget = *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition();
+		for (int i = 0; i < 15; i++)
+		{
+			ParticlePos[i] = *m_pRiahFinal[i]->GetPosition();
+
+			TempDir[i] = MonTarget - ParticlePos[i];
+			D3DXVec3Normalize(&TempDir[i], &TempDir[i]);
+
+			m_pRiahFinal[i]->SetPosition(*m_pRiahFinal[i]->GetPosition() + TempDir[i] * 0.1f);
+			m_stBound[i].center = *m_pRiahFinal[i]->GetPosition();
+
+
+			if (!m_bIsRiahCollision[i])
+			{
+				if (IntersectSphere(m_stBound[i], m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetBoundSphere()))
+				{
+					m_pMonsterManager->DamageMonster(m_nIndex, 1);
+
+					m_bIsRiahCollision[i] = true;
+
+					m_nRiahCount += m_bIsRiahCollision[i];
+				}
+			}
+		}
+		if (m_nRiahCount == 15)
+		{
+			m_bRiahFinalparticle = false;
+		}
+	}
+}
+
+
+void Character_Sword::CheckBound()
+{
+	if (m_bRiahFinalparticle)
+	{
+		DWORD prevFillMode;
+		DEVICE->GetRenderState(D3DRS_FILLMODE, &prevFillMode);
+		DEVICE->SetTexture(0, NULL);
+		DEVICE->SetRenderState(D3DRS_LIGHTING, false);
+		DEVICE->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+
+		// BoundSphere
+		LPD3DXMESH mesh;
+		D3DXMATRIX matT;
+
+		for (int i = 0; i < 15; i++)
+		{
+			float radius = m_stBound[i].radius;
+			if (radius < 0) radius = 0;
+			D3DXCreateSphere(DEVICE, radius, 8, 8, &mesh, NULL);
+			D3DXVECTOR3 pos = m_stBound[i].center;
+			D3DXMatrixTranslation(&matT, pos.x, pos.y, pos.z);
+			DEVICE->SetTransform(D3DTS_WORLD, &matT);
+			mesh->DrawSubset(0);
+			SAFE_RELEASE(mesh);
+		}
+		DEVICE->SetRenderState(D3DRS_FILLMODE, prevFillMode);
+	}
 }

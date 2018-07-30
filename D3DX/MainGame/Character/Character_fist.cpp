@@ -294,9 +294,6 @@ void Character_fist::KeyControl()
 	}
 
 
-
-
-
 	//애니메이션 한바퀴 돌고나서 상태제어
 	if (m_pCharacter->IsAnimationEnd())
 	{

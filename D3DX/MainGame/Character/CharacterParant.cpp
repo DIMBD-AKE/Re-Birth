@@ -836,7 +836,10 @@ CharacterParant::~CharacterParant()
 	SAFE_DELETE(m_pParticle4);
 	SAFE_DELETE(m_pParticle5);
 	SAFE_DELETE(m_pVelvetFinal);
-
+	for (int i = 0; i < 15; i++)
+	{
+		SAFE_DELETE(m_pRiahFinal[i]);
+	}
 	SAFE_RELEASE(m_pUIobj);
 	SAFE_RELEASE(m_pHPBar);
 	SAFE_RELEASE(m_pStaminaBar);
@@ -998,7 +1001,10 @@ void CharacterParant::Init(CHRTYPE type, CHARSELECT order)
 	m_pParticle4 = PARTICLE->GetParticle("teleport"); //텔레포트 끝나고 아래에서 피어오르는 파티클
 	m_pParticle5 = PARTICLE->GetParticle("Potal"); //메가크리스탈 파티클
 	m_pVelvetFinal = PARTICLE->GetParticle("벨벳_궁극기");
-
+	for (int i = 0; i < 15; i++)
+	{
+		m_pRiahFinal[i] = PARTICLE->GetParticle("리아_궁극기");
+	}
 	m_pParticle3->SetPosition(D3DXVECTOR3(m_pCharacter->GetPosition()->x, m_pCharacter->GetPosition()->y, m_pCharacter->GetPosition()->z + 5.0f));
 	m_pTalkBar->SetTexture(TEXTUREMANAGER->GetTexture("대화창"));
 	m_pTalkBar->SetPosition(D3DXVECTOR3(0, 545, 0));

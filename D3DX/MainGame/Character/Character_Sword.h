@@ -22,6 +22,12 @@ private:
 	vector<EffectObject*>	m_vecSkillEffect;
 	//
 
+	bool		m_bRiahFinalparticle;
+	ST_SPHERE	m_stBound[15];			//¸®¾Æ ±Ã±Ø±â ¹Ù¿îµå ½ºÆä¾î ¾º¿ì±â À§ÇÔ
+	bool		m_bIsRiahCollision[15];
+	int			m_nRiahCount;
+
+
 public:
 	Character_Sword();
 	virtual ~Character_Sword();
@@ -45,5 +51,8 @@ public:
 	void VelvetCount();
 
 	void SkillEffect();
+	void RiahFinalSKILL();
+	void RiahFinalTarget();
+	void CheckBound();
 	//
 };
