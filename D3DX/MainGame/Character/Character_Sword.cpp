@@ -624,6 +624,7 @@ void Character_Sword::KeyControl()
 			m_bIsFskill = true;
 			m_nDamageCount = 0;
 			m_nDC = 0;
+			CAMERA->Shake(0.08, m_pCharacter->GetAnimationPeriod("SKILL"));
 			if (m_eCharSelect == CHAR_ONE)
 			{
 				SOUND->Play("SwordAttack");
@@ -699,6 +700,7 @@ void Character_Sword::KeyControl()
 					m_nDamageCount = 0;
 					m_eCondition = CHAR_INHERENT3;
 					ChangeAnimation();
+					m_nVelvetCount++;
 				}
 			}
 		}
@@ -1137,6 +1139,7 @@ void Character_Sword::SkillDealing()
 	}
 	else if (m_eCharSelect == CHAR_THREE)
 	{
+	
 		if (m_vecSkillEffect.size() <= 0) return;
 		m_nIndex = -1;
 
@@ -1285,11 +1288,9 @@ void Character_Sword::velvetFinalSKILL()
 	if (m_fElpTime < m_fPrevTime + m_fEffectInterval) return;
 
 	m_fPrevTime = m_fElpTime;
-	
 
-	m_nVelvetCount++;
 	m_nDamageCount++;
-
+	
 	if (m_nIndex < 0) return;
 	
 	if (m_nDamageCount <= 20)
