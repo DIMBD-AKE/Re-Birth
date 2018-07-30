@@ -164,7 +164,7 @@ void Character_Sword::Init(CHRTYPE type, CHARSELECT order)
 		m_nVelvetCount = 0;
 		velvetFinal = m_pCharacter->GetBoneMatrix("Bone_sawtooth01");
 		m_vVelvetFinal = D3DXVECTOR3(0, 0, 0);
-		m_fVelvetInterval = 10.0f;
+		m_fVelvetInterval = 7.0f;
 		m_fOriginSpeed = 0.0f;
 		m_nVelvetEnd = 0;
 
