@@ -47,6 +47,7 @@ public:
 	virtual bool IsAnimationPercent(float rate) { return false; }
 	virtual float GetAnimationPeriod(string name) { return 0; }
 	virtual float GetAnimationPeriod(int index) { return 0; }
+	virtual float GetCurrentAnimationPercent() { return 0; }
 	virtual void SetShaderAlpha(float alpha) {}
 	virtual float GetShaderAlpha() { return 0; }
 	virtual void SetShaderColorOffset(float offset) {}
@@ -143,6 +144,7 @@ public:
 	virtual bool IsAnimationPercent(float rate);
 	virtual float GetAnimationPeriod(string name);
 	virtual float GetAnimationPeriod(int index);
+	virtual float GetCurrentAnimationPercent();
 	virtual D3DXMATRIX* GetBoneMatrix(string name);
 
 	virtual void SetShaderAlpha(float alpha);

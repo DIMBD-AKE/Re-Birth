@@ -634,6 +634,11 @@ float ModelX::GetAnimationPeriod(int index)
 	return m_pSMesh->GetAnimationPeriod(index);
 }
 
+float ModelX::GetCurrentAnimationPercent()
+{
+	return m_pSMesh->GetCurrentAnimationPercent();
+}
+
 float ModelX::GetShaderAlpha()
 {
 	return m_pSMesh->GetAlpha();

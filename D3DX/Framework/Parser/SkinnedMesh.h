@@ -79,6 +79,7 @@ public:
 	void SetAnimationPosition(float pos);
 	bool IsAnimationPercent(float rate);
 	bool IsAnimationEnd();
+	float GetCurrentAnimationPercent();
 
 	float GetAnimationPeriod(int index);
 

@@ -293,6 +293,22 @@ bool SkinnedMesh::IsAnimationEnd()
 	return (1 - curRate <= elapseRate);
 }
 
+float SkinnedMesh::GetCurrentAnimationPercent()
+{
+	LPD3DXANIMATIONSET anim = NULL;
+	D3DXTRACK_DESC desc;
+	m_pAnimController->GetTrackAnimationSet(0, &anim);
+	m_pAnimController->GetTrackDesc(0, &desc);
+
+	float period = anim->GetPeriod() / desc.Speed;
+	float current = fmod(desc.Position / desc.Speed, period);
+	float curRate = current / period;
+
+	SAFE_RELEASE(anim);
+
+	return curRate;
+}
+
 float SkinnedMesh::GetAnimationPeriod(int index)
 {
 	LPD3DXANIMATIONSET animSet = NULL;
