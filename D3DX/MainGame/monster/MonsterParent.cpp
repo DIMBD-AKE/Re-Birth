@@ -318,11 +318,20 @@ void MonsterParent::RespawnUpdate()
 	m_pModel->World();
 	m_pModel->Update();
 
-	if (m_pModel->IsAnimationEnd() && m_eState == MS_DIE)
+	if (m_eState == MS_DIE)
 	{
-		m_eState = MS_NONE;
-		//ChangeAnimation();
+		m_pModel->SetShaderFadeCut(m_pModel->GetCurrentAnimationPercent());
+
+		if (m_pModel->IsAnimationEnd())
+		{
+			m_eState = MS_NONE;
+		}
 	}
+	//if (m_pModel->IsAnimationEnd() && m_eState == MS_DIE)
+	//{
+	//	m_eState = MS_NONE;
+	//	//ChangeAnimation();
+	//}
 
 	if (m_nResPawnCount >= 300)
 	{
@@ -425,6 +434,8 @@ void MonsterParent::Respawn(D3DXVECTOR3 spawnPos)
 	IsAppear();
 
 	m_pModel->SetPosition(D3DXVECTOR3(spawnPos.x, m_pMap->GetHeight(spawnPos.x, spawnPos.z), spawnPos.z));
+
+	m_pModel->SetShaderFadeCut(0);
 }
 
 void MonsterParent::MakeKeyMonster()
