@@ -59,6 +59,7 @@ private:
 	void Stage3(DropManager* pDropManager);
 	void Stage4(DropManager* pDropManager);
 
+	void Summon();
 	//발표용 함수
 	void MakeMonSet1(int stage);
 	void MakeMonSet2(int stage);

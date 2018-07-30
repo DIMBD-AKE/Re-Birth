@@ -174,6 +174,7 @@ void FinalBoss::Pattern()
 		if (m_eBossState != BS_IDLE)
 		{
 			MoveSpawn();
+			m_pMM->DeleteSummonMonster();
 		}
 		return;
 	}

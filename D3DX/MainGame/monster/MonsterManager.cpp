@@ -128,11 +128,22 @@ void MonsterManager::Update(int stage)
 		m_vMM[0]->SkillPrepare();
 	}
 
-	if (INPUT->KeyDown('5'))
+	if (INPUT->KeyDown('4') && stage == 1)
 	{
-		MakeFinalBoss(NULL);
+		m_bAppearKeyMonster = true;
+		m_nKeyMonsterIndex = m_vMM.size();
+
+		MakeMiddleBoss(NULL);
+		
+		//m_vMM[m_nKeyMonsterIndex]->MakeKeyMonster();
 	}
 
+	if (INPUT->KeyDown('5') /*&& (stage == 1 || stage == 3)*/)
+	{
+		if (m_nKeyMonsterIndex == -1) return;
+
+		DamageMonster(m_nKeyMonsterIndex, 11111);
+	}
 	//설명중이라면
 	if (m_bIsSpeedwagon)
 	{
@@ -202,17 +213,19 @@ void MonsterManager::MakeMonster(DropManager* pDropManager, int stage)
 
 void MonsterManager::MakeMonster()
 {
-	MakeElizabeth(NULL,0, true);
-
-	MakeAssis(NULL, 0, true);
-
-	MakeDarkHell(NULL, 0, true);
-
-	MakeNifilHeim(NULL, 0, true);
-
-	MakeNerisa(NULL, 0, true);
-
-	MakeNike(NULL, 0, true);
+	
+	Summon();
+	//MakeElizabeth(NULL,0, true);
+	//
+	//MakeAssis(NULL, 0, true);
+	//
+	//MakeDarkHell(NULL, 0, true);
+	//
+	//MakeNifilHeim(NULL, 0, true);
+	//
+	//MakeNerisa(NULL, 0, true);
+	//
+	//MakeNike(NULL, 0, true);
 }
 
 //근접
@@ -359,7 +372,7 @@ void MonsterManager::Stage1(DropManager* pDropManager)
 		float rnd = FRand(0, 1);
 		
 		MakeElizabeth(pDropManager, i % m_vSpawnIndex.size() );
-		if (rnd <= KEYMONSTERCHANCE && !m_bAppearKeyMonster)
+		if (/*rnd <= KEYMONSTERCHANCE &&*/ !m_bAppearKeyMonster)
 		{
 			m_vMM[i]->MakeKeyMonster();
 			m_nKeyMonsterIndex = i;
@@ -397,7 +410,7 @@ void MonsterManager::Stage3(DropManager* pDropManager)
 
 		MakeNerisa(pDropManager, i % m_vSpawnIndex.size());
 
-		if (rnd <= KEYMONSTERCHANCE && !m_bAppearKeyMonster)
+		if (/*rnd <= KEYMONSTERCHANCE &&*/ !m_bAppearKeyMonster)
 		{
 			m_vMM[i]->MakeKeyMonster();
 			m_nKeyMonsterIndex = i;
@@ -421,6 +434,17 @@ void MonsterManager::Stage4(DropManager* pDropManager)
 	m_bAppearKeyMonster = true;
 	m_nKeyMonsterIndex = 0;
 	MakeFinalBoss(pDropManager);
+}
+
+void MonsterManager::Summon()
+{
+	MonsterParent* assis;
+	assis = new Assis;
+	assis->Setup(m_pMap, m_pMap->GetSpawnBoss(), true);
+	assis->SetCharacter(m_ppCharacter);
+	assis->SetDropManager(NULL);
+
+	m_vMM.push_back(assis);
 }
 
 void MonsterManager::MakeMonSet1(int stage)
