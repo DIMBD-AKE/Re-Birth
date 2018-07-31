@@ -497,4 +497,6 @@ void FinalBoss::MoveSpawn()
 	m_pModel->SetRotation(D3DXVECTOR3(0,angle,0));
 
 	m_pModel->SetPosition(*m_pModel->GetPosition() + m_vDir * SPEED(m_pMonsterStat));
+
+	summonCount = 4;
 }

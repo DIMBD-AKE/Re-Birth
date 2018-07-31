@@ -764,7 +764,7 @@ void MonsterParent::SetCurrentHP(int hp, int* deathCount)
 			if(deathCount)
 			(*deathCount)++;
 
-			if (m_bAppearNPC && !m_pNpc->GetIsAppear())
+			if (m_bAppearNPC && m_pNpc && !m_pNpc->GetIsAppear())
 				m_pNpc->Init(*m_pModel->GetPosition());
 
 			m_pModel->SetShaderRimPower(0.0f);

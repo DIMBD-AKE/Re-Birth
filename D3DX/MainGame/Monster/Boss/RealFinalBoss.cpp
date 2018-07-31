@@ -81,7 +81,7 @@ void RealFinalboss::SetupBoss(Map* map, D3DXVECTOR3 pos)
 	ZeroMemory(&m_stEffect, sizeof(ST_EFFECT));
 	m_stEffect.dir = D3DXVECTOR3(0,-1,0);
 	m_stEffect.SetAlpha(255, 255, 255);
-	//m_stEffect.isSphere = true;
+	m_stEffect.isSphere = true;
 	m_stEffect.SetSpeed(0.9f, 0, 1.5f);
 	m_stEffect.SetScale(3, 3, 3);
 	m_stEffect.height = 3;
@@ -247,8 +247,8 @@ void RealFinalboss::SetupSkill()
 	m_stSkill.fDamage = 100;
 	m_stSkill.fDamageDelay =1.0f;
 	m_stSkill.fDamageInterval = 0.3f;
-	//m_stSkill.fMaxLength = 15;
-	m_stSkill.fMaxLength = 1500;
+	m_stSkill.fMaxLength = 15;
+	//m_stSkill.fMaxLength = 1500;
 	m_stSkill.fAngle = 360;
 	m_stSkill.nMaxTarget = 5;
 	m_stSkill.nDamageCount = 3;
@@ -594,18 +594,21 @@ void RealFinalboss::Skill2()
 		ST_SPHERE stone;
 			if (m_vEffectObject[i])
 			{
-				stone = m_vEffectObject[i]->GetBoundSphere();
-
-				if (IntersectSphere(target, stone))
+				if (m_vEffectObject[i]->GetInfo().pModel)
 				{
-					
-					D3DXVECTOR3 temp = *CHARACTER->GetPosition();
-					temp.y += 1.0f;
-					//m_vMagicCircle[i]->SetParticlePos(temp);
-					m_vMagicCircle[i]->ChangeParticle("흙먼지", temp);
-					CAMERA->Shake(0.5f, 0.5f);
-					PCHARACTER->CalculDamage(100);
-					SAFE_DELETE(m_vEffectObject[i]);
+					stone = m_vEffectObject[i]->GetInfo().pModel->GetBoundSphere();
+
+					if (IntersectSphere(target, stone))
+					{
+
+						D3DXVECTOR3 temp = *CHARACTER->GetPosition();
+						temp.y += 1.0f;
+						//m_vMagicCircle[i]->SetParticlePos(temp);
+						m_vMagicCircle[i]->ChangeParticle("흙먼지", temp);
+						CAMERA->Shake(0.5f, 0.5f);
+						PCHARACTER->CalculDamage(100);
+						SAFE_DELETE(m_vEffectObject[i]);
+					}
 				}
 			}
 	}
@@ -877,19 +880,19 @@ void RealFinalboss::BuffDecide()
 	ZeroMemory(&m_stPassive.buffStatus, sizeof(STATUS));
 
 	int rndNum = rand() % 3;
-
+	rndNum = 0;
 	
 	string particleName;
 	switch (rndNum)
 	{
 	case 0:
-		m_stPassive.buffStatus.chr.nAtk = ATK(m_pMonsterStat);
+		m_stPassive.buffStatus.chr.nAtk = 2 * ATK(m_pMonsterStat);
 		particleName = "공격력 강화";
 		//m_pBuffPrticle = PARTICLE->GetParticle("공격력 강화");
 		break;
 
 	case 1:
-		m_stPassive.buffStatus.chr.nDef = DEF(m_pMonsterStat);
+		m_stPassive.buffStatus.chr.nDef =2 * DEF(m_pMonsterStat);
 		particleName = "방어력 강화";
 		//m_pBuffPrticle = PARTICLE->GetParticle("방어력 강화");
 		break;
