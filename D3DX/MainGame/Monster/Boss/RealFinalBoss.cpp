@@ -81,14 +81,15 @@ void RealFinalboss::SetupBoss(Map* map, D3DXVECTOR3 pos)
 	ZeroMemory(&m_stEffect, sizeof(ST_EFFECT));
 	m_stEffect.dir = D3DXVECTOR3(0,-1,0);
 	m_stEffect.SetAlpha(255, 255, 255);
-	m_stEffect.isSphere = true;
+	//m_stEffect.isSphere = true;
 	m_stEffect.SetSpeed(0.9f, 0, 1.5f);
-	m_stEffect.SetScale(1, 1, 1);
+	m_stEffect.SetScale(3, 3, 3);
 	m_stEffect.height = 3;
 	m_stEffect.time = 3.5;
+	m_stEffect.pModel = MODELMANAGER->GetModel("보스돌", MODELTYPE_OBJ);
 	//effect.SetMotorSpeed(1, 1, 1);
 	//effect.mot = D3DXVECTOR3(0, 0, 1);
-	m_stEffect.tex = TEXTUREMANAGER->GetTexture("돌");
+	//m_stEffect.tex = TEXTUREMANAGER->GetTexture("돌");
 	
 	BoolInit();
 
@@ -179,6 +180,7 @@ void RealFinalboss::Render()
 
 	if (m_bUsingSkill2)
 	{
+		
 		for (int i = 0; i < STONENUM; ++i)
 		{
 			m_vMagicCircle[i]->Render();
@@ -742,6 +744,7 @@ void RealFinalboss::DropTheStones()
 		SAFE_DELETE(m_vEffectObject[i]);
 		m_vEffectObject[i] = new EffectObject;
 		m_vEffectObject[i]->Init(m_stEffect, rndPos + D3DXVECTOR3(0, FRand(7.0f, 27.0f), 0));
+		m_stEffect.pModel = MODELMANAGER->GetModel("보스돌", MODELTYPE_OBJ);
 	}
 }
 
