@@ -167,7 +167,7 @@ void RealFinalboss::Update()
 	}
 	
 
-	//if (m_pPassive) m_pPassive->Update();
+	if (m_pPassive) m_pPassive->Update();
 		
 
 	BossParent::Update();
