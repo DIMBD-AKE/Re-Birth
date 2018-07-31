@@ -421,9 +421,9 @@ void Skill::Prepare(CharacterParant * pCharacter, MonsterParent* pMonster, Monst
 {
 	m_pCharacter = pCharacter;
 	m_pMonster = pMonster;
+	m_pMM = pMM;
 	if (m_pMM)
 		m_vecMonster = pMM->GetMonsterVector();
-	m_pMM = pMM;
 	m_stSkill = skill;
 	m_eOwner = owner;
 
