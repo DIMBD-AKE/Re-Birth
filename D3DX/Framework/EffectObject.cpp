@@ -11,6 +11,7 @@ EffectObject::EffectObject()
 EffectObject::~EffectObject()
 {
 	SAFE_RELEASE(m_pVB);
+	SAFE_DELETE(m_stInfo.pModel);
 }
 
 void EffectObject::Init(ST_EFFECT info, D3DXVECTOR3 pos)
