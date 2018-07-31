@@ -503,20 +503,23 @@ void RealFinalboss::Attack()
 	ST_SPHERE stone;
 	if (m_vEffectObject[0])
 	{
-		stone = m_vEffectObject[0]->GetBoundSphere();
-
-		if (IntersectSphere(target, stone))
+		if (m_vEffectObject[0]->GetInfo().pModel)
 		{
-			D3DXVECTOR3 temp = *CHARACTER->GetPosition();
-			temp.y += 1.0f;
-			//m_vMagicCircle[i]->SetParticlePos(temp);
-			m_vMagicCircle[0]->ChangeParticle("Èë¸ÕÁö", temp);
+			stone = m_vEffectObject[0]->GetInfo().pModel->GetBoundSphere();
 
-			//m_vMagicCircle[0]->ChangeParticle("Èë¸ÕÁö");
-			//m_vMagicCircle[0]->SetParticlePos(*m_pModel->GetPosition());
-			CAMERA->Shake(0.5f, 0.5f);
-			PCHARACTER->CalculDamage(100);
-			SAFE_DELETE(m_vEffectObject[0]);
+			if (IntersectSphere(target, stone))
+			{
+				D3DXVECTOR3 temp = *CHARACTER->GetPosition();
+				temp.y += 1.0f;
+				//m_vMagicCircle[i]->SetParticlePos(temp);
+				m_vMagicCircle[0]->ChangeParticle("Èë¸ÕÁö", temp);
+
+				//m_vMagicCircle[0]->ChangeParticle("Èë¸ÕÁö");
+				//m_vMagicCircle[0]->SetParticlePos(*m_pModel->GetPosition());
+				CAMERA->Shake(0.5f, 0.5f);
+				PCHARACTER->CalculDamage(100);
+				SAFE_DELETE(m_vEffectObject[0]);
+			}
 		}
 	}
 	
@@ -712,6 +715,7 @@ void RealFinalboss::DropTheStone()
 	SAFE_DELETE(m_vEffectObject[0]);
 	m_vEffectObject[0] = new EffectObject;
 	m_vEffectObject[0]->Init(m_stEffect, rndPos + D3DXVECTOR3(0, FRand(7.0f, 27.0f), 0));
+	m_stEffect.pModel = MODELMANAGER->GetModel("º¸½ºµ¹", MODELTYPE_OBJ);
 }
 
 void RealFinalboss::DropTheStones()
