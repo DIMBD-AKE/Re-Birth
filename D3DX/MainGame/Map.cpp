@@ -14,6 +14,11 @@ Map::~Map()
 		SAFE_DELETE(m_vecModel[i]);
 	SAFE_RELEASE(m_pTerrainMesh);
 	SAFE_RELEASE(m_pSkyboxMesh);
+
+	m_vecIndex.clear();
+	m_vecSurface.clear();
+	m_vecTerrain.clear();
+	m_vecModel.clear();
 }
 
 void Map::Setup()
