@@ -88,6 +88,9 @@ void SC_Loading::AddModel()
 	m_pLoading->LoadModel("피닉스", "Model/Pet/Nix/", "Nix.x", MODELTYPE_X);
 	m_pLoading->LoadModel("팬더", "Model/Pet/Panda/", "Panda.x", MODELTYPE_X);
 	m_pLoading->LoadModel("돼지", "Model/Pet/Penny/", "Penny.x", MODELTYPE_X);
+
+	//보스 돌
+	m_pLoading->LoadModel("보스돌", "Model/Etc/", "Rock.obj", MODELTYPE_OBJ);
 }
 
 void SC_Loading::AddTexture()
