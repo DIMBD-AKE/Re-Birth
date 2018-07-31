@@ -1268,6 +1268,7 @@ void Character_Sword::TargetSword()
 				m_pCharacter->SetPosition(SkillPos);
 
 				m_pCharacter->SetRotation(D3DXVECTOR3(0, GetAngle(*m_pCharacter->GetPosition(), *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition()), 0));
+				m_pCharacter->SetShaderHologram(true);
 				m_pCharacter->SetAnimation("SKILL");
 				m_pParticle4->SetPosition(*m_pCharacter->GetPosition());
 				m_pParticle4->TimeReset();
@@ -1276,6 +1277,11 @@ void Character_Sword::TargetSword()
 				break;
 			}
 		}
+	}
+	else
+	{
+		m_bIsTarget = false;
+		m_pCharacter->SetShaderHologram(false);
 	}
 
 }
