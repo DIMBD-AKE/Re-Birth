@@ -30,7 +30,7 @@ void Map::Setup()
 			ST_PNT_VERTEX vertex;
 			vertex.n = D3DXVECTOR3(0, 1, 0);
 			vertex.p = D3DXVECTOR3(x - MAPSIZE / 2.0f, 0, -z + MAPSIZE / 2.0f);
-			vertex.t = D3DXVECTOR2(z / 256.0f, x / 256.0f);
+			vertex.t = D3DXVECTOR2(x / (float)MAPSIZE, z / (float)MAPSIZE);
 			m_vecTerrain.push_back(vertex);
 		}
 	}
@@ -241,7 +241,8 @@ void Map::Load(string mapPath)
 
 	char line[256];
 	vector<Model*> vecModel;
-	int nTerrainDetail;
+	string sLayer[10];
+	int nLayer;
 	while (true)
 	{
 		fgets(line, 256, fp);
@@ -253,7 +254,21 @@ void Map::Load(string mapPath)
 		if (tok[0] == 'd')
 		{
 			tok = strtok_s(NULL, "\t", &context);
-			sscanf_s(tok, "%d", &nTerrainDetail);
+			sscanf_s(tok, "%d", &m_nTerrainDetail);
+		}
+
+		if (tok[0] == 'l' && !tok[1])
+		{
+			tok = strtok_s(NULL, "\t", &context);
+			sscanf_s(tok, "%d", &nLayer);
+		}
+		else if (tok[0] == 'l' && tok[1])
+		{
+			char temp[128];
+			int num = tok[1] - '0';
+			tok = strtok_s(NULL, "\t", &context);
+			sscanf_s(tok, "%s", &temp, 128);
+			sLayer[num] = temp;
 		}
 
 		if (tok[0] == 'o')
@@ -338,6 +353,15 @@ void Map::Load(string mapPath)
 
 	fclose(fp);
 
+	string namePath = mapPath.substr(0, mapPath.size() - 4);
+	for (int i = 0; i < nLayer; i++)
+	{
+		ST_MAP_LAYER layer;
+		layer.pTexture = TEXTUREMANAGER->AddTexture(sLayer[i], sLayer[i]);
+		layer.pAlpha = TEXTUREMANAGER->AddTexture(mapPath + "_L" + to_string(i), namePath + "_L" + to_string(i) + ".bmp");
+		m_vecLayer.push_back(layer);
+	}
+
 	LPDIRECT3DTEXTURE9 heightMap;
 	string bmp = mapPath;
 	bmp[bmp.size() - 3] = 'b';
@@ -383,18 +407,6 @@ void Map::Load(string mapPath)
 		}
 	}
 
-	for (int i = 0; i < m_vecTerrain.size(); i++)
-	{
-		for (int j = 1; j <= nTerrainDetail; j++)
-		{
-			int x = i % MAPSIZE * j;
-			int z = i / MAPSIZE * j;
-			float u = x / (float)MAPSIZE;
-			float v = z / (float)MAPSIZE;
-			m_vecTerrain[i].t = D3DXVECTOR2(u, v);
-		}
-	}
-
 	D3DXCreateMeshFVF(m_vecIndex.size() / 3, m_vecTerrain.size(),
 		D3DXMESH_32BIT | D3DXMESH_MANAGED, ST_PNT_VERTEX::FVF, DEVICE, &m_pTerrainMesh);
 
@@ -435,6 +447,19 @@ void Map::Render()
 {
 	Debug();
 
+	D3DXMATRIX matS;
+	D3DXMatrixScaling(&matS, m_nTerrainDetail, m_nTerrainDetail, 1.0f);
+	DEVICE->SetTransform(D3DTS_TEXTURE0, &matS);
+
+	DEVICE->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
+	DEVICE->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
+	DEVICE->SetSamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_LINEAR);
+
+	DEVICE->SetTextureStageState(0, D3DTSS_TEXTURETRANSFORMFLAGS, D3DTTFF_COUNT2);
+	DEVICE->SetTextureStageState(0, D3DTSS_TEXCOORDINDEX, 0);
+	DEVICE->SetSamplerState(0, D3DSAMP_ADDRESSU, D3DTADDRESS_WRAP);
+	DEVICE->SetSamplerState(0, D3DSAMP_ADDRESSV, D3DTADDRESS_WRAP);
+
 	DEVICE->SetRenderState(D3DRS_ALPHABLENDENABLE, false);
 	DEVICE->SetRenderState(D3DRS_LIGHTING, true);
 	DEVICE->SetTransform(D3DTS_WORLD, &m_matWorld);
@@ -442,10 +467,114 @@ void Map::Render()
 	DEVICE->SetMaterial(&m_mtl);
 	m_pTerrainMesh->DrawSubset(0);
 
+	D3DXMatrixScaling(&matS, 1, 1, 1.0f);
+	DEVICE->SetTransform(D3DTS_TEXTURE0, &matS);
+
 	DEVICE->SetRenderState(D3DRS_LIGHTING, false);
 	DEVICE->SetTransform(D3DTS_WORLD, &m_matSkybox);
 	DEVICE->SetTexture(0, m_pSkyboxTex);
 	m_pSkyboxMesh->DrawSubset(0);
+
+	Layer();
+}
+
+void Map::Layer()
+{
+	if (m_vecLayer.empty()) return;
+	
+	// 기존 값 백업
+	DWORD prev[16];
+	DEVICE->GetTextureStageState(0, D3DTSS_ALPHAOP, &prev[0]);
+	DEVICE->GetTextureStageState(0, D3DTSS_ALPHAARG1, &prev[1]);
+	DEVICE->GetTextureStageState(1, D3DTSS_COLOROP, &prev[2]);
+	DEVICE->GetTextureStageState(1, D3DTSS_COLORARG1, &prev[3]);
+	DEVICE->GetTextureStageState(1, D3DTSS_ALPHAOP, &prev[4]);
+	DEVICE->GetTextureStageState(1, D3DTSS_ALPHAARG1, &prev[5]);
+	DEVICE->GetSamplerState(1, D3DSAMP_MINFILTER, &prev[6]);
+	DEVICE->GetSamplerState(1, D3DSAMP_MAGFILTER, &prev[7]);
+	DEVICE->GetSamplerState(1, D3DSAMP_MIPFILTER, &prev[8]);
+	DEVICE->GetTextureStageState(0, D3DTSS_TEXTURETRANSFORMFLAGS, &prev[9]);
+	DEVICE->GetSamplerState(0, D3DSAMP_ADDRESSU, &prev[10]);
+	DEVICE->GetSamplerState(0, D3DSAMP_ADDRESSV, &prev[11]);
+	DEVICE->GetTextureStageState(1, D3DTSS_TEXTURETRANSFORMFLAGS, &prev[12]);
+	DEVICE->GetTextureStageState(1, D3DTSS_TEXCOORDINDEX, &prev[13]);
+	DEVICE->GetSamplerState(1, D3DSAMP_ADDRESSU, &prev[14]);
+	DEVICE->GetSamplerState(1, D3DSAMP_ADDRESSV, &prev[15]);
+
+	// 설정
+	DEVICE->SetRenderState(D3DRS_ALPHABLENDENABLE, true);
+	DEVICE->SetRenderState(D3DRS_LIGHTING, true);
+
+	DEVICE->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG1);
+	DEVICE->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+
+	// Texture: take the color from the texture, take the alpha from the previous stage
+	DEVICE->SetTextureStageState(1, D3DTSS_COLOROP, D3DTOP_SELECTARG1);
+	DEVICE->SetTextureStageState(1, D3DTSS_COLORARG1, D3DTA_TEXTURE);
+	DEVICE->SetTextureStageState(1, D3DTSS_ALPHAOP, D3DTOP_SELECTARG1);
+	DEVICE->SetTextureStageState(1, D3DTSS_ALPHAARG1, D3DTA_CURRENT);
+
+	DEVICE->SetSamplerState(1, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
+	DEVICE->SetSamplerState(1, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
+	DEVICE->SetSamplerState(1, D3DSAMP_MIPFILTER, D3DTEXF_LINEAR);
+
+	// 0번 인덱스 알파 텍스쳐는 전체에 한번만 그려져야 하므로
+	// 타일화 셋팅 하지 않음
+	DEVICE->SetTextureStageState(0, D3DTSS_TEXTURETRANSFORMFLAGS, D3DTTFF_DISABLE);
+	DEVICE->SetSamplerState(0, D3DSAMP_ADDRESSU, D3DTADDRESS_CLAMP);
+	DEVICE->SetSamplerState(0, D3DSAMP_ADDRESSV, D3DTADDRESS_CLAMP);
+
+	DEVICE->SetTextureStageState(1, D3DTSS_TEXTURETRANSFORMFLAGS, D3DTTFF_COUNT2);
+	DEVICE->SetTextureStageState(1, D3DTSS_TEXCOORDINDEX, 0);
+	DEVICE->SetSamplerState(1, D3DSAMP_ADDRESSU, D3DTADDRESS_WRAP);
+	DEVICE->SetSamplerState(1, D3DSAMP_ADDRESSV, D3DTADDRESS_WRAP);
+
+	DEVICE->SetTransform(D3DTS_WORLD, &m_matWorld);
+
+	D3DXMATRIX matS;
+	D3DXMatrixScaling(&matS, m_nTerrainDetail, m_nTerrainDetail, 1.0f);
+	DEVICE->SetTransform(D3DTS_TEXTURE0, &matS);
+	DEVICE->SetTransform(D3DTS_TEXTURE1, &matS);
+	DEVICE->SetMaterial(&m_mtl);
+
+	for (int i = 0; i< m_vecLayer.size(); i++)
+	{
+		DEVICE->SetTexture(0, m_vecLayer[i].pAlpha);
+		DEVICE->SetTexture(1, m_vecLayer[i].pTexture);
+		m_pTerrainMesh->DrawSubset(0);
+	}
+
+	DEVICE->SetTextureStageState(1, D3DTSS_TEXTURETRANSFORMFLAGS, D3DTTFF_DISABLE);
+
+	// 1번 셋팅을 사용을 중지 한다.
+	DEVICE->SetTextureStageState(1, D3DTSS_COLOROP, D3DTOP_DISABLE);
+	DEVICE->SetTextureStageState(1, D3DTSS_ALPHAOP, D3DTOP_DISABLE);
+
+	// 알파 사용을 중지 한다.
+	DEVICE->SetRenderState(D3DRS_ALPHABLENDENABLE, false);
+
+	// 설정 복구
+	D3DXMatrixScaling(&matS, 1, 1, 1.0f);
+	DEVICE->SetTransform(D3DTS_TEXTURE0, &matS);
+	DEVICE->SetTransform(D3DTS_TEXTURE1, &matS);
+	DEVICE->SetTexture(1, NULL);
+
+	DEVICE->SetTextureStageState(0, D3DTSS_ALPHAOP, prev[0]);
+	DEVICE->SetTextureStageState(0, D3DTSS_ALPHAARG1, prev[1]);
+	DEVICE->SetTextureStageState(1, D3DTSS_COLOROP, prev[2]);
+	DEVICE->SetTextureStageState(1, D3DTSS_COLORARG1, prev[3]);
+	DEVICE->SetTextureStageState(1, D3DTSS_ALPHAOP, prev[4]);
+	DEVICE->SetTextureStageState(1, D3DTSS_ALPHAARG1, prev[5]);
+	DEVICE->SetSamplerState(1, D3DSAMP_MINFILTER, prev[6]);
+	DEVICE->SetSamplerState(1, D3DSAMP_MAGFILTER, prev[7]);
+	DEVICE->SetSamplerState(1, D3DSAMP_MIPFILTER, prev[8]);
+	DEVICE->SetTextureStageState(0, D3DTSS_TEXTURETRANSFORMFLAGS, prev[9]);
+	DEVICE->SetSamplerState(0, D3DSAMP_ADDRESSU, prev[10]);
+	DEVICE->SetSamplerState(0, D3DSAMP_ADDRESSV, prev[11]);
+	DEVICE->SetTextureStageState(1, D3DTSS_TEXTURETRANSFORMFLAGS, prev[12]);
+	DEVICE->SetTextureStageState(1, D3DTSS_TEXCOORDINDEX, prev[13]);
+	DEVICE->SetSamplerState(1, D3DSAMP_ADDRESSU, prev[14]);
+	DEVICE->SetSamplerState(1, D3DSAMP_ADDRESSV, prev[15]);
 }
 
 void Map::ObjectRender()
