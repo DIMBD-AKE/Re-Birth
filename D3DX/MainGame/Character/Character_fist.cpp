@@ -80,6 +80,8 @@ void Character_fist::Init(CHRTYPE type, CHARSELECT order)
 	m_nDC = 0;
 	m_fAttackInterval = 0.7f;
 	m_vDummyVector = D3DXVECTOR3(0, 0, 0);
+	
+	m_fGumgangInterval = 7.0f;
 	//for (int i = 0; i < FISTBODY_END; i++)
 	//{
 	//	D3DXVECTOR3 temp(0, 0, 0);
@@ -125,6 +127,8 @@ void Character_fist::Update()
 			m_stBound[i].center = temp;
 			m_stBound[i].radius = 0.5f;
 		}
+
+		if (m_bGumGang) Skill2();
 	}
 }
 
@@ -378,13 +382,26 @@ void Character_fist::KeyControl()
 		ChangeAnimation();
 	}
 
-	if (INPUT->KeyDown('F'))
+
+	if (INPUT->KeyDown('R'))
 	{
 		m_eCondition = CHAR_SKILL2;
 		ChangeAnimation();
 		Skill1();
 	}
 
+
+	if (INPUT->KeyDown('F'))
+	{
+		//m_eCondition = CHAR_SKILL2;
+		//ChangeAnimation();
+		m_bGumGang = true;
+		m_nDamageCount = 0;
+		//Skill2();
+	}
+
+	
+	
 }
 
 void Character_fist::Attack()
@@ -495,6 +512,26 @@ void Character_fist::Skill1()
 
 void Character_fist::Skill2()
 {
+
+	m_pCharacter->SetShaderRimColor(D3DXVECTOR3(255, 228, 0));
+	m_pCharacter->SetShaderRimPower(3.0f);
+	
+	
+	if (m_fElpTime < m_fPrevTime + m_fGumgangInterval) return;
+
+	m_fPrevTime = m_fElpTime;
+
+	m_nDamageCount++;
+
+	if (m_nDamageCount <= 1)
+	{
+		m_pCharacter->SetShaderRimColor(D3DXVECTOR3(0, 0, 0));
+		m_pCharacter->SetShaderRimPower(3.0f);
+		//m_pCharacter->SetShaderHologram(true);
+		m_bGumGang = false;
+	}
+
+
 }
 
 void Character_fist::SkillDealing()

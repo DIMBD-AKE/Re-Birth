@@ -20,6 +20,7 @@ private:
 	D3DXVECTOR3				m_vDummyVector;						//더미루트 점벡터
 	float					m_fAttackInterval;					//어택용 인터벌
 	int						m_nDC;
+	float					m_fGumgangInterval;					//금강불괴 인터벌
 
 public:
 	Character_fist();

@@ -428,7 +428,7 @@ void CharacterParant::CalculDamage(float damage)
 	{
 		return;
 	}
-	if (!m_bIsSubChr)
+	if (!m_bIsSubChr && !m_bGumGang)
 	{
 		m_bIsUnderAttacked = true;
 		m_fGuard = 0.0f;
@@ -541,7 +541,7 @@ void CharacterParant::CalculDamage(float damage)
 
 		}
 	}
-	else
+	if(m_bIsSubChr)
 	{
 		float Shield = round(damage);
 		m_pShieldChr->SetShieldCurHp(m_pShieldChr->GetShieldCurHp() - Shield);
@@ -1236,6 +1236,7 @@ void CharacterParant::Init(CHRTYPE type, CHARSELECT order)
 	m_bIceStat = false;
 	m_bIsStun = false;
 	m_bPetUnSealed = false;
+	m_bGumGang = false;
 
 	m_fStamina = 10.0f;
 	m_nDamage = 0;
@@ -1332,11 +1333,23 @@ void CharacterParant::Update()
 	if (m_bIsUnderAttacked)
 	{
 		m_fGuard += TIME->GetElapsedTime();
-		if (m_fGuard > 1.0)
+		//if (m_eChrType == CHRTYPE_GUN || m_eChrType == CHRTYPE_MAGIC || m_eChrType == CHRTYPE_SWORD)
+	//	{
+			if (m_fGuard > 1.0)
+			{
+				m_bIsUnderAttacked = false;
+				m_bIsInvincible = false;
+			}
+	//	}
+	/*	if (m_eChrType == CHRTYPE_FIST)
 		{
-			m_bIsUnderAttacked = false;
-			m_bIsInvincible = false;
-		}
+			if (m_fGuard > 5.0)
+			{
+				m_bIsUnderAttacked = false;
+				m_bIsInvincible = false;
+			}
+		}*/
+
 	}
 	Restore();
 	Guard();
