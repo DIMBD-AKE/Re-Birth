@@ -10,6 +10,7 @@ private:
 	Particle*			m_pMeteorAfterPaticle;		//메테오 끝나고 잔열파티클 
 
 	bool				m_bIsFire;					//잔열 컨트롤
+	bool				m_bMotion;					//모션
 
 public:
 	Character_Magic();

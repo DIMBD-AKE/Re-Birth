@@ -708,6 +708,7 @@ void Character_Gun::GunShot()
 		}
 		else
 		{
+			m_pCharacter->SetAnimation("ATTACK");
 			CAMERA->Shake(0.08, 0.3);
 
 			ST_EFFECT tempEffect;

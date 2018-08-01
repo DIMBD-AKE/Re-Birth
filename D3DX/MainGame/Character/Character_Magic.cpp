@@ -131,6 +131,7 @@ void Character_Magic::Init(CHRTYPE type, CHARSELECT order)
 
 
 	m_bIsFire = false;
+	m_bMotion = false;
 }
 
 void Character_Magic::Update()
@@ -952,7 +953,9 @@ void Character_Magic::Meteor()
 		//testSkillpos += TempDir * (Length * 0.3f);
 		tempEFOBJ->Init(tempEffect, testSkillpos);
 		m_vecEffect.push_back(tempEFOBJ);
-		
+
+
+		m_pCharacter->SetAnimation("SKILL");
 		m_pMeteorPaticle->SetPosition(m_vecEffect.back()->GetBoundSphere().center);
 		
 
@@ -1056,7 +1059,7 @@ void Character_Magic::MegaCristal()
 	
 	tempEFOBJ1->Init(tempEffect1, testSkillpos1);
 	m_vecEffect.push_back(tempEFOBJ1);
-
+	m_pCharacter->SetAnimation("SKILL");
 
 	//¼öÁ¤
 	for (int i = 0; i < 5; i++)
