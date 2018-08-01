@@ -1042,11 +1042,7 @@ void Character_Magic::MegaCristal()
 	tempEffect1.rot = D3DXVECTOR3(90, 0, 0);
 	tempEffect1.mot = D3DXVECTOR3(0, 10, 0);
 	tempEffect1.ms0 = 9.0f;
-	//tempEffect.isRY = true;
-	//tempEffect.isRX = true;
-	//tempEffect.isRZ = true;
-	//tempEffect.dir = *m_pCharacter->GetRotation();
-	//tempEffect.SetSpeed(0, 0.2, 0);
+	
 	tempEffect1.height = 3.0f;
 	tempEffect1.SetAlpha(255, 255, 0);
 	tempEffect1.SetScale(5, 5, 0);
@@ -1057,9 +1053,7 @@ void Character_Magic::MegaCristal()
 	tempEFOBJ1 = new EffectObject;
 	D3DXVECTOR3 testSkillpos1 = *m_pCharacter->GetPosition() - m_vfront * 1.0f;
 	testSkillpos1.y -= 1.0f;
-	//testSkillpos.x += FRand(-0.5, 0.5);
-	//testSkillpos.z += FRand(-0.3, 0.3);
-	//testSkillpos += TempDir * (Length * 0.3f);
+	
 	tempEFOBJ1->Init(tempEffect1, testSkillpos1);
 	m_vecEffect.push_back(tempEFOBJ1);
 

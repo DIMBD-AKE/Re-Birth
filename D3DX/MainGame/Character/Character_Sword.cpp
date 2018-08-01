@@ -878,6 +878,7 @@ void Character_Sword::Shunpo()
 
 			tempEffect.time = FRand(0.1, 0.5) + 2;
 			//tempEffect.isRY = true;
+			tempEffect.autoY = true;
 			tempEffect.isRX = true;
 			tempEffect.dir = front;
 			tempEffect.height = 3.0f;
@@ -1269,6 +1270,7 @@ void Character_Sword::TargetSword()
 
 				m_pCharacter->SetRotation(D3DXVECTOR3(0, GetAngle(*m_pCharacter->GetPosition(), *m_pMonsterManager->GetMonsterVector()[m_nIndex]->GetModel()->GetPosition()), 0));
 				m_pCharacter->SetShaderHologram(true);
+				m_pCharacter->SetShaderRimColor(D3DXVECTOR3(0, 255, 0));
 				m_pCharacter->SetAnimation("SKILL");
 				m_pParticle4->SetPosition(*m_pCharacter->GetPosition());
 				m_pParticle4->TimeReset();

@@ -224,6 +224,11 @@ void SC_Loading::AddTexture()
 
 	m_pLoading->LoadTexture("Stage Name", "Texture/UI/Stage Name.png");
 
+	//가드시 나오는 이미지 
+	m_pLoading->LoadTexture("가드이미지", "Texture/Effect/Guard.png");
+	m_pLoading->LoadTexture("미스이미지", "Texture/Effect/Miss.png");
+	m_pLoading->LoadTexture("회피이미지", "Texture/Effect/Resist.png");
+
 }
 
 void SC_Loading::AddSound()

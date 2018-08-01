@@ -16,19 +16,21 @@ struct ST_DAMAGE;
 class Pet;
 
 
-
 //캐릭터의 원형 클래스
 
-//struct ST_DAMAGETEXT			//데미지 텍스트용 구조체
-//{
-//	int Damage;
-//	float time;
-//	float endTime;
-//	float angle;
-//	float alpha;
-//	float x;
-//
-//};
+struct ST_PLAYER_CELL
+{
+	D3DXVECTOR3 v0, v1, v2;
+	D3DXVECTOR3 center;
+};
+
+struct ST_PLAYER_NODE
+{
+	ST_PLAYER_CELL c;
+	float F, G, H;
+	bool isList;
+	ST_PLAYER_NODE * pParent;
+};
 
 
 struct ST_STATUS
@@ -94,6 +96,8 @@ protected:
 	D3DXVECTOR3				m_vMeteo;						//메테오 벡터 
 	D3DXVECTOR3				m_vGun;							//총벡터
 	D3DXVECTOR3				m_vMegaCri;						//메가크리스탈클릭좌표
+	D3DXVECTOR3*			m_pTarget;						//A*용 점백터 변수 
+	D3DXVECTOR3				m_pClickPos;					//A*용 클릭포지션 
 
 
 	int						m_nCalAction;					//액션 프레임 계산용 변수
@@ -136,6 +140,8 @@ protected:
 	float					m_fDot;							//공격시 각도계산용
 	float					m_fFireCount;					//상태이상 불 데미지
 	float					m_fGuard;						//가드용 일랩스타임
+	float					m_fStopDist;					//A* 스탑 디스턴스
+
 
 	GET(bool, m_bIsDead, IsDead);								//죽었늬
 	
@@ -153,6 +159,10 @@ protected:
 	Particle*		m_pParticle5;
 	Particle*		m_pVelvetFinal;
 	Particle*		m_pRiahFinal[15];
+
+
+	vector<ST_PLAYER_NODE>	m_vecFindPath;
+	ST_PLAYER_CELL			m_stTargetCell;
 
 	void SKill();
 	void Move();
@@ -184,6 +194,14 @@ protected:
 	void Guard();
 	void Restore();
 	void SummonPet(PETTYPE pet);
+	
+	//======A*
+	void AStar();
+	void OptimizePath();
+	void AStarMove();
+	bool TargetEqualCell();
+
+
 
 	int						m_temp;			//애니메이션 확인용 임시변수
 
