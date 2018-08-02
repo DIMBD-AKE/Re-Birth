@@ -24,7 +24,7 @@ void DropManager::Init()
 	m_pModel->SetScale(D3DXVECTOR3(0.1, 0.1, 0.1));
 }
 
-void DropManager::AddDropItem(int itemID, D3DXVECTOR3 pos)
+void DropManager::AddDropItem(int itemID, D3DXVECTOR3 pos, bool random)
 {
 	if (itemID == -1) return;
 
@@ -41,7 +41,10 @@ void DropManager::AddDropItem(int itemID, D3DXVECTOR3 pos)
 	/*itemID = 51;*/
 
 	ST_DROPBOX box;
-	box.itemID = tempItemID/*itemID*/;
+	if (random)
+		box.itemID = tempItemID/*itemID*/;
+	else
+		box.itemID = itemID;
 	box.pos = pos;
 	box.pos.y += 1;
 	box.rot.x = D3DXToRadian(rand() % 360);

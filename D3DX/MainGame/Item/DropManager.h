@@ -22,7 +22,7 @@ public:
 
 	void Init();
 
-	void AddDropItem(int itemID, D3DXVECTOR3 pos);
+	void AddDropItem(int itemID, D3DXVECTOR3 pos, bool random = true);
 	bool GetDropItem(CharacterParant * character, Pet * pet);
 
 	vector<ST_DROPBOX>& GetDropList() { return m_vecDrop; }
