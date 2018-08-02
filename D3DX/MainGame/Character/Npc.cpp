@@ -74,6 +74,8 @@ void Npc::Init(D3DXVECTOR3 pos)
 	m_pNpc->SetScale(D3DXVECTOR3(0.02, 0.02, 0.02));
 	m_pNpc->SetRotation(D3DXVECTOR3(0, 3.2, 0));
 	m_pNpc->SetPosition(pos);
+
+	m_pNpc->SetRotation(D3DXVECTOR3(0, GetAngle(pos, *m_pPlayer->GetCharacter()->GetPosition()) - D3DX_PI / 2, 0));
 	
 	m_bIsCollision = false;
 	m_bIsAppear = true;
@@ -139,6 +141,9 @@ void Npc::Update()
 	if (m_isOnce) return;
 	if (m_pNpc && m_bIsAppear)
 	{
+		if (D3DXVec3Length(&(*m_pNpc->GetPosition() - *m_pPlayer->GetCharacter()->GetPosition())) < 5)
+			m_pNpc->SetRotation(D3DXVECTOR3(0, GetAngle(*m_pNpc->GetPosition(), *m_pPlayer->GetCharacter()->GetPosition()) - D3DX_PI / 2, 0));
+
 		m_pNpc->World();
 		CheckCollision();
 		m_pPortrait->Update();
